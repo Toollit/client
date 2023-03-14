@@ -25,6 +25,10 @@ a {
   -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
+ul {
+  list-style: none;
+}
+
 
 /* Google Fonts */
 @font-face {
