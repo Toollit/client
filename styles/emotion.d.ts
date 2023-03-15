@@ -1,8 +1,7 @@
-import 'styled-components';
+import '@emotion/react';
 
-// and extend them!
-declare module 'styled-components' {
-  export interface DefaultTheme {
+declare module '@emotion/react' {
+  export interface Theme {
     fontSizes: {
       xsmall: string;
       small: string;
@@ -61,3 +60,11 @@ declare module 'styled-components' {
     deviceSizes: {};
   }
 }
+
+// You are also able to use a 3rd party theme this way:
+// import '@emotion/react';
+// import { LibTheme } from 'some-lib';
+
+// declare module '@emotion/react' {
+//   export interface Theme extends LibTheme {}
+// }
