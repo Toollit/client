@@ -70,7 +70,7 @@ const CheckAuth = ({ Component, Props }: CheckAuthProps) => {
         }
       }
     })();
-  }, [router]);
+  }, [router, dispatch]);
 
   return <Component {...Props.pageProps} />;
 };
