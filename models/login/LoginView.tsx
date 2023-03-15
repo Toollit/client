@@ -46,7 +46,7 @@ const LoginView = ({
   handlePwInquiryRouting,
 }: LoginViewProps) => {
   return (
-    <AppLayout>
+    <AppLayout nav={false}>
       <Container>
         <Button type='close' onClick={handleClose} isMobile={isMobile} />
 

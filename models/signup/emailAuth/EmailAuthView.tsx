@@ -32,7 +32,7 @@ const EmailAuthView = ({
   authNums,
 }: EmailAuthViewProps) => {
   return (
-    <AppLayout>
+    <AppLayout nav={false}>
       <Container>
         <Button type='close' onClick={handleClose} />
 

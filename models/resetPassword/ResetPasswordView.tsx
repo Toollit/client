@@ -35,7 +35,7 @@ const ResetPasswordView = ({
   handleLogout,
 }: ResetPasswordViewProps) => {
   return (
-    <AppLayout>
+    <AppLayout nav={false}>
       <Container>
         <Form onSubmit={handleSubmit}>
           <Title text='Getit 비밀번호 재설정' />

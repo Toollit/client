@@ -40,7 +40,7 @@ const JoinView = ({
   handleSubmit,
 }: JoinViewProps) => {
   return (
-    <AppLayout>
+    <AppLayout nav={false}>
       <Container>
         <Button type='close' onClick={handleClose} />
         <Form onSubmit={handleSubmit}>

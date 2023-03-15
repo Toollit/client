@@ -30,7 +30,7 @@ const PwInquiryView = ({
   handleSignup,
 }: PwInquiryViewProps) => {
   return (
-    <AppLayout>
+    <AppLayout nav={false}>
       <Container>
         <Button type='close' />
         <Form onSubmit={handleSubmit}>

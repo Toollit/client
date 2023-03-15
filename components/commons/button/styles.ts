@@ -1,4 +1,5 @@
-import styled, { css } from 'styled-components';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
 const NormalBtnContainer = styled.div`
   max-width: 30rem;
@@ -35,27 +36,22 @@ const Text = styled.div<{ color?: 'black' | 'gray' | 'white' }>`
   font-size: 1.5rem;
   letter-spacing: 0.025rem;
 
-  ${(props) => {
-    switch (props.color) {
+  color: ${(props) => {
+    const color = props.color;
+    switch (color) {
       case 'black':
-        return css`
-          color: ${(props) => props.theme.colors.black};
-        `;
+        return props.theme.colors.black;
+
       case 'gray':
-        return css`
-          color: ${(props) => props.theme.colors.gray};
-        `;
+        return props.theme.colors.gray;
+
       case 'white':
-        return css`
-          color: ${(props) => props.theme.colors.white}; ;
-        `;
+        return props.theme.colors.white;
 
       default:
-        return css`
-          color: ${(props) => props.theme.colors.black};
-        `;
+        return props.theme.colors.black;
     }
-  }}
+  }};
 `;
 
 const SubmitBtnContainer = styled.button`

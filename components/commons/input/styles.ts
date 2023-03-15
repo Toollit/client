@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from '@emotion/styled';
 
 const StyledInput = styled.input`
   border: 1px solid #cfd9de;
