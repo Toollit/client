@@ -1,8 +1,8 @@
 import React from 'react';
-import Logo from 'public/static/images/GetitLogo.svg';
+import LogoImg from 'public/static/images/GetitLogo.svg';
 
 const GetitLogo = () => {
-  return <Logo />;
+  return <LogoImg />;
 };
 
 export default GetitLogo;
