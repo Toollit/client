@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
@@ -14,19 +14,27 @@ import {
   LogoText,
   RightNavContainer,
   StyledLink,
+  SearchBoxPositionContainer,
+  SearchBoxContainer,
+  SearchBoxIconInputPositionContainer,
+  SearchBox,
+  SearchIconContainer,
+  SearchInput,
+  SearchRecommendation,
 } from './styles';
 
 const Nav = () => {
   const router = useRouter();
   //TODO 서버 nickname 수정 후 email -> nickname으로 변경
   const isLoggedIn = useSelector((state: RootState) => state.user.email);
+  const [showSearch, setShowSearch] = useState(false);
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLLIElement>) => {
       const { icon } = event.currentTarget.dataset;
 
       if (icon === 'search') {
-        //TODO search modal 추가
+        setShowSearch((prev) => !prev);
       }
 
       if (icon === 'account') {
@@ -79,6 +87,24 @@ const Nav = () => {
           </RightNavContainer>
         </NavList>
       </Content>
+      {showSearch && (
+        <SearchBoxPositionContainer>
+          <SearchBoxContainer>
+            <SearchBox>
+              <SearchBoxIconInputPositionContainer>
+                <SearchIconContainer>
+                  <SearchIcon />
+                </SearchIconContainer>
+
+                <SearchInput type='text' placeholder='Getit.kr 검색하기' />
+              </SearchBoxIconInputPositionContainer>
+
+              <SearchRecommendation>검색 제안</SearchRecommendation>
+              {/* TODO 검색제안 만들기 */}
+            </SearchBox>
+          </SearchBoxContainer>
+        </SearchBoxPositionContainer>
+      )}
     </nav>
   );
 };
