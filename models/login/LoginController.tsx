@@ -117,7 +117,7 @@ const LoginController = () => {
   }, [router]);
 
   useEffect(() => {
-    const { duplicate, hasEmailInfo, error } = router.query;
+    const { hasEmailInfo, duplicate, error, firstTime } = router.query;
 
     if (hasEmailInfo === 'false') {
       alert(
@@ -134,6 +134,13 @@ const LoginController = () => {
     if (error === 'true') {
       alert('문제가 발생했습니다. 잠시 후 다시 시도해 주세요.');
       router.replace('/login');
+    }
+
+    if (firstTime === 'true') {
+      setTimeout(() => {
+        alert('회원가입 완료. 환영합니다 🎉');
+      }, 1000);
+      router.replace('/');
     }
   }, [router]);
 
