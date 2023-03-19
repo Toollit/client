@@ -123,6 +123,10 @@ const Title = styled.h2`
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+
+  ${mediaQueryMobile} {
+    -webkit-line-clamp: 2;
+  }
 `;
 
 const Skill = styled.div`
