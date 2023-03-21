@@ -13,7 +13,6 @@ const Button = styled.button`
   border-style: none;
   background-color: transparent;
   font-size: 1.5rem;
-  cursor: pointer;
 `;
 
 const FilterMenu = styled(Menu)`

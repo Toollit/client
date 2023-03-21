@@ -23,10 +23,15 @@ const styles = css`
 
   a {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
   }
 
   ul {
     list-style: none;
+  }
+
+  button {
+    cursor: pointer;
   }
 
   /* Google Fonts */

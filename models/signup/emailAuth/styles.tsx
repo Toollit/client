@@ -54,7 +54,6 @@ const NextBtn = styled.button`
   font-weight: 600;
   letter-spacing: 0.025rem;
   border-style: none;
-  cursor: 'pointer';
 
   &:active {
     background-color: #3da571;
