@@ -7,17 +7,10 @@ const MainController = () => {
   // Swiper setting
   SwiperCore.use([Autoplay]);
 
-  const [searchDialog, setSearchDialog] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const handleSlide = useCallback((swiper: Swiper) => {
-    const currentSlideIndex = swiper.activeIndex;
-    setCurrentSlide(currentSlideIndex);
-  }, []);
+  const [mainPosts, setMainPosts] = useState(Array(12).fill('test'));
 
   const props: MainViewProps = {
-    currentSlide,
-    handleSlide,
+    mainPosts,
   };
 
   return <MainView {...props} />;

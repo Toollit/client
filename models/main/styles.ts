@@ -145,6 +145,45 @@ const BugImage = styled.div`
     margin: 3rem;
   }
 `;
+``;
+
+// 게시글 필터링, 작성 버튼
+const PostWriteFilterContainer = styled.div`
+  display: flex;
+  max-width: 102.4rem;
+  margin: 0 auto;
+  margin-top: 1.5rem;
+  padding: 0rem 2rem;
+  align-items: center;
+`;
+
+const PostFilterContainer = styled.div`
+  margin-left: auto;
+  margin-right: 2rem;
+`;
+
+const PostWriteButton = styled.button`
+  height: 4rem;
+  text-align: center;
+  border-radius: 25rem;
+  border-style: none;
+  background-color: #4dd290;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.3rem;
+  padding: 1rem 2rem;
+`;
+
+// 게시글 목록 관련
+const PostContainer = styled.div`
+  max-width: 102.4rem;
+  margin: 0 auto;
+  padding: 1rem 1rem;
+
+  ${mediaQuery} {
+    padding: 1rem 0.5rem;
+  }
+`;
 
 export {
   Container,
@@ -163,4 +202,8 @@ export {
   ThirdSlideNotice,
   ThirdSlideText,
   BugImage,
+  PostWriteFilterContainer,
+  PostFilterContainer,
+  PostWriteButton,
+  PostContainer,
 };

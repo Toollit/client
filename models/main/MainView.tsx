@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import AppLayout from 'components/appLayout';
 import BannerPerson from 'assets/images/BannerPerson';
 import { Pagination } from 'swiper';
-import type { Swiper } from 'swiper';
 import {
   Container,
   CustomSwiper,
@@ -20,19 +19,25 @@ import {
   ThirdSlideText,
   ThirdSlideNotice,
   BugImage,
+  PostWriteFilterContainer,
+  PostFilterContainer,
+  PostWriteButton,
+  PostContainer,
 } from './styles';
 import BannerBackgroundLeft from 'assets/images/BannerBackgroundLeft';
 import BannerBackgroundRight from 'assets/images/BannerBackgroundRight';
 import Bug from 'assets/images/Bug';
 import NetworkLottieJson from 'public/static/lotties/network.json';
 import LottieAnimation from 'components/commons/lottie';
+import BlockPost from 'components/commons/post/block';
+import Grid from '@mui/material/Grid';
+import Filter from 'components/commons/filter';
 
 export interface MainViewProps {
-  currentSlide: number;
-  handleSlide: (swiper: Swiper) => void;
+  mainPosts: any[];
 }
 
-const MainView = ({ currentSlide, handleSlide }: MainViewProps) => {
+const MainView = ({ mainPosts }: MainViewProps) => {
   return (
     <AppLayout nav={true}>
       <Container>
@@ -103,6 +108,25 @@ const MainView = ({ currentSlide, handleSlide }: MainViewProps) => {
             </BannerContainer>
           </CustomSwiperSlide>
         </CustomSwiper>
+
+        <PostWriteFilterContainer>
+          <PostFilterContainer>
+            <Filter />
+          </PostFilterContainer>
+          <PostWriteButton>프로젝트 생성</PostWriteButton>
+        </PostWriteFilterContainer>
+
+        <PostContainer>
+          <Grid container spacing={1}>
+            {mainPosts?.map((post, index) => {
+              return (
+                <Grid key={index} item xs={6} sm={6} md={4}>
+                  <BlockPost />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </PostContainer>
       </Container>
     </AppLayout>
   );
