@@ -1,8 +1,8 @@
 import React from 'react';
 import ResetPasswordController from 'models/resetPassword/ResetPasswordController';
 
-const resetPassword = () => {
+const ResetPassword = () => {
   return <ResetPasswordController />;
 };
 
-export default resetPassword;
+export default ResetPassword;
