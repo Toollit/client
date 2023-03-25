@@ -5,10 +5,7 @@ export type UploadImageAPIReq = FormData;
 export interface UploadImageAPIRes {
   success: boolean;
   message: string | null;
-  data: {
-    url: string;
-    alt: string;
-  };
+  data: { url: string };
 }
 
 export const uploadImageAPI = async (
