@@ -35,9 +35,10 @@ import Filter from 'components/commons/filter';
 
 export interface MainViewProps {
   mainPosts: any[];
+  createForm: () => void;
 }
 
-const MainView = ({ mainPosts }: MainViewProps) => {
+const MainView = ({ mainPosts, createForm }: MainViewProps) => {
   return (
     <AppLayout nav={true}>
       <Container>
@@ -113,7 +114,7 @@ const MainView = ({ mainPosts }: MainViewProps) => {
           <PostFilterContainer>
             <Filter />
           </PostFilterContainer>
-          <PostWriteButton>프로젝트 생성</PostWriteButton>
+          <PostWriteButton onClick={createForm}>프로젝트 생성</PostWriteButton>
         </PostWriteFilterContainer>
 
         <PostContainer>
