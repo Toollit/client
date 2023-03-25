@@ -25,8 +25,7 @@ import {
 
 const Nav = () => {
   const router = useRouter();
-  //TODO 서버 nickname 수정 후 email -> nickname으로 변경
-  const isLoggedIn = useSelector((state: RootState) => state.user.email);
+  const isLoggedIn = useSelector((state: RootState) => state.user.nickname);
   const [showSearch, setShowSearch] = useState(false);
 
   const handleClick = useCallback(

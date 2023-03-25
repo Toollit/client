@@ -6,7 +6,6 @@ export interface AuthAPIRes {
   success: boolean;
   message: null | string;
   data: {
-    email: string;
     nickname: string;
   };
 }
