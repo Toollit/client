@@ -1,7 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { EditorType, HookMap } from '@toast-ui/editor';
+import { EditorType } from '@toast-ui/editor';
+import 'tui-color-picker/dist/tui-color-picker.css';
+import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
+import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import {
   TuiCustomGlobalStyles,
   TuiFormContainer,
@@ -70,6 +73,7 @@ const TuiEditor = ({ title }: TuiEditorProps) => {
           ref={editorRef}
           onChange={handleEditType}
           language='ko-kr'
+          plugins={[colorSyntax]}
           hooks={{
             addImageBlobHook: async (file, callback) => {
               console.log('file ===>', file);
