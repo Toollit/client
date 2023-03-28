@@ -1,47 +1,23 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 import { EditorType } from '@toast-ui/editor';
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
-import {
-  TuiCustomGlobalStyles,
-  TuiFormContainer,
-  TitleInputContainer,
-  TitleInput,
-  ButtonContainer,
-  Button,
-} from './TuiEditorStyles';
-import Title from '../title';
+import { TuiCustomGlobalStyles, TuiContainer } from './TuiEditorStyles';
 import { uploadImageAPI } from '@/apis/project/uploadImage';
 import path from 'path';
+import Label from 'components/commons/label';
 
 interface TuiEditorProps {
-  title: string;
+  editorRef: React.MutableRefObject<any>;
 }
 
-const TuiEditor = ({ title }: TuiEditorProps) => {
-  const editorRef = useRef<any>(null);
-
+const TuiEditor = ({ editorRef }: TuiEditorProps) => {
   useEffect(() => {
     editorRef.current.getRootElement().classList.add('Tui-editor-root');
-  }, []);
-
-  const handleClick = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.preventDefault();
-
-      console.log('handleClick ===>', editorRef.current.getInstance());
-
-      const wysiwygNodeList =
-        editorRef.current.getInstance().wwEditor.view.state.doc.content.content;
-
-      for (let i = 0; i < wysiwygNodeList.length; i++) {}
-    },
-
-    [],
-  );
+  }, [editorRef]);
 
   const handleEditType = useCallback((editorType: EditorType) => {
     if (editorType === 'markdown') {
@@ -60,12 +36,8 @@ const TuiEditor = ({ title }: TuiEditorProps) => {
   return (
     <>
       <TuiCustomGlobalStyles />
-      <TuiFormContainer>
-        <Title text={title} />
-        <TitleInputContainer>
-          <TitleInput />
-        </TitleInputContainer>
-        <br />
+      <TuiContainer>
+        <Label htmlFor='content' text='내용' />
         <Editor
           height='50rem'
           initialEditType='wysiwyg'
@@ -113,10 +85,7 @@ const TuiEditor = ({ title }: TuiEditorProps) => {
             },
           }}
         />
-        <ButtonContainer>
-          <Button onClick={handleClick}>작성 완료</Button>
-        </ButtonContainer>
-      </TuiFormContainer>
+      </TuiContainer>
     </>
   );
 };
