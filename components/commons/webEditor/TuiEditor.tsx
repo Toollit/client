@@ -6,15 +6,20 @@ import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import { TuiCustomGlobalStyles, TuiContainer } from './TuiEditorStyles';
+import fontSize from 'tui-editor-plugin-font-size';
+import 'tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css';
 import { uploadImageAPI } from '@/apis/project/uploadImage';
 import path from 'path';
 import Label from 'components/commons/label';
+import axios from 'axios';
+import { AxiosErrorData } from 'apis/types';
 
 interface TuiEditorProps {
   editorRef: React.MutableRefObject<any>;
+  setImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const TuiEditor = ({ editorRef }: TuiEditorProps) => {
+const TuiEditor = ({ editorRef, setImageUrls }: TuiEditorProps) => {
   useEffect(() => {
     editorRef.current.getRootElement().classList.add('Tui-editor-root');
   }, [editorRef]);
@@ -45,25 +50,25 @@ const TuiEditor = ({ editorRef }: TuiEditorProps) => {
           ref={editorRef}
           onChange={handleEditType}
           language='ko-kr'
-          plugins={[colorSyntax]}
+          plugins={[colorSyntax, fontSize]}
           hooks={{
             addImageBlobHook: async (file, callback) => {
-              console.log('file ===>', file);
               const formData = new FormData();
               formData.append('postImage', file);
 
-              let response;
-              try {
-                response = await uploadImageAPI(formData);
-              } catch (error) {
-                alert('문제가 발생했습니다. 잠시 후 다시 시도해 주세요.');
-              }
+              const response = await uploadImageAPI(formData).catch((error) => {
+                if (axios.isAxiosError<AxiosErrorData>(error)) {
+                  alert(error.response?.data.message);
+                }
+              });
 
               const imageUrl = response?.data.url;
+              if (imageUrl) {
+                setImageUrls((prev) => [...prev, imageUrl]);
+              }
 
-              let imageDescriptionInput;
               try {
-                imageDescriptionInput = document.getElementById(
+                const imageDescriptionInput = document.getElementById(
                   'toastuiAltTextInput',
                 ) as HTMLInputElement;
 

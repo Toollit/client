@@ -18,19 +18,21 @@ const DynamicTuiEditor = dynamic(
   },
 );
 
-export interface FormViewProps {
+export interface ProjectCreateViewProps {
   title: string | null;
   onChangeTitle: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   editorRef: React.MutableRefObject<any>;
+  setImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const FormView = ({
+const ProjectCreateView = ({
   title,
   onChangeTitle,
   handleSubmit,
   editorRef,
-}: FormViewProps) => {
+  setImageUrls,
+}: ProjectCreateViewProps) => {
   return (
     <AppLayout nav={true}>
       <Container onSubmit={handleSubmit}>
@@ -39,12 +41,12 @@ const FormView = ({
           <Label htmlFor='title' text='제목' />
           <TitleInput
             name='title'
-            value={title as string}
+            value={title ?? ''}
             onChange={onChangeTitle}
           />
         </TitleInputContainer>
         <br />
-        <DynamicTuiEditor editorRef={editorRef} />
+        <DynamicTuiEditor editorRef={editorRef} setImageUrls={setImageUrls} />
 
         <ButtonContainer>
           <Button>작성 완료</Button>
@@ -54,4 +56,4 @@ const FormView = ({
   );
 };
 
-export default FormView;
+export default ProjectCreateView;

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import type { NextPage, GetServerSideProps } from 'next';
 import {
   getProjectDetailAPI,

@@ -4,7 +4,7 @@ import Title from 'components/commons/title';
 import { GetProjectDetailAPIResData } from 'apis/project/getProjectDetail';
 
 const DynamicTuiViewer = dynamic(
-  () => import('@/components/commons/webEditor/TuiView'),
+  () => import('@/components/commons/webEditor/TuiViewer'),
   {
     ssr: false,
   },

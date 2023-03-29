@@ -1,8 +1,11 @@
 import React from 'react';
-import FormController from '@/models/project/create/FormController';
+import type { NextPage } from 'next';
+import ProjectCreateController from '@/models/project/create/ProjectCreateController';
 
-const ProjectCreateForm = () => {
-  return <FormController />;
+interface PageProps {}
+
+const ProjectCreateForm: NextPage<PageProps> = ({}) => {
+  return <ProjectCreateController />;
 };
 
 export default ProjectCreateForm;
