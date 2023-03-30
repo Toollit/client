@@ -41,7 +41,7 @@ const ProjectCreateView = ({
           <Label htmlFor='title' text='제목' />
           <TitleInput
             name='title'
-            value={title ?? ''}
+            value={title as string}
             onChange={onChangeTitle}
           />
         </TitleInputContainer>
