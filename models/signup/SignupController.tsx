@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import JoinView, { JoinViewProps } from './SignupView';
-import useInput from 'hooks/useInput';
+import useNoSpaceInput from 'hooks/useNoSpaceInput';
 import { useDispatch } from 'react-redux';
 import { emailAuth } from 'features/signup';
 
@@ -9,12 +9,12 @@ const JoinController = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const [email, onChangeEmail] = useInput('');
+  const [email, onChangeEmail] = useNoSpaceInput('');
   const [emailInvalidError, setEmailInvalidError] = useState(false);
-  const [password, onChangePassword] = useInput('');
+  const [password, onChangePassword] = useNoSpaceInput('');
   const [passwordRestrictionError, setPasswordRestrictionError] =
     useState(false);
-  const [passwordCheck, onChangePasswordCheck] = useInput('');
+  const [passwordCheck, onChangePasswordCheck] = useNoSpaceInput('');
   const [passwordMismatchError, setPasswordMismatchError] = useState(false);
   const [fillFormComplete, setFillFormComplete] = useState(false);
 

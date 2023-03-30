@@ -1,14 +1,14 @@
 import { pwInquiryAPI } from 'apis/pwInquiry';
 import { AxiosErrorData } from 'apis/types';
 import axios from 'axios';
-import useInput from 'hooks/useInput';
+import useNoSpaceInput from 'hooks/useNoSpaceInput';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import PwInquiryView, { PwInquiryViewProps } from './PwInquiryView';
 
 const PwInquiryController = () => {
   const router = useRouter();
-  const [email, onChangeEmail] = useInput('');
+  const [email, onChangeEmail] = useNoSpaceInput('');
   const [emailInvalidError, setEmailInvalidError] = useState(false);
 
   const checkEmailFormatValidate = useCallback(() => {

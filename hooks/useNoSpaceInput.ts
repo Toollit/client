@@ -1,9 +1,12 @@
 import React, { useCallback, useState } from 'react';
 
-const useInput = (
+/**
+ * 공백을 허용하지 않는 input
+ */
+const useNoSpaceInput = (
   initialValue: null | string = null,
 ): [
-  string | null,
+  typeof initialValue,
   (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
 ] => {
   const [value, setValue] = useState(initialValue);
@@ -22,4 +25,4 @@ const useInput = (
   return [value, onChangeValue];
 };
 
-export default useInput;
+export default useNoSpaceInput;

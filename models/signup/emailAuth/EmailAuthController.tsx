@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { RootState } from 'store';
 import axios from 'axios';
-import useInput from 'hooks/useInput';
+import useNoSpaceInput from 'hooks/useNoSpaceInput';
 import EmailAuthView, { EmailAuthViewProps } from './EmailAuthView';
 import { resetAuth, updateAuthNums } from 'features/signup';
 import { emailAuthAPI } from 'apis/signup/emailAuth';
@@ -18,7 +18,7 @@ const EmailAuthController = () => {
   const password = useSelector((state: RootState) => state.signup.password);
   const authNums = useSelector((state: RootState) => state.signup.authNums);
 
-  const [inputAuthNums, onChangeInputAuthNums] = useInput('');
+  const [inputAuthNums, onChangeInputAuthNums] = useNoSpaceInput('');
   const [invalidAuthNumsError, setInvalidAuthNumsError] = useState(false);
   const [minutes, setMinutes] = useState(3);
   const [seconds, setSeconds] = useState(0);
