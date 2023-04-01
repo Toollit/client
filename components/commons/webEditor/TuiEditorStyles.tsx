@@ -26,6 +26,21 @@ const TuiCustomStyles = css`
       margin-left: auto !important;
     }
   }
+
+  .toastui-editor-popup-body {
+    div {
+      div {
+        :nth-of-type(3) {
+          ::after {
+            display: block;
+            margin-top: 0.2rem;
+            font-size: 1.1rem;
+            content: '* 10mb 이하 총합 최대 30mb 까지 업로드 가능합니다.';
+          }
+        }
+      }
+    }
+  }
 `;
 
 const TuiContainer = styled.div`

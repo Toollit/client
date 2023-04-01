@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 import { EditorType } from '@toast-ui/editor';
@@ -16,20 +16,17 @@ import { AxiosErrorData } from 'apis/types';
 
 interface TuiEditorProps {
   editorRef: React.MutableRefObject<any>;
-  setImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
+  setUploadImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
 }
-
-const TuiEditor = ({ editorRef, setImageUrls }: TuiEditorProps) => {
+/**
+ *
+ * @param editorRef - const editorRef = useRef<any>(null);를 부모컴포넌트로부터 전달받아야 한다.
+ * @param setUploadImageUrls - 게시글 작성중 업로드된 모든 사진 목록을 배열로 저장한다. 작성중 삭제한 이미지를 삭제해하므로 일단 모든 사진 목록을 저장한다.
+ */
+const TuiEditor = ({ editorRef, setUploadImageUrls }: TuiEditorProps) => {
   useEffect(() => {
     editorRef.current.getRootElement().classList.add('Tui-editor-root');
   }, [editorRef]);
-
-  const handleEditType = useCallback((editorType: EditorType) => {
-    if (editorType === 'markdown') {
-    }
-    if (editorType === 'wysiwyg') {
-    }
-  }, []);
 
   const createAltText = (file: Blob | File) => {
     const ext = path.extname(file.name); // 확장자 추출 .jpeg
@@ -48,11 +45,26 @@ const TuiEditor = ({ editorRef, setImageUrls }: TuiEditorProps) => {
           initialEditType='wysiwyg'
           useCommandShortcut={true}
           ref={editorRef}
-          onChange={handleEditType}
           language='ko-kr'
           plugins={[colorSyntax, fontSize]}
           hooks={{
             addImageBlobHook: async (file, callback) => {
+              if (
+                !(
+                  file.type === 'image/jpeg' ||
+                  file.type === 'image/jpg' ||
+                  file.type === 'image/png'
+                )
+              ) {
+                return alert('jpg, jpeg, png 파일만 가능합니다.');
+              }
+
+              const limitFileSizeMb = 10 * 1024 * 1024;
+
+              if (file.size > limitFileSizeMb) {
+                return alert('10mb 이하의 사진만 가능합니다.');
+              }
+
               const formData = new FormData();
               formData.append('postImage', file);
 
@@ -64,7 +76,7 @@ const TuiEditor = ({ editorRef, setImageUrls }: TuiEditorProps) => {
 
               const imageUrl = response?.data.url;
               if (imageUrl) {
-                setImageUrls((prev) => [...prev, imageUrl]);
+                setUploadImageUrls((prev) => [...prev, imageUrl]);
               }
 
               try {
