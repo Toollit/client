@@ -7,14 +7,17 @@ import useEditorContent from '@/hooks/useEditorContent';
 const ProjectCreateController = () => {
   const router = useRouter();
 
-  const { title, onChangeTitle, editorRef, setUploadImageUrls, data } =
+  const { titleRef, editorRef, setUploadImageUrls, handleData } =
     useEditorContent();
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      const { title, contentHtml, contentMark, imageUrls } = data;
+      const { title, contentHtml, contentMark, imageUrls } = handleData(
+        titleRef,
+        editorRef,
+      );
 
       if (!title) {
         return alert('제목을 입력해주세요.');
@@ -42,13 +45,12 @@ const ProjectCreateController = () => {
         console.error(error);
       }
     },
-    [router, data],
+    [router, editorRef, titleRef, handleData],
   );
 
   const props: ProjectCreateViewProps = {
     handleSubmit,
-    title,
-    onChangeTitle,
+    titleRef,
     editorRef,
     setUploadImageUrls,
   };

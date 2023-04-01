@@ -19,22 +19,17 @@ import {
 } from './TuiEditorStyles';
 
 interface TuiEditorProps {
-  title: string | null;
-  onChangeTitle: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => void;
+  titleRef: React.RefObject<HTMLInputElement>;
   editorRef: React.MutableRefObject<any>;
   setUploadImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
 }
 /**
- * @param title - 제목 값
- * @param onChangeTitle - 제목 값 핸들링 함수
+ * @param titleRef - 제목 값을 받아오기 위한 ref
  * @param editorRef - Tui Editor 컨텐츠 값을 받아오기 위한 ref
  * @param setUploadImageUrls - 게시글 작성중 업로드된 모든 사진 목록을 배열로 저장한다. 작성중 수정으로인해 삭제된 이미지를 s3에서 삭제하기 위해서 저장
  */
 const TuiEditor = ({
-  title,
-  onChangeTitle,
+  titleRef,
   editorRef,
   setUploadImageUrls,
 }: TuiEditorProps) => {
@@ -109,11 +104,7 @@ const TuiEditor = ({
       <TuiContainer>
         <TitleInputContainer>
           <Label htmlFor='title' text='제목' />
-          <TitleInput
-            name='title'
-            value={title as string}
-            onChange={onChangeTitle}
-          />
+          <TitleInput name='title' ref={titleRef} />
         </TitleInputContainer>
         <br />
 

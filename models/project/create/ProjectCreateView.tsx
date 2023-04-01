@@ -13,18 +13,14 @@ const DynamicTuiEditor = dynamic(
 
 export interface ProjectCreateViewProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  title: string | null;
-  onChangeTitle: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => void;
+  titleRef: React.RefObject<HTMLInputElement>;
   editorRef: React.MutableRefObject<any>;
   setUploadImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const ProjectCreateView = ({
   handleSubmit,
-  title,
-  onChangeTitle,
+  titleRef,
   editorRef,
   setUploadImageUrls,
 }: ProjectCreateViewProps) => {
@@ -33,8 +29,7 @@ const ProjectCreateView = ({
       <Container onSubmit={handleSubmit}>
         <Title text='프로젝트 생성' />
         <DynamicTuiEditor
-          title={title}
-          onChangeTitle={onChangeTitle}
+          titleRef={titleRef}
           editorRef={editorRef}
           setUploadImageUrls={setUploadImageUrls}
         />
