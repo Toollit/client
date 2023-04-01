@@ -4,11 +4,18 @@ export interface AddProjectAPIReq {
   title: string;
   contentHtml: string;
   contentMark: string;
+  imageUrls: {
+    saveImgUrls: string[];
+    removeImgUrls: string[];
+  };
 }
 
 export interface AddProjectAPIRes {
   success: boolean;
   message: string | null;
+  data: {
+    postId: number;
+  };
 }
 
 export const addProjectAPI = async (
