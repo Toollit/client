@@ -23,7 +23,7 @@ export interface ProjectCreateViewProps {
   onChangeTitle: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   editorRef: React.MutableRefObject<any>;
-  setImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
+  setUploadImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const ProjectCreateView = ({
@@ -31,7 +31,7 @@ const ProjectCreateView = ({
   onChangeTitle,
   handleSubmit,
   editorRef,
-  setImageUrls,
+  setUploadImageUrls,
 }: ProjectCreateViewProps) => {
   return (
     <AppLayout nav={true}>
@@ -46,7 +46,10 @@ const ProjectCreateView = ({
           />
         </TitleInputContainer>
         <br />
-        <DynamicTuiEditor editorRef={editorRef} setImageUrls={setImageUrls} />
+        <DynamicTuiEditor
+          editorRef={editorRef}
+          setUploadImageUrls={setUploadImageUrls}
+        />
 
         <ButtonContainer>
           <Button>작성 완료</Button>
