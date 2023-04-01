@@ -1,44 +1,122 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import path from 'path';
+import axios from 'axios';
+import { AxiosErrorData } from 'apis/types';
+import Label from '@/components/commons/label';
+import { uploadImageAPI } from '@/apis/project/uploadImage';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { EditorType } from '@toast-ui/editor';
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
-import { TuiCustomGlobalStyles, TuiContainer } from './TuiEditorStyles';
 import fontSize from 'tui-editor-plugin-font-size';
 import 'tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css';
-import { uploadImageAPI } from '@/apis/project/uploadImage';
-import path from 'path';
-import Label from 'components/commons/label';
-import axios from 'axios';
-import { AxiosErrorData } from 'apis/types';
+import {
+  TuiCustomGlobalStyles,
+  TuiContainer,
+  TitleInputContainer,
+  TitleInput,
+} from './TuiEditorStyles';
 
 interface TuiEditorProps {
+  title: string | null;
+  onChangeTitle: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
   editorRef: React.MutableRefObject<any>;
   setUploadImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
 }
 /**
- *
- * @param editorRef - const editorRef = useRef<any>(null);를 부모컴포넌트로부터 전달받아야 한다.
- * @param setUploadImageUrls - 게시글 작성중 업로드된 모든 사진 목록을 배열로 저장한다. 작성중 삭제한 이미지를 삭제해하므로 일단 모든 사진 목록을 저장한다.
+ * @param title - 제목 값
+ * @param onChangeTitle - 제목 값 핸들링 함수
+ * @param editorRef - Tui Editor 컨텐츠 값을 받아오기 위한 ref
+ * @param setUploadImageUrls - 게시글 작성중 업로드된 모든 사진 목록을 배열로 저장한다. 작성중 수정으로인해 삭제된 이미지를 s3에서 삭제하기 위해서 저장
  */
-const TuiEditor = ({ editorRef, setUploadImageUrls }: TuiEditorProps) => {
+const TuiEditor = ({
+  title,
+  onChangeTitle,
+  editorRef,
+  setUploadImageUrls,
+}: TuiEditorProps) => {
   useEffect(() => {
     editorRef.current.getRootElement().classList.add('Tui-editor-root');
   }, [editorRef]);
 
-  const createAltText = (file: Blob | File) => {
-    const ext = path.extname(file.name); // 확장자 추출 .jpeg
-    const fileName = path.basename(file.name, ext); // 확장자 없는 filename
+  const handleFilteringFile = useCallback((blob: Blob | File) => {
+    if (
+      !(
+        blob.type === 'image/jpeg' ||
+        blob.type === 'image/jpg' ||
+        blob.type === 'image/png'
+      )
+    ) {
+      alert('jpg, jpeg, png 파일만 가능합니다.');
+      return false;
+    }
+
+    const limitFileSizeMb = 10 * 1024 * 1024;
+
+    if (blob.size > limitFileSizeMb) {
+      alert('10mb 이하의 사진만 가능합니다.');
+      return false;
+    }
+
+    return true;
+  }, []);
+
+  const uploadImage = useCallback(async (blob: Blob | File) => {
+    const formData = new FormData();
+    formData.append('postImage', blob);
+
+    const response = await uploadImageAPI(formData).catch((error) => {
+      if (axios.isAxiosError<AxiosErrorData>(error)) {
+        alert(error.response?.data.message);
+      }
+    });
+
+    const imageUrl = response?.data.url;
+    return imageUrl;
+  }, []);
+
+  const createAltText = useCallback((blob: Blob | File) => {
+    const ext = path.extname(blob.name); // 확장자 추출 .jpeg
+    const fileName = path.basename(blob.name, ext); // 확장자 없는 filename
 
     return fileName;
-  };
+  }, []);
+
+  const handleAltText = useCallback(
+    (blob: Blob | File) => {
+      const altText = createAltText(blob);
+
+      try {
+        const imageDescriptionInput = document.getElementById(
+          'toastuiAltTextInput',
+        ) as HTMLInputElement;
+
+        return imageDescriptionInput.value ?? altText;
+      } catch (error) {
+        // imageDescriptionInput null error
+        return altText;
+      }
+    },
+    [createAltText],
+  );
 
   return (
     <>
       <TuiCustomGlobalStyles />
       <TuiContainer>
+        <TitleInputContainer>
+          <Label htmlFor='title' text='제목' />
+          <TitleInput
+            name='title'
+            value={title as string}
+            onChange={onChangeTitle}
+          />
+        </TitleInputContainer>
+        <br />
+
         <Label htmlFor='content' text='내용' />
         <Editor
           height='50rem'
@@ -48,55 +126,24 @@ const TuiEditor = ({ editorRef, setUploadImageUrls }: TuiEditorProps) => {
           language='ko-kr'
           plugins={[colorSyntax, fontSize]}
           hooks={{
-            addImageBlobHook: async (file, callback) => {
-              if (
-                !(
-                  file.type === 'image/jpeg' ||
-                  file.type === 'image/jpg' ||
-                  file.type === 'image/png'
-                )
-              ) {
-                return alert('jpg, jpeg, png 파일만 가능합니다.');
+            addImageBlobHook: async (blob, callback) => {
+              const isAppropriateFile = handleFilteringFile(blob);
+
+              if (!isAppropriateFile) {
+                return;
               }
 
-              const limitFileSizeMb = 10 * 1024 * 1024;
+              const imageUrl = await uploadImage(blob);
 
-              if (file.size > limitFileSizeMb) {
-                return alert('10mb 이하의 사진만 가능합니다.');
-              }
-
-              const formData = new FormData();
-              formData.append('postImage', file);
-
-              const response = await uploadImageAPI(formData).catch((error) => {
-                if (axios.isAxiosError<AxiosErrorData>(error)) {
-                  alert(error.response?.data.message);
-                }
-              });
-
-              const imageUrl = response?.data.url;
               if (imageUrl) {
                 setUploadImageUrls((prev) => [...prev, imageUrl]);
+              } else {
+                return;
               }
 
-              try {
-                const imageDescriptionInput = document.getElementById(
-                  'toastuiAltTextInput',
-                ) as HTMLInputElement;
+              const altText = handleAltText(blob);
 
-                const altText = createAltText(file);
-
-                if (imageUrl) {
-                  callback(imageUrl, imageDescriptionInput.value ?? altText);
-                }
-              } catch (error) {
-                // imageDescriptionInput null error
-                const altText = createAltText(file);
-
-                if (imageUrl) {
-                  callback(imageUrl, altText);
-                }
-              }
+              callback(imageUrl, altText);
 
               return false;
             },

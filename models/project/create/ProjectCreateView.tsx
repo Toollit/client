@@ -1,15 +1,8 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import AppLayout from '@/components/appLayout';
-import {
-  Container,
-  TitleInput,
-  TitleInputContainer,
-  ButtonContainer,
-  Button,
-} from './styles';
-import Title from 'components/commons/title';
-import Label from '@/components/commons/label';
+import Title from '@/components/commons/title';
+import { Container, ButtonContainer, Button } from './styles';
 
 const DynamicTuiEditor = dynamic(
   () => import('@/components/commons/webEditor/TuiEditor'),
@@ -19,17 +12,19 @@ const DynamicTuiEditor = dynamic(
 );
 
 export interface ProjectCreateViewProps {
-  title: string | null;
-  onChangeTitle: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  title: string | null;
+  onChangeTitle: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
   editorRef: React.MutableRefObject<any>;
   setUploadImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const ProjectCreateView = ({
+  handleSubmit,
   title,
   onChangeTitle,
-  handleSubmit,
   editorRef,
   setUploadImageUrls,
 }: ProjectCreateViewProps) => {
@@ -37,20 +32,12 @@ const ProjectCreateView = ({
     <AppLayout nav={true}>
       <Container onSubmit={handleSubmit}>
         <Title text='프로젝트 생성' />
-        <TitleInputContainer>
-          <Label htmlFor='title' text='제목' />
-          <TitleInput
-            name='title'
-            value={title as string}
-            onChange={onChangeTitle}
-          />
-        </TitleInputContainer>
-        <br />
         <DynamicTuiEditor
+          title={title}
+          onChangeTitle={onChangeTitle}
           editorRef={editorRef}
           setUploadImageUrls={setUploadImageUrls}
         />
-
         <ButtonContainer>
           <Button>작성 완료</Button>
         </ButtonContainer>

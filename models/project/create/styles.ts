@@ -11,23 +11,6 @@ const Container = styled.form`
   align-items: center;
 `;
 
-const TitleInputContainer = styled.div`
-  width: 100%;
-`;
-
-const TitleInput = styled.input`
-  width: 100%;
-  height: 4rem;
-  font-size: 1.4rem;
-  padding: 0 1rem;
-  border-radius: 3px;
-  border: 1px solid #dadde6;
-
-  :focus {
-    outline: none;
-  }
-`;
-
 const ButtonContainer = styled.div`
   margin-left: auto;
   margin-top: 1rem;
@@ -45,4 +28,4 @@ const Button = styled.button`
   padding: 1rem 2rem;
 `;
 
-export { Container, TitleInput, TitleInputContainer, ButtonContainer, Button };
+export { Container, ButtonContainer, Button };
