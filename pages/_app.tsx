@@ -7,7 +7,6 @@ import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import EmotionTheme from 'styles/theme';
 import { theme as MuiTheme } from 'styles/muiTheme';
-import CheckAuth from 'lib/auth/CheckAuth';
 
 function MyApp({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest);
@@ -27,8 +26,7 @@ function MyApp({ Component, ...rest }: AppProps) {
         <EmotionThemeProvider theme={EmotionTheme}>
           <GlobalStyles />
           <Provider store={store}>
-            {/* <Component {...props.pageProps} />; */}
-            <CheckAuth Component={Component} Props={props} />
+            <Component {...props.pageProps} />;
           </Provider>
         </EmotionThemeProvider>
       </MuiThemeProvider>

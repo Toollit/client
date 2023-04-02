@@ -2,11 +2,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface UserState {
+  isAuthenticated: boolean;
   nickname: null | string;
   isMobile: null | boolean;
 }
 
 const initialState: UserState = {
+  isAuthenticated: false,
   nickname: null,
   isMobile: null,
 };
@@ -17,9 +19,11 @@ const userSlice = createSlice({
   reducers: {
     updateUser: (state, action: PayloadAction<Omit<UserState, 'isMobile'>>) => {
       state.nickname = action.payload.nickname;
+      state.isAuthenticated = true;
     },
     logout: (state) => {
       state.nickname = null;
+      state.isAuthenticated = false;
     },
     updateUserAgent: (
       state,
