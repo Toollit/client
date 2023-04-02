@@ -66,31 +66,6 @@ const EmailInput = styled.input`
   }
 `;
 
-const NextLoginSessionBtn = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 30rem;
-  width: 100%;
-  font-size: ${(props) => props.theme.fontSizes.base};
-  font-weight: 400;
-  background-color: #4dd290;
-  color: #fff;
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
-  border-radius: 25rem;
-  height: 4rem;
-  font-weight: 600;
-  letter-spacing: 0.025rem;
-  border-style: none;
-
-  &:active {
-    background-color: #3da571;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-  }
-`;
-
 const SignInBtn = styled.div`
   color: #536471;
   font-size: 1.5rem;
@@ -109,7 +84,6 @@ export {
   Title,
   InputContainer,
   EmailInput,
-  NextLoginSessionBtn,
   SignInBtn,
   SignInAccent,
   ErrorMessage,

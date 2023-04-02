@@ -1,6 +1,6 @@
 import React from 'react';
 import AppLayout from 'components/appLayout';
-import Button from 'components/commons/button';
+import { CloseBtn, DisabledBtn, SubmitBtn } from 'components/commons/button';
 import Title from 'components/commons/title';
 import Input from 'components/commons/input';
 import {
@@ -10,6 +10,7 @@ import {
   ErrorMessage,
   PrivacyPolicy,
 } from './styles';
+
 export interface JoinViewProps {
   handleClose: () => void;
   email: string | null;
@@ -42,7 +43,7 @@ const JoinView = ({
   return (
     <AppLayout nav={false}>
       <Container>
-        <Button type='close' onClick={handleClose} />
+        <CloseBtn onClick={handleClose} />
         <Form onSubmit={handleSubmit}>
           <Title text='Getit 계정을 생성하세요' />
 
@@ -84,9 +85,9 @@ const JoinView = ({
           <br />
 
           {fillFormComplete ? (
-            <Button type='submit' text='다음' />
+            <SubmitBtn text='다음' />
           ) : (
-            <Button type='disabled' text='다음' />
+            <DisabledBtn text='다음' />
           )}
 
           <PrivacyPolicy>

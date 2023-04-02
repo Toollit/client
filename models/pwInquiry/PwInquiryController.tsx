@@ -11,6 +11,10 @@ const PwInquiryController = () => {
   const [email, onChangeEmail] = useNoSpaceInput('');
   const [emailInvalidError, setEmailInvalidError] = useState(false);
 
+  const handleClose = useCallback(() => {
+    router.back();
+  }, [router]);
+
   const checkEmailFormatValidate = useCallback(() => {
     // email 형식 확인 정규식
     const emailValidationRegexp =
@@ -61,6 +65,7 @@ const PwInquiryController = () => {
   }, [email]);
 
   const props: PwInquiryViewProps = {
+    handleClose,
     email,
     onChangeEmail,
     emailInvalidError,

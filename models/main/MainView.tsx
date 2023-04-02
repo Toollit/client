@@ -2,6 +2,14 @@ import React from 'react';
 import AppLayout from 'components/appLayout';
 import BannerPerson from 'assets/images/BannerPerson';
 import { Pagination } from 'swiper';
+import BannerBackgroundLeft from 'assets/images/BannerBackgroundLeft';
+import BannerBackgroundRight from 'assets/images/BannerBackgroundRight';
+import Bug from 'assets/images/Bug';
+import NetworkLottieJson from 'public/static/lotties/network.json';
+import LottieAnimation from 'components/commons/lottie';
+import BlockPost from 'components/commons/post/block';
+import Grid from '@mui/material/Grid';
+import Filter from 'components/commons/filter';
 import {
   Container,
   CustomSwiper,
@@ -24,14 +32,6 @@ import {
   PostWriteButton,
   PostContainer,
 } from './styles';
-import BannerBackgroundLeft from 'assets/images/BannerBackgroundLeft';
-import BannerBackgroundRight from 'assets/images/BannerBackgroundRight';
-import Bug from 'assets/images/Bug';
-import NetworkLottieJson from 'public/static/lotties/network.json';
-import LottieAnimation from 'components/commons/lottie';
-import BlockPost from 'components/commons/post/block';
-import Grid from '@mui/material/Grid';
-import Filter from 'components/commons/filter';
 
 export interface MainViewProps {
   mainPosts: any[];

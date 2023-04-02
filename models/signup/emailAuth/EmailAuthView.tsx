@@ -1,6 +1,7 @@
 import React from 'react';
 import AppLayout from 'components/appLayout';
-import Button from 'components/commons/button';
+import { CloseBtn, DisabledBtn } from 'components/commons/button';
+import { SubmitBtn } from 'components/commons/button';
 import Title from 'components/commons/title';
 import Input from 'components/commons/input';
 import {
@@ -34,7 +35,7 @@ const EmailAuthView = ({
   return (
     <AppLayout nav={false}>
       <Container>
-        <Button type='close' onClick={handleClose} />
+        <CloseBtn onClick={handleClose} />
 
         <Form onSubmit={handleSubmit}>
           <Title text='Getit 이메일 계정 인증' />
@@ -57,11 +58,7 @@ const EmailAuthView = ({
           </NoticeForSpam>
           <br />
 
-          {authNums ? (
-            <Button type='submit' text='확인' />
-          ) : (
-            <Button type='disabled' text='확인' />
-          )}
+          {authNums ? <SubmitBtn text='확인' /> : <DisabledBtn text='확인' />}
         </Form>
       </Container>
     </AppLayout>

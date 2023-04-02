@@ -9,13 +9,14 @@ import {
   SignInBtn,
   SignInAccent,
 } from './styles';
-import Button from 'components/commons/button';
+import { CloseBtn, NormalBtn, SubmitBtn } from 'components/commons/button';
 import Title from 'components/commons/title';
 import Divider from 'components/commons/divider';
 import Input from 'components/commons/input';
 
 export interface LoginViewProps {
-  isMobile: null | boolean;
+  handleClose: () => void;
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   email: string;
   handleEmail: (event: React.ChangeEvent<HTMLInputElement>) => void;
   password: string;
@@ -25,16 +26,12 @@ export interface LoginViewProps {
   fillFormComplete: boolean;
   handleSignupRouting: () => void;
   handlePwInquiryRouting: () => void;
-  handleClose: () => void;
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   handleSocialLogin: (event: React.MouseEvent) => void;
 }
 
 const LoginView = ({
-  isMobile,
   handleClose,
   handleSubmit,
-  handleSocialLogin,
   email,
   handleEmail,
   password,
@@ -44,24 +41,23 @@ const LoginView = ({
   fillFormComplete,
   handleSignupRouting,
   handlePwInquiryRouting,
+  handleSocialLogin,
 }: LoginViewProps) => {
   return (
     <AppLayout nav={false}>
       <Container>
-        <Button type='close' onClick={handleClose} isMobile={isMobile} />
+        <CloseBtn onClick={handleClose} />
 
         <Form onSubmit={handleSubmit}>
           <Title text='Getit 로그인' />
 
-          <Button
-            type='normal'
+          <NormalBtn
             text='Google 계정으로 로그인'
             icon={<GoogleIcon />}
             name='google'
             onClick={handleSocialLogin}
           />
-          <Button
-            type='normal'
+          <NormalBtn
             text='Github 계정으로 로그인'
             icon={<GithubIcon />}
             name='github'
@@ -85,10 +81,9 @@ const LoginView = ({
             )}
           </InputContainer>
 
-          <Button type='submit' text={fillFormComplete ? '확인' : '다음'} />
+          <SubmitBtn text={fillFormComplete ? '확인' : '다음'} />
 
-          <Button
-            type='normal'
+          <NormalBtn
             text='비밀번호를 잊으셨나요?'
             onClick={handlePwInquiryRouting}
           />

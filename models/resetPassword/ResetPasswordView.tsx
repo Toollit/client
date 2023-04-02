@@ -1,4 +1,8 @@
 import React from 'react';
+import AppLayout from 'components/appLayout';
+import { NormalBtn, SubmitBtn } from 'components/commons/button';
+import Title from 'components/commons/title';
+import Input from 'components/commons/input';
 import {
   Container,
   Form,
@@ -6,10 +10,6 @@ import {
   ErrorMessage,
   Notice,
 } from './styles';
-import AppLayout from 'components/appLayout';
-import Button from 'components/commons/button';
-import Title from 'components/commons/title';
-import Input from 'components/commons/input';
 
 export interface ResetPasswordViewProps {
   newPassword: string | null;
@@ -71,8 +71,8 @@ const ResetPasswordView = ({
             <span>재설정</span>하지 않으면 서비스 이용이 제한됩니다.
           </Notice>
 
-          <Button type='submit' text='확인' />
-          <Button type='normal' text='로그아웃' onClick={handleLogout} />
+          <SubmitBtn text='확인' />
+          <NormalBtn text='로그아웃' onClick={handleLogout} />
         </Form>
       </Container>
     </AppLayout>

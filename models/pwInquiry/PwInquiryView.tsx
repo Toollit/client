@@ -1,6 +1,6 @@
 import React from 'react';
 import AppLayout from 'components/appLayout';
-import Button from 'components/commons/button';
+import { CloseBtn, SubmitBtn } from 'components/commons/button';
 import {
   Container,
   Form,
@@ -8,13 +8,13 @@ import {
   Title,
   InputContainer,
   EmailInput,
-  NextLoginSessionBtn,
   SignInBtn,
   SignInAccent,
   ErrorMessage,
 } from './styles';
 
 export interface PwInquiryViewProps {
+  handleClose: () => void;
   email: string | null;
   onChangeEmail: (event: React.ChangeEvent<HTMLInputElement>) => void;
   emailInvalidError: boolean;
@@ -23,6 +23,7 @@ export interface PwInquiryViewProps {
 }
 
 const PwInquiryView = ({
+  handleClose,
   email,
   onChangeEmail,
   emailInvalidError,
@@ -32,7 +33,7 @@ const PwInquiryView = ({
   return (
     <AppLayout nav={false}>
       <Container>
-        <Button type='close' />
+        <CloseBtn onClick={handleClose} />
         <Form onSubmit={handleSubmit}>
           <TitleContainer>
             <Title>Getit 계정 찾기</Title>
@@ -49,7 +50,7 @@ const PwInquiryView = ({
             )}
           </InputContainer>
 
-          <NextLoginSessionBtn onClick={() => {}}>확인</NextLoginSessionBtn>
+          <SubmitBtn text='확인' />
           <SignInBtn>
             계정이 없으신가요?{' '}
             <SignInAccent onClick={handleSignup}>가입하기</SignInAccent>
