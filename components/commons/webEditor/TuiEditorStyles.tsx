@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { Global, css } from '@emotion/react';
-
-const mediaQueryMobile = `@media (max-width: 480px)`;
+import { mediaQueryMobile } from '@/styles/mediaQuery';
 
 const TuiCustomStyles = css`
   .Tui-editor-root {

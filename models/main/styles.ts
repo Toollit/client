@@ -2,8 +2,7 @@ import styled from '@emotion/styled';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-
-const mediaQuery = `@media (max-width: 768px)`;
+import { mediaQueryTablet } from '@/styles/mediaQuery';
 
 const Container = styled.section``;
 
@@ -92,7 +91,7 @@ const SecondSlideText = styled.div`
   font-size: 2rem;
   z-index: 1;
 
-  ${mediaQuery} {
+  ${mediaQueryTablet} {
     margin: 2rem 0 2rem 2rem;
   }
 `;
@@ -104,7 +103,7 @@ const NetworkImg = styled.div`
   width: 46rem;
   height: 36rem;
 
-  ${mediaQuery} {
+  ${mediaQueryTablet} {
     width: 30rem;
     height: 30rem;
     margin-right: 2rem;
@@ -141,7 +140,7 @@ const BugImage = styled.div`
   margin: 10rem;
   width: 15rem;
 
-  ${mediaQuery} {
+  ${mediaQueryTablet} {
     margin: 3rem;
   }
 `;
@@ -180,7 +179,7 @@ const PostContainer = styled.div`
   margin: 0 auto;
   padding: 1rem 1rem;
 
-  ${mediaQuery} {
+  ${mediaQueryTablet} {
     padding: 1rem 0.5rem;
   }
 `;

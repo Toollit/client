@@ -1,9 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { FavoriteBorder, Visibility } from '@mui/icons-material';
-
-const mediaQueryTablet = `@media (max-width: 768px)`;
-const mediaQueryMobile = `@media (max-width: 480px)`;
+import { mediaQueryTablet, mediaQueryMobile } from '@/styles/mediaQuery';
 
 const Container = styled.div`
   width: 100%;
