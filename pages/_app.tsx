@@ -26,7 +26,7 @@ function MyApp({ Component, ...rest }: AppProps) {
         <EmotionThemeProvider theme={EmotionTheme}>
           <GlobalStyles />
           <Provider store={store}>
-            <Component {...props.pageProps} />;
+            <Component {...props.pageProps} />
           </Provider>
         </EmotionThemeProvider>
       </MuiThemeProvider>
