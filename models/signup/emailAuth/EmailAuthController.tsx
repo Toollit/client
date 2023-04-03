@@ -9,6 +9,7 @@ import { resetAuth, updateAuthNums } from 'features/signup';
 import { emailAuthAPI } from 'apis/signup/emailAuth';
 import { signupAPI, SignupApiData } from 'apis/signup';
 import { AxiosErrorData } from 'apis/types';
+import useTimer from '@/hooks/useTimer';
 
 const EmailAuthController = () => {
   const router = useRouter();
@@ -20,8 +21,11 @@ const EmailAuthController = () => {
 
   const [inputAuthNums, onChangeInputAuthNums] = useNoSpaceInput('');
   const [invalidAuthNumsError, setInvalidAuthNumsError] = useState(false);
-  const [minutes, setMinutes] = useState(3);
-  const [seconds, setSeconds] = useState(0);
+
+  const { timer, leftMinutes, leftSeconds } = useTimer({
+    minutes: 2,
+    seconds: 0,
+  });
 
   const handleClose = useCallback(() => {
     router.replace('/signup');
@@ -87,29 +91,10 @@ const EmailAuthController = () => {
   }, [dispatch, email]);
 
   useEffect(() => {
-    const countdown = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds - 1);
-      }
-      if (seconds === 0) {
-        if (minutes === 0) {
-          clearInterval(countdown);
-        } else {
-          setMinutes(minutes - 1);
-          setSeconds(59);
-        }
-      }
-    }, 1000);
-
-    if ((!email && !password) || (minutes === 0 && seconds === 0)) {
+    if ((!email && !password) || (leftMinutes === 0 && leftSeconds === 0)) {
       dispatch(resetAuth());
-      setMinutes(0);
     }
-
-    return () => {
-      clearInterval(countdown);
-    };
-  }, [minutes, seconds, dispatch, email, password]);
+  }, [leftMinutes, leftSeconds, dispatch, email, password]);
 
   useEffect(() => {
     return () => {
@@ -123,7 +108,7 @@ const EmailAuthController = () => {
     onChangeInputAuthNums,
     invalidAuthNumsError,
     handleSubmit,
-    timer: `0${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`,
+    timer,
     authNums: authNums as string,
   };
   return <EmailAuthView {...props} />;
