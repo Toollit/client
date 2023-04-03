@@ -1,7 +1,26 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import Title from 'components/commons/title';
-import { GetProjectDetailAPIResData } from 'apis/project/getProjectDetail';
+import Container from '@/components/commons/container';
+import AppLayout from '@/components/appLayout';
+import Divider from '@/components/commons/divider';
+import { AccountCircleIcon } from '@/assets/icons';
+import {
+  BlockContainer,
+  LeftBlockContainer,
+  RightBlockContainer,
+  ProjectDetailInfo,
+  Writer,
+  DateAndViewContainer,
+  UpdatedAt,
+  HoverCreatedAt,
+  UserInfoContainer,
+  LastLoginAt,
+  ProfileImageContainer,
+  WriterLastLoginAtContainer,
+  ContentContainer,
+  TrendingPostsContainer,
+} from './styles';
 
 const DynamicTuiViewer = dynamic(
   () => import('@/components/commons/webEditor/TuiViewer'),
@@ -10,32 +29,80 @@ const DynamicTuiViewer = dynamic(
   },
 );
 
-export interface ProjectViewProps {
-  data: GetProjectDetailAPIResData;
+interface Content {
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  views: number;
+  nickname: string;
+  contentHTML: string;
+  contentMarkdown: string | null;
 }
 
-const ProjectView = ({ data }: ProjectViewProps) => {
-  const {
-    title,
-    createdAt,
-    updatedAt,
-    views,
-    user,
-    contentHTML,
-    contentMarkdown,
-  } = data;
+interface User {
+  nickname: string;
+  lastLoginAt: string;
+  profileImage: string;
+}
 
+export interface ProjectViewProps {
+  content: Content;
+  user: User;
+}
+
+const ProjectView = ({ content, user }: ProjectViewProps) => {
   return (
-    <div>
-      <Title text={title} />
-      <ul>
-        <li>{user.nickname}</li>
-        <li>{createdAt}</li>
-        {updatedAt ?? <li>{updatedAt}</li>}
-        <li>{views}</li>
-      </ul>
-      <DynamicTuiViewer content={contentHTML} />
-    </div>
+    <AppLayout nav={true}>
+      <Container size='default'>
+        <BlockContainer>
+          <LeftBlockContainer>
+            <ContentContainer>
+              <Title text={content.title} />
+              <ProjectDetailInfo>
+                <DateAndViewContainer>
+                  {content.updatedAt ? (
+                    <>
+                      <UpdatedAt>수정됨: {content.updatedAt}</UpdatedAt>
+                      <HoverCreatedAt>
+                        작성일: {content.createdAt}
+                      </HoverCreatedAt>
+                    </>
+                  ) : (
+                    <div>작성일: {content.createdAt}</div>
+                  )}
+
+                  <div>조회수: {content.views}</div>
+                </DateAndViewContainer>
+              </ProjectDetailInfo>
+              <Divider type='thin' />
+              <DynamicTuiViewer content={content.contentHTML} />
+            </ContentContainer>
+          </LeftBlockContainer>
+          <RightBlockContainer>
+            <UserInfoContainer>
+              <ProfileImageContainer>
+                {user.profileImage ? (
+                  <></> // 프로필 이미지 넣기
+                ) : (
+                  <AccountCircleIcon fill={false} width={60} height={60} />
+                )}
+              </ProfileImageContainer>
+              <WriterLastLoginAtContainer>
+                <Writer>
+                  <div>작성자</div>
+                  <div>{user.nickname}</div>
+                </Writer>
+                <LastLoginAt>
+                  <div>마지막 접속</div>
+                  <div>{user.lastLoginAt}</div>
+                </LastLoginAt>
+              </WriterLastLoginAtContainer>
+            </UserInfoContainer>
+            <TrendingPostsContainer>최신 인기 게시글</TrendingPostsContainer>
+          </RightBlockContainer>
+        </BlockContainer>
+      </Container>
+    </AppLayout>
   );
 };
 
