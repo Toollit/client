@@ -5,7 +5,7 @@ export interface GetProjectDetailAPIReq {
 }
 
 export interface GetProjectDetailAPIResData {
-  user: { nickname: string };
+  user: { nickname: string; lastLoginAt: string; profileImage: string };
   title: string;
   contentHTML: string;
   contentMarkdown: string | null;
