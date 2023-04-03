@@ -1,4 +1,8 @@
 import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+// plugins
+dayjs.extend(relativeTime);
 
 const timeFormat = {
   YYMMDD_hhmm: 'YY.MM.DD hh:mm',
@@ -7,17 +11,25 @@ const timeFormat = {
 
 type TimeFormatKey = keyof typeof timeFormat;
 
-interface UseDayjsProps {
+interface ChangeDateFormatProps {
   date: string | null;
   format: TimeFormatKey;
 }
 
-const changeDateFormat = ({ date, format }: UseDayjsProps) => {
-  console.log('props data ===>', { date, format });
+interface DateFromNowProps {
+  date: string | null;
+}
 
+const changeDateFormat = ({ date, format }: ChangeDateFormatProps) => {
   const transformedDate = date ? dayjs(date).format(timeFormat[format]) : '';
-  console.log('transformedDate ===>', transformedDate);
+
   return transformedDate;
 };
 
-export default changeDateFormat;
+const dateFromNow = ({ date }: DateFromNowProps) => {
+  const result = dayjs().to(dayjs(date));
+
+  return result;
+};
+
+export { changeDateFormat, dateFromNow };
