@@ -30,12 +30,12 @@ const useEditorContent = () => {
     ) => {
       const editorInstance = editorRef.current?.getInstance();
 
-      const contentHtml: string = editorInstance?.getHTML();
+      const contentHTML: string = editorInstance?.getHTML();
       const contentMark: string = editorInstance?.getMarkdown();
 
       // img 태그 추출
       const imgRegex = /<img[^>]+src="([^">]+)"/gi;
-      const imgElement = contentHtml?.match(imgRegex);
+      const imgElement = contentHTML?.match(imgRegex);
 
       const contentIncludeImgUrls: string[] = [];
 
@@ -103,7 +103,7 @@ const useEditorContent = () => {
 
       return {
         title: titleRef.current?.value,
-        contentHtml,
+        contentHTML,
         contentMark,
         imageUrls: {
           saveImgUrls: filteredImageUrls.saveImgUrls,

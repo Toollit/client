@@ -2,7 +2,7 @@ import { serverInstance } from 'apis/axios';
 
 export interface AddProjectAPIReq {
   title: string;
-  contentHtml: string;
+  contentHTML: string;
   contentMark: string;
   imageUrls: {
     saveImgUrls: string[];
