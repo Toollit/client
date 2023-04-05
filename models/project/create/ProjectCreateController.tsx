@@ -15,39 +15,20 @@ const ProjectCreateController = () => {
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      const { title, contentHtml, contentMark, imageUrls } = handleData(
-        titleRef,
-        editorRef,
-      );
+      const data = handleData(titleRef, editorRef);
+      if (data) {
+        try {
+          const response = await addProjectAPI(data);
 
-      if (!title) {
-        return alert('제목을 입력해주세요.');
-      }
-
-      if (title.length > 50) {
-        return alert('제목은 50자 이하로 작성 가능합니다.');
-      }
-
-      if (!contentMark) {
-        return alert('내용을 입력해주세요.');
-      }
-
-      try {
-        const response = await addProjectAPI({
-          title,
-          contentHtml,
-          contentMark,
-          imageUrls,
-        });
-
-        if (response?.success) {
-          router.push({
-            pathname: `/project/[id]`,
-            query: { id: response.data.projectId },
-          });
+          if (response?.success) {
+            router.push({
+              pathname: `/project/[id]`,
+              query: { id: response.data.projectId },
+            });
+          }
+        } catch (error) {
+          errorMessage(error);
         }
-      } catch (error) {
-        errorMessage(error);
       }
     },
     [router, editorRef, titleRef, handleData],

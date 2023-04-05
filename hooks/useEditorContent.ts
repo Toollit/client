@@ -1,10 +1,13 @@
 import React, { useCallback, useRef, useState } from 'react';
 import useInput from './useInput';
 
-interface ReduceReturnType {
+interface FilteredImageUrlsReduceReturnType {
   saveImgUrls: string[];
   removeImgUrls: string[];
 }
+
+type FilteredImageFileSizeReduceReturnType = number;
+
 /**
  * @returns titleRef - 제목 값을 가져오는 ref. title input에 전달
  * @returns editorRef - 컨텐츠 값을 가져오는 ref. Editor 컴포넌트에 전달
@@ -12,7 +15,9 @@ interface ReduceReturnType {
  * @returns handleData - titleRef, editorRef를 받아와 데이터를 가공하는 함수
  */
 const useEditorContent = () => {
-  const [uploadImageUrls, setUploadImageUrls] = useState<string[]>([]);
+  const [uploadImageUrls, setUploadImageUrls] = useState<
+    { url: string; fileSize: number }[]
+  >([]);
 
   const titleRef = useRef<HTMLInputElement>(null);
   const editorRef = useRef<any>(null);
@@ -50,26 +55,61 @@ const useEditorContent = () => {
         }
       }
 
-      const imageUrls = uploadImageUrls.reduce<ReduceReturnType>(
-        (acc, cur) => {
-          if (contentIncludeImgUrls.includes(cur)) {
-            acc.saveImgUrls.push(cur);
-          } else {
-            acc.removeImgUrls.push(cur);
-          }
-          return acc;
-        },
-        { saveImgUrls: [], removeImgUrls: [] },
-      );
+      const filteredImageUrls =
+        uploadImageUrls.reduce<FilteredImageUrlsReduceReturnType>(
+          (acc, cur) => {
+            if (contentIncludeImgUrls.includes(cur.url)) {
+              acc.saveImgUrls.push(cur.url);
+            } else {
+              acc.removeImgUrls.push(cur.url);
+            }
+            return acc;
+          },
+          { saveImgUrls: [], removeImgUrls: [] },
+        );
 
-      const data = {
+      // const filterdFileSize =
+      //   uploadImageUrls.reduce<FilteredImageFileSizeReduceReturnType>(
+      //     (acc, cur) => {
+      //       if (contentIncludeImgUrls.includes(cur.url)) {
+      //         acc = acc + cur.fileSize;
+      //       } else {
+      //         acc = acc - cur.fileSize;
+      //       }
+      //       return acc;
+      //     },
+      //     0,
+      //   );
+
+      if (!titleRef.current?.value) {
+        alert('제목을 입력해주세요.');
+        return null;
+      }
+
+      if (titleRef.current?.value.length > 50) {
+        alert('제목은 50자 이하로 작성 가능합니다.');
+        return null;
+      }
+
+      if (!contentMark) {
+        alert('내용을 입력해주세요.');
+        return null;
+      }
+
+      if (filteredImageUrls.saveImgUrls.length > 3) {
+        alert('이미지는 10MB 미만 3개까지 등록 할 수 있습니다.');
+        return null;
+      }
+
+      return {
         title: titleRef.current?.value,
         contentHtml,
         contentMark,
-        imageUrls,
+        imageUrls: {
+          saveImgUrls: filteredImageUrls.saveImgUrls,
+          removeImgUrls: filteredImageUrls.removeImgUrls,
+        },
       };
-
-      return data;
     },
     [uploadImageUrls],
   );

@@ -15,7 +15,9 @@ export interface ProjectCreateViewProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   titleRef: React.RefObject<HTMLInputElement>;
   editorRef: React.MutableRefObject<any>;
-  setUploadImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
+  setUploadImageUrls: React.Dispatch<
+    React.SetStateAction<{ url: string; fileSize: number }[]>
+  >;
 }
 
 const ProjectCreateView = ({

@@ -1,7 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import path from 'path';
-import axios from 'axios';
-import { AxiosErrorData } from 'apis/types';
 import Label from '@/components/commons/label';
 import { uploadImageAPI } from '@/apis/project/uploadImage';
 import '@toast-ui/editor/dist/toastui-editor.css';
@@ -11,6 +9,7 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import fontSize from 'tui-editor-plugin-font-size';
 import 'tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css';
+import { errorMessage } from '@/utils/errorMessage';
 import {
   TuiCustomGlobalStyles,
   TuiContainer,
@@ -21,7 +20,9 @@ import {
 interface TuiEditorProps {
   titleRef: React.RefObject<HTMLInputElement>;
   editorRef: React.MutableRefObject<any>;
-  setUploadImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
+  setUploadImageUrls: React.Dispatch<
+    React.SetStateAction<{ url: string; fileSize: number }[]>
+  >;
 }
 /**
  * @param titleRef - 제목 값을 받아오기 위한 ref
@@ -51,8 +52,10 @@ const TuiEditor = ({
 
     const limitFileSizeMb = 10 * 1024 * 1024;
 
-    if (blob.size > limitFileSizeMb) {
-      alert('10mb 이하의 사진만 가능합니다.');
+    if (blob.size >= limitFileSizeMb) {
+      alert(
+        '이미지는 10MB 미만 3개까지, JPG/JPEG/PNG 형식만 등록 할 수 있습니다.',
+      );
       return false;
     }
 
@@ -63,14 +66,15 @@ const TuiEditor = ({
     const formData = new FormData();
     formData.append('postImage', blob);
 
-    const response = await uploadImageAPI(formData).catch((error) => {
-      if (axios.isAxiosError<AxiosErrorData>(error)) {
-        alert(error.response?.data.message);
-      }
-    });
+    try {
+      const response = await uploadImageAPI(formData);
 
-    const imageUrl = response?.data.url;
-    return imageUrl;
+      const imageUrl = response?.data.url;
+
+      return imageUrl;
+    } catch (error) {
+      errorMessage(error);
+    }
   }, []);
 
   const createAltText = useCallback((blob: Blob | File) => {
@@ -127,7 +131,10 @@ const TuiEditor = ({
               const imageUrl = await uploadImage(blob);
 
               if (imageUrl) {
-                setUploadImageUrls((prev) => [...prev, imageUrl]);
+                setUploadImageUrls((prev) => [
+                  ...prev,
+                  { url: imageUrl, fileSize: blob.size },
+                ]);
               } else {
                 return;
               }
