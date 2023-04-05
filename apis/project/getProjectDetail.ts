@@ -1,7 +1,7 @@
 import { serverInstance } from 'apis/axios';
 
 export interface GetProjectDetailAPIReq {
-  postId: string;
+  projectId: string;
 }
 
 export interface GetProjectDetailAPIResData {
@@ -23,6 +23,6 @@ export interface GetProjectDetailAPIRes {
 export const getProjectDetailAPI = async (
   data: GetProjectDetailAPIReq,
 ): Promise<GetProjectDetailAPIRes | undefined> => {
-  const response = await serverInstance.get(`post/project/${data.postId}`);
+  const response = await serverInstance.get(`post/project/${data.projectId}`);
   return response.data;
 };

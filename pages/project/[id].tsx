@@ -17,7 +17,7 @@ const Post: NextPage<PageProps> = ({ data }) => {
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = params?.id;
 
-  const res = await getProjectDetailAPI({ postId: id as string });
+  const res = await getProjectDetailAPI({ projectId: id as string });
 
   return {
     props: {

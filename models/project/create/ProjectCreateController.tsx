@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import ProjectCreateView, { ProjectCreateViewProps } from './ProjectCreateView';
 import { addProjectAPI } from '@/apis/project/addProject';
 import useEditorContent from '@/hooks/useEditorContent';
+import { errorMessage } from '@/utils/errorMessage';
 
 const ProjectCreateController = () => {
   const router = useRouter();
@@ -23,6 +24,10 @@ const ProjectCreateController = () => {
         return alert('제목을 입력해주세요.');
       }
 
+      if (title.length > 50) {
+        return alert('제목은 50자 이하로 작성 가능합니다.');
+      }
+
       if (!contentMark) {
         return alert('내용을 입력해주세요.');
       }
@@ -38,11 +43,11 @@ const ProjectCreateController = () => {
         if (response?.success) {
           router.push({
             pathname: `/project/[id]`,
-            query: { id: response.data.postId },
+            query: { id: response.data.projectId },
           });
         }
       } catch (error) {
-        console.error(error);
+        errorMessage(error);
       }
     },
     [router, editorRef, titleRef, handleData],
