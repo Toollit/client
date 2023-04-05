@@ -31,7 +31,7 @@ const useEditorContent = () => {
       const editorInstance = editorRef.current?.getInstance();
 
       const contentHTML: string = editorInstance?.getHTML();
-      const contentMark: string = editorInstance?.getMarkdown();
+      const contentMarkdown: string = editorInstance?.getMarkdown();
 
       // img 태그 추출
       const imgRegex = /<img[^>]+src="([^">]+)"/gi;
@@ -91,7 +91,7 @@ const useEditorContent = () => {
         return null;
       }
 
-      if (!contentMark) {
+      if (!contentMarkdown) {
         alert('내용을 입력해주세요.');
         return null;
       }
@@ -104,7 +104,7 @@ const useEditorContent = () => {
       return {
         title: titleRef.current?.value,
         contentHTML,
-        contentMark,
+        contentMarkdown,
         imageUrls: {
           saveImgUrls: filteredImageUrls.saveImgUrls,
           removeImgUrls: filteredImageUrls.removeImgUrls,
