@@ -27,16 +27,16 @@ const TuiCustomStyles = css`
   }
 
   .toastui-editor-popup-body {
-    div {
-      div {
-        :nth-of-type(3) {
-          ::after {
-            display: block;
-            margin-top: 0.2rem;
-            font-size: 1.1rem;
-            content: '* 10mb 이하 총합 최대 30mb 까지 업로드 가능합니다.';
-          }
-        }
+    .toastui-editor-file-select-button {
+      ::after {
+        display: inline-block;
+        margin-top: 0.2rem;
+        font-size: 1.1rem;
+        white-space: pre;
+        position: absolute;
+        left: 0;
+        top: 5.2rem;
+        content: '• 10MB 미만 3개까지, JPG/JPEG/PNG 형식만 등록 할 수 있습니다.';
       }
     }
   }
