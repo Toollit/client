@@ -10,6 +10,7 @@ import LottieAnimation from 'components/commons/lottie';
 import BlockPost from 'components/commons/post/block';
 import Grid from '@mui/material/Grid';
 import Filter from 'components/commons/filter';
+import { Project } from '@/apis/project/getProjectList';
 import {
   Container,
   CustomSwiper,
@@ -34,11 +35,16 @@ import {
 } from './styles';
 
 export interface MainViewProps {
-  mainPosts: any[];
+  projectList: Project[];
   createForm: () => void;
+  handleRouteProjectDetail: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-const MainView = ({ mainPosts, createForm }: MainViewProps) => {
+const MainView = ({
+  projectList,
+  createForm,
+  handleRouteProjectDetail,
+}: MainViewProps) => {
   return (
     <AppLayout nav={true}>
       <Container>
@@ -119,10 +125,13 @@ const MainView = ({ mainPosts, createForm }: MainViewProps) => {
 
         <PostContainer>
           <Grid container spacing={1}>
-            {mainPosts?.map((post, index) => {
+            {projectList?.map((project, index) => {
               return (
                 <Grid key={index} item xs={6} sm={6} md={4}>
-                  <BlockPost />
+                  <BlockPost
+                    content={project}
+                    onClick={handleRouteProjectDetail}
+                  />
                 </Grid>
               );
             })}

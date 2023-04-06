@@ -1,17 +1,21 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { FavoriteBorder, Visibility } from '@mui/icons-material';
 import { mediaQueryTablet, mediaQueryMobile } from '@/styles/mediaQuery';
 
 const Container = styled.div`
   width: 100%;
-  height: 30rem;
+  height: 34rem;
   margin: 1.2rem 0rem;
   border-radius: 1.5rem;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   background-color: #fff;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+
+  :hover {
+    box-shadow: 0px 0px #767678, 0px 0 0.4rem #767678;
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -25,10 +29,12 @@ const ProjectImage = styled(Image)`
 
 const ContentContainer = styled.div`
   padding: 0.8rem;
+  height: 5rem;
 `;
 
 const RecruitmentTypeContainer = styled.div`
   display: flex;
+  padding: 0.8rem;
 
   ${mediaQueryTablet} {
     flex-wrap: wrap;
@@ -115,25 +121,41 @@ const RecruitmentType = styled.div<{
 
 const Title = styled.h2`
   font-size: 1.4rem;
-  margin-top: 1rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  padding: 0rem 0.8rem;
+  word-wrap: break-word;
 
   ${mediaQueryMobile} {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
 `;
 
-const Skill = styled.div`
-  font-size: 1.1rem;
-  margin-top: 1rem;
+const Hashtags = styled.div`
+  padding: 0.8rem;
+  display: flex;
+  overflow: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
-const RecruitDetailContainer = styled.div`
+const Hashtag = styled.div`
+  font-size: 1.1rem;
+  margin-right: 0.5rem;
+  background-color: #eff3fa;
+  color: #3e4042;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.7rem;
+`;
+
+const ContentFooterContainer = styled.div`
   margin-top: auto;
+`;
+
+const MemberBookmarkViewContainer = styled.div`
   font-size: 1.2rem;
   padding: 1rem 2rem;
   border-top: 1px solid #d2d2d7;
@@ -165,18 +187,18 @@ const RecruitNumber = styled.span`
   color: #3da571;
 `;
 
-const FavoriteIcon = styled(FavoriteBorder)`
-  vertical-align: middle;
+const BookmarkContainer = styled.div`
+  display: flex;
 `;
 
-const FavoriteIconText = styled.span`
+const BookmarkIconText = styled.span`
   vertical-align: middle;
   padding: 0 1rem 0 0.4rem;
   font-size: 1.2rem;
 `;
 
-const ViewIcon = styled(Visibility)`
-  vertical-align: middle;
+const ViewIconContainer = styled.div`
+  display: flex;
 `;
 
 const ViewIconText = styled.span`
@@ -193,14 +215,16 @@ export {
   RecruitmentTypeContainer,
   RecruitmentType,
   Title,
-  Skill,
-  RecruitDetailContainer,
+  Hashtags,
+  Hashtag,
+  ContentFooterContainer,
+  MemberBookmarkViewContainer,
   PostDetailInfoContainer,
   FavoriteViewContainer,
   RecruitCompleteContent,
   RecruitNumber,
-  FavoriteIcon,
-  FavoriteIconText,
-  ViewIcon,
+  BookmarkContainer,
+  BookmarkIconText,
+  ViewIconContainer,
   ViewIconText,
 };

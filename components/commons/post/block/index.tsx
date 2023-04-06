@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-
+import project3 from 'public/static/images/project3.jpg';
+import BookmarkIcon from '@/assets/icons/BookmarkIcon';
+import ViewIcon from '@/assets/icons/ViewIcon';
+import { Project } from '@/apis/project/getProjectList';
 import {
   Container,
   ImageContainer,
@@ -8,21 +11,27 @@ import {
   RecruitmentTypeContainer,
   RecruitmentType,
   Title,
-  Skill,
-  RecruitDetailContainer,
+  Hashtags,
+  ContentFooterContainer,
+  MemberBookmarkViewContainer,
   PostDetailInfoContainer,
   RecruitCompleteContent,
   RecruitNumber,
-  FavoriteIcon,
-  FavoriteIconText,
-  ViewIcon,
+  BookmarkContainer,
+  BookmarkIconText,
+  ViewIconContainer,
   ViewIconText,
+  Hashtag,
 } from './styles';
-import project3 from 'public/static/images/project3.jpg';
 
 type RecruitmentType = 'developer' | 'designer' | 'pm' | 'anyone';
 
-const BlockPost: React.FC<{}> = ({}) => {
+interface BlockPostProps {
+  content: Project;
+  onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+}
+
+const BlockPost = ({ content, onClick }: BlockPostProps) => {
   const [recruitmentType, setRecruitType] = useState<RecruitmentType[]>([
     'developer',
     'designer',
@@ -30,46 +39,61 @@ const BlockPost: React.FC<{}> = ({}) => {
     'anyone',
   ]);
   return (
-    <Container>
+    <Container data-id={content.id} onClick={onClick}>
       <ImageContainer>
         <ProjectImage
           src={project3}
           alt='default project image'
           layout='fill'
+          priority
         />
       </ImageContainer>
-      <ContentContainer>
-        <RecruitmentTypeContainer>
-          {recruitmentType.map((type, index) => {
-            return (
-              <RecruitmentType key={type + index} type={type}>
-                {type}
-              </RecruitmentType>
-            );
-          })}
-        </RecruitmentTypeContainer>
-        <div>
-          <Title>
-            Getit project 인원 구합니다. Lorem ipsum dolor sit amet, c
-          </Title>
-          <Skill>#react, #figma</Skill>
-        </div>
-      </ContentContainer>
-      <RecruitDetailContainer>
-        <RecruitCompleteContent>
-          모집완료 <RecruitNumber>0 / 8</RecruitNumber>
-        </RecruitCompleteContent>
-        <PostDetailInfoContainer>
-          <div>
-            <FavoriteIcon />
-            <FavoriteIconText>123</FavoriteIconText>
-          </div>
-          <div>
-            <ViewIcon />
-            <ViewIconText>30245</ViewIconText>
-          </div>
-        </PostDetailInfoContainer>
-      </RecruitDetailContainer>
+
+      <RecruitmentTypeContainer>
+        {recruitmentType.map((type, index) => {
+          return (
+            <RecruitmentType key={type + index} type={type}>
+              {type}
+            </RecruitmentType>
+          );
+        })}
+      </RecruitmentTypeContainer>
+
+      <Title>{content.title}</Title>
+
+      <ContentFooterContainer>
+        {/* TODO 해시태그 적용하기 */}
+        <Hashtags>
+          <Hashtag>#react</Hashtag>
+          <Hashtag>#figma</Hashtag>
+          <Hashtag>#figma</Hashtag>
+          <Hashtag>#figma</Hashtag>
+          <Hashtag>#figma</Hashtag>
+          <Hashtag>#figma</Hashtag>
+          <Hashtag>#figma</Hashtag>
+          <Hashtag>#figma</Hashtag>
+          <Hashtag>#figma</Hashtag>
+          <Hashtag>#figma</Hashtag>
+          <Hashtag>#figma</Hashtag>
+          <Hashtag>#figma</Hashtag>
+        </Hashtags>
+
+        <MemberBookmarkViewContainer>
+          <RecruitCompleteContent>
+            모집완료 <RecruitNumber>0 / 8</RecruitNumber>
+          </RecruitCompleteContent>
+          <PostDetailInfoContainer>
+            <BookmarkContainer>
+              <BookmarkIcon width={20} height={20} />
+              <BookmarkIconText>{content.bookmarks}</BookmarkIconText>
+            </BookmarkContainer>
+            <ViewIconContainer>
+              <ViewIcon width={20} height={20} />
+              <ViewIconText>{content.views}</ViewIconText>
+            </ViewIconContainer>
+          </PostDetailInfoContainer>
+        </MemberBookmarkViewContainer>
+      </ContentFooterContainer>
     </Container>
   );
 };
