@@ -30,11 +30,14 @@ const RightBlockContainer = styled.div`
 `;
 
 const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   padding: 0rem 1rem;
   border: 1px solid #e9ecef;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05),
     0 10px 15px -5px rgba(0, 0, 0, 0.05), 0 7px 7px -5px rgba(0, 0, 0, 0.04);
   border-radius: 12px;
+  min-height: 50rem;
 `;
 
 const ProjectDetailInfo = styled.div`
@@ -85,6 +88,7 @@ const UserInfoContainer = styled.div`
 `;
 
 const WriterLastLoginAtContainer = styled.div`
+  width: 100%;
   ${mediaQueryTablet} {
     display: flex;
     align-items: center;
@@ -132,8 +136,11 @@ const LastLoginAt = styled.div`
   }
 
   ${mediaQueryMobile} {
+    width: 100%;
     div {
       padding-right: 0.5rem;
+
+      text-align: left;
     }
   }
 `;
@@ -157,6 +164,65 @@ const TrendingPostsContainer = styled.div`
   }
 `;
 
+const ContentHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const ContentFooter = styled.div`
+  border-top: 1px solid #cfd9de;
+  display: flex;
+  width: 100%;
+  margin-top: auto;
+  justify-content: flex-end;
+  padding: 1rem 3rem;
+`;
+
+const BookmarkButton = styled.button`
+  display: flex;
+  margin-right: 1rem;
+  padding: 0.8rem 1rem;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  border-radius: 4px;
+  color: #536471;
+  font-size: 1.4rem;
+  font-weight: 500;
+  :hover {
+    background-color: rgba(15, 20, 25, 0.1);
+  }
+`;
+const ShareButton = styled.button`
+  display: flex;
+  margin-right: 1rem;
+  padding: 0.8rem 1rem;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  border-radius: 4px;
+  color: #536471;
+  font-size: 1.4rem;
+  font-weight: 500;
+  :hover {
+    background-color: rgba(15, 20, 25, 0.1);
+  }
+`;
+const MoreButton = styled.button`
+  display: flex;
+  margin-left: 1rem;
+  padding: 0.8rem 1rem;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  border-radius: 4px;
+  color: #536471;
+  font-size: 1.4rem;
+  font-weight: 500;
+  :hover {
+    background-color: rgba(15, 20, 25, 0.1);
+  }
+`;
+
 export {
   BlockContainer,
   LeftBlockContainer,
@@ -172,4 +238,9 @@ export {
   WriterLastLoginAtContainer,
   ContentContainer,
   TrendingPostsContainer,
+  ContentHeader,
+  ContentFooter,
+  BookmarkButton,
+  ShareButton,
+  MoreButton,
 };

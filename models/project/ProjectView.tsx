@@ -20,7 +20,14 @@ import {
   WriterLastLoginAtContainer,
   ContentContainer,
   TrendingPostsContainer,
+  ContentFooter,
+  BookmarkButton,
+  ShareButton,
+  MoreButton,
 } from './styles';
+import ShareIcon from '@/assets/icons/ShareIcon';
+import BookmarkIcon from '@/assets/icons/BookmarkIcon';
+import More from '@/components/commons/more';
 
 const DynamicTuiViewer = dynamic(
   () => import('@/components/commons/webEditor/TuiViewer'),
@@ -39,7 +46,7 @@ interface Content {
   contentMarkdown: string | null;
 }
 
-interface User {
+interface Writer {
   nickname: string;
   lastLoginAt: string;
   profileImage: string;
@@ -47,20 +54,25 @@ interface User {
 
 export interface ProjectViewProps {
   content: Content;
-  user: User;
+  writer: Writer;
+  me: {
+    nickname: string | null;
+  };
 }
 
-const ProjectView = ({ content, user }: ProjectViewProps) => {
+const ProjectView = ({ content, writer, me }: ProjectViewProps) => {
   return (
     <AppLayout nav={true}>
       <Container size='default'>
         <BlockContainer>
           <LeftBlockContainer>
             <ContentContainer>
-              <Title text={content.title} />
+              <div>
+                <Title text={content.title} />
+              </div>
               <ProjectDetailInfo>
                 <DateAndViewContainer>
-                  {content.updatedAt ? (
+                  {content.createdAt !== content.updatedAt ? (
                     <>
                       <UpdatedAt>수정됨: {content.updatedAt}</UpdatedAt>
                       <HoverCreatedAt>
@@ -76,12 +88,29 @@ const ProjectView = ({ content, user }: ProjectViewProps) => {
               </ProjectDetailInfo>
               <Divider type='thin' />
               <DynamicTuiViewer content={content.contentHTML} />
+              <ContentFooter>
+                <BookmarkButton>
+                  <div>
+                    <BookmarkIcon />
+                  </div>
+                  <div>북마크</div>
+                </BookmarkButton>
+                <ShareButton>
+                  <div>
+                    <ShareIcon />
+                  </div>
+                  <div>공유</div>
+                </ShareButton>
+                <MoreButton>
+                  <More isMine={writer.nickname === me.nickname} />
+                </MoreButton>
+              </ContentFooter>
             </ContentContainer>
           </LeftBlockContainer>
           <RightBlockContainer>
             <UserInfoContainer>
               <ProfileImageContainer>
-                {user.profileImage ? (
+                {writer.profileImage ? (
                   <></> // 프로필 이미지 넣기
                 ) : (
                   <AccountCircleIcon fill={false} width={60} height={60} />
@@ -90,11 +119,11 @@ const ProjectView = ({ content, user }: ProjectViewProps) => {
               <WriterLastLoginAtContainer>
                 <Writer>
                   <div>작성자</div>
-                  <div>{user.nickname}</div>
+                  <div>{writer.nickname}</div>
                 </Writer>
                 <LastLoginAt>
                   <div>마지막 접속</div>
-                  <div>{user.lastLoginAt}</div>
+                  <div>{writer.lastLoginAt}</div>
                 </LastLoginAt>
               </WriterLastLoginAtContainer>
             </UserInfoContainer>
