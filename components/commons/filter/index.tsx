@@ -1,5 +1,6 @@
 import React from 'react';
-import { FilterIcon, Button, FilterMenu, FilterCondition } from './styles';
+import FilterIcon from '@/assets/icons/FilterIcon';
+import { Button, FilterMenu, FilterCondition } from './styles';
 
 const Filter = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
