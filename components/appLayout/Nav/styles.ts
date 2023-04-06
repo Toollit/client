@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
 
+const NavContainer = styled.nav`
+  box-shadow: 0 2px 4px 0 hsla(0, 0%, 80.8%, 0.5);
+`;
+
 const Content = styled.div`
   display: flex;
   margin: 0 auto;
@@ -117,6 +121,7 @@ const SearchRecommendation = styled.div`
 // saturate 180% blur 20px
 
 export {
+  NavContainer,
   LeftNavContainer,
   RightNavContainer,
   Content,

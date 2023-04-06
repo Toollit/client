@@ -6,6 +6,7 @@ import { RootState } from 'store';
 import { AccountCircleIcon, MenuIcons, SearchIcon } from 'assets/icons';
 import GetitLogo from 'assets/images/GetitLogo';
 import {
+  NavContainer,
   Content,
   IconContainer,
   IconContent,
@@ -53,7 +54,7 @@ const Nav = () => {
   );
 
   return (
-    <nav>
+    <NavContainer>
       <Content>
         <NavList>
           <LeftNavContainer>
@@ -104,7 +105,7 @@ const Nav = () => {
           </SearchBoxContainer>
         </SearchBoxPositionContainer>
       )}
-    </nav>
+    </NavContainer>
   );
 };
 
