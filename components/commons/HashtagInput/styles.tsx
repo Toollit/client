@@ -4,9 +4,9 @@ const HashtagsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  border-radius: 0.8rem;
-  border: solid 1px #bcbcbc;
+  border: 1px solid #dadde6;
   padding: 0.4rem 0.8rem;
+  border-radius: 0.3rem;
 `;
 
 const HashtagInputField = styled.input`
@@ -15,9 +15,9 @@ const HashtagInputField = styled.input`
   font-size: 1.4rem;
   display: flex;
   align-items: center;
-  padding: 0.6rem 1rem;
-  height: fit-content;
-  &:focus {
+  padding: 0 1rem;
+  height: 4rem;
+  :focus {
     outline: none;
   }
 `;
@@ -36,14 +36,14 @@ const DeleteButton = styled.button`
 const Hashtag = styled.span`
   background-color: #eff3fa;
   color: #3e4042;
-  border-radius: 1.5rem;
-  padding: 0.6rem 1rem;
   margin: 0.3rem;
   display: flex;
   word-break: break-all;
   align-items: center;
   height: fit-content;
   font-size: 1.4rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.7rem;
 `;
 
 export { HashtagsContainer, HashtagInputField, DeleteButton, Hashtag };

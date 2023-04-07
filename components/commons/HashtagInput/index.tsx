@@ -69,7 +69,7 @@ const HashtagInput = ({ hashtagRef }: HashtagInputProps) => {
               name={`${content}-${index}`}
               onClick={onDeleteHashtag}
             >
-              <CloseIcon />
+              <CloseIcon width={20} height={20} />
             </DeleteButton>
           </Hashtag>
         ))}
