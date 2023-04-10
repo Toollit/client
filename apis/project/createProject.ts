@@ -1,6 +1,6 @@
 import { serverInstance } from 'apis/axios';
 
-export interface AddProjectAPIReq {
+export interface CreateProjectAPIReq {
   title: string;
   contentHTML: string;
   contentMarkdown: string;
@@ -17,7 +17,7 @@ export interface AddProjectAPIReq {
   };
 }
 
-export interface AddProjectAPIRes {
+export interface CreateProjectAPIRes {
   success: boolean;
   message: string | null;
   data: {
@@ -25,9 +25,9 @@ export interface AddProjectAPIRes {
   };
 }
 
-export const addProjectAPI = async (
-  data: AddProjectAPIReq,
-): Promise<AddProjectAPIRes | undefined> => {
+export const createProjectAPI = async (
+  data: CreateProjectAPIReq,
+): Promise<CreateProjectAPIRes | undefined> => {
   const response = await serverInstance.post('post/project/create', data);
   return response.data;
 };

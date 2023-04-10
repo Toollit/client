@@ -1,7 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
 import ProjectCreateView, { ProjectCreateViewProps } from './ProjectCreateView';
-import { addProjectAPI } from '@/apis/project/addProject';
+import { createProjectAPI } from '@/apis/project/createProject';
 import useEditorContent from '@/hooks/useEditorContent';
 import { errorMessage } from '@/utils/errorMessage';
 
@@ -56,7 +56,7 @@ const ProjectCreateController = () => {
       };
 
       try {
-        const response = await addProjectAPI(projectData);
+        const response = await createProjectAPI(projectData);
 
         if (response?.success) {
           router.push({
