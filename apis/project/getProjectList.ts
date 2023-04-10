@@ -1,15 +1,23 @@
 import { serverInstance } from 'apis/axios';
 
+export interface Project {
+  id: number;
+  title: string;
+  views: number;
+  bookmarks: number;
+  hashtags: string[];
+  memberTypes: {
+    developer: boolean;
+    designer: boolean;
+    pm: boolean;
+    anyone: boolean;
+  };
+}
 export interface GetProjectAPIRes {
   success: boolean;
   message: string | null;
   data: {
-    projectList: {
-      id: number;
-      title: string;
-      views: number;
-      likes: number;
-    }[];
+    projectList: Project[];
   };
 }
 

@@ -8,6 +8,13 @@ export interface AddProjectAPIReq {
     saveImgUrls: string[];
     removeImgUrls: string[];
   };
+  hashtags: string[];
+  memberTypes: {
+    developer: boolean;
+    designer: boolean;
+    pm: boolean;
+    anyone: boolean;
+  };
 }
 
 export interface AddProjectAPIRes {
