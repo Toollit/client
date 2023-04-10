@@ -11,13 +11,28 @@ const Container = styled.form`
   align-items: center;
 `;
 
+const ProjectTeamContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const HashtagInputContainer = styled.div`
+  width: 100%;
+  margin-top: 2rem;
+`;
+
 const ButtonContainer = styled.div`
-  margin-left: auto;
-  margin-top: 1rem;
+  width: 100%;
+  padding: 2rem 0rem;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Button = styled.button`
   height: 4rem;
+  width: 10rem;
+  margin-left: auto;
   text-align: center;
   border-radius: 25rem;
   border-style: none;
@@ -28,4 +43,10 @@ const Button = styled.button`
   padding: 1rem 2rem;
 `;
 
-export { Container, ButtonContainer, Button };
+export {
+  Container,
+  ProjectTeamContainer,
+  HashtagInputContainer,
+  ButtonContainer,
+  Button,
+};
