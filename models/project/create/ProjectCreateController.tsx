@@ -11,8 +11,13 @@ const ProjectCreateController = () => {
   const { titleRef, editorRef, setUploadImageUrls, handleData } =
     useEditorContent();
 
-  const hashtagRef = useRef<any>(null);
-  const memberTypeRef = useRef<any>(null);
+  const hashtagRef = useRef<string[]>([]);
+  const memberTypeRef = useRef<{
+    developer: boolean;
+    designer: boolean;
+    pm: boolean;
+    anyone: boolean;
+  }>({ developer: false, designer: false, pm: false, anyone: false });
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -21,31 +26,46 @@ const ProjectCreateController = () => {
       const data = handleData(titleRef, editorRef);
       if (!data) return;
 
+      if (!(hashtagRef.current && memberTypeRef.current)) return;
+
       if (hashtagRef.current.length < 1) {
         return alert('해시태그를 하나 이상 입력하세요.');
       }
 
-      const isChecked = Object.keys(memberTypeRef.current).some((type) => {
-        return memberTypeRef.current[type] === true;
+      const isChecked = (
+        Object.keys(memberTypeRef.current) as Array<
+          keyof typeof memberTypeRef.current
+        >
+      ).some((type) => {
+        if (memberTypeRef.current) {
+          return memberTypeRef.current[type] === true;
+        }
       });
 
       if (!isChecked) {
         return alert('모집인원 타입을 하나 이상 선택하세요.');
       }
 
-      if (data) {
-        try {
-          const response = await addProjectAPI(data);
+      const projectData = {
+        title: data?.title,
+        contentHTML: data?.contentHTML,
+        contentMarkdown: data?.contentMarkdown,
+        imageUrls: data?.imageUrls,
+        hashtags: hashtagRef.current,
+        memberTypes: memberTypeRef.current,
+      };
 
-          if (response?.success) {
-            router.push({
-              pathname: `/project/[id]`,
-              query: { id: response.data.projectId },
-            });
-          }
-        } catch (error) {
-          errorMessage(error);
+      try {
+        const response = await addProjectAPI(projectData);
+
+        if (response?.success) {
+          router.push({
+            pathname: `/project/[id]`,
+            query: { id: response.data.projectId },
+          });
         }
+      } catch (error) {
+        errorMessage(error);
       }
     },
     [router, editorRef, titleRef, handleData, hashtagRef],

@@ -11,6 +11,7 @@ import {
 } from './styles';
 import HashtagInput from '@/components/commons/HashtagInput';
 import MemberType from '@/components/commons/memberType';
+import { Editor } from '@toast-ui/react-editor';
 
 const DynamicTuiEditor = dynamic(
   () => import('@/components/commons/webEditor/TuiEditor'),
@@ -22,12 +23,17 @@ const DynamicTuiEditor = dynamic(
 export interface ProjectCreateViewProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   titleRef: React.RefObject<HTMLInputElement>;
-  editorRef: React.MutableRefObject<any>;
+  editorRef: React.RefObject<Editor>;
   setUploadImageUrls: React.Dispatch<
     React.SetStateAction<{ url: string; fileSize: number }[]>
   >;
-  hashtagRef: React.RefObject<HTMLInputElement>;
-  memberTypeRef: React.RefObject<HTMLInputElement>;
+  hashtagRef: React.MutableRefObject<string[]>;
+  memberTypeRef: React.MutableRefObject<{
+    developer: boolean;
+    designer: boolean;
+    pm: boolean;
+    anyone: boolean;
+  }>;
 }
 
 const ProjectCreateView = ({

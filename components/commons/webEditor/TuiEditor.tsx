@@ -19,7 +19,7 @@ import {
 
 interface TuiEditorProps {
   titleRef: React.RefObject<HTMLInputElement>;
-  editorRef: React.MutableRefObject<any>;
+  editorRef: React.RefObject<Editor>;
   setUploadImageUrls: React.Dispatch<
     React.SetStateAction<{ url: string; fileSize: number }[]>
   >;
@@ -35,7 +35,9 @@ const TuiEditor = ({
   setUploadImageUrls,
 }: TuiEditorProps) => {
   useEffect(() => {
-    editorRef.current.getRootElement().classList.add('Tui-editor-root');
+    if (editorRef.current) {
+      editorRef.current.getRootElement().classList.add('Tui-editor-root');
+    }
   }, [editorRef]);
 
   const handleFilteringFile = useCallback((blob: Blob | File) => {

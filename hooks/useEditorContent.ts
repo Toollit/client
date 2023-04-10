@@ -1,12 +1,10 @@
 import React, { useCallback, useRef, useState } from 'react';
-import useInput from './useInput';
+import { Editor } from '@toast-ui/react-editor';
 
 interface FilteredImageUrlsReduceReturnType {
   saveImgUrls: string[];
   removeImgUrls: string[];
 }
-
-type FilteredImageFileSizeReduceReturnType = number;
 
 /**
  * @returns titleRef - 제목 값을 가져오는 ref. title input에 전달
@@ -20,18 +18,18 @@ const useEditorContent = () => {
   >([]);
 
   const titleRef = useRef<HTMLInputElement>(null);
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<Editor>(null);
 
   // 참조된 ref를 전달받아 값을 가공하여 반환
   const handleData = useCallback(
     (
       titleRef: React.RefObject<HTMLInputElement>,
-      editorRef: React.MutableRefObject<any>,
+      editorRef: React.RefObject<Editor>,
     ) => {
       const editorInstance = editorRef.current?.getInstance();
 
-      const contentHTML: string = editorInstance?.getHTML();
-      const contentMarkdown: string = editorInstance?.getMarkdown();
+      const contentHTML = editorInstance?.getHTML();
+      const contentMarkdown = editorInstance?.getMarkdown();
 
       // img 태그 추출
       const imgRegex = /<img[^>]+src="([^">]+)"/gi;
@@ -91,7 +89,7 @@ const useEditorContent = () => {
         return null;
       }
 
-      if (!contentMarkdown) {
+      if (!contentHTML || !contentMarkdown) {
         alert('내용을 입력해주세요.');
         return null;
       }
@@ -102,7 +100,7 @@ const useEditorContent = () => {
       }
 
       return {
-        title: titleRef.current?.value,
+        title: titleRef.current.value,
         contentHTML,
         contentMarkdown,
         imageUrls: {

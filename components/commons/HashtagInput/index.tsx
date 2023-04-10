@@ -8,7 +8,7 @@ import {
 } from './styles';
 
 interface HashtagInputProps {
-  hashtagRef: React.MutableRefObject<any>;
+  hashtagRef: React.MutableRefObject<string[]>;
 }
 
 /**

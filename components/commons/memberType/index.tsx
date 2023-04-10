@@ -2,7 +2,12 @@ import React, { useCallback, useState } from 'react';
 import { Container, ContainerLabel, MemberTypeContainer, Type } from './styles';
 
 interface MemberTypeProps {
-  memberTypeRef: React.MutableRefObject<any>;
+  memberTypeRef: React.MutableRefObject<{
+    developer: boolean;
+    designer: boolean;
+    pm: boolean;
+    anyone: boolean;
+  }>;
 }
 
 const MemberType = ({ memberTypeRef }: MemberTypeProps) => {
