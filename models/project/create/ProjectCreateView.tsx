@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import AppLayout from '@/components/appLayout';
 import Title from '@/components/commons/title';
-import { Container, ButtonContainer, Button } from './styles';
+import {
+  Container,
+  ProjectTeamContainer,
+  HashtagInputContainer,
+  ButtonContainer,
+  Button,
+} from './styles';
+import HashtagInput from '@/components/commons/HashtagInput';
+import MemberType from '@/components/commons/memberType';
 
 const DynamicTuiEditor = dynamic(
   () => import('@/components/commons/webEditor/TuiEditor'),
@@ -18,6 +26,8 @@ export interface ProjectCreateViewProps {
   setUploadImageUrls: React.Dispatch<
     React.SetStateAction<{ url: string; fileSize: number }[]>
   >;
+  hashtagRef: React.RefObject<HTMLInputElement>;
+  memberTypeRef: React.RefObject<HTMLInputElement>;
 }
 
 const ProjectCreateView = ({
@@ -25,6 +35,8 @@ const ProjectCreateView = ({
   titleRef,
   editorRef,
   setUploadImageUrls,
+  hashtagRef,
+  memberTypeRef,
 }: ProjectCreateViewProps) => {
   return (
     <AppLayout nav={true}>
@@ -35,6 +47,15 @@ const ProjectCreateView = ({
           editorRef={editorRef}
           setUploadImageUrls={setUploadImageUrls}
         />
+
+        <HashtagInputContainer>
+          <HashtagInput hashtagRef={hashtagRef} />
+        </HashtagInputContainer>
+
+        <ProjectTeamContainer>
+          <MemberType memberTypeRef={memberTypeRef} />
+        </ProjectTeamContainer>
+
         <ButtonContainer>
           <Button>작성 완료</Button>
         </ButtonContainer>
