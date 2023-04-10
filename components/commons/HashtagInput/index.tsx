@@ -39,6 +39,10 @@ const HashtagInput = ({ hashtagRef }: HashtagInputProps) => {
           return alert('한글자 이상 입력하세요.');
         }
 
+        if (hashtag.length > 20) {
+          return alert('20자 이하로 입력하세요.');
+        }
+
         setHashtags([...hashtags, `#${hashtag}`]);
         setHashtag('');
       }
