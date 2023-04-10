@@ -17,8 +17,6 @@ const MemberType = ({ memberTypeRef }: MemberTypeProps) => {
 
   const handleChecked = useCallback(
     (event: React.MouseEvent<HTMLInputElement>) => {
-      // console.log(event.currentTarget.value);
-
       const target = event.currentTarget.value as
         | 'developer'
         | 'designer'
@@ -46,6 +44,7 @@ const MemberType = ({ memberTypeRef }: MemberTypeProps) => {
                 value={type}
                 checked={checked[type]}
                 onClick={handleChecked}
+                readOnly
               />
               <label htmlFor={type}>
                 {type === 'pm'
