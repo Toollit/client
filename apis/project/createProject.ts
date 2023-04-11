@@ -9,12 +9,7 @@ export interface CreateProjectAPIReq {
     removeImgUrls: string[];
   };
   hashtags: string[];
-  memberTypes: {
-    developer: boolean;
-    designer: boolean;
-    pm: boolean;
-    anyone: boolean;
-  };
+  memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
 }
 
 export interface CreateProjectAPIRes {

@@ -12,12 +12,9 @@ const ProjectCreateController = () => {
     useEditorContent();
 
   const hashtagRef = useRef<string[]>([]);
-  const memberTypeRef = useRef<{
-    developer: boolean;
-    designer: boolean;
-    pm: boolean;
-    anyone: boolean;
-  }>({ developer: false, designer: false, pm: false, anyone: false });
+  const memberTypeRef = useRef<('developer' | 'designer' | 'pm' | 'anyone')[]>(
+    [],
+  );
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -32,17 +29,7 @@ const ProjectCreateController = () => {
         return alert('해시태그를 하나 이상 입력하세요.');
       }
 
-      const isChecked = (
-        Object.keys(memberTypeRef.current) as Array<
-          keyof typeof memberTypeRef.current
-        >
-      ).some((type) => {
-        if (memberTypeRef.current) {
-          return memberTypeRef.current[type] === true;
-        }
-      });
-
-      if (!isChecked) {
+      if (memberTypeRef.current.length < 1) {
         return alert('모집인원 타입을 하나 이상 선택하세요.');
       }
 

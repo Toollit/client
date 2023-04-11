@@ -28,12 +28,9 @@ export interface ProjectCreateViewProps {
     React.SetStateAction<{ url: string; fileSize: number }[]>
   >;
   hashtagRef: React.MutableRefObject<string[]>;
-  memberTypeRef: React.MutableRefObject<{
-    developer: boolean;
-    designer: boolean;
-    pm: boolean;
-    anyone: boolean;
-  }>;
+  memberTypeRef: React.MutableRefObject<
+    ('developer' | 'designer' | 'pm' | 'anyone')[]
+  >;
 }
 
 const ProjectCreateView = ({

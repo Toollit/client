@@ -1,13 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Container, ContainerLabel, MemberTypeContainer, Type } from './styles';
 
 interface MemberTypeProps {
-  memberTypeRef: React.MutableRefObject<{
-    developer: boolean;
-    designer: boolean;
-    pm: boolean;
-    anyone: boolean;
-  }>;
+  memberTypeRef: React.MutableRefObject<
+    ('developer' | 'designer' | 'pm' | 'anyone')[]
+  >;
 }
 
 const MemberType = ({ memberTypeRef }: MemberTypeProps) => {
@@ -18,7 +15,13 @@ const MemberType = ({ memberTypeRef }: MemberTypeProps) => {
     anyone: false,
   });
 
-  memberTypeRef.current = checked;
+  useEffect(() => {
+    const checkedValues = Object.keys(checked)
+      .filter((key) => checked[key as keyof typeof checked])
+      .map((key) => key as keyof typeof checked);
+
+    memberTypeRef.current = checkedValues;
+  }, [checked, memberTypeRef]);
 
   const handleChecked = useCallback(
     (event: React.MouseEvent<HTMLInputElement>) => {
