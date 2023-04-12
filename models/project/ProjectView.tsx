@@ -102,16 +102,12 @@ const ProjectView = ({ content, writer, me }: ProjectViewProps) => {
                 </ContentFooterHashtagsContainer>
                 <ContentFooterButtonContainer>
                   <BookmarkButton>
-                    <div>
-                      <BookmarkIcon />
-                    </div>
-                    <div>북마크</div>
+                    <BookmarkIcon />
+                    <span>북마크</span>
                   </BookmarkButton>
                   <ShareButton>
-                    <div>
-                      <ShareIcon />
-                    </div>
-                    <div>공유</div>
+                    <ShareIcon />
+                    <span>공유</span>
                   </ShareButton>
                   <MoreButton>
                     <More isMine={writer.nickname === me.nickname} />

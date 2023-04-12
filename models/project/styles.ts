@@ -184,13 +184,18 @@ const ContentFooterButtonContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
-  padding: 1rem 3rem;
+  padding: 0.6rem 3rem;
+
+  ${mediaQueryMobile} {
+    padding: 0.4rem 3rem;
+    justify-content: space-evenly;
+  }
 `;
 
 const BookmarkButton = styled.button`
   display: flex;
   margin-right: 1rem;
-  padding: 0.8rem 1rem;
+  padding: 0.4rem 1rem;
   align-items: center;
   border: none;
   background-color: transparent;
@@ -198,6 +203,7 @@ const BookmarkButton = styled.button`
   color: #536471;
   font-size: 1.4rem;
   font-weight: 500;
+
   :hover {
     background-color: rgba(15, 20, 25, 0.1);
   }
@@ -205,7 +211,7 @@ const BookmarkButton = styled.button`
 const ShareButton = styled.button`
   display: flex;
   margin-right: 1rem;
-  padding: 0.8rem 1rem;
+  padding: 0.4rem 1rem;
   align-items: center;
   border: none;
   background-color: transparent;
@@ -220,7 +226,7 @@ const ShareButton = styled.button`
 const MoreButton = styled.button`
   display: flex;
   margin-left: 1rem;
-  padding: 0.8rem 1rem;
+  padding: 0.4rem 1rem;
   align-items: center;
   border: none;
   background-color: transparent;
