@@ -29,6 +29,10 @@ const ProjectCreateController = () => {
         return alert('해시태그를 하나 이상 입력하세요.');
       }
 
+      if (hashtagRef.current.length > 15) {
+        return alert('해시태그는 최대 10개까지 가능합니다.');
+      }
+
       if (memberTypeRef.current.length < 1) {
         return alert('모집인원 타입을 하나 이상 선택하세요.');
       }
