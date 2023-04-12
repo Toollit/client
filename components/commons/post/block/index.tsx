@@ -3,6 +3,7 @@ import project3 from 'public/static/images/project3.jpg';
 import BookmarkIcon from '@/assets/icons/BookmarkIcon';
 import ViewIcon from '@/assets/icons/ViewIcon';
 import { Project } from '@/apis/project/getProjectList';
+import Hashtag from '@/components/commons/hashtag';
 import {
   Container,
   ImageContainer,
@@ -11,7 +12,7 @@ import {
   RecruitmentTypeContainer,
   RecruitmentType,
   Title,
-  Hashtags,
+  HashtagContainer,
   ContentFooterContainer,
   MemberBookmarkViewContainer,
   PostDetailInfoContainer,
@@ -21,7 +22,6 @@ import {
   BookmarkIconText,
   ViewIconContainer,
   ViewIconText,
-  Hashtag,
 } from './styles';
 
 type RecruitmentType = 'developer' | 'designer' | 'pm' | 'anyone';
@@ -62,21 +62,11 @@ const BlockPost = ({ content, onClick }: BlockPostProps) => {
       <Title>{content.title}</Title>
 
       <ContentFooterContainer>
-        {/* TODO 해시태그 적용하기 */}
-        <Hashtags>
-          <Hashtag>#react</Hashtag>
-          <Hashtag>#figma</Hashtag>
-          <Hashtag>#figma</Hashtag>
-          <Hashtag>#figma</Hashtag>
-          <Hashtag>#figma</Hashtag>
-          <Hashtag>#figma</Hashtag>
-          <Hashtag>#figma</Hashtag>
-          <Hashtag>#figma</Hashtag>
-          <Hashtag>#figma</Hashtag>
-          <Hashtag>#figma</Hashtag>
-          <Hashtag>#figma</Hashtag>
-          <Hashtag>#figma</Hashtag>
-        </Hashtags>
+        <HashtagContainer>
+          {content.hashtags.map((hashtag, index) => {
+            return <Hashtag tagName={hashtag} key={`${hashtag}-${index}`} />;
+          })}
+        </HashtagContainer>
 
         <MemberBookmarkViewContainer>
           <RecruitCompleteContent>

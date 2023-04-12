@@ -133,22 +133,13 @@ const Title = styled.h2`
   }
 `;
 
-const Hashtags = styled.div`
+const HashtagContainer = styled.div`
   padding: 0.8rem;
   display: flex;
   overflow: scroll;
   ::-webkit-scrollbar {
     display: none;
   }
-`;
-
-const Hashtag = styled.div`
-  font-size: 1.1rem;
-  margin-right: 0.5rem;
-  background-color: #eff3fa;
-  color: #3e4042;
-  padding: 0.4rem 0.8rem;
-  border-radius: 0.7rem;
 `;
 
 const ContentFooterContainer = styled.div`
@@ -215,8 +206,7 @@ export {
   RecruitmentTypeContainer,
   RecruitmentType,
   Title,
-  Hashtags,
-  Hashtag,
+  HashtagContainer,
   ContentFooterContainer,
   MemberBookmarkViewContainer,
   PostDetailInfoContainer,
