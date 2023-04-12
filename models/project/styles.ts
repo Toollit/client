@@ -1,12 +1,48 @@
 import styled from '@emotion/styled';
 import { mediaQueryMobile, mediaQueryTablet } from '@/styles/mediaQuery';
 
-const BlockContainer = styled.div`
+const ColumnContainer = styled.div`
   display: flex;
 
   ${mediaQueryTablet} {
     flex-direction: column-reverse;
   }
+`;
+
+const ColumnLeftContainer = styled.div`
+  width: 70%;
+  padding: 2rem 0.5rem;
+
+  ${mediaQueryTablet} {
+    width: 100%;
+    padding: 0.5rem 0.5rem;
+  }
+`;
+
+const ColumnRightContainer = styled.div`
+  width: 30%;
+  padding: 2rem 0.5rem;
+
+  ${mediaQueryTablet} {
+    width: 100%;
+    padding: 1.5rem 0.5rem 0.5rem 0.5rem;
+  }
+`;
+
+const ProjectContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0rem 1rem;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05),
+    0 10px 15px -5px rgba(0, 0, 0, 0.05), 0 7px 7px -5px rgba(0, 0, 0, 0.04);
+  border-radius: 12px;
+  min-height: 50rem;
+`;
+
+const ProjectContentTopContainer = styled.div`
+  border-bottom: 1px solid ${(props) => props.theme.colors.border};
+  padding-bottom: 1rem;
 `;
 
 const RecruitmentTypeContainer = styled.div`
@@ -49,41 +85,11 @@ const RecruitmentType = styled.div<{
   }};
 `;
 
-const LeftBlockContainer = styled.div`
-  width: 70%;
-  padding: 2rem 0.5rem;
-
-  ${mediaQueryTablet} {
-    width: 100%;
-    padding: 0.5rem 0.5rem;
-  }
-`;
-
-const RightBlockContainer = styled.div`
-  width: 30%;
-  padding: 2rem 0.5rem;
-
-  ${mediaQueryTablet} {
-    width: 100%;
-    padding: 1.5rem 0.5rem 0.5rem 0.5rem;
-  }
-`;
-
-const ContentContainer = styled.div`
+const DateAndViewContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  padding: 0rem 1rem;
-  border: 1px solid #e9ecef;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05),
-    0 10px 15px -5px rgba(0, 0, 0, 0.05), 0 7px 7px -5px rgba(0, 0, 0, 0.04);
-  border-radius: 12px;
-  min-height: 50rem;
-`;
-
-const ProjectDetailInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 1rem;
+  justify-content: space-between;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   font-size: 1.4rem;
   color: #868e96;
 
@@ -92,25 +98,98 @@ const ProjectDetailInfo = styled.div`
   }
 `;
 
-const DateAndViewContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding-right: 1rem;
+const Date = styled.div`
+  position: relative;
+`;
+
+const Views = styled.div``;
+
+const CreatedAt = styled.div`
+  z-index: 1;
 `;
 
 const UpdatedAt = styled.div`
-  position: relative;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
   background-color: #fff;
-  z-index: 1;
   :hover {
     opacity: 0;
   }
 `;
-const HoverCreatedAt = styled.div`
-  position: absolute;
+
+const ProjectContentBottomContainer = styled.div`
+  margin-top: auto;
 `;
 
-const UserInfoContainer = styled.div`
+const HashtagsContainer = styled.div`
+  display: flex;
+  padding: 0.8rem;
+  flex-wrap: wrap;
+`;
+
+const ButtonContainer = styled.div`
+  border-top: 1px solid #cfd9de;
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  padding: 0.6rem 3rem;
+
+  ${mediaQueryMobile} {
+    padding: 0.4rem 3rem;
+    justify-content: space-evenly;
+  }
+`;
+
+const BookmarkButton = styled.button`
+  display: flex;
+  margin-right: 1rem;
+  padding: 0.4rem 1rem;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  border-radius: 4px;
+  color: #536471;
+  font-size: 1.4rem;
+  font-weight: 500;
+
+  :hover {
+    background-color: rgba(15, 20, 25, 0.1);
+  }
+`;
+const ShareButton = styled.button`
+  display: flex;
+  margin-right: 1rem;
+  padding: 0.4rem 1rem;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  border-radius: 4px;
+  color: #536471;
+  font-size: 1.4rem;
+  font-weight: 500;
+  :hover {
+    background-color: rgba(15, 20, 25, 0.1);
+  }
+`;
+const MoreButton = styled.button`
+  display: flex;
+  margin-left: 1rem;
+  padding: 0.4rem 1rem;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  border-radius: 4px;
+  color: #536471;
+  font-size: 1.4rem;
+  font-weight: 500;
+  :hover {
+    background-color: rgba(15, 20, 25, 0.1);
+  }
+`;
+
+const WriterInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 2rem 2rem;
@@ -124,6 +203,20 @@ const UserInfoContainer = styled.div`
     flex-direction: row;
     align-items: center;
     padding: 0.5rem 1.2rem;
+  }
+`;
+
+const ProfileImageContainer = styled.div`
+  height: 6rem;
+  margin: 0 auto;
+
+  ${mediaQueryTablet} {
+    margin: initial;
+    padding-right: 2rem;
+  }
+
+  ${mediaQueryMobile} {
+    padding-right: 0.5rem;
   }
 `;
 
@@ -185,122 +278,35 @@ const LastLoginAt = styled.div`
   }
 `;
 
-const ProfileImageContainer = styled.div`
-  height: 6rem;
-  margin: 0 auto;
-  ${mediaQueryTablet} {
-    margin: initial;
-    padding-right: 2rem;
-  }
-
-  ${mediaQueryMobile} {
-    padding-right: 0.5rem;
-  }
-`;
-
 const TrendingPostsContainer = styled.div`
   ${mediaQueryTablet} {
     display: none;
   }
 `;
 
-const ContentHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const ContentFooter = styled.div`
-  margin-top: auto;
-`;
-
-const ContentFooterHashtagsContainer = styled.div`
-  display: flex;
-  padding: 0.8rem;
-  flex-wrap: wrap;
-`;
-
-const ContentFooterButtonContainer = styled.div`
-  border-top: 1px solid #cfd9de;
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
-  padding: 0.6rem 3rem;
-
-  ${mediaQueryMobile} {
-    padding: 0.4rem 3rem;
-    justify-content: space-evenly;
-  }
-`;
-
-const BookmarkButton = styled.button`
-  display: flex;
-  margin-right: 1rem;
-  padding: 0.4rem 1rem;
-  align-items: center;
-  border: none;
-  background-color: transparent;
-  border-radius: 4px;
-  color: #536471;
-  font-size: 1.4rem;
-  font-weight: 500;
-
-  :hover {
-    background-color: rgba(15, 20, 25, 0.1);
-  }
-`;
-const ShareButton = styled.button`
-  display: flex;
-  margin-right: 1rem;
-  padding: 0.4rem 1rem;
-  align-items: center;
-  border: none;
-  background-color: transparent;
-  border-radius: 4px;
-  color: #536471;
-  font-size: 1.4rem;
-  font-weight: 500;
-  :hover {
-    background-color: rgba(15, 20, 25, 0.1);
-  }
-`;
-const MoreButton = styled.button`
-  display: flex;
-  margin-left: 1rem;
-  padding: 0.4rem 1rem;
-  align-items: center;
-  border: none;
-  background-color: transparent;
-  border-radius: 4px;
-  color: #536471;
-  font-size: 1.4rem;
-  font-weight: 500;
-  :hover {
-    background-color: rgba(15, 20, 25, 0.1);
-  }
-`;
-
 export {
-  BlockContainer,
+  ColumnContainer,
+  ColumnLeftContainer,
+  ColumnRightContainer,
+  ProjectContentContainer,
+  ProjectContentTopContainer,
   RecruitmentTypeContainer,
   RecruitmentType,
-  LeftBlockContainer,
-  RightBlockContainer,
-  ProjectDetailInfo,
-  Writer,
   DateAndViewContainer,
+  Date,
+  Views,
+  CreatedAt,
   UpdatedAt,
-  HoverCreatedAt,
-  UserInfoContainer,
-  LastLoginAt,
-  ProfileImageContainer,
-  WriterLastLoginAtContainer,
-  ContentContainer,
-  TrendingPostsContainer,
-  ContentHeader,
-  ContentFooter,
+  ProjectContentBottomContainer,
+  HashtagsContainer,
+  ButtonContainer,
   BookmarkButton,
   ShareButton,
   MoreButton,
-  ContentFooterHashtagsContainer,
-  ContentFooterButtonContainer,
+  WriterLastLoginAtContainer,
+  ProfileImageContainer,
+  WriterInfoContainer,
+  Writer,
+  LastLoginAt,
+  TrendingPostsContainer,
 };

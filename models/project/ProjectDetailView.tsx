@@ -3,35 +3,36 @@ import dynamic from 'next/dynamic';
 import Title from 'components/commons/title';
 import Container from '@/components/commons/container';
 import AppLayout from '@/components/appLayout';
-import Divider from '@/components/commons/divider';
 import { AccountCircleIcon } from '@/assets/icons';
 import ShareIcon from '@/assets/icons/ShareIcon';
 import BookmarkIcon from '@/assets/icons/BookmarkIcon';
 import More from '@/components/commons/more';
 import Hashtag from '@/components/commons/hashtag';
 import {
-  BlockContainer,
+  ColumnContainer,
+  ColumnLeftContainer,
+  ColumnRightContainer,
+  ProjectContentContainer,
+  ProjectContentTopContainer,
   RecruitmentTypeContainer,
   RecruitmentType,
-  LeftBlockContainer,
-  RightBlockContainer,
-  ProjectDetailInfo,
-  Writer,
   DateAndViewContainer,
+  Date,
+  Views,
+  CreatedAt,
   UpdatedAt,
-  HoverCreatedAt,
-  UserInfoContainer,
-  LastLoginAt,
-  ProfileImageContainer,
-  WriterLastLoginAtContainer,
-  ContentContainer,
-  TrendingPostsContainer,
-  ContentFooter,
+  ProjectContentBottomContainer,
+  HashtagsContainer,
+  ButtonContainer,
   BookmarkButton,
   ShareButton,
   MoreButton,
-  ContentFooterHashtagsContainer,
-  ContentFooterButtonContainer,
+  WriterInfoContainer,
+  ProfileImageContainer,
+  WriterLastLoginAtContainer,
+  Writer,
+  LastLoginAt,
+  TrendingPostsContainer,
 } from './styles';
 
 const DynamicTuiViewer = dynamic(
@@ -71,49 +72,47 @@ const ProjectDetailView = ({ content, writer, me }: ProjectDetailViewProps) => {
   return (
     <AppLayout nav={true}>
       <Container size='default'>
-        <BlockContainer>
-          <LeftBlockContainer>
-            <ContentContainer>
-              <RecruitmentTypeContainer>
-                {content.memberTypes.map((type, index) => {
-                  return (
-                    <RecruitmentType key={type + index} type={type}>
-                      {type === 'pm'
-                        ? type.toUpperCase()
-                        : type.charAt(0).toUpperCase() + type.slice(1)}
-                    </RecruitmentType>
-                  );
-                })}
-              </RecruitmentTypeContainer>
-              <Title text={content.title} />
+        <ColumnContainer>
+          <ColumnLeftContainer>
+            <ProjectContentContainer>
+              <ProjectContentTopContainer>
+                <RecruitmentTypeContainer>
+                  {content.memberTypes.map((type, index) => {
+                    return (
+                      <RecruitmentType key={type + index} type={type}>
+                        {type === 'pm'
+                          ? type.toUpperCase()
+                          : type.charAt(0).toUpperCase() + type.slice(1)}
+                      </RecruitmentType>
+                    );
+                  })}
+                </RecruitmentTypeContainer>
 
-              <ProjectDetailInfo>
+                <Title text={content.title} />
+
                 <DateAndViewContainer>
-                  {content.createdAt !== content.updatedAt ? (
-                    <>
+                  <Date>
+                    <CreatedAt>작성일: {content.createdAt}</CreatedAt>
+                    {content.createdAt !== content.updatedAt && (
                       <UpdatedAt>수정됨: {content.updatedAt}</UpdatedAt>
-                      <HoverCreatedAt>
-                        작성일: {content.createdAt}
-                      </HoverCreatedAt>
-                    </>
-                  ) : (
-                    <div>작성일: {content.createdAt}</div>
-                  )}
+                    )}
+                  </Date>
 
-                  <div>조회수: {content.views}</div>
+                  <Views>조회수: {content.views}</Views>
                 </DateAndViewContainer>
-              </ProjectDetailInfo>
-              <Divider type='thin' />
+              </ProjectContentTopContainer>
+
               <DynamicTuiViewer content={content.contentHTML} />
-              <ContentFooter>
-                <ContentFooterHashtagsContainer>
+
+              <ProjectContentBottomContainer>
+                <HashtagsContainer>
                   {content.hashtags.map((hashtag, index) => {
                     return (
                       <Hashtag tagName={hashtag} key={`${hashtag}-${index}`} />
                     );
                   })}
-                </ContentFooterHashtagsContainer>
-                <ContentFooterButtonContainer>
+                </HashtagsContainer>
+                <ButtonContainer>
                   <BookmarkButton>
                     <BookmarkIcon />
                     <span>북마크</span>
@@ -125,12 +124,12 @@ const ProjectDetailView = ({ content, writer, me }: ProjectDetailViewProps) => {
                   <MoreButton>
                     <More isMine={writer.nickname === me.nickname} />
                   </MoreButton>
-                </ContentFooterButtonContainer>
-              </ContentFooter>
-            </ContentContainer>
-          </LeftBlockContainer>
-          <RightBlockContainer>
-            <UserInfoContainer>
+                </ButtonContainer>
+              </ProjectContentBottomContainer>
+            </ProjectContentContainer>
+          </ColumnLeftContainer>
+          <ColumnRightContainer>
+            <WriterInfoContainer>
               <ProfileImageContainer>
                 {writer.profileImage ? (
                   <></> // 프로필 이미지 넣기
@@ -148,10 +147,10 @@ const ProjectDetailView = ({ content, writer, me }: ProjectDetailViewProps) => {
                   <div>{writer.lastLoginAt}</div>
                 </LastLoginAt>
               </WriterLastLoginAtContainer>
-            </UserInfoContainer>
+            </WriterInfoContainer>
             <TrendingPostsContainer>최신 인기 게시글</TrendingPostsContainer>
-          </RightBlockContainer>
-        </BlockContainer>
+          </ColumnRightContainer>
+        </ColumnContainer>
       </Container>
     </AppLayout>
   );
