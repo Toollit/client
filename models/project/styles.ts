@@ -9,6 +9,46 @@ const BlockContainer = styled.div`
   }
 `;
 
+const RecruitmentTypeContainer = styled.div`
+  display: flex;
+  margin-top: 1.5rem;
+`;
+
+const RecruitmentType = styled.div<{
+  type: 'developer' | 'designer' | 'pm' | 'anyone';
+}>`
+  width: fit-content;
+  margin: 0 0.8rem 0 0;
+  padding: 0.4rem 1rem;
+  border-radius: 0.7rem;
+  z-index: 21;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #fff;
+  text-align: center;
+  background-color: ${(props) => {
+    const recruitmentType = props.type;
+
+    switch (recruitmentType) {
+      case 'developer':
+        return '#4dd290';
+
+      case 'designer':
+        return '#ffb65a';
+
+      case 'pm':
+        return '#fc9557';
+
+      case 'anyone':
+        return '#868686';
+
+      default:
+        break;
+    }
+  }};
+`;
+
 const LeftBlockContainer = styled.div`
   width: 70%;
   padding: 2rem 0.5rem;
@@ -241,6 +281,8 @@ const MoreButton = styled.button`
 
 export {
   BlockContainer,
+  RecruitmentTypeContainer,
+  RecruitmentType,
   LeftBlockContainer,
   RightBlockContainer,
   ProjectDetailInfo,
