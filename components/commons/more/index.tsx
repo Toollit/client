@@ -28,7 +28,7 @@ const More = ({ isMine }: MoreProps) => {
       </Button>
       <MoreMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {isMine ? (
-          <>
+          <div>
             <Item onClick={handleClose}>
               <ItemContainer>
                 <div>
@@ -45,11 +45,11 @@ const More = ({ isMine }: MoreProps) => {
                 <div>삭제</div>
               </ItemContainer>
             </Item>
-          </>
+          </div>
         ) : (
-          <>
+          <div>
             <Item onClick={handleClose}>신고</Item>
-          </>
+          </div>
         )}
       </MoreMenu>
     </div>
