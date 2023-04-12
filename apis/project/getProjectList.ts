@@ -6,12 +6,7 @@ export interface Project {
   views: number;
   bookmarks: number;
   hashtags: string[];
-  memberTypes: {
-    developer: boolean;
-    designer: boolean;
-    pm: boolean;
-    anyone: boolean;
-  };
+  memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
 }
 export interface GetProjectAPIRes {
   success: boolean;

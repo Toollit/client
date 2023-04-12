@@ -5,13 +5,18 @@ export interface GetProjectDetailAPIReq {
 }
 
 export interface GetProjectDetailAPIResData {
-  user: { nickname: string; lastLoginAt: string; profileImage: string };
-  title: string;
-  contentHTML: string;
-  contentMarkdown: string | null;
-  views: number;
-  createdAt: string;
-  updatedAt: string | null;
+  writer: { nickname: string; lastLoginAt: string; profileImage: string };
+  content: {
+    title: string;
+    contentHTML: string;
+    contentMarkdown: string | null;
+    views: number;
+    createdAt: string;
+    updatedAt: string | null;
+    hashtags: string[];
+    memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
+  };
+  // comments: {}[];
 }
 
 export interface GetProjectDetailAPIRes {
