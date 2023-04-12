@@ -14,30 +14,32 @@ const ProjectController = ({ data }: ProjectControllerProps) => {
 
   const props: ProjectViewProps = {
     content: {
-      title: data.title,
+      title: data.content.title,
       createdAt: changeDateFormat({
-        date: data.createdAt,
+        date: data.content.createdAt,
         format: 'YYMMDD_hhmm',
       }),
       updatedAt: changeDateFormat({
-        date: data.updatedAt,
+        date: data.content.updatedAt,
         format: 'YYMMDD_hhmm',
       }),
-      views: data.views,
-      nickname: data.user.nickname,
-      contentHTML: data.contentHTML,
-      contentMarkdown: data.contentMarkdown,
+      views: data.content.views,
+      nickname: data.writer.nickname,
+      contentHTML: data.content.contentHTML,
+      contentMarkdown: data.content.contentMarkdown,
+      hashtags: data.content.hashtags,
     },
     writer: {
-      nickname: data.user.nickname,
+      nickname: data.writer.nickname,
       lastLoginAt: dateFromNow({
-        date: data.user.lastLoginAt,
+        date: data.writer.lastLoginAt,
       }),
-      profileImage: data.user.profileImage,
+      profileImage: data.writer.profileImage,
     },
     me: {
       nickname: me ? me : null,
     },
+
     //TODO comment 추가하기
     //TODO trending post 추가하기
   };

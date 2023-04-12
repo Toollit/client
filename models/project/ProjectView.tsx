@@ -24,10 +24,13 @@ import {
   BookmarkButton,
   ShareButton,
   MoreButton,
+  ContentFooterHashtagsContainer,
+  ContentFooterButtonContainer,
 } from './styles';
 import ShareIcon from '@/assets/icons/ShareIcon';
 import BookmarkIcon from '@/assets/icons/BookmarkIcon';
 import More from '@/components/commons/more';
+import Hashtag from '@/components/commons/hashtag';
 
 const DynamicTuiViewer = dynamic(
   () => import('@/components/commons/webEditor/TuiViewer'),
@@ -44,6 +47,7 @@ interface Content {
   nickname: string;
   contentHTML: string;
   contentMarkdown: string | null;
+  hashtags: string[];
 }
 
 interface Writer {
@@ -89,21 +93,30 @@ const ProjectView = ({ content, writer, me }: ProjectViewProps) => {
               <Divider type='thin' />
               <DynamicTuiViewer content={content.contentHTML} />
               <ContentFooter>
-                <BookmarkButton>
-                  <div>
-                    <BookmarkIcon />
-                  </div>
-                  <div>북마크</div>
-                </BookmarkButton>
-                <ShareButton>
-                  <div>
-                    <ShareIcon />
-                  </div>
-                  <div>공유</div>
-                </ShareButton>
-                <MoreButton>
-                  <More isMine={writer.nickname === me.nickname} />
-                </MoreButton>
+                <ContentFooterHashtagsContainer>
+                  {content.hashtags.map((hashtag, index) => {
+                    return (
+                      <Hashtag tagName={hashtag} key={`${hashtag}-${index}`} />
+                    );
+                  })}
+                </ContentFooterHashtagsContainer>
+                <ContentFooterButtonContainer>
+                  <BookmarkButton>
+                    <div>
+                      <BookmarkIcon />
+                    </div>
+                    <div>북마크</div>
+                  </BookmarkButton>
+                  <ShareButton>
+                    <div>
+                      <ShareIcon />
+                    </div>
+                    <div>공유</div>
+                  </ShareButton>
+                  <MoreButton>
+                    <More isMine={writer.nickname === me.nickname} />
+                  </MoreButton>
+                </ContentFooterButtonContainer>
               </ContentFooter>
             </ContentContainer>
           </LeftBlockContainer>

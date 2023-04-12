@@ -168,11 +168,21 @@ const ContentHeader = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
 const ContentFooter = styled.div`
+  margin-top: auto;
+`;
+
+const ContentFooterHashtagsContainer = styled.div`
+  display: flex;
+  padding: 0.8rem;
+  flex-wrap: wrap;
+`;
+
+const ContentFooterButtonContainer = styled.div`
   border-top: 1px solid #cfd9de;
   display: flex;
   width: 100%;
-  margin-top: auto;
   justify-content: flex-end;
   padding: 1rem 3rem;
 `;
@@ -243,4 +253,6 @@ export {
   BookmarkButton,
   ShareButton,
   MoreButton,
+  ContentFooterHashtagsContainer,
+  ContentFooterButtonContainer,
 };
