@@ -5,8 +5,14 @@ import Container from '@/components/commons/container';
 import AppLayout from '@/components/appLayout';
 import Divider from '@/components/commons/divider';
 import { AccountCircleIcon } from '@/assets/icons';
+import ShareIcon from '@/assets/icons/ShareIcon';
+import BookmarkIcon from '@/assets/icons/BookmarkIcon';
+import More from '@/components/commons/more';
+import Hashtag from '@/components/commons/hashtag';
 import {
   BlockContainer,
+  RecruitmentTypeContainer,
+  RecruitmentType,
   LeftBlockContainer,
   RightBlockContainer,
   ProjectDetailInfo,
@@ -27,10 +33,6 @@ import {
   ContentFooterHashtagsContainer,
   ContentFooterButtonContainer,
 } from './styles';
-import ShareIcon from '@/assets/icons/ShareIcon';
-import BookmarkIcon from '@/assets/icons/BookmarkIcon';
-import More from '@/components/commons/more';
-import Hashtag from '@/components/commons/hashtag';
 
 const DynamicTuiViewer = dynamic(
   () => import('@/components/commons/webEditor/TuiViewer'),
@@ -48,6 +50,7 @@ interface Content {
   contentHTML: string;
   contentMarkdown: string | null;
   hashtags: string[];
+  memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
 }
 
 interface Writer {
@@ -56,7 +59,7 @@ interface Writer {
   profileImage: string;
 }
 
-export interface ProjectViewProps {
+export interface ProjectDetailViewProps {
   content: Content;
   writer: Writer;
   me: {
@@ -64,16 +67,26 @@ export interface ProjectViewProps {
   };
 }
 
-const ProjectView = ({ content, writer, me }: ProjectViewProps) => {
+const ProjectDetailView = ({ content, writer, me }: ProjectDetailViewProps) => {
   return (
     <AppLayout nav={true}>
       <Container size='default'>
         <BlockContainer>
           <LeftBlockContainer>
             <ContentContainer>
-              <div>
-                <Title text={content.title} />
-              </div>
+              <RecruitmentTypeContainer>
+                {content.memberTypes.map((type, index) => {
+                  return (
+                    <RecruitmentType key={type + index} type={type}>
+                      {type === 'pm'
+                        ? type.toUpperCase()
+                        : type.charAt(0).toUpperCase() + type.slice(1)}
+                    </RecruitmentType>
+                  );
+                })}
+              </RecruitmentTypeContainer>
+              <Title text={content.title} />
+
               <ProjectDetailInfo>
                 <DateAndViewContainer>
                   {content.createdAt !== content.updatedAt ? (
@@ -144,4 +157,4 @@ const ProjectView = ({ content, writer, me }: ProjectViewProps) => {
   );
 };
 
-export default ProjectView;
+export default ProjectDetailView;

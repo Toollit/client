@@ -1,5 +1,5 @@
 import React from 'react';
-import ProjectView, { ProjectViewProps } from './ProjectView';
+import ProjectDetailView, { ProjectDetailViewProps } from './ProjectDetailView';
 import { GetProjectDetailAPIResData } from 'apis/project/getProjectDetail';
 import { changeDateFormat, dateFromNow } from '@/utils/changeDateFormat';
 import { useSelector } from 'react-redux';
@@ -9,10 +9,10 @@ interface ProjectControllerProps {
   data: GetProjectDetailAPIResData;
 }
 
-const ProjectController = ({ data }: ProjectControllerProps) => {
+const ProjectDetailController = ({ data }: ProjectControllerProps) => {
   const me = useSelector((state: RootState) => state.user.nickname);
 
-  const props: ProjectViewProps = {
+  const props: ProjectDetailViewProps = {
     content: {
       title: data.content.title,
       createdAt: changeDateFormat({
@@ -28,6 +28,7 @@ const ProjectController = ({ data }: ProjectControllerProps) => {
       contentHTML: data.content.contentHTML,
       contentMarkdown: data.content.contentMarkdown,
       hashtags: data.content.hashtags,
+      memberTypes: data.content.memberTypes,
     },
     writer: {
       nickname: data.writer.nickname,
@@ -44,7 +45,7 @@ const ProjectController = ({ data }: ProjectControllerProps) => {
     //TODO trending post 추가하기
   };
 
-  return <ProjectView {...props} />;
+  return <ProjectDetailView {...props} />;
 };
 
-export default ProjectController;
+export default ProjectDetailController;
