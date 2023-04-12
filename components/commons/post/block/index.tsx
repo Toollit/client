@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import project3 from 'public/static/images/project3.jpg';
 import BookmarkIcon from '@/assets/icons/BookmarkIcon';
 import ViewIcon from '@/assets/icons/ViewIcon';
@@ -32,12 +32,6 @@ interface BlockPostProps {
 }
 
 const BlockPost = ({ content, onClick }: BlockPostProps) => {
-  const [recruitmentType, setRecruitType] = useState<RecruitmentType[]>([
-    'developer',
-    'designer',
-    'pm',
-    'anyone',
-  ]);
   return (
     <Container data-id={content.id} onClick={onClick}>
       <ImageContainer>
@@ -50,10 +44,12 @@ const BlockPost = ({ content, onClick }: BlockPostProps) => {
       </ImageContainer>
 
       <RecruitmentTypeContainer>
-        {recruitmentType.map((type, index) => {
+        {content.memberTypes.map((type, index) => {
           return (
             <RecruitmentType key={type + index} type={type}>
-              {type}
+              {type === 'pm'
+                ? type.toUpperCase()
+                : type.charAt(0).toUpperCase() + type.slice(1)}
             </RecruitmentType>
           );
         })}
