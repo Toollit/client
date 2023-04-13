@@ -47,22 +47,48 @@ const colors = {
   white: '#ffffff',
   lightGray: '#f2f2f2',
   gray: '#767678',
-  disabled: '#0f141950',
-  border: '#cfd9de',
-  hoverGreen: '#f0fff0',
-  activeGreen: '#3da571',
+
+  developer: '#4dd290',
+  designer: '#ffb65a',
+  pm: '#fc9557',
+  anyone: '#868686',
+  button: {
+    activeGreen: '#3da571',
+    activeGray: 'rgba(15, 20, 25, 0.2)',
+    disabled: '#0f141950',
+    hoverGreen: '#f0fff0',
+    hoverGray: 'rgba(15, 20, 25, 0.1)',
+  },
+  border: {
+    container: '#e9ecef',
+    divider: '#cfd9de',
+    base: '#cfd9de',
+  },
+  text: {
+    gray: '#868e96',
+  },
 };
 
-const deviceSizes = {};
+const borderRadius = {
+  base: '0.8rem',
+  sharp: '0.3rem',
+};
+
+const boxShadow = {
+  base: `0 1px 3px rgba(0, 0, 0, 0.05),
+  0 10px 15px -5px rgba(0, 0, 0, 0.05), 0 7px 7px -5px rgba(0, 0, 0, 0.04)`,
+  hover: `0px 0px #767678, 0px 0 0.4rem #767678`,
+};
 
 const theme = {
   fontSizes,
   colors,
-  deviceSizes,
   paddings,
   margins,
   interval,
   verticalInterval,
+  borderRadius,
+  boxShadow,
 };
 
 export default theme;

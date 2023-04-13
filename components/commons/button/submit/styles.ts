@@ -10,7 +10,7 @@ const Button = styled.button`
   border-style: none;
 
   &:active {
-    background-color: ${(props) => props.theme.colors.activeGreen};
+    background-color: ${(props) => props.theme.colors.button.activeGreen};
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
   }

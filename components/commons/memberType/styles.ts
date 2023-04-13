@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 const Container = styled.div`
   margin-top: 2rem;
   margin-bottom: 2rem;
-  border: 1px solid #dadde6;
+  border: 1px solid ${(props) => props.theme.colors.border.base};
 `;
 
 const ContainerLabel = styled.div`
@@ -47,16 +47,16 @@ const Type = styled.div<{
 
         switch (recruitmentType) {
           case 'developer':
-            return '#4dd290';
+            return props.theme.colors.developer;
 
           case 'designer':
-            return '#ffb65a';
+            return props.theme.colors.designer;
 
           case 'pm':
-            return '#fc9557';
+            return props.theme.colors.pm;
 
           case 'anyone':
-            return '#868686';
+            return props.theme.colors.anyone;
 
           default:
             break;

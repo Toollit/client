@@ -5,19 +5,20 @@ const Button = styled.div`
   width: 100%;
   font-size: ${(props) => props.theme.fontSizes.base};
   font-weight: 400;
-  border: 1px solid ${(props) => props.theme.colors.border};
+  border: 1px solid ${(props) => props.theme.colors.border.base};
   margin-bottom: 2rem;
   border-radius: 25rem;
   height: 4rem;
   cursor: pointer;
   background-color: ${(props) => props.theme.colors.white};
 
+  /* TODO hover 적용할지 말지 수정하기 */
   &:hover {
-    background-color: ${(props) => props.theme.colors.hoverGreen};
+    background-color: ${(props) => props.theme.colors.button.hoverGreen};
   }
 
   &:active {
-    /* background-color: ${(props) => props.theme.colors.activeGreen}; */
+    /* background-color: ${(props) => props.theme.colors.button.activeGreen}; */
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
   }

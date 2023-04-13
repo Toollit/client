@@ -6,7 +6,7 @@ const DividerContainer = styled.div`
 `;
 
 const LineWithText = styled.div`
-  background-color: ${(props) => props.theme.colors.border};
+  background-color: ${(props) => props.theme.colors.border.divider};
   height: 0.1rem;
   width: 100%;
   margin: auto 1rem;
@@ -18,7 +18,7 @@ const Text = styled.div`
 `;
 
 const ThinLine = styled.div`
-  background-color: ${(props) => props.theme.colors.border};
+  background-color: ${(props) => props.theme.colors.border.divider};
   height: 0.1rem;
   width: 100%;
 `;

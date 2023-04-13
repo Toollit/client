@@ -4,17 +4,19 @@ import { mediaQueryTablet, mediaQueryMobile } from '@/styles/mediaQuery';
 
 const Container = styled.div`
   width: 100%;
-  height: 34rem;
+  height: 32rem;
   margin: 1.2rem 0rem;
-  border-radius: 1.5rem;
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  border-radius: ${(props) => props.theme.borderRadius.base};
+  box-shadow: ${(props) => props.theme.boxShadow.base};
+  border: 1px solid ${(props) => props.theme.colors.border.base};
   background-color: #fff;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   cursor: pointer;
 
   :hover {
-    box-shadow: 0px 0px #767678, 0px 0 0.4rem #767678;
+    box-shadow: ${(props) => props.theme.boxShadow.hover};
   }
 `;
 
@@ -23,9 +25,7 @@ const ImageContainer = styled.div`
   height: 13rem;
 `;
 
-const ProjectImage = styled(Image)`
-  border-radius: 1.5rem 1.5rem 0 0;
-`;
+const ProjectImage = styled(Image)``;
 
 const ContentContainer = styled.div`
   padding: 0.8rem;
@@ -59,16 +59,16 @@ const RecruitmentType = styled.div<{
 
     switch (recruitmentType) {
       case 'developer':
-        return '#4dd290';
+        return props.theme.colors.developer;
 
       case 'designer':
-        return '#ffb65a';
+        return props.theme.colors.designer;
 
       case 'pm':
-        return '#fc9557';
+        return props.theme.colors.pm;
 
       case 'anyone':
-        return '#868686';
+        return props.theme.colors.anyone;
 
       default:
         break;
@@ -98,16 +98,16 @@ const RecruitmentType = styled.div<{
 
         switch (recruitmentType) {
           case 'developer':
-            return '#4dd290';
+            return props.theme.colors.developer;
 
           case 'designer':
-            return '#ffb65a';
+            return props.theme.colors.designer;
 
           case 'pm':
-            return '#fc9557';
+            return props.theme.colors.pm;
 
           case 'anyone':
-            return '#868686';
+            return props.theme.colors.anyone;
 
           default:
             break;

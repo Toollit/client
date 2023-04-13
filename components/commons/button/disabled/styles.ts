@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const Button = styled.div`
-  background-color: ${(props) => props.theme.colors.disabled};
+  background-color: ${(props) => props.theme.colors.button.disabled};
   margin-bottom: 2rem;
   border-radius: 25rem;
   max-width: 30rem;

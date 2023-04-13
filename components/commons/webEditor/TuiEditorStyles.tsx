@@ -55,8 +55,8 @@ const TitleInput = styled.input`
   height: 4rem;
   font-size: 1.4rem;
   padding: 0 1rem;
-  border-radius: 3px;
-  border: 1px solid #dadde6;
+  border-radius: ${(props) => props.theme.borderRadius.sharp};
+  border: 1px solid ${(props) => props.theme.colors.border.base};
 
   :focus {
     outline: none;

@@ -51,13 +51,37 @@ declare module '@emotion/react' {
       white: string;
       lightGray: string;
       gray: string;
-      disabled: string;
-      border: string;
-      hoverGreen: string;
-      activeGreen: string;
+
+      developer: string;
+      designer: string;
+      pm: string;
+      anyone: string;
+      button: {
+        activeGreen: string;
+        activeGray: string;
+        disabled: string;
+        hoverGreen: string;
+        hoverGray: string;
+      };
+      border: {
+        container: string;
+        divider: string;
+        base: string;
+      };
+      text: {
+        gray: string;
+      };
     };
 
-    deviceSizes: {};
+    borderRadius: {
+      base: string;
+      sharp: string;
+    };
+
+    boxShadow: {
+      base: string;
+      hover: string;
+    };
   }
 }
 

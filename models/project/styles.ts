@@ -33,10 +33,9 @@ const ProjectContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0rem 1rem;
-  border: 1px solid #e9ecef;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05),
-    0 10px 15px -5px rgba(0, 0, 0, 0.05), 0 7px 7px -5px rgba(0, 0, 0, 0.04);
-  border-radius: 12px;
+  border: 1px solid ${(props) => props.theme.colors.border.container};
+  box-shadow: ${(props) => props.theme.boxShadow.base};
+  border-radius: ${(props) => props.theme.borderRadius.base};
   min-height: 50rem;
 `;
 
@@ -61,23 +60,23 @@ const RecruitmentType = styled.div<{
   font-size: 0.8rem;
   font-weight: 600;
   line-height: 1.5;
-  color: #fff;
+  color: ${(props) => props.theme.colors.white};
   text-align: center;
   background-color: ${(props) => {
     const recruitmentType = props.type;
 
     switch (recruitmentType) {
       case 'developer':
-        return '#4dd290';
+        return props.theme.colors.developer;
 
       case 'designer':
-        return '#ffb65a';
+        return props.theme.colors.designer;
 
       case 'pm':
-        return '#fc9557';
+        return props.theme.colors.pm;
 
       case 'anyone':
-        return '#868686';
+        return props.theme.colors.anyone;
 
       default:
         break;
@@ -91,7 +90,7 @@ const DateAndViewContainer = styled.div`
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   font-size: 1.4rem;
-  color: #868e96;
+  color: ${(props) => props.theme.colors.text.gray};
 
   ${mediaQueryMobile} {
     font-size: 1.2rem;

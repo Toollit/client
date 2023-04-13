@@ -18,7 +18,7 @@ const IconContainer = styled.div<{ isMobile: null | boolean }>`
       return css`
         &:active {
           border-radius: 25rem;
-          background-color: rgba(15, 20, 25, 0.1);
+          background-color: ${props.theme.colors.button.activeGray};
         }
       `;
     }
@@ -27,12 +27,12 @@ const IconContainer = styled.div<{ isMobile: null | boolean }>`
       return css`
         &:hover {
           border-radius: 25rem;
-          background-color: rgba(15, 20, 25, 0.1);
+          background-color: ${props.theme.colors.button.hoverGray};
         }
 
         &:active {
           border-radius: 25rem;
-          background-color: rgba(15, 20, 25, 0.2);
+          background-color: ${props.theme.colors.button.activeGray};
         }
       `;
     }

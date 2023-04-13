@@ -4,9 +4,9 @@ const HashtagsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  border: 1px solid #dadde6;
+  border: 1px solid ${(props) => props.theme.colors.border.base};
   padding: 0.4rem 0.8rem;
-  border-radius: 0.3rem;
+  border-radius: ${(props) => props.theme.borderRadius.sharp};
 `;
 
 const HashtagInputField = styled.input`
