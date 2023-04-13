@@ -10,7 +10,7 @@ import {
   Button,
 } from './styles';
 import HashtagInput from '@/components/commons/HashtagInput';
-import MemberType from '@/components/commons/memberType';
+import MemberTypeSelector from '@/components/commons/memberTypeSelector';
 import { Editor } from '@toast-ui/react-editor';
 
 const DynamicTuiEditor = dynamic(
@@ -56,7 +56,7 @@ const ProjectCreateView = ({
         </HashtagInputContainer>
 
         <ProjectTeamContainer>
-          <MemberType memberTypeRef={memberTypeRef} />
+          <MemberTypeSelector memberTypeRef={memberTypeRef} />
         </ProjectTeamContainer>
 
         <ButtonContainer>

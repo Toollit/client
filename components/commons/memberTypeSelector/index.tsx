@@ -25,11 +25,7 @@ const MemberType = ({ memberTypeRef }: MemberTypeProps) => {
 
   const handleChecked = useCallback(
     (event: React.MouseEvent<HTMLInputElement>) => {
-      const target = event.currentTarget.value as
-        | 'developer'
-        | 'designer'
-        | 'pm'
-        | 'anyone';
+      const target = event.currentTarget.value as keyof typeof checked;
 
       const newObj = { ...checked, [target]: !checked[target] };
 
