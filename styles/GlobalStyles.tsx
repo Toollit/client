@@ -22,7 +22,7 @@ const styles = css`
   }
 
   a {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
     cursor: pointer;
   }
 
@@ -32,6 +32,8 @@ const styles = css`
 
   button {
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
   }
 
   /* Google Fonts */
