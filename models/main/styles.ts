@@ -87,12 +87,12 @@ const BannerBackgroundRightContainer = styled.div`
 
 // second slide
 const SecondSlideText = styled.div`
-  margin: auto 0 auto 2rem;
+  margin: 2rem 0 2rem 2rem;
   font-size: 2rem;
   z-index: 1;
 
   ${mediaQueryTablet} {
-    margin: 2rem 0 2rem 2rem;
+    margin: auto 0 auto 2rem;
   }
 `;
 
@@ -100,13 +100,13 @@ const NetworkImg = styled.div`
   position: absolute;
   right: 0;
   bottom: 0;
-  width: 46rem;
-  height: 36rem;
+  width: 30rem;
+  height: 30rem;
+  margin-right: 2rem;
 
   ${mediaQueryTablet} {
-    width: 30rem;
-    height: 30rem;
-    margin-right: 2rem;
+    width: 46rem;
+    height: 36rem;
   }
 `;
 
@@ -137,11 +137,11 @@ const BugImage = styled.div`
   position: absolute;
   right: 0;
   bottom: 0;
-  margin: 10rem;
+  margin: 3rem;
   width: 15rem;
 
   ${mediaQueryTablet} {
-    margin: 3rem;
+    margin: 10rem;
   }
 `;
 ``;
@@ -177,10 +177,10 @@ const PostWriteButton = styled.button`
 const PostContainer = styled.div`
   max-width: 102.4rem;
   margin: 0 auto;
-  padding: 1rem 0.5rem;
+  padding: 1rem 1rem;
 
   ${mediaQueryTablet} {
-    padding: 1rem 1rem;
+    padding: 1rem 0.5rem;
   }
 `;
 
