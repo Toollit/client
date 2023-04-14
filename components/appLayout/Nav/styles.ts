@@ -25,6 +25,7 @@ const LeftNavContainer = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-left: 0.8rem;
 `;
 
 const RightNavContainer = styled.li`
