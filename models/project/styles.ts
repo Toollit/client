@@ -40,7 +40,7 @@ const ProjectContentContainer = styled.div`
 `;
 
 const ProjectContentTopContainer = styled.div`
-  border-bottom: 1px solid ${(props) => props.theme.colors.border};
+  border-bottom: 1px solid ${(props) => props.theme.colors.border.divider};
   padding-bottom: 1rem;
 `;
 
@@ -133,17 +133,12 @@ const ButtonContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
-  padding: 0.6rem 3rem;
-
-  ${mediaQueryMobile} {
-    padding: 0.4rem 3rem;
-    justify-content: space-evenly;
-  }
+  padding: 0.6rem 0.2rem;
 `;
 
 const BookmarkButton = styled.button`
   display: flex;
-  margin-right: 1rem;
+  margin-right: 0.4rem;
   padding: 0.4rem 1rem;
   align-items: center;
   border: none;
@@ -159,7 +154,7 @@ const BookmarkButton = styled.button`
 `;
 const ShareButton = styled.button`
   display: flex;
-  margin-right: 1rem;
+  margin-right: 0.4rem;
   padding: 0.4rem 1rem;
   align-items: center;
   border: none;
@@ -174,7 +169,6 @@ const ShareButton = styled.button`
 `;
 const MoreButton = styled.button`
   display: flex;
-  margin-left: 1rem;
   padding: 0.4rem 1rem;
   align-items: center;
   border: none;

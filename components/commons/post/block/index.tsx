@@ -8,14 +8,13 @@ import {
   Container,
   ImageContainer,
   ProjectImage,
-  ContentContainer,
   RecruitmentTypeContainer,
   RecruitmentType,
   Title,
   HashtagContainer,
   ContentFooterContainer,
   MemberBookmarkViewContainer,
-  PostDetailInfoContainer,
+  BookmarkViewContainer,
   RecruitCompleteContent,
   RecruitNumber,
   BookmarkContainer,
@@ -47,6 +46,15 @@ const BlockPost = ({ content, onClick }: BlockPostProps) => {
         {content.memberTypes.map((type, index) => {
           return (
             <RecruitmentType key={type + index} type={type}>
+              {/* <div>
+                {(type === 'developer' && 'Dev') ||
+                  (type === 'designer' && 'Design') ||
+                  (type === 'pm'
+                    ? type.toUpperCase()
+                    : type.charAt(0).toUpperCase() + type.slice(1)) ||
+                  (type === 'anyone' && 'Any')}
+              </div> */}
+
               {type === 'pm'
                 ? type.toUpperCase()
                 : type.charAt(0).toUpperCase() + type.slice(1)}
@@ -68,7 +76,7 @@ const BlockPost = ({ content, onClick }: BlockPostProps) => {
           <RecruitCompleteContent>
             모집완료 <RecruitNumber>0 / 8</RecruitNumber>
           </RecruitCompleteContent>
-          <PostDetailInfoContainer>
+          <BookmarkViewContainer>
             <BookmarkContainer>
               <BookmarkIcon width={20} height={20} />
               <BookmarkIconText>{content.bookmarks}</BookmarkIconText>
@@ -77,7 +85,7 @@ const BlockPost = ({ content, onClick }: BlockPostProps) => {
               <ViewIcon width={20} height={20} />
               <ViewIconText>{content.views}</ViewIconText>
             </ViewIconContainer>
-          </PostDetailInfoContainer>
+          </BookmarkViewContainer>
         </MemberBookmarkViewContainer>
       </ContentFooterContainer>
     </Container>

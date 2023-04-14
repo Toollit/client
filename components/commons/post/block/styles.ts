@@ -5,18 +5,25 @@ import { mediaQueryTablet, mediaQueryMobile } from '@/styles/mediaQuery';
 const Container = styled.div`
   width: 100%;
   height: 32rem;
-  margin: 1.2rem 0rem;
-  border-radius: ${(props) => props.theme.borderRadius.base};
+  margin: 1rem 0rem;
+  border-radius: ${(props) => props.theme.borderRadius.sharp};
   box-shadow: ${(props) => props.theme.boxShadow.base};
   border: 1px solid ${(props) => props.theme.colors.border.base};
   background-color: #fff;
   display: flex;
   flex-direction: column;
+  position: relative;
   overflow: hidden;
+  isolation: isolate; // this attribute for overflow: hidden not working in safari Bug
   cursor: pointer;
 
-  :hover {
-    box-shadow: ${(props) => props.theme.boxShadow.hover};
+  ${mediaQueryTablet} {
+    :hover {
+      img {
+        transform: scale(1.1);
+        transition: all 0.3s ease 0s;
+      }
+    }
   }
 `;
 
@@ -27,17 +34,13 @@ const ImageContainer = styled.div`
 
 const ProjectImage = styled(Image)``;
 
-const ContentContainer = styled.div`
-  padding: 0.8rem;
-  height: 5rem;
-`;
-
 const RecruitmentTypeContainer = styled.div`
   display: flex;
-  padding: 0.8rem;
+  flex-wrap: wrap;
+  padding: 0.6rem 0.4rem;
 
-  ${mediaQueryTablet} {
-    flex-wrap: wrap;
+  ${mediaQueryMobile} {
+    padding: 0.6rem 0.6rem;
   }
 `;
 
@@ -45,12 +48,15 @@ const RecruitmentType = styled.div<{
   type: 'developer' | 'designer' | 'pm' | 'anyone';
 }>`
   width: fit-content;
-  margin: 0 0.8rem 0 0;
-  padding: 0.4rem 1rem;
-  border-radius: 0.7rem;
+  margin-right: 0.2rem;
+  padding: 0.4rem 0.2rem;
+  border-radius: ${(props) => props.theme.borderRadius.sharp};
   z-index: 21;
   font-size: 0.8rem;
-  font-weight: 500;
+  /* zoom: 0.9; */
+  /* TODO chrome 브라우저 default font size 10 문제 해결하기 */
+
+  font-weight: 600;
   line-height: 1.5;
   color: #fff;
   text-align: center;
@@ -75,8 +81,18 @@ const RecruitmentType = styled.div<{
     }
   }};
 
+  ${mediaQueryMobile} {
+    margin-right: 0.3rem;
+    padding: 0.4rem 0.3rem;
+  }
+
   ${mediaQueryTablet} {
-    padding: 0;
+    margin-right: 0.4rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  /* circle member type design ** do not remove!!! ** */
+  /* padding: 0;
     height: fit-content;
     background-color: #fff;
     color: #000;
@@ -94,45 +110,46 @@ const RecruitmentType = styled.div<{
       border-radius: 100%;
       margin-right: 0.2rem;
       background-color: ${(props) => {
-        const recruitmentType = props.type;
+    const recruitmentType = props.type;
 
-        switch (recruitmentType) {
-          case 'developer':
-            return props.theme.colors.developer;
+    switch (recruitmentType) {
+      case 'developer':
+        return props.theme.colors.developer;
 
-          case 'designer':
-            return props.theme.colors.designer;
+      case 'designer':
+        return props.theme.colors.designer;
 
-          case 'pm':
-            return props.theme.colors.pm;
+      case 'pm':
+        return props.theme.colors.pm;
 
-          case 'anyone':
-            return props.theme.colors.anyone;
+      case 'anyone':
+        return props.theme.colors.anyone;
 
-          default:
-            break;
-        }
-      }};
+      default:
+        break;
     }
-  }
+  }};
+    } */
 `;
 
 const Title = styled.h2`
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   padding: 0rem 0.8rem;
   word-wrap: break-word;
 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
   ${mediaQueryMobile} {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    font-size: 1.4rem;
   }
 `;
 
 const HashtagContainer = styled.div`
-  padding: 0.8rem;
+  margin: 0.8rem 0.5rem;
   display: flex;
   overflow: scroll;
   ::-webkit-scrollbar {
@@ -146,21 +163,24 @@ const ContentFooterContainer = styled.div`
 
 const MemberBookmarkViewContainer = styled.div`
   font-size: 1.2rem;
-  padding: 1rem 2rem;
-  border-top: 1px solid #d2d2d7;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid ${(props) => props.theme.colors.border.divider};
+
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column-reverse;
 
   ${mediaQueryMobile} {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-flow: column-reverse;
+    padding: 1rem 1rem;
+    flex-direction: row;
+
+    justify-content: space-between;
   }
 `;
 
-const PostDetailInfoContainer = styled.div`
+const BookmarkViewContainer = styled.div`
   display: flex;
 `;
 
@@ -169,7 +189,7 @@ const FavoriteViewContainer = styled.div`
 `;
 
 const RecruitCompleteContent = styled.div`
-  text-align: right;
+  padding: 0.2rem 0rem;
 `;
 
 const RecruitNumber = styled.span`
@@ -200,14 +220,13 @@ export {
   Container,
   ImageContainer,
   ProjectImage,
-  ContentContainer,
   RecruitmentTypeContainer,
   RecruitmentType,
   Title,
   HashtagContainer,
   ContentFooterContainer,
   MemberBookmarkViewContainer,
-  PostDetailInfoContainer,
+  BookmarkViewContainer,
   FavoriteViewContainer,
   RecruitCompleteContent,
   RecruitNumber,
