@@ -55,10 +55,8 @@ const NextBtn = styled.button`
   letter-spacing: 0.025rem;
   border-style: none;
 
-  &:active {
+  :active {
     background-color: #3da571;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
   }
 `;
 

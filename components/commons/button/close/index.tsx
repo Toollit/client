@@ -9,10 +9,9 @@ interface CloseBtnProps {
 }
 
 const CloseBtn = ({ onClick }: CloseBtnProps) => {
-  const isMobile = useSelector((state: RootState) => state.user.isMobile);
   return (
     <Button>
-      <IconContainer onClick={onClick} isMobile={isMobile ? true : false}>
+      <IconContainer onClick={onClick}>
         <CloseIcon />
       </IconContainer>
     </Button>

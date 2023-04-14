@@ -8,13 +8,18 @@ const Container = styled.div`
 `;
 
 const ContainerLabel = styled.div`
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   padding: 0.5rem 0rem 0rem 1.5rem;
+
+  ${mediaQueryMobile} {
+    font-size: 1.4rem;
+  }
 `;
 
 const MemberTypeContainer = styled.div`
   display: flex;
   margin-left: 1rem;
+  flex-wrap: wrap;
 `;
 
 const Type = styled.div<{
@@ -22,7 +27,7 @@ const Type = styled.div<{
 }>`
   display: flex;
   align-items: center;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   padding: 1rem 0.5rem;
   cursor: pointer;
 
@@ -66,7 +71,7 @@ const Type = styled.div<{
   }
 
   ${mediaQueryMobile} {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 `;
 

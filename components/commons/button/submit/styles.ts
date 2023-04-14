@@ -9,10 +9,8 @@ const Button = styled.button`
   letter-spacing: 0.025rem;
   border-style: none;
 
-  &:active {
+  :active {
     background-color: ${(props) => props.theme.colors.button.activeGreen};
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
   }
 `;
 

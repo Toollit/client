@@ -28,9 +28,6 @@ const DeleteButton = styled.button`
   background-color: transparent;
   display: flex;
   align-items: center;
-  :hover {
-    cursor: pointer;
-  }
 `;
 
 const Hashtag = styled.span`

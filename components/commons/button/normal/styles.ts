@@ -1,3 +1,4 @@
+import { mediaQueryTablet } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 
 const Button = styled.div`
@@ -12,15 +13,14 @@ const Button = styled.div`
   cursor: pointer;
   background-color: ${(props) => props.theme.colors.white};
 
-  /* TODO hover 적용할지 말지 수정하기 */
-  &:hover {
-    background-color: ${(props) => props.theme.colors.button.hoverGreen};
+  ${mediaQueryTablet} {
+    :hover {
+      background-color: ${(props) => props.theme.colors.button.hoverGreen};
+    }
   }
 
-  &:active {
-    /* background-color: ${(props) => props.theme.colors.button.activeGreen}; */
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
+  :active {
+    background-color: ${(props) => props.theme.colors.button.hoverGreen};
   }
 `;
 

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
+import { mediaQueryTablet } from '@/styles/mediaQuery';
 
 const Button = styled.div`
   display: flex;
@@ -9,35 +9,22 @@ const Button = styled.div`
   position: relative;
 `;
 
-const IconContainer = styled.div<{ isMobile: null | boolean }>`
+const IconContainer = styled.div`
   display: flex;
   padding: 0.5rem;
-
-  ${(props) => {
-    if (props.isMobile) {
-      return css`
-        &:active {
-          border-radius: 25rem;
-          background-color: ${props.theme.colors.button.activeGray};
-        }
-      `;
-    }
-
-    if (!props.isMobile) {
-      return css`
-        &:hover {
-          border-radius: 25rem;
-          background-color: ${props.theme.colors.button.hoverGray};
-        }
-
-        &:active {
-          border-radius: 25rem;
-          background-color: ${props.theme.colors.button.activeGray};
-        }
-      `;
-    }
-  }}
   cursor: pointer;
+
+  ${mediaQueryTablet} {
+    :hover {
+      border-radius: 25rem;
+      background-color: ${(props) => props.theme.colors.button.hoverGray};
+    }
+  }
+
+  :active {
+    border-radius: 25rem;
+    background-color: ${(props) => props.theme.colors.button.activeGray};
+  }
 `;
 
 export { Button, IconContainer };
