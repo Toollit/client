@@ -51,7 +51,6 @@ const RecruitmentType = styled.div<{
   margin-right: 0.2rem;
   padding: 0.4rem 0.2rem;
   border-radius: ${(props) => props.theme.borderRadius.sharp};
-  z-index: 21;
   font-size: 0.8rem;
   /* zoom: 0.9; */
   /* TODO chrome 브라우저 default font size 10 문제 해결하기 */
@@ -88,7 +87,7 @@ const RecruitmentType = styled.div<{
 
   ${mediaQueryTablet} {
     margin-right: 0.4rem;
-    padding: 0.4rem 0.5rem;
+    padding: 0.4rem 1rem;
   }
 
   /* circle member type design ** do not remove!!! ** */
