@@ -19,10 +19,16 @@ const TuiCustomStyles = css`
   }
 
   .toastui-editor-popup {
+    width: 100% !important;
+    right: 0 !important;
+    margin-left: auto !important;
+    left: 0 !important;
+    max-width: 100% !important;
+
     ${mediaQueryMobile} {
       width: 100% !important;
-      right: 0 !important;
-      margin-left: auto !important;
+      left: auto !important;
+      max-width: 39.8rem !important;
     }
   }
 
