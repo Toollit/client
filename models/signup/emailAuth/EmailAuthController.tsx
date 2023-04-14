@@ -23,7 +23,7 @@ const EmailAuthController = () => {
   const [invalidAuthNumsError, setInvalidAuthNumsError] = useState(false);
 
   const { timer, leftMinutes, leftSeconds } = useTimer({
-    minutes: 2,
+    minutes: 3,
     seconds: 0,
   });
 
@@ -108,7 +108,7 @@ const EmailAuthController = () => {
     onChangeInputAuthNums,
     invalidAuthNumsError,
     handleSubmit,
-    timer,
+    timer: email && password ? timer : '00:00',
     authNums: authNums as string,
   };
   return <EmailAuthView {...props} />;
