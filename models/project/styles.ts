@@ -3,29 +3,30 @@ import { mediaQueryMobile, mediaQueryTablet } from '@/styles/mediaQuery';
 
 const ColumnContainer = styled.div`
   display: flex;
+  flex-direction: column-reverse;
 
   ${mediaQueryTablet} {
-    flex-direction: column-reverse;
+    flex-direction: row;
   }
 `;
 
 const ColumnLeftContainer = styled.div`
-  width: 70%;
-  padding: 2rem 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.5rem;
 
   ${mediaQueryTablet} {
-    width: 100%;
-    padding: 0.5rem 0.5rem;
+    width: 70%;
+    padding: 2rem 0.5rem;
   }
 `;
 
 const ColumnRightContainer = styled.div`
-  width: 30%;
-  padding: 2rem 0.5rem;
+  width: 100%;
+  padding: 1.5rem 0.5rem 0.5rem 0.5rem;
 
   ${mediaQueryTablet} {
-    width: 100%;
-    padding: 1.5rem 0.5rem 0.5rem 0.5rem;
+    width: 30%;
+    padding: 2rem 0.5rem;
   }
 `;
 
@@ -35,7 +36,7 @@ const ProjectContentContainer = styled.div`
   padding: 0rem 1rem;
   border: 1px solid ${(props) => props.theme.colors.border.container};
   box-shadow: ${(props) => props.theme.boxShadow.base};
-  border-radius: ${(props) => props.theme.borderRadius.base};
+  border-radius: ${(props) => props.theme.borderRadius.sharp};
   min-height: 50rem;
 `;
 
@@ -55,12 +56,11 @@ const RecruitmentType = styled.div<{
   width: fit-content;
   margin: 0 0.8rem 0 0;
   padding: 0.4rem 1rem;
-  border-radius: 0.7rem;
-  z-index: 21;
+  border-radius: ${(props) => props.theme.borderRadius.sharp};
   font-size: 0.8rem;
   font-weight: 600;
   line-height: 1.5;
-  color: ${(props) => props.theme.colors.white};
+  color: #fff;
   text-align: center;
   background-color: ${(props) => {
     const recruitmentType = props.type;
@@ -89,11 +89,11 @@ const DateAndViewContainer = styled.div`
   justify-content: space-between;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: ${(props) => props.theme.colors.text.gray};
 
   ${mediaQueryMobile} {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 `;
 
@@ -113,6 +113,8 @@ const UpdatedAt = styled.div`
   top: 0;
   z-index: 2;
   background-color: #fff;
+
+  /* 모바일 버전에서 수정시간 정보는 hover event가 고정되어도 되는곳이므로 do not add mediaQuery */
   :hover {
     opacity: 0;
   }
@@ -143,15 +145,26 @@ const BookmarkButton = styled.button`
   align-items: center;
   border: none;
   background-color: transparent;
-  border-radius: 4px;
+  border-radius: ${(props) => props.theme.borderRadius.sharp};
   color: #536471;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 500;
 
-  :hover {
-    background-color: rgba(15, 20, 25, 0.1);
+  ${mediaQueryMobile} {
+    font-size: 1.4rem;
+  }
+
+  ${mediaQueryTablet} {
+    :hover {
+      background-color: ${(props) => props.theme.colors.button.hoverGray};
+    }
+
+    :active {
+      background-color: ${(props) => props.theme.colors.button.activeGray};
+    }
   }
 `;
+
 const ShareButton = styled.button`
   display: flex;
   margin-right: 0.4rem;
@@ -159,121 +172,129 @@ const ShareButton = styled.button`
   align-items: center;
   border: none;
   background-color: transparent;
-  border-radius: 4px;
+  border-radius: ${(props) => props.theme.borderRadius.sharp};
   color: #536471;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 500;
-  :hover {
-    background-color: rgba(15, 20, 25, 0.1);
+
+  ${mediaQueryMobile} {
+    font-size: 1.4rem;
+  }
+
+  ${mediaQueryTablet} {
+    :hover {
+      background-color: ${(props) => props.theme.colors.button.hoverGray};
+    }
+
+    :active {
+      background-color: ${(props) => props.theme.colors.button.activeGray};
+    }
   }
 `;
+
 const MoreButton = styled.button`
   display: flex;
   padding: 0.4rem 1rem;
   align-items: center;
   border: none;
   background-color: transparent;
-  border-radius: 4px;
+  border-radius: ${(props) => props.theme.borderRadius.sharp};
   color: #536471;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 500;
-  :hover {
-    background-color: rgba(15, 20, 25, 0.1);
+
+  ${mediaQueryMobile} {
+    font-size: 1.4rem;
+  }
+
+  ${mediaQueryTablet} {
+    :hover {
+      background-color: ${(props) => props.theme.colors.button.hoverGray};
+    }
+
+    :active {
+      background-color: ${(props) => props.theme.colors.button.activeGray};
+    }
   }
 `;
 
 const WriterInfoContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  padding: 2rem 2rem;
-  border: 1px solid #e9ecef;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05),
-    0 10px 15px -5px rgba(0, 0, 0, 0.05), 0 7px 7px -5px rgba(0, 0, 0, 0.04);
-  border-radius: 12px;
+  border: 1px solid ${(props) => props.theme.colors.border.container};
+  box-shadow: ${(props) => props.theme.boxShadow.base};
+  border-radius: ${(props) => props.theme.borderRadius.sharp};
+  align-items: center;
+  padding: 0.5rem 1.2rem;
   cursor: pointer;
 
   ${mediaQueryTablet} {
-    flex-direction: row;
-    align-items: center;
-    padding: 0.5rem 1.2rem;
+    flex-direction: column;
+    padding: 2rem 2rem;
   }
 `;
 
 const ProfileImageContainer = styled.div`
   height: 6rem;
-  margin: 0 auto;
+  margin-right: 0.5rem;
 
   ${mediaQueryTablet} {
-    margin: initial;
-    padding-right: 2rem;
-  }
-
-  ${mediaQueryMobile} {
-    padding-right: 0.5rem;
+    margin: 0 auto;
   }
 `;
 
 const WriterLastLoginAtContainer = styled.div`
   width: 100%;
-  ${mediaQueryTablet} {
+
+  ${mediaQueryMobile} {
     display: flex;
     align-items: center;
   }
 
-  ${mediaQueryMobile} {
+  ${mediaQueryTablet} {
+    display: flex;
     flex-direction: column;
   }
 `;
 
 const Writer = styled.div`
+  display: flex;
   font-size: 1.4rem;
-  text-align: center;
-  ${mediaQueryTablet} {
-    padding-right: 2rem;
-    display: flex;
-    align-items: center;
-    div {
-      padding-right: 0.5rem;
-    }
+  margin-right: 1rem;
+
+  div {
+    margin-right: 0.5rem;
   }
 
-  ${mediaQueryMobile} {
-    width: 100%;
-    text-align: left;
-    padding-right: 0.5rem;
+  ${mediaQueryTablet} {
+    flex-direction: column;
+    align-items: center;
+    margin-right: initial;
+
+    div {
+      margin-right: initial;
+    }
   }
 `;
 
 const LastLoginAt = styled.div`
-  margin-top: 0.5rem;
+  display: flex;
   font-size: 1.2rem;
   color: #868e96;
-  padding-bottom: 1rem;
-  text-align: center;
 
-  ${mediaQueryTablet} {
-    display: flex;
-    align-items: center;
-    margin-top: 0rem;
-    padding-bottom: 0rem;
-    div {
-      padding-right: 0.5rem;
-    }
+  div {
+    padding-right: 0.5rem;
   }
 
-  ${mediaQueryMobile} {
-    width: 100%;
-    div {
-      padding-right: 0.5rem;
-
-      text-align: left;
-    }
+  ${mediaQueryTablet} {
+    padding-right: initial;
   }
 `;
 
 const TrendingPostsContainer = styled.div`
+  display: none;
+
   ${mediaQueryTablet} {
-    display: none;
+    display: initial;
   }
 `;
 
