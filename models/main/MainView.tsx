@@ -35,13 +35,13 @@ import {
 } from './styles';
 
 export interface MainViewProps {
-  projectList: Project[];
+  projects: Project[] | undefined;
   createForm: () => void;
   handleRouteProjectDetail: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const MainView = ({
-  projectList,
+  projects,
   createForm,
   handleRouteProjectDetail,
 }: MainViewProps) => {
@@ -125,7 +125,7 @@ const MainView = ({
 
         <PostContainer>
           <Grid container spacing={1}>
-            {projectList?.map((project, index) => {
+            {projects?.map((project, index) => {
               return (
                 <Grid key={index} item xs={6} sm={6} md={4}>
                   <BlockPost

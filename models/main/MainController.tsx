@@ -1,16 +1,14 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import MainView, { MainViewProps } from './MainView';
 import SwiperCore, { Autoplay } from 'swiper';
 import { useRouter } from 'next/router';
 import { RootState } from 'store';
 import { useSelector } from 'react-redux';
-import { Project } from '@/apis/project/getProjectList';
+import { useGetProjects } from '@/apis/useGetProjects';
 
-interface MainControllerProps {
-  projectList: Project[];
-}
+const MainController = () => {
+  const { data, isLoading, error } = useGetProjects();
 
-const MainController = ({ projectList }: MainControllerProps) => {
   // Swiper setting
   SwiperCore.use([Autoplay]);
   const router = useRouter();
@@ -38,7 +36,7 @@ const MainController = ({ projectList }: MainControllerProps) => {
   }, [router, isLoggedIn]);
 
   const props: MainViewProps = {
-    projectList,
+    projects: data,
     createForm,
     handleRouteProjectDetail,
   };
