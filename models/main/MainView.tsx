@@ -10,7 +10,7 @@ import LottieAnimation from 'components/commons/lottie';
 import BlockPost from 'components/commons/post/block';
 import Grid from '@mui/material/Grid';
 import Filter from 'components/commons/filter';
-import { Project } from '@/apis/project/getProjectList';
+import { Project } from '@/apis/useGetProjects';
 import {
   Container,
   CustomSwiper,
