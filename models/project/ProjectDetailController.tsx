@@ -1,16 +1,23 @@
 import React from 'react';
 import ProjectDetailView, { ProjectDetailViewProps } from './ProjectDetailView';
-import { GetProjectDetailAPIResData } from 'apis/project/getProjectDetail';
 import { changeDateFormat, dateFromNow } from '@/utils/changeDateFormat';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
+import { useGetProjectDetail } from '@/apis/useGetProjectDetail';
+import { useRouter } from 'next/router';
+import LoadingCircularProgress from '@/components/commons/loading';
 
-interface ProjectControllerProps {
-  data: GetProjectDetailAPIResData;
-}
-
-const ProjectDetailController = ({ data }: ProjectControllerProps) => {
+const ProjectDetailController = () => {
   const me = useSelector((state: RootState) => state.user.nickname);
+
+  const router = useRouter();
+  const postId = router.query.id;
+
+  const { data, isLoading, error } = useGetProjectDetail(postId as string);
+
+  if (!data) {
+    return <LoadingCircularProgress />;
+  }
 
   const props: ProjectDetailViewProps = {
     content: {
