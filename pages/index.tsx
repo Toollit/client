@@ -3,11 +3,14 @@ import { SWRConfig } from 'swr';
 import {
   GetProjectsAPIRes,
   getProjectsFetcher,
-  getProjectsAPI,
+  getProjectsAPIKey,
+  Project,
 } from '@/apis/useGetProjects';
 import MainController from 'models/main/MainController';
 interface PageProps {
-  fallback: GetProjectsAPIRes;
+  fallback: {
+    [getProjectsAPIKey: string]: Project[];
+  };
 }
 
 const Home: NextPage<PageProps> = ({ fallback }) => {
@@ -24,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       fallback: {
-        [getProjectsAPI]: projects,
+        [getProjectsAPIKey]: projects,
       },
     },
   };

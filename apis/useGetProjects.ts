@@ -17,15 +17,20 @@ export interface GetProjectsAPIRes {
   };
 }
 
-export const getProjectsAPI = '/api/post/projects';
+export const getProjectsAPIKey = '/api/post/projects';
 
 export const getProjectsFetcher = async () => {
-  const response = await serverInstance.get<GetProjectsAPIRes>(getProjectsAPI);
+  const response = await serverInstance.get<GetProjectsAPIRes>(
+    getProjectsAPIKey,
+  );
   return response.data.data.projects;
 };
 
 export const useGetProjects = () => {
-  const { data, isLoading, error } = useSWR(getProjectsAPI, getProjectsFetcher);
+  const { data, isLoading, error } = useSWR(
+    getProjectsAPIKey,
+    getProjectsFetcher,
+  );
 
   return {
     data,
