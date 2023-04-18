@@ -1,8 +1,8 @@
 import React from 'react';
-import SignupController from 'models/signup/SignupController';
+import SignUpController from '@/models/signUp/SignUpController';
 
-const Signup = () => {
-  return <SignupController />;
+const SignUp = () => {
+  return <SignUpController />;
 };
 
-export default Signup;
+export default SignUp;

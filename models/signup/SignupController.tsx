@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import JoinView, { JoinViewProps } from './SignupView';
+import SignUpView, { SignUpViewProps } from './SignUpView';
 import useNoSpaceInput from 'hooks/useNoSpaceInput';
 import { useDispatch } from 'react-redux';
-import { emailAuth } from 'features/signup';
+import { emailAuth } from '@/features/signUp';
 
-const JoinController = () => {
+const SignUpController = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -75,7 +75,7 @@ const JoinController = () => {
 
         dispatch(emailAuth(data));
 
-        router.push('/signup/emailAuth');
+        router.push('/signUp/emailAuth');
       }
     },
     [
@@ -109,7 +109,7 @@ const JoinController = () => {
     setFillFormComplete(isFormComplete);
   }, [email, password, passwordCheck]);
 
-  const props: JoinViewProps = {
+  const props: SignUpViewProps = {
     handleClose,
     email,
     onChangeEmail,
@@ -123,7 +123,7 @@ const JoinController = () => {
     fillFormComplete,
     handleSubmit,
   };
-  return <JoinView {...props} />;
+  return <SignUpView {...props} />;
 };
 
-export default JoinController;
+export default SignUpController;

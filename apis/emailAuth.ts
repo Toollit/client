@@ -15,6 +15,6 @@ export interface EmailAuthAPIRes {
 export const emailAuthAPI = async (
   data: EmailAuthAPIReq,
 ): Promise<EmailAuthAPIRes | undefined> => {
-  const response = await serverInstance.post('auth/email', data);
+  const response = await serverInstance.post('/api/auth/email', data);
   return response.data;
 };

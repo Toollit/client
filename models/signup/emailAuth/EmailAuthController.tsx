@@ -2,22 +2,21 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { RootState } from 'store';
-import axios from 'axios';
 import useNoSpaceInput from 'hooks/useNoSpaceInput';
 import EmailAuthView, { EmailAuthViewProps } from './EmailAuthView';
-import { resetAuth, updateAuthNums } from 'features/signup';
-import { emailAuthAPI } from 'apis/signup/emailAuth';
-import { signupAPI, SignupApiData } from 'apis/signup';
-import { AxiosErrorData } from 'apis/types';
+import { resetAuth, updateAuthNums } from '@/features/signUp';
+import { emailAuthAPI } from '@/apis/emailAuth';
+import { signUpAPI, SignUpData } from 'apis/signUp';
 import useTimer from '@/hooks/useTimer';
+import { errorMessage } from '@/apis/errorMessage';
 
 const EmailAuthController = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const email = useSelector((state: RootState) => state.signup.email);
-  const password = useSelector((state: RootState) => state.signup.password);
-  const authNums = useSelector((state: RootState) => state.signup.authNums);
+  const email = useSelector((state: RootState) => state.signUp.email);
+  const password = useSelector((state: RootState) => state.signUp.password);
+  const authNums = useSelector((state: RootState) => state.signUp.authNums);
 
   const [inputAuthNums, onChangeInputAuthNums] = useNoSpaceInput('');
   const [invalidAuthNumsError, setInvalidAuthNumsError] = useState(false);
@@ -28,7 +27,7 @@ const EmailAuthController = () => {
   });
 
   const handleClose = useCallback(() => {
-    router.replace('/signup');
+    router.replace('/signUp');
   }, [router]);
 
   const handleSubmit = useCallback(
@@ -41,8 +40,8 @@ const EmailAuthController = () => {
 
       if (inputAuthNums === authNums) {
         try {
-          const data: SignupApiData = { email, password, signupType: 'email' };
-          const response = await signupAPI(data);
+          const data: SignUpData = { email, password, signUpType: 'email' };
+          const response = await signUpAPI(data);
 
           if (response?.success) {
             alert('회원가입 완료. 환영합니다 🎉');
@@ -50,9 +49,7 @@ const EmailAuthController = () => {
             return router.replace('/');
           }
         } catch (error) {
-          if (axios.isAxiosError<AxiosErrorData>(error)) {
-            alert(error.response?.data.message);
-          }
+          errorMessage(error);
         }
       } else {
         if (authNums !== '') {
@@ -80,9 +77,7 @@ const EmailAuthController = () => {
         }
       })();
     } catch (error) {
-      if (axios.isAxiosError<AxiosErrorData>(error)) {
-        alert(error.response?.data.message);
-      }
+      errorMessage(error);
     }
 
     return () => {

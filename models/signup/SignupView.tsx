@@ -11,7 +11,7 @@ import {
   PrivacyPolicy,
 } from './styles';
 
-export interface JoinViewProps {
+export interface SignUpViewProps {
   handleClose: () => void;
   email: string | null;
   onChangeEmail: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -26,7 +26,7 @@ export interface JoinViewProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const JoinView = ({
+const SignUpView = ({
   handleClose,
   email,
   onChangeEmail,
@@ -39,7 +39,7 @@ const JoinView = ({
   passwordMismatchError,
   fillFormComplete,
   handleSubmit,
-}: JoinViewProps) => {
+}: SignUpViewProps) => {
   return (
     <AppLayout nav={false}>
       <Container>
@@ -104,4 +104,4 @@ const JoinView = ({
   );
 };
 
-export default JoinView;
+export default SignUpView;

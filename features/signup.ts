@@ -1,25 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-export interface SignupState {
+export interface SignUpState {
   email: string;
   password: string;
   authNums?: string;
 }
 
-const initialState: SignupState = {
+const initialState: SignUpState = {
   email: '',
   password: '',
   authNums: '',
 };
 
-const signupSlice = createSlice({
+const signUpSlice = createSlice({
   name: 'signup',
   initialState,
   reducers: {
     emailAuth: (
       state,
-      action: PayloadAction<Omit<SignupState, 'authNums'>>,
+      action: PayloadAction<Omit<SignUpState, 'authNums'>>,
     ) => {
       const { email, password } = action.payload;
       state.email = email;
@@ -27,7 +27,7 @@ const signupSlice = createSlice({
     },
     updateAuthNums: (
       state,
-      action: PayloadAction<Pick<SignupState, 'authNums'>>,
+      action: PayloadAction<Pick<SignUpState, 'authNums'>>,
     ) => {
       state.authNums = action.payload.authNums;
     },
@@ -40,6 +40,6 @@ const signupSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { emailAuth, updateAuthNums, resetAuth } = signupSlice.actions;
+export const { emailAuth, updateAuthNums, resetAuth } = signUpSlice.actions;
 
-export default signupSlice.reducer;
+export default signUpSlice.reducer;
