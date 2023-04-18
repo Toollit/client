@@ -3,9 +3,11 @@ import ProjectDetailView, { ProjectDetailViewProps } from './ProjectDetailView';
 import { changeDateFormat, dateFromNow } from '@/utils/changeDateFormat';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { useGetProjectDetail } from '@/apis/useGetProjectDetail';
 import { useRouter } from 'next/router';
 import LoadingCircularProgress from '@/components/commons/loading';
+import useSWR from 'swr';
+import { getProjectDetailFetcher } from '@/apis/getProjectDetailFetcher';
+import { GET_PROJECT_DETAIL_API_ENDPOINT } from '@/apis/keys';
 
 const ProjectDetailController = () => {
   const me = useSelector((state: RootState) => state.user.nickname);
@@ -13,7 +15,10 @@ const ProjectDetailController = () => {
   const router = useRouter();
   const postId = router.query.id;
 
-  const { data, isLoading, error } = useGetProjectDetail(postId as string);
+  const { data, isLoading, error } = useSWR(
+    GET_PROJECT_DETAIL_API_ENDPOINT + `/${postId}`,
+    getProjectDetailFetcher,
+  );
 
   if (!data) {
     return <LoadingCircularProgress />;

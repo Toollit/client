@@ -22,26 +22,7 @@ export interface GetProjectDetailAPIRes {
   data: ProjectDetail;
 }
 
-export const getProjectDetailAPIKey = (projectId: string) => {
-  return `/api/post/project/${projectId}`;
-};
-
-export const getProjectDetailFetcher = async (projectId: string) => {
-  const response = await serverInstance.get<GetProjectDetailAPIRes>(
-    `/api/post/project/${projectId}`,
-  );
+export const getProjectDetailFetcher = async (url: string) => {
+  const response = await serverInstance.get<GetProjectDetailAPIRes>(url);
   return response.data.data;
-};
-
-export const useGetProjectDetail = (projectId: string) => {
-  const { data, isLoading, error } = useSWR(
-    `/api/post/project/${projectId}`,
-    () => getProjectDetailFetcher(projectId),
-  );
-
-  return {
-    data,
-    isLoading,
-    error,
-  };
 };

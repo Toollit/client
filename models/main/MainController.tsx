@@ -4,10 +4,16 @@ import SwiperCore, { Autoplay } from 'swiper';
 import { useRouter } from 'next/router';
 import { RootState } from 'store';
 import { useSelector } from 'react-redux';
-import { useGetProjects } from '@/apis/useGetProjects';
+import useSWR from 'swr';
+import { getProjectsFetcher } from '@/apis/getProjectsFetcher';
+import { GET_PROJECTS_API_ENDPOINT } from '@/apis/keys';
+import LoadingCircularProgress from '@/components/commons/loading';
 
 const MainController = () => {
-  const { data, isLoading, error } = useGetProjects();
+  const { data, isLoading, error } = useSWR(
+    GET_PROJECTS_API_ENDPOINT,
+    getProjectsFetcher,
+  );
 
   // Swiper setting
   SwiperCore.use([Autoplay]);
@@ -34,6 +40,10 @@ const MainController = () => {
       router.push('/login');
     }
   }, [router, isLoggedIn]);
+
+  if (!data) {
+    return <LoadingCircularProgress />;
+  }
 
   const props: MainViewProps = {
     projects: data,
