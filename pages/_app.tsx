@@ -10,11 +10,20 @@ import { theme as MuiTheme } from 'styles/muiTheme';
 import useSWR from 'swr';
 import { AUTH_USER } from '@/apis/keys';
 import { authFetcher } from '@/apis/authFetcher';
+import { useRouter } from 'next/router';
 
 function MyApp({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest);
+  const router = useRouter();
 
-  useSWR(AUTH_USER, authFetcher);
+  const { data } = useSWR(AUTH_USER, authFetcher);
+
+  if (data?.message === 'needResetPassword') {
+    // prevent infinite routing loop
+    if (router.pathname !== '/resetPassword') {
+      router.replace('/resetPassword');
+    }
+  }
 
   return (
     <>
