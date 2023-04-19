@@ -12,7 +12,7 @@ export const uploadImageAPI = async (
   image: UploadImageAPIReq,
 ): Promise<UploadImageAPIRes | undefined> => {
   const response = await serverInstance.post(
-    'post/project/content/uploadImage',
+    '/api/post/project/content/uploadImage',
     image,
   );
   return response.data;

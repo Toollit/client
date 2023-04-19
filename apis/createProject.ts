@@ -23,6 +23,6 @@ export interface CreateProjectAPIRes {
 export const createProjectAPI = async (
   data: CreateProjectAPIReq,
 ): Promise<CreateProjectAPIRes | undefined> => {
-  const response = await serverInstance.post('post/project/create', data);
+  const response = await serverInstance.post('/api/post/project/create', data);
   return response.data;
 };

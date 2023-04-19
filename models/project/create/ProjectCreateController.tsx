@@ -1,9 +1,9 @@
 import React, { useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
 import ProjectCreateView, { ProjectCreateViewProps } from './ProjectCreateView';
-import { createProjectAPI } from '@/apis/project/createProject';
+import { createProjectAPI } from '@/apis/createProject';
 import useEditorContent from '@/hooks/useEditorContent';
-import { errorMessage } from '@/utils/errorMessage';
+import { errorMessage } from '@/apis/errorMessage';
 
 const ProjectCreateController = () => {
   const router = useRouter();

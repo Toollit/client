@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import path from 'path';
 import Label from '@/components/commons/label';
-import { uploadImageAPI } from '@/apis/project/uploadImage';
+import { uploadImageAPI } from '@/apis/uploadImage';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 import 'tui-color-picker/dist/tui-color-picker.css';
@@ -9,7 +9,7 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import fontSize from 'tui-editor-plugin-font-size';
 import 'tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css';
-import { errorMessage } from '@/utils/errorMessage';
+import { errorMessage } from '@/apis/errorMessage';
 import {
   TuiCustomGlobalStyles,
   TuiContainer,
