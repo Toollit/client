@@ -7,9 +7,14 @@ import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import EmotionTheme from 'styles/theme';
 import { theme as MuiTheme } from 'styles/muiTheme';
+import useSWR from 'swr';
+import { AUTH_USER } from '@/apis/keys';
+import { authFetcher } from '@/apis/authFetcher';
 
 function MyApp({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest);
+
+  useSWR(AUTH_USER, authFetcher);
 
   return (
     <>

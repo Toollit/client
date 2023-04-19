@@ -1,3 +1,5 @@
+export const AUTH_USER = '/api/auth/user';
+
 export const GET_PROJECTS_API_ENDPOINT = '/api/post/projects';
 
 /** 뒤에 /postId 를 전달해야한다. */

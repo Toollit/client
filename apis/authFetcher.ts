@@ -10,7 +10,7 @@ export interface AuthAPIRes {
   };
 }
 
-export const authAPI = async (): Promise<AuthAPIRes | undefined> => {
-  const response = await serverInstance.get('auth/user');
+export const authFetcher = async (url: string) => {
+  const response = await serverInstance.get<AuthAPIRes>(url);
   return response.data;
 };

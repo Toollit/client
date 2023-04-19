@@ -1,15 +1,14 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useSWRConfig } from 'swr';
 import LoginView, { LoginViewProps } from './LoginView';
-import { loginAPI } from 'apis/login';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'store';
-import { AxiosErrorData } from 'apis/types';
+import { emailLoginAPI } from '@/apis/emailLogin';
+import { errorMessage } from '@/apis/errorMessage';
+import { AUTH_USER } from '@/apis/keys';
 
 const LoginController = () => {
   const router = useRouter();
-  const isMobile = useSelector((state: RootState) => state.user.isMobile);
+  const { mutate } = useSWRConfig();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -41,9 +40,11 @@ const LoginController = () => {
       if (email && password) {
         const data = { email, password };
         try {
-          const response = await loginAPI(data);
+          const response = await emailLoginAPI(data);
 
           if (response?.success) {
+            mutate(AUTH_USER);
+
             if (response.message === 'needResetPassword') {
               return router.replace('/resetPassword');
             } else {
@@ -51,14 +52,12 @@ const LoginController = () => {
             }
           }
         } catch (error) {
-          if (axios.isAxiosError<AxiosErrorData>(error)) {
-            alert(error.response?.data.message);
-          }
+          errorMessage(error);
         }
       }
     },
 
-    [email, password, router],
+    [email, password, router, mutate],
   );
 
   const handleSocialLogin = useCallback(
@@ -83,7 +82,7 @@ const LoginController = () => {
 
   const handleEmail = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      let email = event.target.value;
+      const email = event.target.value;
 
       setEmail(email);
       setPassword('');
@@ -95,7 +94,7 @@ const LoginController = () => {
 
   const handlePassword = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      let password = event.target.value;
+      const password = event.target.value;
 
       setPassword(password);
 
@@ -109,7 +108,7 @@ const LoginController = () => {
   );
 
   const handleSignupRouting = useCallback(() => {
-    router.push('/signup');
+    router.push('/signUp');
   }, [router]);
 
   const handlePwInquiryRouting = useCallback(() => {
@@ -123,29 +122,28 @@ const LoginController = () => {
       alert(
         '로그인한 계정에 이메일 정보가 없습니다. 이메일 정보를 등록해주세요.',
       );
-      router.replace('/login');
+      router.replace('/login', undefined, { shallow: true });
     }
 
     if (duplicate === 'true') {
       alert('동일한 이메일로 가입된 사용자가 존재합니다.');
-      router.replace('/login');
+      router.replace('/login', undefined, { shallow: true });
     }
 
     if (error === 'true') {
       alert('문제가 발생했습니다. 잠시 후 다시 시도해 주세요.');
-      router.replace('/login');
+      router.replace('/login', undefined, { shallow: true });
     }
 
     if (firstTime === 'true') {
       setTimeout(() => {
         alert('회원가입 완료. 환영합니다 🎉');
       }, 1000);
-      router.replace('/');
+      router.replace('/', undefined, { shallow: true });
     }
   }, [router]);
 
   const props: LoginViewProps = {
-    isMobile,
     handleClose,
     handleSubmit,
     email,
