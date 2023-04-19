@@ -2,14 +2,18 @@ import React, { useCallback } from 'react';
 import MainView, { MainViewProps } from './MainView';
 import SwiperCore, { Autoplay } from 'swiper';
 import { useRouter } from 'next/router';
-import { RootState } from 'store';
-import { useSelector } from 'react-redux';
-import useSWR from 'swr';
 import { getProjectsFetcher } from '@/apis/getProjectsFetcher';
-import { GET_PROJECTS_API_ENDPOINT } from '@/apis/keys';
+import { AUTH_USER, GET_PROJECTS_API_ENDPOINT } from '@/apis/keys';
 import LoadingCircularProgress from '@/components/commons/loading';
+import useSWR, { useSWRConfig, Cache } from 'swr';
+import { AuthAPIRes } from '@/apis/authFetcher';
 
 const MainController = () => {
+  const router = useRouter();
+  const { cache }: { cache: Cache<AuthAPIRes> } = useSWRConfig();
+
+  const isLoggedIn = cache.get(AUTH_USER)?.data?.data?.nickname;
+
   const { data, isLoading, error } = useSWR(
     GET_PROJECTS_API_ENDPOINT,
     getProjectsFetcher,
@@ -17,8 +21,6 @@ const MainController = () => {
 
   // Swiper setting
   SwiperCore.use([Autoplay]);
-  const router = useRouter();
-  const isLoggedIn = useSelector((state: RootState) => state.user.nickname);
 
   const handleRouteProjectDetail = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
