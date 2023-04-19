@@ -12,6 +12,6 @@ export interface PwInquiryAPIRes {
 export const pwInquiryAPI = async (
   data: PwInquiryAPIReq,
 ): Promise<PwInquiryAPIRes | undefined> => {
-  const response = await serverInstance.post('user/pwInquiry', data);
+  const response = await serverInstance.post('/api/user/pwInquiry', data);
   return response.data;
 };

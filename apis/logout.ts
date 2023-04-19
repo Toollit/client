@@ -8,6 +8,6 @@ export interface LogoutAPIRes {
 }
 
 export const logoutAPI = async (): Promise<LogoutAPIRes | undefined> => {
-  const response = await serverInstance.post('user/logout');
+  const response = await serverInstance.post('/api/user/logout');
   return response.data;
 };

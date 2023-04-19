@@ -12,6 +12,6 @@ export interface ResetPasswordAPIRes {
 export const resetPasswordAPI = async (
   data: ResetPasswordAPIReq,
 ): Promise<ResetPasswordAPIRes | undefined> => {
-  const response = await serverInstance.post('user/resetpassword', data);
+  const response = await serverInstance.post('/api/user/resetpassword', data);
   return response.data;
 };
