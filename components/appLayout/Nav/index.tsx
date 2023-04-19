@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store';
+import { useSWRConfig, Cache } from 'swr';
+import { AuthAPIRes } from '@/apis/authFetcher';
 import { AccountCircleIcon, MenuIcons, SearchIcon } from 'assets/icons';
 import GetitLogo from 'assets/images/GetitLogo';
 import {
@@ -23,10 +23,15 @@ import {
   SearchInput,
   SearchRecommendation,
 } from './styles';
+import { AUTH_USER } from '@/apis/keys';
 
 const Nav = () => {
   const router = useRouter();
-  const isLoggedIn = useSelector((state: RootState) => state.user.nickname);
+
+  const { cache }: { cache: Cache<AuthAPIRes> } = useSWRConfig();
+
+  const isLoggedIn = cache.get(AUTH_USER)?.data?.data?.nickname;
+
   const [showSearch, setShowSearch] = useState(false);
 
   const handleClick = useCallback(
