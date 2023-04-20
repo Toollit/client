@@ -13,6 +13,9 @@ const styles = css`
     font-family: 'Noto Sans KR', sans-serif;
     height: 100%;
     overflow: hidden;
+    /* tap-highlight-color, touch-callout 속성은 모바일 환경에서만 적용됨 */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
   }
 
   body > div:first-of-type,
@@ -22,8 +25,11 @@ const styles = css`
   }
 
   a {
-    -webkit-tap-highlight-color: transparent;
     cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 
   ul {
@@ -32,8 +38,10 @@ const styles = css`
 
   button {
     cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 
   /* Google Fonts */
