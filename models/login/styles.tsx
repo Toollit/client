@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import { mediaQueryMobile } from '@/styles/mediaQuery';
 
 const Container = styled.div`
   position: relative;
@@ -19,9 +20,13 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   margin: auto auto;
-  min-width: 36.4rem;
-  max-width: 36.4rem;
-  padding: 0 3.2rem 4.8rem 3.2rem;
+  width: calc(100vw - 6rem);
+
+  ${mediaQueryMobile} {
+    min-width: 36.4rem;
+    max-width: 36.4rem;
+    padding: 0 3.2rem 4.8rem 3.2rem;
+  }
 `;
 
 const InputContainer = styled.div<{ show: boolean }>`
@@ -38,12 +43,13 @@ const InputContainer = styled.div<{ show: boolean }>`
 `;
 
 const PasswordInput = styled.input`
-  border: 1px solid #cfd9de;
+  border: 1px solid ${(props) => props.theme.colors.border.base};
   height: 5rem;
   border-radius: 0.4rem;
   padding: 0 1rem;
   font-size: 1.6rem;
-  margin-bottom: 2rem;
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
 
   position: absolute;
   width: 100%;
@@ -51,7 +57,7 @@ const PasswordInput = styled.input`
 
   &:focus {
     border-style: solid;
-    border-color: #4dd290;
+    border-color: ${(props) => props.theme.colors.theme};
     outline-style: none;
   }
 
@@ -69,12 +75,12 @@ const PasswordInput = styled.input`
 `;
 
 const SignInBtn = styled.div`
-  color: #767678;
+  color: ${(props) => props.theme.colors.text.gray};
   font-size: 1.5rem;
 `;
 
 const SignInAccent = styled.span`
-  color: #4dd290;
+  color: ${(props) => props.theme.colors.theme};
   font-weight: 500;
   cursor: pointer;
 `;

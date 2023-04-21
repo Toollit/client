@@ -24,7 +24,7 @@ export interface LoginViewProps {
   passwordInputRef: React.RefObject<HTMLInputElement>;
   showPasswordInput: boolean;
   fillFormComplete: boolean;
-  handleSignupRouting: () => void;
+  handleSignUpRouting: () => void;
   handlePwInquiryRouting: () => void;
   handleSocialLogin: (event: React.MouseEvent) => void;
 }
@@ -39,7 +39,7 @@ const LoginView = ({
   passwordInputRef,
   showPasswordInput,
   fillFormComplete,
-  handleSignupRouting,
+  handleSignUpRouting,
   handlePwInquiryRouting,
   handleSocialLogin,
 }: LoginViewProps) => {
@@ -89,7 +89,7 @@ const LoginView = ({
           />
           <SignInBtn>
             계정이 없으신가요?{' '}
-            <SignInAccent onClick={handleSignupRouting}>가입하기</SignInAccent>
+            <SignInAccent onClick={handleSignUpRouting}>가입하기</SignInAccent>
           </SignInBtn>
         </Form>
       </Container>

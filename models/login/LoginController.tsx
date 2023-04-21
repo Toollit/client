@@ -61,20 +61,18 @@ const LoginController = () => {
   );
 
   const handleSocialLogin = useCallback(
-    async (event: React.MouseEvent) => {
+    (event: React.MouseEvent) => {
       if (!event) return;
       const target = event.currentTarget as HTMLDivElement;
       const loginType = target.getAttribute('data-name') as 'google' | 'github';
 
+      const baseURL = process.env.NEXT_PUBLIC_SERVER_API_HOST;
+
       if (loginType === 'google') {
-        return router.push(
-          `${process.env.NEXT_PUBLIC_SERVER_API_HOST}/user/login/google`,
-        );
+        return router.push(`${baseURL}/api/user/login/google`);
       }
       if (loginType === 'github') {
-        return router.push(
-          `${process.env.NEXT_PUBLIC_SERVER_API_HOST}/user/login/github`,
-        );
+        return router.push(`${baseURL}/api/user/login/github`);
       }
     },
     [router],
@@ -107,7 +105,7 @@ const LoginController = () => {
     [],
   );
 
-  const handleSignupRouting = useCallback(() => {
+  const handleSignUpRouting = useCallback(() => {
     router.push('/signUp');
   }, [router]);
 
@@ -153,7 +151,7 @@ const LoginController = () => {
     passwordInputRef,
     showPasswordInput,
     fillFormComplete,
-    handleSignupRouting,
+    handleSignUpRouting,
     handlePwInquiryRouting,
     handleSocialLogin,
   };
