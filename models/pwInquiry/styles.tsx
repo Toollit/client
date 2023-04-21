@@ -1,3 +1,4 @@
+import { mediaQueryMobile } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 
 const Container = styled.div`
@@ -18,61 +19,37 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   margin: auto auto;
-  min-width: 36.4rem;
-  max-width: 36.4rem;
-  padding: 0 3.2rem 4.8rem 3.2rem;
-`;
+  width: calc(100vw - 6rem);
 
-const TitleContainer = styled.div`
-  height: 7.2rem;
-  margin-bottom: 2rem;
-`;
-
-const Title = styled.h1`
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  width: 100%;
-  font-size: ${(props) => props.theme.fontSizes.xxxlarge};
-  line-height: 3.2rem;
+  ${mediaQueryMobile} {
+    min-width: 36.4rem;
+    max-width: 36.4rem;
+    padding: 0 3.2rem 4.8rem 3.2rem;
+  }
 `;
 
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  height: 8.5rem;
 `;
 
 const ErrorMessage = styled.div`
   font-size: 1.4rem;
-  color: #e5503c;
+  color: ${(props) => props.theme.colors.error};
   position: absolute;
   bottom: 0;
   left: 0;
 `;
 
-const EmailInput = styled.input`
-  border: 1px solid rgb(207, 217, 222);
-  height: 5rem;
-  border-radius: 0.4rem;
-  padding: 0 1rem;
-  font-size: 1.6rem;
-  margin-bottom: 2rem;
-  z-index: 10;
-
-  &:focus {
-    border-style: solid;
-    border-color: #4dd290;
-    outline-style: none;
-  }
-`;
-
 const SignInBtn = styled.div`
-  color: #536471;
+  color: ${(props) => props.theme.colors.text.gray};
   font-size: 1.5rem;
 `;
 
 const SignInAccent = styled.span`
-  color: #4dd290;
+  color: ${(props) => props.theme.colors.theme};
   font-weight: 500;
   cursor: pointer;
 `;
@@ -80,10 +57,7 @@ const SignInAccent = styled.span`
 export {
   Container,
   Form,
-  TitleContainer,
-  Title,
   InputContainer,
-  EmailInput,
   SignInBtn,
   SignInAccent,
   ErrorMessage,

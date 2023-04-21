@@ -1,10 +1,9 @@
-import { pwInquiryAPI } from 'apis/pwInquiry';
-import { AxiosErrorData } from 'apis/types';
-import axios from 'axios';
+import { pwInquiryAPI } from '@/apis/pwInquiry';
 import useNoSpaceInput from 'hooks/useNoSpaceInput';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import PwInquiryView, { PwInquiryViewProps } from './PwInquiryView';
+import { errorMessage } from '@/apis/errorMessage';
 
 const PwInquiryController = () => {
   const router = useRouter();
@@ -32,7 +31,7 @@ const PwInquiryController = () => {
       const isValidEmail = checkEmailFormatValidate();
 
       if (!email) {
-        return;
+        return setEmailInvalidError(true);
       }
 
       if (!isValidEmail) {
@@ -47,16 +46,14 @@ const PwInquiryController = () => {
           router.push('/login');
         }
       } catch (error) {
-        if (axios.isAxiosError<AxiosErrorData>(error)) {
-          alert(error.response?.data.message);
-        }
+        errorMessage(error);
       }
     },
     [email, router, checkEmailFormatValidate],
   );
 
-  const handleSignup = useCallback(() => {
-    router.push('/signup');
+  const handleSignUp = useCallback(() => {
+    router.push('/signUp');
   }, [router]);
 
   // input 입력시 에러 제거
@@ -70,7 +67,7 @@ const PwInquiryController = () => {
     onChangeEmail,
     emailInvalidError,
     handleSubmit,
-    handleSignup,
+    handleSignUp,
   };
   return <PwInquiryView {...props} />;
 };

@@ -1,13 +1,12 @@
 import React from 'react';
 import AppLayout from 'components/appLayout';
 import { CloseBtn, SubmitBtn } from 'components/commons/button';
+import Title from '@/components/commons/title';
+import Input from '@/components/commons/input';
 import {
   Container,
   Form,
-  TitleContainer,
-  Title,
   InputContainer,
-  EmailInput,
   SignInBtn,
   SignInAccent,
   ErrorMessage,
@@ -19,7 +18,7 @@ export interface PwInquiryViewProps {
   onChangeEmail: (event: React.ChangeEvent<HTMLInputElement>) => void;
   emailInvalidError: boolean;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  handleSignup: () => void;
+  handleSignUp: () => void;
 }
 
 const PwInquiryView = ({
@@ -28,19 +27,17 @@ const PwInquiryView = ({
   onChangeEmail,
   emailInvalidError,
   handleSubmit,
-  handleSignup,
+  handleSignUp,
 }: PwInquiryViewProps) => {
   return (
     <AppLayout nav={false}>
       <Container>
         <CloseBtn onClick={handleClose} />
+
         <Form onSubmit={handleSubmit}>
-          <TitleContainer>
-            <Title>Getit 계정 찾기</Title>
-          </TitleContainer>
+          <Title text='Getit 계정 찾기' />
           <InputContainer>
-            <EmailInput
-              type='text'
+            <Input
               placeholder='이메일 주소를 입력해주세요.'
               onChange={onChangeEmail}
               value={email as string}
@@ -53,7 +50,7 @@ const PwInquiryView = ({
           <SubmitBtn text='확인' />
           <SignInBtn>
             계정이 없으신가요?{' '}
-            <SignInAccent onClick={handleSignup}>가입하기</SignInAccent>
+            <SignInAccent onClick={handleSignUp}>가입하기</SignInAccent>
           </SignInBtn>
         </Form>
       </Container>
