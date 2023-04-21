@@ -49,6 +49,10 @@ const styles = css`
     user-select: none;
   }
 
+  input {
+    border-radius: 0;
+  }
+
   /* Google Fonts */
   @font-face {
     font-family: 'Noto Sans KR';
