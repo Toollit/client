@@ -36,13 +36,13 @@ import {
 
 export interface MainViewProps {
   projects: Project[] | undefined;
-  createForm: () => void;
+  createProject: () => void;
   handleRouteProjectDetail: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const MainView = ({
   projects,
-  createForm,
+  createProject,
   handleRouteProjectDetail,
 }: MainViewProps) => {
   return (
@@ -120,7 +120,9 @@ const MainView = ({
           <PostFilterContainer>
             <Filter />
           </PostFilterContainer>
-          <PostWriteButton onClick={createForm}>프로젝트 생성</PostWriteButton>
+          <PostWriteButton onClick={createProject}>
+            프로젝트 생성
+          </PostWriteButton>
         </PostWriteFilterContainer>
 
         <PostContainer>

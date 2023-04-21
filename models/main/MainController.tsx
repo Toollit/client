@@ -7,6 +7,7 @@ import { AUTH_USER, GET_PROJECTS_API_ENDPOINT } from '@/apis/keys';
 import LoadingCircularProgress from '@/components/commons/loading';
 import useSWR, { useSWRConfig, Cache } from 'swr';
 import { AuthAPIRes } from '@/apis/authFetcher';
+import { errorMessage } from '@/apis/errorMessage';
 
 const MainController = () => {
   const router = useRouter();
@@ -14,9 +15,15 @@ const MainController = () => {
 
   const isLoggedIn = cache.get(AUTH_USER)?.data?.data?.nickname;
 
-  const { data, isLoading, error } = useSWR(
+  const { data: projects } = useSWR(
     GET_PROJECTS_API_ENDPOINT,
     getProjectsFetcher,
+    {
+      errorRetryCount: 0,
+      onError(err, key, config) {
+        errorMessage(err);
+      },
+    },
   );
 
   // Swiper setting
@@ -34,7 +41,7 @@ const MainController = () => {
     [router],
   );
 
-  const createForm = useCallback(() => {
+  const createProject = useCallback(() => {
     if (isLoggedIn) {
       router.push('/project/create');
     } else {
@@ -43,13 +50,13 @@ const MainController = () => {
     }
   }, [router, isLoggedIn]);
 
-  if (!data) {
+  if (!projects) {
     return <LoadingCircularProgress />;
   }
 
   const props: MainViewProps = {
-    projects: data,
-    createForm,
+    projects,
+    createProject,
     handleRouteProjectDetail,
   };
 
