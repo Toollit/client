@@ -21,14 +21,14 @@ const NavList = styled.ul`
   width: 100%;
 `;
 
-const LeftNavContainer = styled.li`
+const ColumnLeftContainer = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
   padding-left: 0.8rem;
 `;
 
-const RightNavContainer = styled.li`
+const ColumnRightContainer = styled.li`
   ul {
     display: flex;
     height: 100%;
@@ -48,11 +48,7 @@ const LogoText = styled.div`
   padding: 0rem 0.4rem;
 `;
 
-const IconContainer = styled.li`
-  cursor: pointer;
-`;
-
-const IconContent = styled.div`
+const IconContainer = styled.div`
   padding: 0 0.8rem;
   height: 100%;
   display: flex;
@@ -61,81 +57,13 @@ const IconContent = styled.div`
   align-items: center;
 `;
 
-// search
-const SearchBoxPositionContainer = styled.div`
-  position: absolute;
-  z-index: 10;
-  top: 0;
-  left: 0;
-  margin-top: 4.4rem;
-  width: 100%;
-  height: calc(100%-4.4rem); // scroll prevent
-  background-color: transparent;
-`;
-
-const SearchBoxContainer = styled.div`
-  background-color: #fff;
-  height: 36rem;
-`;
-
-const SearchBox = styled.div`
-  height: 100%;
-  max-width: 102.4rem;
-  width: 100%;
-  margin: 0 auto;
-  padding: 3.2rem 2.2rem 8rem 2.2rem;
-`;
-
-const SearchBoxIconInputPositionContainer = styled.div`
-  position: relative;
-`;
-
-const SearchIconContainer = styled.div`
-  position: absolute;
-  top: 1rem;
-  left: 0.5rem;
-  bottom: 0;
-`;
-
-const SearchInput = styled.input`
-  height: 4.4rem;
-  border: none;
-  font-size: 2.4rem;
-  color: #000;
-  width: 100%;
-  padding: 0 3.4rem;
-  font-weight: 600;
-
-  &:focus {
-    outline: none;
-    border-bottom: 1px solid #e8e8ed;
-  }
-`;
-
-const SearchRecommendation = styled.div`
-  margin-top: 4.9rem;
-  font-size: 1.7rem;
-  color: #86868b;
-`;
-
-// TODO 추후 배경 블러 처리
-// saturate 180% blur 20px
-
 export {
   NavContainer,
-  LeftNavContainer,
-  RightNavContainer,
+  ColumnLeftContainer,
+  ColumnRightContainer,
   Content,
   NavList,
-  IconContainer,
   StyledLink,
   LogoText,
-  IconContent,
-  SearchBoxPositionContainer,
-  SearchBoxContainer,
-  SearchBox,
-  SearchBoxIconInputPositionContainer,
-  SearchIconContainer,
-  SearchInput,
-  SearchRecommendation,
+  IconContainer,
 };
