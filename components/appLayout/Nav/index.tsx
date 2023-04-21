@@ -63,7 +63,7 @@ const Nav = () => {
       <Content>
         <NavList>
           <LeftNavContainer>
-            <Link href={process.env.NEXT_PUBLIC_CLIENT_HOST} passHref>
+            <Link href='/' passHref>
               <StyledLink>
                 <GetitLogo />
                 <LogoText>Getit</LogoText>
