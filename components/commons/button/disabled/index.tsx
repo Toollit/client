@@ -3,13 +3,14 @@ import { Button, Text, ContentContainer } from './styles';
 
 interface DisabledBtnProps {
   text: string;
+  color?: 'black' | 'gray' | 'white';
 }
 
-const DisabledBtn = ({ text }: DisabledBtnProps) => {
+const DisabledBtn = ({ text, color = 'white' }: DisabledBtnProps) => {
   return (
     <Button>
       <ContentContainer>
-        <Text color={'white'}>{text}</Text>
+        <Text color={color}>{text}</Text>
       </ContentContainer>
     </Button>
   );

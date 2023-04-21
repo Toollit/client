@@ -3,12 +3,13 @@ import { Button, Text } from './styles';
 
 interface SubmitBtnProps {
   text: string;
+  color?: 'black' | 'gray' | 'white';
 }
 
-const SubmitBtn = ({ text }: SubmitBtnProps) => {
+const SubmitBtn = ({ text, color = 'white' }: SubmitBtnProps) => {
   return (
     <Button>
-      <Text color={'white'}>{text}</Text>
+      <Text color={color}>{text}</Text>
     </Button>
   );
 };

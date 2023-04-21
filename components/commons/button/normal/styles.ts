@@ -2,12 +2,11 @@ import { mediaQueryTablet } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 
 const Button = styled.div`
-  max-width: 30rem;
-  width: 100%;
   font-size: ${(props) => props.theme.fontSizes.base};
   font-weight: 400;
   border: 1px solid ${(props) => props.theme.colors.border.base};
-  margin-bottom: 2rem;
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
   border-radius: 25rem;
   height: 4rem;
   cursor: pointer;

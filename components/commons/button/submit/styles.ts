@@ -1,13 +1,15 @@
 import styled from '@emotion/styled';
 
 const Button = styled.button`
-  background-color: ${(props) => props.theme.colors.theme};
-  margin-bottom: 2rem;
-  border-radius: 25rem;
-  height: 4rem;
+  font-size: ${(props) => props.theme.fontSizes.base};
   font-weight: 600;
-  letter-spacing: 0.025rem;
   border-style: none;
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
+  border-radius: 25rem;
+  width: 100%;
+  height: 4rem;
+  background-color: ${(props) => props.theme.colors.theme};
 
   :active {
     background-color: ${(props) => props.theme.colors.button.activeGreen};
