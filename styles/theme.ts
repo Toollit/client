@@ -47,7 +47,7 @@ const colors = {
   white: '#ffffff',
   lightGray: '#f2f2f2',
   gray: '#767678',
-
+  error: '#e5503c',
   developer: '#4dd290',
   designer: '#ffb65a',
   pm: '#fc9557',
