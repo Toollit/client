@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
 import { useSWRConfig, Cache } from 'swr';
 import { AuthAPIRes } from '@/apis/authFetcher';
 import { AccountCircleIcon, MenuIcons, SearchIcon } from '@/assets/icons';
 import GetitLogo from '@/assets/images/GetitLogo';
 import { AUTH_USER } from '@/apis/keys';
+import SearchDrawer from '@/components/commons/drawer/search';
+import { useDispatch } from 'react-redux';
 import {
   NavContainer,
   Content,
@@ -14,11 +16,18 @@ import {
   LogoText,
   ColumnRightContainer,
   StyledLink,
+  SearchDrawerBtn,
 } from './styles';
+import { openDrawer } from '@/features/drawer';
 
 const Nav = () => {
+  const dispatch = useDispatch();
   const { cache }: { cache: Cache<AuthAPIRes> } = useSWRConfig();
   const isLoggedIn = cache.get(AUTH_USER)?.data?.data?.nickname;
+
+  const handleSearchDrawer = useCallback(() => {
+    dispatch(openDrawer({ type: 'search' }));
+  }, [dispatch]);
 
   return (
     <>
@@ -36,15 +45,11 @@ const Nav = () => {
 
             <ColumnRightContainer>
               <ul>
-                <li>
-                  <Link href='/search'>
-                    <a>
-                      <IconContainer>
-                        <SearchIcon />
-                      </IconContainer>
-                    </a>
-                  </Link>
-                </li>
+                <SearchDrawerBtn onClick={handleSearchDrawer}>
+                  <IconContainer>
+                    <SearchIcon />
+                  </IconContainer>
+                </SearchDrawerBtn>
                 <li>
                   <Link href={isLoggedIn ? '/profile' : '/login'}>
                     <a>
@@ -68,6 +73,7 @@ const Nav = () => {
           </NavList>
         </Content>
       </NavContainer>
+      <SearchDrawer />
     </>
   );
 };

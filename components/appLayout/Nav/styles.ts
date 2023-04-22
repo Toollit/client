@@ -57,6 +57,10 @@ const IconContainer = styled.div`
   align-items: center;
 `;
 
+const SearchDrawerBtn = styled.li`
+  cursor: pointer;
+`;
+
 export {
   NavContainer,
   ColumnLeftContainer,
@@ -66,4 +70,5 @@ export {
   StyledLink,
   LogoText,
   IconContainer,
+  SearchDrawerBtn,
 };
