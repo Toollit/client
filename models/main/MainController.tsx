@@ -19,6 +19,7 @@ const MainController = () => {
     GET_PROJECTS_API_ENDPOINT,
     getProjectsFetcher,
     {
+      revalidateOnMount: false,
       errorRetryCount: 0,
       onError(err, key, config) {
         errorMessage(err);
