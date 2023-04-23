@@ -2,7 +2,8 @@ import styled from '@emotion/styled';
 
 const DividerContainer = styled.div`
   display: flex;
-  margin-bottom: 2rem;
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
 `;
 
 const LineWithText = styled.div`
