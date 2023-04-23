@@ -2,7 +2,7 @@ import React from 'react';
 import project3 from 'public/static/images/project3.jpg';
 import BookmarkIcon from '@/assets/icons/BookmarkIcon';
 import ViewIcon from '@/assets/icons/ViewIcon';
-import { Project } from '@/apis/project/getProjectList';
+import { Project } from '@/apis/getProjectsFetcher';
 import Hashtag from '@/components/commons/hashtag';
 import {
   Container,
@@ -46,15 +46,6 @@ const BlockPost = ({ content, onClick }: BlockPostProps) => {
         {content.memberTypes.map((type, index) => {
           return (
             <RecruitmentType key={type + index} type={type}>
-              {/* <div>
-                {(type === 'developer' && 'Dev') ||
-                  (type === 'designer' && 'Design') ||
-                  (type === 'pm'
-                    ? type.toUpperCase()
-                    : type.charAt(0).toUpperCase() + type.slice(1)) ||
-                  (type === 'anyone' && 'Any')}
-              </div> */}
-
               {type === 'pm'
                 ? type.toUpperCase()
                 : type.charAt(0).toUpperCase() + type.slice(1)}
