@@ -32,7 +32,7 @@ const Form = styled.form`
 const InputContainer = styled.div<{ show: boolean }>`
   display: flex;
   flex-direction: column;
-  height: 7rem;
+  height: 8.5rem;
   position: relative;
 
   ${(props) =>
@@ -45,7 +45,7 @@ const InputContainer = styled.div<{ show: boolean }>`
 const PasswordInput = styled.input`
   border: 1px solid ${(props) => props.theme.colors.border.base};
   height: 5rem;
-  border-radius: 0.4rem;
+  border-radius: ${(props) => props.theme.borderRadius.sharp};
   padding: 0 1rem;
   font-size: 1.6rem;
   margin-top: 1.2rem;
