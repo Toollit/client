@@ -8,6 +8,7 @@ import LoadingCircularProgress from '@/components/commons/loading';
 import useSWR from 'swr';
 import { getProjectDetailFetcher } from '@/apis/getProjectDetailFetcher';
 import { GET_PROJECT_DETAIL_API_ENDPOINT } from '@/apis/keys';
+import { errorMessage } from '@/apis/errorMessage';
 
 const ProjectDetailController = () => {
   const me = useSelector((state: RootState) => state.user.nickname);
@@ -18,7 +19,14 @@ const ProjectDetailController = () => {
   const { data, isLoading, error } = useSWR(
     GET_PROJECT_DETAIL_API_ENDPOINT + `/${postId}`,
     getProjectDetailFetcher,
-    { revalidateOnMount: false, revalidateOnFocus: false },
+    {
+      revalidateOnMount: false,
+      revalidateOnFocus: false,
+      errorRetryCount: 0,
+      onError(err, key, config) {
+        errorMessage(err);
+      },
+    },
   );
 
   if (!data) {
