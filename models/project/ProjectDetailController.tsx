@@ -18,6 +18,7 @@ const ProjectDetailController = () => {
   const { data, isLoading, error } = useSWR(
     GET_PROJECT_DETAIL_API_ENDPOINT + `/${postId}`,
     getProjectDetailFetcher,
+    { revalidateOnMount: false, revalidateOnFocus: false },
   );
 
   if (!data) {
