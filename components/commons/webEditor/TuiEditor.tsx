@@ -16,6 +16,7 @@ import {
   TitleInputContainer,
   TitleInput,
 } from './TuiEditorStyles';
+import { ProjectDetail } from '@/apis/getProjectDetailFetcher';
 
 interface TuiEditorProps {
   titleRef: React.RefObject<HTMLInputElement>;
@@ -23,16 +24,19 @@ interface TuiEditorProps {
   setUploadImageUrls: React.Dispatch<
     React.SetStateAction<{ url: string; fileSize: number }[]>
   >;
+  content?: ProjectDetail;
 }
 /**
  * @param titleRef - 제목 값을 받아오기 위한 ref
  * @param editorRef - Tui Editor 컨텐츠 값을 받아오기 위한 ref
- * @param setUploadImageUrls - 게시글 작성중 업로드된 모든 사진 목록을 배열로 저장한다. 작성중 수정으로인해 삭제된 이미지를 s3에서 삭제하기 위해서 저장
+ * @param setUploadImageUrls - 게시글 작성중 업로드된 모든 사진 목록을 배열로 저장한다. 작성중 수정으로인해 삭제된
+ * @param content - 수정할 게시글 컨텐츠. modify 주소에서만 가져온다.
  */
 const TuiEditor = ({
   titleRef,
   editorRef,
   setUploadImageUrls,
+  content,
 }: TuiEditorProps) => {
   useEffect(() => {
     if (editorRef.current) {
@@ -110,12 +114,17 @@ const TuiEditor = ({
       <TuiContainer>
         <TitleInputContainer>
           <Label htmlFor='title' text='제목' />
-          <TitleInput name='title' ref={titleRef} />
+          <TitleInput
+            name='title'
+            ref={titleRef}
+            defaultValue={content ? content.content.title : ''}
+          />
         </TitleInputContainer>
         <br />
 
         <Label htmlFor='content' text='내용' />
         <Editor
+          initialValue={content ? content.content.contentHTML : ''}
           height='50rem'
           initialEditType='wysiwyg'
           useCommandShortcut={true}

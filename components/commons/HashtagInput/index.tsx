@@ -1,4 +1,4 @@
-import React, { useState, useCallback, MouseEvent } from 'react';
+import React, { useState, useCallback, MouseEvent, useEffect } from 'react';
 import { CloseIcon } from '@/assets/icons';
 import {
   HashtagsContainer,
@@ -6,15 +6,18 @@ import {
   DeleteButton,
   Hashtag,
 } from './styles';
+import { ProjectDetail } from '@/apis/getProjectDetailFetcher';
 
 interface HashtagInputProps {
   hashtagRef: React.MutableRefObject<string[]>;
+  content?: ProjectDetail;
 }
 
 /**
  * @props hashtagRef - hashtags 값들을 가져오기 위한 ref
+ * @props content - 수정할 게시글 컨텐츠. modify 주소에서만 가져온다.
  */
-const HashtagInput = ({ hashtagRef }: HashtagInputProps) => {
+const HashtagInput = ({ hashtagRef, content }: HashtagInputProps) => {
   const [hashtags, setHashtags] = useState<Array<string>>([]);
   const [hashtag, setHashtag] = useState('');
 
@@ -62,6 +65,13 @@ const HashtagInput = ({ hashtagRef }: HashtagInputProps) => {
     },
     [hashtags],
   );
+
+  useEffect(() => {
+    const hashtags = content?.content.hashtags;
+    if (hashtags) {
+      setHashtags([...hashtags]);
+    }
+  }, [content]);
 
   return (
     <>
