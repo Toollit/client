@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import DeleteIcon from '@/assets/icons/DeleteIcon';
 import EditIcon from '@/assets/icons/EditIcon';
 import MoreIcon from '@/assets/icons/MoreIcon';
 import { Button, MoreMenu, Item, ItemContainer } from './styles';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 
 interface MoreProps {
   isMine: boolean;
@@ -12,14 +14,60 @@ interface MoreProps {
  * @props isMine - 게시글 작성자와 로그인한 사용자의 일치여부 확인
  */
 const More = ({ isMine }: MoreProps) => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
+
+  const postInfo = useCallback(() => {
+    const boardType = router.asPath.split('/').find((str) => {
+      switch (str) {
+        case 'project':
+          return 'project';
+        case 'free':
+          return 'free';
+        case 'question':
+          return 'question';
+        default:
+          break;
+      }
+    });
+
+    const postId = router.query.id;
+
+    return {
+      boardType,
+      postId,
+    };
+  }, [router]);
+
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+    },
+    [],
+  );
+
+  const handleClose = useCallback(() => {
     setAnchorEl(null);
-  };
+  }, []);
+
+  const handleModify = useCallback(() => {
+    window.open(`/project/${postInfo().postId}/modify`);
+
+    setAnchorEl(null);
+  }, [postInfo]);
+
+  const handleDelete = useCallback(() => {
+    console.log('handleDelete');
+    setAnchorEl(null);
+  }, []);
+
+  const handleReport = useCallback(() => {
+    console.log('handleReport');
+    setAnchorEl(null);
+  }, []);
 
   return (
     <div>
@@ -29,7 +77,7 @@ const More = ({ isMine }: MoreProps) => {
       <MoreMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {isMine ? (
           <div>
-            <Item onClick={handleClose}>
+            <Item onClick={handleModify}>
               <ItemContainer>
                 <div>
                   <EditIcon />
@@ -37,7 +85,7 @@ const More = ({ isMine }: MoreProps) => {
                 <div>수정</div>
               </ItemContainer>
             </Item>
-            <Item onClick={handleClose}>
+            <Item onClick={handleDelete}>
               <ItemContainer>
                 <div>
                   <DeleteIcon />
@@ -48,7 +96,7 @@ const More = ({ isMine }: MoreProps) => {
           </div>
         ) : (
           <div>
-            <Item onClick={handleClose}>신고</Item>
+            <Item onClick={handleReport}>신고</Item>
           </div>
         )}
       </MoreMenu>

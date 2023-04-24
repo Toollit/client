@@ -192,7 +192,7 @@ const ShareButton = styled.button`
   }
 `;
 
-const MoreButton = styled.button`
+const MoreButton = styled.div`
   display: flex;
   padding: 0.4rem 1rem;
   align-items: center;
@@ -202,6 +202,8 @@ const MoreButton = styled.button`
   color: #536471;
   font-size: 1.2rem;
   font-weight: 500;
+
+  cursor: pointer;
 
   ${mediaQueryMobile} {
     font-size: 1.4rem;
