@@ -1,22 +1,24 @@
 import React from 'react';
 import ProjectDetailView, { ProjectDetailViewProps } from './ProjectDetailView';
 import { changeDateFormat, dateFromNow } from '@/utils/changeDateFormat';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
 import { useRouter } from 'next/router';
 import LoadingCircularProgress from '@/components/commons/loading';
 import useSWR from 'swr';
 import { getProjectDetailFetcher } from '@/apis/getProjectDetailFetcher';
-import { GET_PROJECT_DETAIL_API_ENDPOINT } from '@/apis/keys';
+import { AUTH_USER, GET_PROJECT_DETAIL_API_ENDPOINT } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
+import { useSWRConfig, Cache } from 'swr';
+import { AuthAPIRes } from '@/apis/authFetcher';
 
 const ProjectDetailController = () => {
-  const me = useSelector((state: RootState) => state.user.nickname);
+  const { cache }: { cache: Cache<AuthAPIRes> } = useSWRConfig();
+
+  const loginUserNickname = cache.get(AUTH_USER)?.data?.data?.nickname;
 
   const router = useRouter();
   const postId = router.query.id;
 
-  const { data, isLoading, error } = useSWR(
+  const { data: projectDetail } = useSWR(
     GET_PROJECT_DETAIL_API_ENDPOINT + `/${postId}`,
     getProjectDetailFetcher,
     {
@@ -29,37 +31,37 @@ const ProjectDetailController = () => {
     },
   );
 
-  if (!data) {
+  if (!projectDetail) {
     return <LoadingCircularProgress />;
   }
 
   const props: ProjectDetailViewProps = {
     content: {
-      title: data.content.title,
+      title: projectDetail.content.title,
       createdAt: changeDateFormat({
-        date: data.content.createdAt,
+        date: projectDetail.content.createdAt,
         format: 'YYMMDD_hhmm',
       }),
       updatedAt: changeDateFormat({
-        date: data.content.updatedAt,
+        date: projectDetail.content.updatedAt,
         format: 'YYMMDD_hhmm',
       }),
-      views: data.content.views,
-      nickname: data.writer.nickname,
-      contentHTML: data.content.contentHTML,
-      contentMarkdown: data.content.contentMarkdown,
-      hashtags: data.content.hashtags,
-      memberTypes: data.content.memberTypes,
+      views: projectDetail.content.views,
+      nickname: projectDetail.writer.nickname,
+      contentHTML: projectDetail.content.contentHTML,
+      contentMarkdown: projectDetail.content.contentMarkdown,
+      hashtags: projectDetail.content.hashtags,
+      memberTypes: projectDetail.content.memberTypes,
     },
     writer: {
-      nickname: data.writer.nickname,
+      nickname: projectDetail.writer.nickname,
       lastLoginAt: dateFromNow({
-        date: data.writer.lastLoginAt,
+        date: projectDetail.writer.lastLoginAt,
       }),
-      profileImage: data.writer.profileImage,
+      profileImage: projectDetail.writer.profileImage,
     },
     me: {
-      nickname: me ? me : null,
+      nickname: loginUserNickname ? loginUserNickname : null,
     },
 
     //TODO comment 추가하기

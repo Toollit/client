@@ -5,7 +5,7 @@ export interface AuthAPIReq {}
 export interface AuthAPIRes {
   success: boolean;
   message: null | string;
-  data: {
+  data?: {
     nickname: string;
   };
 }
