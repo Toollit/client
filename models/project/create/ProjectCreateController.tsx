@@ -1,12 +1,19 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import ProjectCreateView, { ProjectCreateViewProps } from './ProjectCreateView';
 import { createProjectAPI } from '@/apis/createProject';
 import useEditorContent from '@/hooks/useEditorContent';
 import { errorMessage } from '@/apis/errorMessage';
+import { useSWRConfig, Cache } from 'swr';
+import { AuthAPIRes } from '@/apis/authFetcher';
+import { AUTH_USER } from '@/apis/keys';
 
 const ProjectCreateController = () => {
   const router = useRouter();
+
+  const { cache }: { cache: Cache<AuthAPIRes> } = useSWRConfig();
+
+  const isLoggedIn = cache.get(AUTH_USER)?.data?.data?.nickname;
 
   const { titleRef, editorRef, setUploadImageUrls, handleData } =
     useEditorContent();
@@ -50,10 +57,8 @@ const ProjectCreateController = () => {
         const response = await createProjectAPI(projectData);
 
         if (response?.success) {
-          router.push({
-            pathname: `/project/[id]`,
-            query: { id: response.data.projectId },
-          });
+          const projectId = response.data.projectId;
+          router.push(`/project/${projectId}`);
         }
       } catch (error) {
         errorMessage(error);
@@ -61,6 +66,12 @@ const ProjectCreateController = () => {
     },
     [router, editorRef, titleRef, handleData, hashtagRef],
   );
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push('/login');
+    }
+  }, [router, isLoggedIn]);
 
   const props: ProjectCreateViewProps = {
     handleSubmit,
