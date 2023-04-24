@@ -14,7 +14,7 @@ const ModifyController = () => {
 
   // TODO free, question swr 작성하기
   const { data: projectDetail, mutate: projectDetailRevalidation } = useSWR(
-    GET_PROJECT_DETAIL_API_ENDPOINT + `/${postId}`,
+    postId ? GET_PROJECT_DETAIL_API_ENDPOINT + `/${postId}` : null,
     getProjectDetailFetcher,
     {
       revalidateOnMount: false,
