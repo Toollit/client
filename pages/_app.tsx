@@ -11,6 +11,7 @@ import useSWR from 'swr';
 import { AUTH_USER } from '@/apis/keys';
 import { authFetcher } from '@/apis/authFetcher';
 import { useRouter } from 'next/router';
+import { SWRDevTools } from 'swr-devtools';
 
 function MyApp({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest);
@@ -40,7 +41,9 @@ function MyApp({ Component, ...rest }: AppProps) {
         <EmotionThemeProvider theme={EmotionTheme}>
           <GlobalStyles />
           <Provider store={store}>
-            <Component {...props.pageProps} />
+            <SWRDevTools>
+              <Component {...props.pageProps} />
+            </SWRDevTools>
           </Provider>
         </EmotionThemeProvider>
       </MuiThemeProvider>
