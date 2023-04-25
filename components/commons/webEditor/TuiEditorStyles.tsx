@@ -19,16 +19,74 @@ const TuiCustomStyles = css`
   }
 
   .toastui-editor-popup {
+    margin-left: auto !important;
+  }
+
+  .toastui-editor-popup-add-heading {
+    ${mediaQueryMobile} {
+      width: auto !important;
+      left: 30px !important;
+      top: 39px !important;
+    }
+  }
+
+  .toastui-editor-popup-color {
+    ${mediaQueryMobile} {
+      width: auto !important;
+      right: initial !important;
+      margin-left: initial !important;
+      left: 156px !important;
+      max-width: initial !important;
+    }
+  }
+
+  .toastui-editor-popup-add-table {
+    ${mediaQueryMobile} {
+      width: auto !important;
+      left: 651px !important;
+      top: 39px !important;
+    }
+  }
+
+  .toastui-editor-popup-add-image {
     width: 100% !important;
     right: 0 !important;
-    margin-left: auto !important;
+    left: 0 !important;
+    max-width: 100% !important;
+
+    .toastui-editor-popup-body {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+
+    ${mediaQueryMobile} {
+      width: 100% !important;
+      max-width: 39.8rem !important;
+      /* left: 562px !important; */
+      /* top: 39px !important; */
+      left: auto !important;
+      /* top: auto !important; */
+
+      .toastui-editor-popup-body {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+      }
+    }
+  }
+
+  .toastui-editor-popup-add-link {
+    width: 100% !important;
+    right: 0 !important;
     left: 0 !important;
     max-width: 100% !important;
 
     ${mediaQueryMobile} {
       width: 100% !important;
-      left: auto !important;
       max-width: 39.8rem !important;
+      /* left: 517px !important; */
+      /* top: 39px !important; */
+      left: auto !important;
+      /* top: auto !important; */
     }
   }
 
@@ -42,7 +100,18 @@ const TuiCustomStyles = css`
         position: absolute;
         left: 0;
         top: 5.2rem;
-        content: '• 10MB 미만 3개까지, JPG/JPEG/PNG 형식만 등록 할 수 있습니다.';
+        content: '• 10MB 미만 3개까지, JPG/JPEG/PNG 형식만 가능';
+      }
+    }
+
+    div[aria-label='Insert image'] {
+      div[aria-label='File'] {
+        color: #555 !important;
+        border-bottom: 2px solid #555 !important;
+      }
+
+      div[aria-label='URL'] {
+        display: none !important;
       }
     }
   }
