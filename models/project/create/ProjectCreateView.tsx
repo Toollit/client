@@ -24,9 +24,6 @@ export interface ProjectCreateViewProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   titleRef: React.RefObject<HTMLInputElement>;
   editorRef: React.RefObject<Editor>;
-  setUploadImageUrls: React.Dispatch<
-    React.SetStateAction<{ url: string; fileSize: number }[]>
-  >;
   hashtagRef: React.MutableRefObject<string[]>;
   memberTypeRef: React.MutableRefObject<
     ('developer' | 'designer' | 'pm' | 'anyone')[]
@@ -37,7 +34,6 @@ const ProjectCreateView = ({
   handleSubmit,
   titleRef,
   editorRef,
-  setUploadImageUrls,
   hashtagRef,
   memberTypeRef,
 }: ProjectCreateViewProps) => {
@@ -45,11 +41,7 @@ const ProjectCreateView = ({
     <AppLayout nav={true}>
       <Container onSubmit={handleSubmit}>
         <Title text='프로젝트 생성' />
-        <DynamicTuiEditor
-          titleRef={titleRef}
-          editorRef={editorRef}
-          setUploadImageUrls={setUploadImageUrls}
-        />
+        <DynamicTuiEditor titleRef={titleRef} editorRef={editorRef} />
 
         <HashtagInputContainer>
           <HashtagInput hashtagRef={hashtagRef} />

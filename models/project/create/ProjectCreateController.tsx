@@ -15,8 +15,7 @@ const ProjectCreateController = () => {
 
   const isLoggedIn = cache.get(AUTH_USER)?.data?.data?.nickname;
 
-  const { titleRef, editorRef, setUploadImageUrls, handleData } =
-    useEditorContent();
+  const { titleRef, editorRef, handleData } = useEditorContent();
 
   const hashtagRef = useRef<string[]>([]);
   const memberTypeRef = useRef<('developer' | 'designer' | 'pm' | 'anyone')[]>(
@@ -67,17 +66,10 @@ const ProjectCreateController = () => {
     [router, editorRef, titleRef, handleData, hashtagRef],
   );
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.push('/login');
-    }
-  }, [router, isLoggedIn]);
-
   const props: ProjectCreateViewProps = {
     handleSubmit,
     titleRef,
     editorRef,
-    setUploadImageUrls,
     hashtagRef,
     memberTypeRef,
   };

@@ -24,23 +24,14 @@ type HookMapKey = keyof HookMap;
 interface TuiEditorProps {
   titleRef: React.RefObject<HTMLInputElement>;
   editorRef: React.RefObject<Editor>;
-  setUploadImageUrls: React.Dispatch<
-    React.SetStateAction<{ url: string; fileSize: number }[]>
-  >;
   content?: ProjectDetail;
 }
 /**
  * @param titleRef - 제목 값을 받아오기 위한 ref
  * @param editorRef - Tui Editor 컨텐츠 값을 받아오기 위한 ref
- * @param setUploadImageUrls - 게시글 작성중 업로드된 모든 사진 목록을 배열로 저장한다. 작성중 수정으로인해 삭제된
  * @param content - 수정할 게시글 컨텐츠. modify 주소에서만 가져온다.
  */
-const TuiEditor = ({
-  titleRef,
-  editorRef,
-  setUploadImageUrls,
-  content,
-}: TuiEditorProps) => {
+const TuiEditor = ({ titleRef, editorRef, content }: TuiEditorProps) => {
   useEffect(() => {
     if (editorRef.current) {
       editorRef.current.getRootElement().classList.add('Tui-editor-root');
@@ -102,7 +93,9 @@ const TuiEditor = ({
           'toastuiAltTextInput',
         ) as HTMLInputElement;
 
-        return imageDescriptionInput.value ?? altText;
+        return imageDescriptionInput.value !== ''
+          ? imageDescriptionInput.value
+          : altText;
       } catch (error) {
         // imageDescriptionInput null error
         return altText;
@@ -123,18 +116,11 @@ const TuiEditor = ({
 
     const imageUrl = await uploadImage(blob);
 
-    if (imageUrl) {
-      setUploadImageUrls((prev) => [
-        ...prev,
-        { url: imageUrl, fileSize: blob.size },
-      ]);
-    } else {
-      return;
-    }
-
     const altText = handleAltText(blob);
 
-    callback(imageUrl, altText);
+    if (imageUrl && altText) {
+      callback(imageUrl, altText);
+    }
 
     return false;
   };
@@ -148,7 +134,7 @@ const TuiEditor = ({
           <TitleInput
             name='title'
             ref={titleRef}
-            defaultValue={content ? content.content.title : ''}
+            defaultValue={content?.content.title ?? ''}
           />
         </TitleInputContainer>
         <br />

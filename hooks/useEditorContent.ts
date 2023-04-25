@@ -4,14 +4,9 @@ import { Editor } from '@toast-ui/react-editor';
 /**
  * @returns titleRef - 제목 값을 가져오는 ref. title input에 전달
  * @returns editorRef - 컨텐츠 값을 가져오는 ref. Editor 컴포넌트에 전달
- * @returns setUploadImageUrls - 게시글을 작성하면서 업로드되는 모든 사진 목록
  * @returns handleData - titleRef, editorRef를 받아와 데이터를 가공하는 함수
  */
 const useEditorContent = () => {
-  const [uploadImageUrls, setUploadImageUrls] = useState<
-    { url: string; fileSize: number }[]
-  >([]);
-
   const titleRef = useRef<HTMLInputElement>(null);
   const editorRef = useRef<Editor>(null);
 
@@ -48,14 +43,6 @@ const useEditorContent = () => {
         }
       }
 
-      // 컨텐츠를 작성하면서 s3에 업로드된 모든 사진 url과 현재 컨텐츠에 존재하는 모든 url(수정 및 삭제를 통해 지우고 남은 사진들)을 비교해서 남아있는 img url 값들만 담는다.
-      const filteredImageUrls = uploadImageUrls.reduce<string[]>((acc, cur) => {
-        if (contentIncludeImgUrls.includes(cur.url)) {
-          acc.push(cur.url);
-        }
-        return acc;
-      }, []);
-
       if (!titleRef.current?.value) {
         alert('제목을 입력해주세요.');
         return null;
@@ -71,7 +58,7 @@ const useEditorContent = () => {
         return null;
       }
 
-      if (filteredImageUrls.length > 3) {
+      if (contentIncludeImgUrls.length > 3) {
         alert('이미지는 10MB 미만 3개까지 등록 할 수 있습니다.');
         return null;
       }
@@ -80,13 +67,13 @@ const useEditorContent = () => {
         title: titleRef.current.value,
         contentHTML,
         contentMarkdown,
-        imageUrls: filteredImageUrls,
+        imageUrls: contentIncludeImgUrls,
       };
     },
-    [uploadImageUrls],
+    [],
   );
 
-  return { titleRef, editorRef, setUploadImageUrls, handleData };
+  return { titleRef, editorRef, handleData };
 };
 
 export default useEditorContent;
