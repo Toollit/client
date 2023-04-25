@@ -4,10 +4,7 @@ export interface CreateProjectAPIReq {
   title: string;
   contentHTML: string;
   contentMarkdown: string;
-  imageUrls: {
-    saveImgUrls: string[];
-    removeImgUrls: string[];
-  };
+  imageUrls: string[];
   hashtags: string[];
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
 }
