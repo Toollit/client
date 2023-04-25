@@ -1,11 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 
-interface FilteredImageUrlsReduceReturnType {
-  saveImgUrls: string[];
-  removeImgUrls: string[];
-}
-
 /**
  * @returns titleRef - 제목 값을 가져오는 ref. title input에 전달
  * @returns editorRef - 컨텐츠 값을 가져오는 ref. Editor 컴포넌트에 전달
@@ -31,7 +26,7 @@ const useEditorContent = () => {
       const contentHTML = editorInstance?.getHTML();
       const contentMarkdown = editorInstance?.getMarkdown();
 
-      // img 태그 추출
+      // 본문에서 img 태그 추출
       const imgRegex = /<img[^>]+src="([^">]+)"/gi;
       const imgElement = contentHTML?.match(imgRegex);
 
@@ -53,31 +48,13 @@ const useEditorContent = () => {
         }
       }
 
-      const filteredImageUrls =
-        uploadImageUrls.reduce<FilteredImageUrlsReduceReturnType>(
-          (acc, cur) => {
-            if (contentIncludeImgUrls.includes(cur.url)) {
-              acc.saveImgUrls.push(cur.url);
-            } else {
-              acc.removeImgUrls.push(cur.url);
-            }
-            return acc;
-          },
-          { saveImgUrls: [], removeImgUrls: [] },
-        );
-
-      // const filterdFileSize =
-      //   uploadImageUrls.reduce<FilteredImageFileSizeReduceReturnType>(
-      //     (acc, cur) => {
-      //       if (contentIncludeImgUrls.includes(cur.url)) {
-      //         acc = acc + cur.fileSize;
-      //       } else {
-      //         acc = acc - cur.fileSize;
-      //       }
-      //       return acc;
-      //     },
-      //     0,
-      //   );
+      // 컨텐츠를 작성하면서 s3에 업로드된 모든 사진 url과 현재 컨텐츠에 존재하는 모든 url(수정 및 삭제를 통해 지우고 남은 사진들)을 비교해서 남아있는 img url 값들만 담는다.
+      const filteredImageUrls = uploadImageUrls.reduce<string[]>((acc, cur) => {
+        if (contentIncludeImgUrls.includes(cur.url)) {
+          acc.push(cur.url);
+        }
+        return acc;
+      }, []);
 
       if (!titleRef.current?.value) {
         alert('제목을 입력해주세요.');
@@ -94,7 +71,7 @@ const useEditorContent = () => {
         return null;
       }
 
-      if (filteredImageUrls.saveImgUrls.length > 3) {
+      if (filteredImageUrls.length > 3) {
         alert('이미지는 10MB 미만 3개까지 등록 할 수 있습니다.');
         return null;
       }
@@ -103,10 +80,7 @@ const useEditorContent = () => {
         title: titleRef.current.value,
         contentHTML,
         contentMarkdown,
-        imageUrls: {
-          saveImgUrls: filteredImageUrls.saveImgUrls,
-          removeImgUrls: filteredImageUrls.removeImgUrls,
-        },
+        imageUrls: filteredImageUrls,
       };
     },
     [uploadImageUrls],
