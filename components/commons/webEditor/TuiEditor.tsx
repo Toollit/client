@@ -4,19 +4,22 @@ import Label from '@/components/commons/label';
 import { uploadImageAPI } from '@/apis/uploadImage';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
+import { HookMap } from '@toast-ui/editor';
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import fontSize from 'tui-editor-plugin-font-size';
 import 'tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css';
 import { errorMessage } from '@/apis/errorMessage';
+import { ProjectDetail } from '@/apis/getProjectDetailFetcher';
 import {
   TuiCustomGlobalStyles,
   TuiContainer,
   TitleInputContainer,
   TitleInput,
 } from './TuiEditorStyles';
-import { ProjectDetail } from '@/apis/getProjectDetailFetcher';
+
+type HookMapKey = keyof HookMap;
 
 interface TuiEditorProps {
   titleRef: React.RefObject<HTMLInputElement>;
@@ -108,6 +111,34 @@ const TuiEditor = ({
     [createAltText],
   );
 
+  const handleAddImageBlobHook: HookMap[HookMapKey] = async (
+    blob,
+    callback,
+  ) => {
+    const isAppropriateFile = handleFilteringFile(blob);
+
+    if (!isAppropriateFile) {
+      return;
+    }
+
+    const imageUrl = await uploadImage(blob);
+
+    if (imageUrl) {
+      setUploadImageUrls((prev) => [
+        ...prev,
+        { url: imageUrl, fileSize: blob.size },
+      ]);
+    } else {
+      return;
+    }
+
+    const altText = handleAltText(blob);
+
+    callback(imageUrl, altText);
+
+    return false;
+  };
+
   return (
     <>
       <TuiCustomGlobalStyles />
@@ -124,7 +155,7 @@ const TuiEditor = ({
 
         <Label htmlFor='content' text='내용' />
         <Editor
-          initialValue={content ? content.content.contentHTML : ''}
+          initialValue={content?.content.contentHTML ?? ''}
           height='50rem'
           initialEditType='wysiwyg'
           useCommandShortcut={true}
@@ -132,30 +163,7 @@ const TuiEditor = ({
           language='ko-kr'
           plugins={[colorSyntax, fontSize]}
           hooks={{
-            addImageBlobHook: async (blob, callback) => {
-              const isAppropriateFile = handleFilteringFile(blob);
-
-              if (!isAppropriateFile) {
-                return;
-              }
-
-              const imageUrl = await uploadImage(blob);
-
-              if (imageUrl) {
-                setUploadImageUrls((prev) => [
-                  ...prev,
-                  { url: imageUrl, fileSize: blob.size },
-                ]);
-              } else {
-                return;
-              }
-
-              const altText = handleAltText(blob);
-
-              callback(imageUrl, altText);
-
-              return false;
-            },
+            addImageBlobHook: handleAddImageBlobHook,
           }}
         />
       </TuiContainer>
