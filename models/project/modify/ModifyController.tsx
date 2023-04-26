@@ -6,15 +6,18 @@ import { errorMessage } from '@/apis/errorMessage';
 import { GET_PROJECT_DETAIL_API_ENDPOINT } from '@/apis/keys';
 import { getProjectDetailFetcher } from '@/apis/getProjectDetailFetcher';
 import useEditorContent from '@/hooks/useEditorContent';
+import { updatePostAPI } from '@/apis/updatePost';
 
-const ModifyController = () => {
+interface ModifyControllerProps {
+  postId: string;
+}
+
+const ModifyController = ({ postId }: ModifyControllerProps) => {
   const router = useRouter();
-
-  const postId = router.query.id;
 
   // TODO free, question swr 작성하기
   const { data: projectDetail, mutate: projectDetailRevalidation } = useSWR(
-    postId ? GET_PROJECT_DETAIL_API_ENDPOINT + `/${postId}` : null,
+    GET_PROJECT_DETAIL_API_ENDPOINT + `/${postId}`,
     getProjectDetailFetcher,
     {
       revalidateOnMount: false,
@@ -26,8 +29,7 @@ const ModifyController = () => {
     },
   );
 
-  const { titleRef, editorRef, setUploadImageUrls, handleData } =
-    useEditorContent();
+  const { titleRef, editorRef, handleData } = useEditorContent();
 
   const hashtagRef = useRef<string[]>([]);
   const memberTypeRef = useRef<('developer' | 'designer' | 'pm' | 'anyone')[]>(
@@ -56,6 +58,7 @@ const ModifyController = () => {
       }
 
       const projectData = {
+        postId,
         title: data?.title,
         contentHTML: data?.contentHTML,
         contentMarkdown: data?.contentMarkdown,
@@ -64,21 +67,27 @@ const ModifyController = () => {
         memberTypes: memberTypeRef.current,
       };
 
-      // try {
-      //   // TODO 수정 api 생성하기
-      //   const response = await createProjectAPI(projectData);
+      try {
+        const response = await updatePostAPI('project', projectData);
 
-      //   if (response?.success) {
-      //     router.push({
-      //       pathname: `/project/[id]`,
-      //       query: { id: response.data.projectId },
-      //     });
-      //   }
-      // } catch (error) {
-      //   errorMessage(error);
-      // }
+        if (response?.success) {
+          const postId = response.data.postId;
+          router.push(`/project/${postId}`);
+          projectDetailRevalidation();
+        }
+      } catch (error) {
+        errorMessage(error);
+      }
     },
-    [router, editorRef, titleRef, handleData, hashtagRef],
+    [
+      router,
+      editorRef,
+      titleRef,
+      handleData,
+      hashtagRef,
+      postId,
+      projectDetailRevalidation,
+    ],
   );
 
   useEffect(() => {
@@ -104,7 +113,6 @@ const ModifyController = () => {
     handleSubmit,
     titleRef,
     editorRef,
-    setUploadImageUrls,
     hashtagRef,
     memberTypeRef,
     // TODO free, question 게시판 분기처리하기

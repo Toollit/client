@@ -25,9 +25,6 @@ export interface ModifyViewProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   titleRef: React.RefObject<HTMLInputElement>;
   editorRef: React.RefObject<Editor>;
-  setUploadImageUrls: React.Dispatch<
-    React.SetStateAction<{ url: string; fileSize: number }[]>
-  >;
   hashtagRef: React.MutableRefObject<string[]>;
   memberTypeRef: React.MutableRefObject<
     ('developer' | 'designer' | 'pm' | 'anyone')[]
@@ -39,7 +36,6 @@ const ModifyView = ({
   handleSubmit,
   titleRef,
   editorRef,
-  setUploadImageUrls,
   hashtagRef,
   memberTypeRef,
   content,
@@ -51,7 +47,6 @@ const ModifyView = ({
         <DynamicTuiEditor
           titleRef={titleRef}
           editorRef={editorRef}
-          setUploadImageUrls={setUploadImageUrls}
           content={content}
         />
 
