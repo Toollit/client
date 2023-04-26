@@ -134,14 +134,16 @@ const TuiEditor = ({ titleRef, editorRef, content }: TuiEditorProps) => {
           <TitleInput
             name='title'
             ref={titleRef}
-            defaultValue={content?.content.title ?? ''}
+            defaultValue={content?.content.title || ''}
           />
         </TitleInputContainer>
         <br />
 
         <Label htmlFor='content' text='내용' />
+        {/* Editor에 initialValue로 contentMarkdown 정보를 넘겨주어야 한다. 
+            contentHtml 전달 시 화면은 제대로 보이지만 수정시 또는 수정없이 그냥 다시 저장할때 markdown의 세세한 부분이 다르게 표기되어 제대로 적용되지 않는 문제가 발생한다. */}
         <Editor
-          initialValue={content?.content.contentHTML ?? ''}
+          initialValue={content?.content.contentMarkdown || ''}
           height='50rem'
           initialEditType='wysiwyg'
           useCommandShortcut={true}

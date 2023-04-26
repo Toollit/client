@@ -9,6 +9,9 @@ interface Props {
   content: string;
 }
 
+/**
+ * @props content - contendHtml 정보를 넘겨주어야 한다.
+ */
 const TuiViewer = ({ content = '' }: Props) => {
   return (
     <>
