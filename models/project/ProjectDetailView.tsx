@@ -49,7 +49,7 @@ interface Content {
   views: number;
   nickname: string;
   contentHTML: string;
-  contentMarkdown: string | null;
+  contentMarkdown: string;
   hashtags: string[];
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
 }
@@ -61,6 +61,7 @@ interface Writer {
 }
 
 export interface ProjectDetailViewProps {
+  isClientRendering: boolean;
   content: Content;
   writer: Writer;
   me: {
@@ -68,7 +69,12 @@ export interface ProjectDetailViewProps {
   };
 }
 
-const ProjectDetailView = ({ content, writer, me }: ProjectDetailViewProps) => {
+const ProjectDetailView = ({
+  isClientRendering,
+  content,
+  writer,
+  me,
+}: ProjectDetailViewProps) => {
   return (
     <AppLayout nav={true}>
       <Container>
@@ -102,7 +108,11 @@ const ProjectDetailView = ({ content, writer, me }: ProjectDetailViewProps) => {
                 </DateAndViewContainer>
               </ProjectContentTopContainer>
 
-              <DynamicTuiViewer content={content.contentHTML} />
+              {isClientRendering ? (
+                <DynamicTuiViewer content={content.contentHTML} />
+              ) : (
+                <p>{content.contentMarkdown}</p>
+              )}
 
               <ProjectContentBottomContainer>
                 <HashtagsContainer>

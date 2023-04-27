@@ -12,7 +12,7 @@ interface Props {
 /**
  * @props content - contendHtml 정보를 넘겨주어야 한다.
  */
-const TuiViewer = ({ content = '' }: Props) => {
+const TuiViewer = ({ content }: Props) => {
   return (
     <>
       {content && (

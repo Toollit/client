@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ProjectDetailView, { ProjectDetailViewProps } from './ProjectDetailView';
 import { changeDateFormat, dateFromNow } from '@/utils/changeDateFormat';
 import { useRouter } from 'next/router';
@@ -11,6 +11,12 @@ import { useSWRConfig, Cache } from 'swr';
 import { AuthAPIRes } from '@/apis/authFetcher';
 
 const ProjectDetailController = () => {
+  const [isClientRendering, setIsClientRendering] = useState(false);
+
+  useEffect(() => {
+    setIsClientRendering(true);
+  }, []);
+
   const { cache }: { cache: Cache<AuthAPIRes> } = useSWRConfig();
 
   const loginUserNickname = cache.get(AUTH_USER)?.data?.data?.nickname;
@@ -36,6 +42,7 @@ const ProjectDetailController = () => {
   }
 
   const props: ProjectDetailViewProps = {
+    isClientRendering,
     content: {
       title: projectDetail.content.title,
       createdAt: changeDateFormat({

@@ -6,7 +6,7 @@ export interface ProjectDetail {
   content: {
     title: string;
     contentHTML: string;
-    contentMarkdown: string | null;
+    contentMarkdown: string;
     views: number;
     createdAt: string;
     updatedAt: string | null;
