@@ -1,4 +1,3 @@
-import useSWR from 'swr';
 import { serverInstance } from './axios';
 
 export interface EmailLoginAPIReq {

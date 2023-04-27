@@ -1,6 +1,15 @@
 import styled from '@emotion/styled';
 import { mediaQueryMobile, mediaQueryTablet } from '@/styles/mediaQuery';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 102.4rem;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0rem 0.5rem;
+`;
+
 const ColumnContainer = styled.div`
   display: flex;
   flex-direction: column-reverse;
@@ -301,6 +310,7 @@ const TrendingPostsContainer = styled.div`
 `;
 
 export {
+  Container,
   ColumnContainer,
   ColumnLeftContainer,
   ColumnRightContainer,

@@ -1,7 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import Title from 'components/commons/title';
-import Container from '@/components/commons/container';
 import AppLayout from '@/components/appLayout';
 import { AccountCircleIcon } from '@/assets/icons';
 import ShareIcon from '@/assets/icons/ShareIcon';
@@ -9,6 +8,7 @@ import BookmarkIcon from '@/assets/icons/BookmarkIcon';
 import More from '@/components/commons/more';
 import Hashtag from '@/components/commons/hashtag';
 import {
+  Container,
   ColumnContainer,
   ColumnLeftContainer,
   ColumnRightContainer,
@@ -71,7 +71,7 @@ export interface ProjectDetailViewProps {
 const ProjectDetailView = ({ content, writer, me }: ProjectDetailViewProps) => {
   return (
     <AppLayout nav={true}>
-      <Container size='default'>
+      <Container>
         <ColumnContainer>
           <ColumnLeftContainer>
             <ProjectContentContainer>
