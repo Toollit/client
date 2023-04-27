@@ -12,7 +12,6 @@ const styles = css`
     font-size: 10px;
     font-family: 'Noto Sans KR', sans-serif;
     height: 100%;
-    overflow: hidden;
     /* tap-highlight-color, touch-callout 속성은 모바일 환경에서만 적용됨 */
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
