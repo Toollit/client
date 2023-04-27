@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import DeleteIcon from '@/assets/icons/DeleteIcon';
 import EditIcon from '@/assets/icons/EditIcon';
 import MoreIcon from '@/assets/icons/MoreIcon';
@@ -17,7 +17,7 @@ const More = ({ isMine }: MoreProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const postInfo = useCallback(() => {
@@ -72,7 +72,7 @@ const More = ({ isMine }: MoreProps) => {
   return (
     <div>
       <Button onClick={handleClick}>
-        <MoreIcon width={30} height={30} />
+        <MoreIcon width={40} height={30} />
       </Button>
       <MoreMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {isMine ? (

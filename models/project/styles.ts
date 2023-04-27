@@ -162,16 +162,6 @@ const BookmarkButton = styled.button`
   ${mediaQueryMobile} {
     font-size: 1.4rem;
   }
-
-  ${mediaQueryTablet} {
-    :hover {
-      background-color: ${(props) => props.theme.colors.button.hoverGray};
-    }
-
-    :active {
-      background-color: ${(props) => props.theme.colors.button.activeGray};
-    }
-  }
 `;
 
 const ShareButton = styled.button`
@@ -188,44 +178,6 @@ const ShareButton = styled.button`
 
   ${mediaQueryMobile} {
     font-size: 1.4rem;
-  }
-
-  ${mediaQueryTablet} {
-    :hover {
-      background-color: ${(props) => props.theme.colors.button.hoverGray};
-    }
-
-    :active {
-      background-color: ${(props) => props.theme.colors.button.activeGray};
-    }
-  }
-`;
-
-const MoreButton = styled.div`
-  display: flex;
-  padding: 0.4rem 1rem;
-  align-items: center;
-  border: none;
-  background-color: transparent;
-  border-radius: ${(props) => props.theme.borderRadius.sharp};
-  color: #536471;
-  font-size: 1.2rem;
-  font-weight: 500;
-
-  cursor: pointer;
-
-  ${mediaQueryMobile} {
-    font-size: 1.4rem;
-  }
-
-  ${mediaQueryTablet} {
-    :hover {
-      background-color: ${(props) => props.theme.colors.button.hoverGray};
-    }
-
-    :active {
-      background-color: ${(props) => props.theme.colors.button.activeGray};
-    }
   }
 `;
 
@@ -328,7 +280,7 @@ export {
   ButtonContainer,
   BookmarkButton,
   ShareButton,
-  MoreButton,
+  // MoreButton,
   WriterLastLoginAtContainer,
   ProfileImageContainer,
   WriterInfoContainer,

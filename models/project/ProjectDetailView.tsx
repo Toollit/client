@@ -5,7 +5,7 @@ import AppLayout from '@/components/appLayout';
 import { AccountCircleIcon } from '@/assets/icons';
 import ShareIcon from '@/assets/icons/ShareIcon';
 import BookmarkIcon from '@/assets/icons/BookmarkIcon';
-import More from '@/components/commons/more';
+import MoreButton from '@/components/commons/moreButton';
 import Hashtag from '@/components/commons/hashtag';
 import {
   Container,
@@ -26,7 +26,6 @@ import {
   ButtonContainer,
   BookmarkButton,
   ShareButton,
-  MoreButton,
   WriterInfoContainer,
   ProfileImageContainer,
   WriterLastLoginAtContainer,
@@ -131,9 +130,7 @@ const ProjectDetailView = ({
                     <ShareIcon />
                     <span>공유</span>
                   </ShareButton>
-                  <MoreButton>
-                    <More isMine={writer.nickname === me.nickname} />
-                  </MoreButton>
+                  <MoreButton isMine={writer.nickname === me.nickname} />
                 </ButtonContainer>
               </ProjectContentBottomContainer>
             </ProjectContentContainer>

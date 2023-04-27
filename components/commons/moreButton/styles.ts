@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 const Button = styled.button`
   border-style: none;
   background-color: transparent;
-  font-size: 1.5rem;
+  padding: 0rem 0.5rem;
 `;
 
 const MoreMenu = styled(Menu)`
