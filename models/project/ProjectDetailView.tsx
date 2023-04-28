@@ -98,7 +98,7 @@ const ProjectDetailView = ({
                 <DateAndViewContainer>
                   <Date>
                     <CreatedAt>작성일: {content.createdAt}</CreatedAt>
-                    {content.createdAt !== content.updatedAt && (
+                    {content.updatedAt !== '' && (
                       <UpdatedAt>수정됨: {content.updatedAt}</UpdatedAt>
                     )}
                   </Date>
