@@ -19,14 +19,14 @@ interface HashtagInputProps {
  */
 const HashtagInput = ({ hashtagRef, content }: HashtagInputProps) => {
   const [hashtags, setHashtags] = useState<Array<string>>([]);
-  const [hashtag, setHashtag] = useState('');
+  const [newHashtag, setNewHashtag] = useState('');
 
   hashtagRef.current = hashtags;
 
   const handleHashtag = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = event.currentTarget.value;
-      setHashtag(value);
+      setNewHashtag(value);
     },
     [],
   );
@@ -38,19 +38,25 @@ const HashtagInput = ({ hashtagRef, content }: HashtagInputProps) => {
 
         if (event.nativeEvent.isComposing) return;
 
-        if (hashtag.length < 1) {
+        if (newHashtag.length < 1) {
           return alert('한글자 이상 입력하세요.');
         }
 
-        if (hashtag.length > 20) {
+        if (newHashtag.length > 20) {
           return alert('20자 이하로 입력하세요.');
         }
 
-        setHashtags([...hashtags, `#${hashtag}`]);
-        setHashtag('');
+        const isExistedHashtag = hashtags.includes('#' + newHashtag);
+
+        if (isExistedHashtag) {
+          return alert('중복된 해시태그 입니다.');
+        }
+
+        setHashtags([...hashtags, `#${newHashtag}`]);
+        setNewHashtag('');
       }
     },
-    [hashtags, hashtag],
+    [hashtags, newHashtag],
   );
 
   const onDeleteHashtag = useCallback(
@@ -89,7 +95,7 @@ const HashtagInput = ({ hashtagRef, content }: HashtagInputProps) => {
         ))}
         <HashtagInputField
           onChange={handleHashtag}
-          value={hashtag}
+          value={newHashtag}
           placeholder='*Enter를 눌러 해시태그를 작성해 주세요.'
           onKeyDown={addHashtag}
         />
