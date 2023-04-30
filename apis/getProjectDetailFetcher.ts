@@ -22,7 +22,10 @@ export interface GetProjectDetailAPIRes {
   data: ProjectDetail;
 }
 
-export const getProjectDetailFetcher = async (url: string) => {
-  const response = await serverInstance.get<GetProjectDetailAPIRes>(url);
+export const getProjectDetailFetcher = async (url: string, config?: any) => {
+  const response = await serverInstance.get<GetProjectDetailAPIRes>(
+    url,
+    config ? config : {},
+  );
   return response.data.data;
 };

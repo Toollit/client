@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
-import ModifyController from '@/models/project/modify/ModifyController';
+import ModifyController from '@/models/modify/ModifyController';
 
 interface ModifyPageProps {
   postId: string;

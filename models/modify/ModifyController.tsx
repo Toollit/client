@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ModifyView, { ModifyViewProps } from './ModifyView';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
@@ -17,10 +17,17 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
 
   // TODO free, question swr 작성하기
   const { data: projectDetail, mutate: projectDetailRevalidation } = useSWR(
-    GET_PROJECT_DETAIL_API_ENDPOINT + `/${postId}`,
-    getProjectDetailFetcher,
+    [
+      GET_PROJECT_DETAIL_API_ENDPOINT + `/${postId}`,
+      {
+        headers: {
+          modify: true,
+        },
+      },
+    ],
+
+    ([url, config]) => getProjectDetailFetcher(url, config),
     {
-      revalidateOnMount: false,
       revalidateOnFocus: false,
       errorRetryCount: 0,
       onError(err, key, config) {
@@ -35,6 +42,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
   const memberTypeRef = useRef<('developer' | 'designer' | 'pm' | 'anyone')[]>(
     [],
   );
+  const [postType, setPostType] = useState<'project' | 'free' | 'question'>();
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -57,22 +65,34 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
         return alert('모집인원 타입을 하나 이상 선택하세요.');
       }
 
-      const projectData = {
+      console.log({ postType });
+
+      if (
+        postType === undefined &&
+        (postType !== 'project' || 'free' || 'question')
+      ) {
+        return;
+      }
+
+      const postData = {
+        postType,
         postId,
-        title: data?.title,
-        contentHTML: data?.contentHTML,
-        contentMarkdown: data?.contentMarkdown,
-        imageUrls: data?.imageUrls,
-        hashtags: hashtagRef.current,
-        memberTypes: memberTypeRef.current,
+        data: {
+          title: data?.title,
+          contentHTML: data?.contentHTML,
+          contentMarkdown: data?.contentMarkdown,
+          imageUrls: data?.imageUrls,
+          hashtags: hashtagRef.current,
+          memberTypes: memberTypeRef.current,
+        },
       };
 
       try {
-        const response = await updatePostAPI('project', projectData);
+        const response = await updatePostAPI(postData);
 
         if (response?.success) {
           const postId = response.data.postId;
-          router.push(`/project/${postId}`);
+          router.push(`/${postType}/${postId}`);
           projectDetailRevalidation();
         }
       } catch (error) {
@@ -85,29 +105,27 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
       titleRef,
       handleData,
       hashtagRef,
+      postType,
       postId,
       projectDetailRevalidation,
     ],
   );
 
   useEffect(() => {
-    const boardType = router.asPath.split('/').find((str) => {
-      switch (str) {
-        case 'project':
-          return 'project';
-        case 'free':
-          return 'free';
-        case 'question':
-          return 'question';
-        default:
-          break;
+    router.asPath.split('/').find((type) => {
+      if (type === 'project') {
+        return setPostType('project');
+      }
+
+      if (type === 'free') {
+        return setPostType('free');
+      }
+
+      if (type === 'question') {
+        return setPostType('question');
       }
     });
-
-    if (boardType === 'project') {
-      projectDetailRevalidation();
-    }
-  }, [router, projectDetailRevalidation]);
+  }, [router]);
 
   const props: ModifyViewProps = {
     handleSubmit,

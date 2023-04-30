@@ -1,13 +1,17 @@
 import { serverInstance } from 'apis/axios';
 
-export interface CreateProjectAPIReq {
-  postId: string;
+interface Project {
   title: string;
   contentHTML: string;
   contentMarkdown: string;
   imageUrls: string[];
   hashtags: string[];
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
+}
+export interface CreateProjectAPIReq {
+  postType: 'project' | 'free' | 'question';
+  postId: string;
+  data: Project;
 }
 
 export interface CreateProjectAPIRes {
@@ -19,12 +23,8 @@ export interface CreateProjectAPIRes {
 }
 
 export const updatePostAPI = async (
-  postType: 'project' | 'free' | 'question',
   data: CreateProjectAPIReq,
 ): Promise<CreateProjectAPIRes | undefined> => {
-  const response = await serverInstance.post(
-    `/api/post/${postType}/modify`,
-    data,
-  );
+  const response = await serverInstance.post(`/api/post/modify`, data);
   return response.data;
 };
