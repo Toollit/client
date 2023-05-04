@@ -4,11 +4,11 @@ import { CloseBtn, DisabledBtn } from 'components/commons/button';
 import { SubmitBtn } from 'components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
+import InputError from '@/components/commons/Error/InputError';
 import {
   Container,
   Form,
   InputContainer,
-  ErrorMessage,
   NoticeForSpam,
   Timer,
 } from './styles';
@@ -49,7 +49,7 @@ const EmailAuthView = ({
               focus={true}
             />
             {invalidAuthNumsError && (
-              <ErrorMessage>인증번호가 일치하지 않습니다.</ErrorMessage>
+              <InputError text='인증번호가 일치하지 않습니다.' />
             )}
             <Timer>인증기한 {timer}</Timer>
           </InputContainer>

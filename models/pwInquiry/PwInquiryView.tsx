@@ -3,13 +3,13 @@ import AppLayout from 'components/appLayout';
 import { CloseBtn, SubmitBtn } from 'components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
+import InputError from '@/components/commons/Error/InputError';
 import {
   Container,
   Form,
   InputContainer,
   SignInBtn,
   SignInAccent,
-  ErrorMessage,
 } from './styles';
 
 export interface PwInquiryViewProps {
@@ -44,7 +44,7 @@ const PwInquiryView = ({
               focus={true}
             />
             {emailInvalidError && (
-              <ErrorMessage>올바른 이메일을 입력해 주세요.</ErrorMessage>
+              <InputError text='올바른 이메일을 입력해 주세요.' />
             )}
           </InputContainer>
 

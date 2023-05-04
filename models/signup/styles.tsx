@@ -27,15 +27,6 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  width: 100%;
-`;
-
-const ErrorMessage = styled.div`
-  font-size: 1.4rem;
-  color: #e5503c;
-  position: absolute;
-  bottom: 0;
-  left: 0;
 `;
 
 const PrivacyPolicy = styled.div`
@@ -46,4 +37,4 @@ const PrivacyPolicy = styled.div`
   }
 `;
 
-export { Container, Form, InputContainer, ErrorMessage, PrivacyPolicy };
+export { Container, Form, InputContainer, PrivacyPolicy };

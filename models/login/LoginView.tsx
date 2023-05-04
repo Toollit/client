@@ -1,6 +1,10 @@
 import React from 'react';
-import AppLayout from 'components/appLayout';
-import { GoogleIcon, GithubIcon } from 'assets/icons';
+import AppLayout from '@/components/appLayout';
+import { GoogleIcon, GithubIcon } from '@/assets/icons';
+import { CloseBtn, NormalBtn, SubmitBtn } from '@/components/commons/button';
+import Title from '@/components/commons/title';
+import Divider from '@/components/commons/divider';
+import Input from '@/components/commons/input';
 import {
   Container,
   Form,
@@ -9,10 +13,6 @@ import {
   SignInBtn,
   SignInAccent,
 } from './styles';
-import { CloseBtn, NormalBtn, SubmitBtn } from 'components/commons/button';
-import Title from 'components/commons/title';
-import Divider from 'components/commons/divider';
-import Input from 'components/commons/input';
 
 export interface LoginViewProps {
   handleClose: () => void;
@@ -69,6 +69,7 @@ const LoginView = ({
               placeholder={'이메일 주소를 입력해주세요.'}
               onChange={handleEmail}
               value={email}
+              focus={true}
             />
             {showPasswordInput && (
               <PasswordInput

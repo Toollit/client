@@ -29,14 +29,6 @@ const InputContainer = styled.div`
   position: relative;
 `;
 
-const ErrorMessage = styled.div`
-  font-size: 1.4rem;
-  color: #e5503c;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-`;
-
 const NextBtn = styled.button`
   display: flex;
   justify-content: center;
@@ -72,14 +64,7 @@ const Timer = styled.div`
   position: absolute;
   right: 0;
   bottom: 0;
+  transform: translateY(0.8rem);
 `;
 
-export {
-  Container,
-  Form,
-  InputContainer,
-  ErrorMessage,
-  NextBtn,
-  NoticeForSpam,
-  Timer,
-};
+export { Container, Form, InputContainer, NextBtn, NoticeForSpam, Timer };

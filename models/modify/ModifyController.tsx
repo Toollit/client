@@ -65,8 +65,6 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
         return alert('모집인원 타입을 하나 이상 선택하세요.');
       }
 
-      console.log({ postType });
-
       if (
         postType === undefined &&
         (postType !== 'project' || 'free' || 'question')

@@ -35,14 +35,6 @@ const InputContainer = styled.div`
   height: 8.5rem;
 `;
 
-const ErrorMessage = styled.div`
-  font-size: 1.4rem;
-  color: ${(props) => props.theme.colors.error};
-  position: absolute;
-  bottom: 0;
-  left: 0;
-`;
-
 const SignInBtn = styled.div`
   color: ${(props) => props.theme.colors.text.gray};
   font-size: 1.5rem;
@@ -54,11 +46,4 @@ const SignInAccent = styled.span`
   cursor: pointer;
 `;
 
-export {
-  Container,
-  Form,
-  InputContainer,
-  SignInBtn,
-  SignInAccent,
-  ErrorMessage,
-};
+export { Container, Form, InputContainer, SignInBtn, SignInAccent };

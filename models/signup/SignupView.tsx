@@ -3,13 +3,8 @@ import AppLayout from 'components/appLayout';
 import { CloseBtn, DisabledBtn, SubmitBtn } from 'components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
-import {
-  Container,
-  Form,
-  InputContainer,
-  ErrorMessage,
-  PrivacyPolicy,
-} from './styles';
+import InputError from '@/components/commons/Error/InputError';
+import { Container, Form, InputContainer, PrivacyPolicy } from './styles';
 
 export interface SignUpViewProps {
   handleClose: () => void;
@@ -55,7 +50,7 @@ const SignUpView = ({
               focus={true}
             />
             {emailInvalidError && (
-              <ErrorMessage>올바른 이메일을 입력해 주세요.</ErrorMessage>
+              <InputError text='올바른 이메일을 입력해 주세요.' />
             )}
           </InputContainer>
           <InputContainer>
@@ -67,9 +62,7 @@ const SignUpView = ({
               focus={true}
             />
             {passwordRestrictionError && (
-              <ErrorMessage>
-                영문자, 숫자, 특수문자 조합 8 ~ 20자리
-              </ErrorMessage>
+              <InputError text='영문자, 숫자, 특수문자 조합 8 ~ 20자리' />
             )}
           </InputContainer>
           <InputContainer>
@@ -81,7 +74,7 @@ const SignUpView = ({
               focus={true}
             />
             {passwordMismatchError && (
-              <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+              <InputError text='비밀번호가 일치하지 않습니다.' />
             )}
           </InputContainer>
 

@@ -30,14 +30,6 @@ const InputContainer = styled.div`
   width: 100%;
 `;
 
-const ErrorMessage = styled.div`
-  font-size: 1.4rem;
-  color: #e5503c;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-`;
-
 const Notice = styled.div`
   font-size: 1.2rem;
   margin-bottom: 2rem;
@@ -47,4 +39,4 @@ const Notice = styled.div`
   }
 `;
 
-export { Container, Form, InputContainer, ErrorMessage, Notice };
+export { Container, Form, InputContainer, Notice };
