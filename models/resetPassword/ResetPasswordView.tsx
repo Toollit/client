@@ -1,8 +1,8 @@
 import React from 'react';
 import AppLayout from 'components/appLayout';
 import { NormalBtn, SubmitBtn } from 'components/commons/button';
-import Title from 'components/commons/title';
-import Input from 'components/commons/input';
+import Title from '@/components/commons/title';
+import Input from '@/components/commons/input';
 import {
   Container,
   Form,
@@ -46,6 +46,7 @@ const ResetPasswordView = ({
               placeholder={'새로운 비밀번호'}
               onChange={onChangeNewPassword}
               value={newPassword as string}
+              focus={true}
             />
             {newPasswordInvalidError && (
               <ErrorMessage>
@@ -60,6 +61,7 @@ const ResetPasswordView = ({
               placeholder={'새로운 비밀번호 확인'}
               onChange={onChangeDoubleCheckPassword}
               value={doubleCheckPassword as string}
+              focus={true}
             />
             {doubleCheckPasswordError && (
               <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>

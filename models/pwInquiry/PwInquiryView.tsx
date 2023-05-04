@@ -41,6 +41,7 @@ const PwInquiryView = ({
               placeholder='이메일 주소를 입력해주세요.'
               onChange={onChangeEmail}
               value={email as string}
+              focus={true}
             />
             {emailInvalidError && (
               <ErrorMessage>올바른 이메일을 입력해 주세요.</ErrorMessage>

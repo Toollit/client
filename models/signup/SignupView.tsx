@@ -1,8 +1,8 @@
 import React from 'react';
 import AppLayout from 'components/appLayout';
 import { CloseBtn, DisabledBtn, SubmitBtn } from 'components/commons/button';
-import Title from 'components/commons/title';
-import Input from 'components/commons/input';
+import Title from '@/components/commons/title';
+import Input from '@/components/commons/input';
 import {
   Container,
   Form,
@@ -52,6 +52,7 @@ const SignUpView = ({
               placeholder='이메일'
               onChange={onChangeEmail}
               value={email as string}
+              focus={true}
             />
             {emailInvalidError && (
               <ErrorMessage>올바른 이메일을 입력해 주세요.</ErrorMessage>
@@ -63,6 +64,7 @@ const SignUpView = ({
               placeholder='비밀번호'
               onChange={onChangePassword}
               value={password as string}
+              focus={true}
             />
             {passwordRestrictionError && (
               <ErrorMessage>
@@ -76,6 +78,7 @@ const SignUpView = ({
               placeholder='비밀번호 확인'
               onChange={onChangePasswordCheck}
               value={passwordCheck as string}
+              focus={true}
             />
             {passwordMismatchError && (
               <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>

@@ -1,15 +1,20 @@
 import styled from '@emotion/styled';
+import { Theme, css } from '@emotion/react';
 
-const StyledInput = styled.input`
-  border: 1px solid ${(props) => props.theme.colors.border.base};
+const CommonStyles = (theme: Theme) => css`
+  border: 1px solid ${theme.colors.border.base};
   width: 100%;
   height: 5rem;
-  border-radius: ${(props) => props.theme.borderRadius.sharp};
+  border-radius: ${theme.borderRadius.sharp};
   padding: 0 1rem;
   font-size: 1.6rem;
   margin-top: 1.2rem;
   margin-bottom: 1.2rem;
   z-index: 10;
+`;
+
+const FocusInput = styled.input`
+  ${(props) => CommonStyles(props.theme)}
 
   &:focus {
     border-style: solid;
@@ -18,4 +23,12 @@ const StyledInput = styled.input`
   }
 `;
 
-export { StyledInput };
+const NormalInput = styled.input`
+  ${(props) => CommonStyles(props.theme)}
+
+  &:focus {
+    outline-style: none;
+  }
+`;
+
+export { FocusInput, NormalInput };

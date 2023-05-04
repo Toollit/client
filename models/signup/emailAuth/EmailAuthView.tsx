@@ -2,8 +2,8 @@ import React from 'react';
 import AppLayout from 'components/appLayout';
 import { CloseBtn, DisabledBtn } from 'components/commons/button';
 import { SubmitBtn } from 'components/commons/button';
-import Title from 'components/commons/title';
-import Input from 'components/commons/input';
+import Title from '@/components/commons/title';
+import Input from '@/components/commons/input';
 import {
   Container,
   Form,
@@ -46,6 +46,7 @@ const EmailAuthView = ({
               placeholder='인증번호'
               onChange={onChangeInputAuthNums}
               value={inputAuthNums as string}
+              focus={true}
             />
             {invalidAuthNumsError && (
               <ErrorMessage>인증번호가 일치하지 않습니다.</ErrorMessage>
