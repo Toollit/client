@@ -7,7 +7,8 @@
 // Laptop L – 1440px
 // 4K – 2560px
 
+const mediaQueryLaptop = `@media (min-width: 1024px)`;
 const mediaQueryTablet = `@media (min-width: 768px)`;
 const mediaQueryMobile = `@media (min-width: 425px)`;
 
-export { mediaQueryTablet, mediaQueryMobile };
+export { mediaQueryLaptop, mediaQueryTablet, mediaQueryMobile };
