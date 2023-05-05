@@ -1,7 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import DeleteIcon from '@/assets/icons/DeleteIcon';
-import EditIcon from '@/assets/icons/EditIcon';
-import MoreIcon from '@/assets/icons/MoreIcon';
+import { DeleteIcon, EditSquareIcon, MoreIcon } from '@/assets/icons';
 import { Button, MoreMenu, Item, ItemContainer } from './styles';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
@@ -95,7 +93,7 @@ const More = ({ isMine }: MoreProps) => {
             <Item onClick={handleModify}>
               <ItemContainer>
                 <div>
-                  <EditIcon />
+                  <EditSquareIcon />
                 </div>
                 <div>수정</div>
               </ItemContainer>

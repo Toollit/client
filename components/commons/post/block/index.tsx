@@ -1,7 +1,6 @@
 import React from 'react';
 import project3 from 'public/static/images/project3.jpg';
-import BookmarkIcon from '@/assets/icons/BookmarkIcon';
-import ViewIcon from '@/assets/icons/ViewIcon';
+import { BookmarkIcon, ViewIcon } from '@/assets/icons';
 import { Project } from '@/apis/getProjectsFetcher';
 import Hashtag from '@/components/commons/hashtag';
 import {

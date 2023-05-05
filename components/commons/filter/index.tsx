@@ -1,5 +1,5 @@
 import React from 'react';
-import FilterIcon from '@/assets/icons/FilterIcon';
+import { FilterIcon } from '@/assets/icons';
 import { Button, FilterMenu, FilterCondition } from './styles';
 
 const Filter = () => {

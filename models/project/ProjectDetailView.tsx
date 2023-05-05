@@ -3,8 +3,7 @@ import dynamic from 'next/dynamic';
 import Title from 'components/commons/title';
 import AppLayout from '@/components/appLayout';
 import { AccountCircleIcon } from '@/assets/icons';
-import ShareIcon from '@/assets/icons/ShareIcon';
-import BookmarkIcon from '@/assets/icons/BookmarkIcon';
+import { ShareIcon, BookmarkIcon } from '@/assets/icons';
 import MoreButton from '@/components/commons/moreButton';
 import Hashtag from '@/components/commons/hashtag';
 import {
