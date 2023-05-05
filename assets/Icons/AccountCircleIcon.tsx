@@ -7,13 +7,14 @@ const AccountCircleIcon = ({
   fill = false,
   width = 24,
   height = 24,
+  color,
 }: IconProps) => {
   if (!fill) {
-    return <AccountCircleFill0 width={width} height={height} />;
+    return <AccountCircleFill0 width={width} height={height} fill={color} />;
   }
 
   if (fill) {
-    return <AccountCircleFill1 width={width} height={height} />;
+    return <AccountCircleFill1 width={width} height={height} fill={color} />;
   }
 
   return null;
