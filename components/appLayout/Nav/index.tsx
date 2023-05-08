@@ -1,11 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import Link from 'next/link';
-import { useSWRConfig, Cache } from 'swr';
-import { AuthAPIRes } from '@/apis/authFetcher';
+import useSWR from 'swr';
+import { authFetcher } from '@/apis/authFetcher';
 import { AccountCircleIcon, MenuIcons, SearchIcon } from '@/assets/icons';
 import GetitLogo from '@/assets/images/GetitLogo';
 import { AUTH_USER } from '@/apis/keys';
 import SearchDrawer from '@/components/commons/drawer/search';
+import { openDrawer } from '@/features/drawer';
 import { useDispatch } from 'react-redux';
 import {
   NavContainer,
@@ -18,12 +19,13 @@ import {
   StyledLink,
   SearchDrawerBtn,
 } from './styles';
-import { openDrawer } from '@/features/drawer';
 
 const Nav = () => {
   const dispatch = useDispatch();
-  const { cache }: { cache: Cache<AuthAPIRes> } = useSWRConfig();
-  const isLoggedIn = cache.get(AUTH_USER)?.data?.data?.nickname;
+
+  const { data } = useSWR(AUTH_USER, authFetcher);
+
+  const nickname = data?.data?.nickname;
 
   const handleSearchDrawer = useCallback(() => {
     dispatch(openDrawer({ type: 'search' }));
@@ -51,7 +53,7 @@ const Nav = () => {
                   </IconContainer>
                 </SearchDrawerBtn>
                 <li>
-                  <Link href={isLoggedIn ? '/profile' : '/login'}>
+                  <Link href={nickname ? `/profile/${nickname}` : '/login'}>
                     <a>
                       <IconContainer>
                         <AccountCircleIcon />
