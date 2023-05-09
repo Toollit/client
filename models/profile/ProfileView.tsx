@@ -36,6 +36,7 @@ export interface ProfileViewProps {
   currentTab: 'viewProfile' | 'project' | 'bookmark';
   userProfile?: User;
   projects?: Project[];
+  handleLogout: () => void;
 }
 
 const ProfileView = ({
@@ -43,8 +44,8 @@ const ProfileView = ({
   currentTab,
   userProfile,
   projects,
+  handleLogout,
 }: ProfileViewProps) => {
-  console.log('swiperRef ===>', swiperRef);
   return (
     <>
       <Container>
@@ -114,9 +115,7 @@ const ProfileView = ({
             <HeaderLeftLink>
               <ul>
                 <li>
-                  <Link href=''>
-                    <LogOut>로그아웃</LogOut>
-                  </Link>
+                  <LogOut onClick={handleLogout}>로그아웃</LogOut>
                 </li>
                 <li>
                   <Link href='/'>
@@ -192,6 +191,62 @@ const ProfileView = ({
                   <div>관심분야</div>
                   <div>경력사항</div>
                 </div>
+                <div>
+                  <div>온/오프라인</div>
+                  <div>모임장소</div>
+                  <div>모임시간</div>
+                  <div>관심분야</div>
+                  <div>경력사항</div>
+                </div>
+                <div>
+                  <div>온/오프라인</div>
+                  <div>모임장소</div>
+                  <div>모임시간</div>
+                  <div>관심분야</div>
+                  <div>경력사항</div>
+                </div>
+                <div>
+                  <div>온/오프라인</div>
+                  <div>모임장소</div>
+                  <div>모임시간</div>
+                  <div>관심분야</div>
+                  <div>경력사항</div>
+                </div>
+                <div>
+                  <div>온/오프라인</div>
+                  <div>모임장소</div>
+                  <div>모임시간</div>
+                  <div>관심분야</div>
+                  <div>경력사항</div>
+                </div>
+                <div>
+                  <div>온/오프라인</div>
+                  <div>모임장소</div>
+                  <div>모임시간</div>
+                  <div>관심분야</div>
+                  <div>경력사항</div>
+                </div>
+                <div>
+                  <div>온/오프라인</div>
+                  <div>모임장소</div>
+                  <div>모임시간</div>
+                  <div>관심분야</div>
+                  <div>경력사항</div>
+                </div>
+                <div>
+                  <div>온/오프라인</div>
+                  <div>모임장소</div>
+                  <div>모임시간</div>
+                  <div>관심분야</div>
+                  <div>경력사항</div>
+                </div>
+                <div>
+                  <div>온/오프라인</div>
+                  <div>모임장소</div>
+                  <div>모임시간</div>
+                  <div>관심분야</div>
+                  <div>경력사항</div>
+                </div>
 
                 <Divider type='thin' />
                 <div>
@@ -215,10 +270,10 @@ const ProfileView = ({
             )} */}
 
             {/* <div>{swiperSlide.isActive ? 'active' : 'no'}</div> */}
-            {/* <div>프로젝트</div>
             <div>프로젝트</div>
             <div>프로젝트</div>
-            <div>프로젝트</div> */}
+            <div>프로젝트</div>
+            <div>프로젝트</div>
           </SwiperSlider>
           <SwiperSlider>
             <div>북마크</div>
