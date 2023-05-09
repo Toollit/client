@@ -15,7 +15,7 @@ const ProfileController = () => {
   const currentTab = router.query.tab as 'viewProfile' | 'project' | 'bookmark';
 
   const { data: userProfile } = useSWR(
-    nickname ? `${GET_USER_PROFILE}/${nickname}` : null,
+    nickname ? `${GET_USER_PROFILE}/${nickname}?tab=viewProfile` : null,
     userFetcher,
     {
       revalidateOnFocus: false,
