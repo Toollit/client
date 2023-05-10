@@ -1,25 +1,15 @@
 import styled from '@emotion/styled';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/pagination';
 import { mediaQueryTablet } from '@/styles/mediaQuery';
 
 const Container = styled.section``;
 
-const CustomSwiper = styled(Swiper)`
-  /* max-width: 102.4rem; */
+const BannerContainer = styled.div<{ order: 'first' | 'second' | 'third' }>`
+  position: relative;
+  max-width: 102.4rem;
   width: 100%;
+  display: flex;
+  margin: 0 auto;
   height: 36rem;
-
-  .swiper-pagination-bullet-active {
-    background-color: #fff;
-  }
-`;
-
-const CustomSwiperSlide = styled(SwiperSlide)<{
-  order: 'first' | 'second' | 'third';
-}>`
-  font-size: 1.6rem;
   background-color: ${(props) => {
     let order = props.order;
     switch (order) {
@@ -33,16 +23,6 @@ const CustomSwiperSlide = styled(SwiperSlide)<{
         break;
     }
   }};
-`;
-
-// innerBoxBanner
-const BannerContainer = styled.div`
-  position: relative;
-  max-width: 102.4rem;
-  width: 100%;
-  display: flex;
-  margin: 0 auto;
-  height: 36rem;
 `;
 
 const FirstSlideText = styled.div`
@@ -186,8 +166,6 @@ const PostContainer = styled.div`
 
 export {
   Container,
-  CustomSwiper,
-  CustomSwiperSlide,
   BannerContainer,
   FirstSlideText,
   BannerPersonImg,
