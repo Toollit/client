@@ -1,30 +1,35 @@
 import React, { useState } from 'react';
 import SwipeableViews from 'react-swipeable-views';
-import { autoPlay, virtualize } from 'react-swipeable-views-utils';
+import {
+  autoPlay,
+  virtualize,
+  SlideRenderProps,
+} from 'react-swipeable-views-utils';
+import { mod } from 'react-swipeable-views-core';
 
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-const EnhancedSwipeableViews = virtualize(SwipeableViews);
+// const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+const EnhancedSwipeableViews = autoPlay(virtualize(SwipeableViews));
 
-const styles = {
-  slide: {
-    padding: 15,
-    minHeight: 100,
-    color: '#fff',
-  },
-  slide1: {
-    backgroundColor: '#FEA900',
-    height: '100vh',
-  },
-  slide2: {
-    backgroundColor: '#B3DC4A',
-  },
-  slide3: {
-    backgroundColor: '#6AC0FF',
-  },
+const slideRenderer = (
+  params: SlideRenderProps,
+  children: React.ReactNode[],
+) => {
+  const { index, key } = params;
+
+  switch (mod(index, 3)) {
+    case 0:
+      return <div key={key}>{children[0]}</div>;
+
+    case 1:
+      return <div key={key}>{children[1]}</div>;
+
+    case 2:
+      return <div key={key}>{children[2]}</div>;
+  }
 };
 
 interface SwipeableViewProps {
-  children: React.ReactNode;
+  children: React.ReactNode[];
   autoPlay?: boolean;
   interval?: number;
 }
@@ -47,13 +52,12 @@ const SwipeableView = ({
 
   if (autoPlay) {
     return (
-      <AutoPlaySwipeableViews
-        autoPlay={autoPlay}
-        interval={interval}
+      <EnhancedSwipeableViews
+        slideRenderer={(renderer) => slideRenderer(renderer, children)}
         enableMouseEvents
-      >
-        {children}
-      </AutoPlaySwipeableViews>
+        autoPlay={autoPlay}
+        interval={interval ?? 4000}
+      />
     );
   }
 
