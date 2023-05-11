@@ -67,9 +67,8 @@ const BannerBackgroundRightContainer = styled.div`
 
 // second slide
 const SecondSlideText = styled.div`
-  margin: 2rem 0 2rem 2rem;
+  margin: 3rem auto 0 2rem;
   font-size: 2rem;
-  z-index: 1;
 
   ${mediaQueryTablet} {
     margin: auto 0 auto 2rem;
@@ -79,14 +78,17 @@ const SecondSlideText = styled.div`
 const NetworkImg = styled.div`
   position: absolute;
   right: 0;
-  bottom: 0;
-  width: 30rem;
-  height: 30rem;
-  margin-right: 2rem;
+  bottom: 2rem;
+  width: 28rem;
+  height: 28rem;
+  margin: 0 2rem 0 auto;
 
   ${mediaQueryTablet} {
+    position: absolute;
+    right: 0;
     width: 46rem;
-    height: 36rem;
+    height: 34rem;
+    margin: 0 0 0 auto;
   }
 `;
 

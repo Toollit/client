@@ -1,3 +1,4 @@
-<svg width='700' height='360'>
+<!-- default  <svg width='700' height='360'> -->
+<svg width='current' height='current'>
     <rect width="700" height="210" style="fill:#4dd290" rx='100' x='100' y='70'/>
 </svg>
