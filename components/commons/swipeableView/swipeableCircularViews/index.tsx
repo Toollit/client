@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import { virtualize, SlideRenderProps } from 'react-swipeable-views-utils';
 import { mod } from 'react-swipeable-views-core';
-import { useRef } from 'react';
 
 // react-swipeable-views-utils autoPlay props error occur
 const EnhancedSwipeableViews = virtualize(SwipeableViews);
@@ -16,7 +15,7 @@ interface SwipeableViewProps {
 /**
  * infinite circular swipeable views
  */
-export const SwipeableCircularViews = ({
+const SwipeableCircularViews = ({
   children,
   autoPlay = false,
   interval = 4000,
@@ -69,3 +68,5 @@ export const SwipeableCircularViews = ({
     />
   );
 };
+
+export default SwipeableCircularViews;

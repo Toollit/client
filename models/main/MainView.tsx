@@ -10,7 +10,7 @@ import BlockPost from '@/components/commons/post/block';
 import Grid from '@mui/material/Grid';
 import Filter from '@/components/commons/filter';
 import { Project } from '@/apis/getProjectsFetcher';
-import SwipeableView from '@/components/commons/swipeableView';
+import SwipeableCircularViews from '@/components/commons/swipeableView/swipeableCircularViews';
 import {
   Container,
   BannerContainer,
@@ -46,7 +46,7 @@ const MainView = ({
   return (
     <AppLayout nav={true}>
       <Container>
-        <SwipeableView autoPlay={true} interval={4000}>
+        <SwipeableCircularViews autoPlay={true} interval={4000}>
           <BannerContainer order={'first'}>
             <FirstSlideText>
               <FirstSlideHeadline>
@@ -97,7 +97,7 @@ const MainView = ({
               <Bug />
             </BugImage>
           </BannerContainer>
-        </SwipeableView>
+        </SwipeableCircularViews>
 
         <PostWriteFilterContainer>
           <PostFilterContainer>
