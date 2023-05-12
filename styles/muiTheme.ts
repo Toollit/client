@@ -9,4 +9,11 @@ export const theme = createTheme({
       main: '#fff',
     },
   },
+  breakpoints: {
+    values: {
+      mobile: 425,
+      tablet: 768,
+      laptop: 1024,
+    },
+  },
 });
