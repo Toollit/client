@@ -4,7 +4,6 @@ import GetitLogo from '@/assets/images/GetitLogo';
 import { AccountCircleIcon, EditCircleIcon } from '@/assets/icons';
 import { Project, User } from '@/apis/userFetcher';
 import Divider from '@/components/commons/divider';
-import { SwiperTab, SwiperSlider } from '@/components/commons/swiper';
 import SwiperCore from 'swiper';
 import {
   Container,
@@ -27,13 +26,15 @@ import {
   Logo,
   SettingsContainer,
   DeleteUser,
-  SliderContainer,
-  UserInfoContainer,
+  UserProfileContainer,
+  SwipeableViewContainer,
+  SwipeableTabViewContainer,
 } from './styles';
+import SwipeableTabView from '@/components/commons/swipeableView/swipeableTabViews';
 
 export interface ProfileViewProps {
   swiperRef: React.MutableRefObject<SwiperCore | undefined>;
-  currentTab: 'viewProfile' | 'project' | 'bookmark';
+  currentTab: 'viewProfile' | 'viewProjects' | 'viewBookmarks';
   userProfile?: User;
   projects?: Project[];
   handleLogout: () => void;
@@ -159,14 +160,10 @@ const ProfileView = ({
             </div>
           )}
         </ColumnRightContainer>
-
-        <SwiperTab
-          tab={['내프로필', '프로젝트', '북마크']}
-          swiperRef={swiperRef}
-        >
-          <SwiperSlider>
-            <SliderContainer>
-              <UserInfoContainer>
+        <SwipeableTabViewContainer>
+          <SwipeableTabView tabs={['내프로필', '프로젝트', '북마크']}>
+            <SwipeableViewContainer>
+              <UserProfileContainer>
                 <div>
                   {/* <div>내 프로필</div> */}
                   {/* <div>이름</div> */}
@@ -253,7 +250,7 @@ const ProfileView = ({
                   <div>사용 프로그램 또는 기술</div>
                   <div>수정</div>
                 </div>
-              </UserInfoContainer>
+              </UserProfileContainer>
 
               <SettingsContainer>
                 <div>이메일 공개</div>
@@ -262,26 +259,26 @@ const ProfileView = ({
               </SettingsContainer>
 
               <DeleteUser>{`회원탈퇴 >`}</DeleteUser>
-            </SliderContainer>
-          </SwiperSlider>
-          <SwiperSlider>
-            {/* {({ isVisible }) => (
+            </SwipeableViewContainer>
+            <SwipeableViewContainer>
+              {/* {({ isVisible }) => (
               <div>Current slide is {isVisible ? 'active' : 'not active'}</div>
             )} */}
 
-            {/* <div>{swiperSlide.isActive ? 'active' : 'no'}</div> */}
-            <div>프로젝트</div>
-            <div>프로젝트</div>
-            <div>프로젝트</div>
-            <div>프로젝트</div>
-          </SwiperSlider>
-          <SwiperSlider>
-            <div>북마크</div>
-            <div>북마크</div>
-            <div>북마크</div>
-            <div>북마크</div>
-          </SwiperSlider>
-        </SwiperTab>
+              {/* <div>{swiperSlide.isActive ? 'active' : 'no'}</div> */}
+              <div>프로젝트</div>
+              <div>프로젝트</div>
+              <div>프로젝트</div>
+              <div>프로젝트</div>
+            </SwipeableViewContainer>
+            <SwipeableViewContainer>
+              <div>북마크</div>
+              <div>북마크</div>
+              <div>북마크</div>
+              <div>북마크</div>
+            </SwipeableViewContainer>
+          </SwipeableTabView>
+        </SwipeableTabViewContainer>
       </Container>
     </>
   );

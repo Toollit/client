@@ -11,13 +11,10 @@ const Container = styled.div`
 `;
 
 const ColumnLeftContainer = styled.div`
-  width: 100%;
-
   background-color: linear-gradient(to bottom, #fff 0, #f9fbfc);
 
   ${mediaQueryLaptop} {
     display: table-cell;
-
     width: 39.5rem;
     background-color: #fff;
     box-shadow: 5px 1px 8px 0 rgba(0, 0, 0, 0.06);
@@ -116,7 +113,7 @@ const TabHighlight = (theme: Theme) => css`
 `;
 
 const HeaderLeftMenu = styled.ul<{
-  currentTab: 'viewProfile' | 'project' | 'bookmark';
+  currentTab: 'viewProfile' | 'viewProjects' | 'viewBookmarks';
 }>`
   padding: 4rem 3.9rem;
 
@@ -140,14 +137,14 @@ const HeaderLeftMenu = styled.ul<{
           }
         `;
 
-      case 'project':
+      case 'viewProjects':
         return css`
           li:nth-of-type(2) a {
             ${TabHighlight(props.theme)}
           }
         `;
 
-      case 'bookmark':
+      case 'viewBookmarks':
         return css`
           li:nth-of-type(3) a {
             ${TabHighlight(props.theme)}
@@ -223,24 +220,11 @@ const DeleteUser = styled.div`
   font-size: 1.5rem;
 `;
 
-const SliderContainer = styled.div`
+const UserProfileContainer = styled.div`
   width: calc(100vw - 4rem);
-  /* max-width: 69.4rem; */
-  /* width: 100%; */
-  /* padding: 0 2rem; */
-  margin: 0 auto;
-  /* padding: 0 2rem; */
-
-  ${mediaQueryTablet} {
-    width: calc(100vw - 8rem);
-  }
-`;
-
-const UserInfoContainer = styled.div`
+  margin: 4rem auto;
   border-radius: ${(props) => props.theme.borderRadius.base};
   border: 1px solid ${(props) => props.theme.colors.border.base};
-  margin-top: 2.4rem;
-  margin-bottom: 2.4rem;
   padding: 1.6rem;
 `;
 
@@ -256,6 +240,14 @@ const SettingsContainer = styled.div`
   margin-bottom: 2.4rem;
   padding: 1.6rem;
 `;
+
+const SwipeableTabViewContainer = styled.div`
+  ${mediaQueryLaptop} {
+    display: none;
+  }
+`;
+
+const SwipeableViewContainer = styled.div``;
 
 export {
   Container,
@@ -278,6 +270,8 @@ export {
   Logo,
   SettingsContainer,
   DeleteUser,
-  SliderContainer,
-  UserInfoContainer,
+  // SliderContainer,
+  UserProfileContainer,
+  SwipeableTabViewContainer,
+  SwipeableViewContainer,
 };
