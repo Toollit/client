@@ -12,10 +12,15 @@ const ProfileController = () => {
   const swiperRef = useRef<SwiperCore>();
   const router = useRouter();
   const nickname = router.query.nickname;
-  const currentTab = router.query.tab as 'viewProfile' | 'project' | 'bookmark';
+  const currentTab = router.query.tab as
+    | 'viewProfile'
+    | 'viewProjects'
+    | 'viewBookmarks';
 
   const { data: userProfile } = useSWR(
-    nickname ? `${GET_USER_PROFILE}/${nickname}?tab=viewProfile` : null,
+    nickname && currentTab
+      ? `${GET_USER_PROFILE}/${nickname}?tab=${currentTab}`
+      : null,
     userFetcher,
     {
       revalidateOnFocus: false,
@@ -26,14 +31,6 @@ const ProfileController = () => {
       },
     },
   );
-
-  // default tab settings
-  if (userProfile && !currentTab) {
-    router.push({
-      pathname: `/profile/${nickname}`,
-      query: { tab: 'viewProfile' },
-    });
-  }
 
   const handleLogout = useCallback(async () => {
     try {
@@ -48,8 +45,14 @@ const ProfileController = () => {
   }, [router]);
 
   useEffect(() => {
-    console.log('activeIndex ===>', swiperRef.current?.activeIndex);
-  }, []);
+    // default tab settings
+    if (nickname && currentTab === undefined) {
+      router.replace({
+        pathname: `/profile/${nickname}`,
+        query: { tab: 'viewProfile' },
+      });
+    }
+  }, [currentTab, nickname, router]);
 
   const props: ProfileViewProps = {
     swiperRef,
