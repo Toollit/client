@@ -21,6 +21,7 @@ const SwipeableCircularViews = ({
   interval = 4000,
 }: SwipeableViewProps) => {
   const [viewIndex, setViewIndex] = useState(0);
+  const [autoPlayRestart, setAutoPlayRestart] = useState(0);
 
   const slideRenderer = useCallback(
     (params: SlideRenderProps, children: React.ReactNode[]) => {
@@ -54,7 +55,7 @@ const SwipeableCircularViews = ({
         clearInterval(intervalId);
       };
     }
-  }, [viewIndex, interval, autoPlay]);
+  }, [viewIndex, interval, autoPlay, autoPlayRestart]);
 
   return (
     <EnhancedSwipeableViews
@@ -64,6 +65,18 @@ const SwipeableCircularViews = ({
       onChangeIndex={(index) => {
         clearInterval(intervalIdRef.current);
         setViewIndex(index);
+      }}
+      onMouseDown={() => {
+        clearInterval(intervalIdRef.current);
+      }}
+      onMouseUp={() => {
+        setAutoPlayRestart((prev) => prev + 1);
+      }}
+      onTouchStart={() => {
+        clearInterval(intervalIdRef.current);
+      }}
+      onTouchEnd={() => {
+        setAutoPlayRestart((prev) => prev + 1);
       }}
     />
   );
