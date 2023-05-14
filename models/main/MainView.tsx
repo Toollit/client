@@ -110,9 +110,9 @@ const MainView = ({
 
         <PostContainer>
           <Grid container spacing={1}>
-            {projects?.map((project, index) => {
+            {projects?.map((project) => {
               return (
-                <Grid key={index} item xs={6} sm={6} md={4}>
+                <Grid key={project.id} item mobile={6} tablet={6} laptop={4}>
                   <BlockPost
                     content={project}
                     onClick={handleRouteProjectDetail}
