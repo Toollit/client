@@ -42,10 +42,7 @@ const BannerPersonImg = styled.div`
 
 // first slide
 const FirstSlideBackground = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+  overflow: hidden;
 `;
 
 const FirstSlideHeadline = styled.div`
@@ -55,14 +52,6 @@ const FirstSlideHeadline = styled.div`
 
 const FirstSlideSubhead = styled.div`
   font-size: 1.6rem;
-`;
-
-const BannerBackgroundLeftContainer = styled.div`
-  width: 100%;
-`;
-const BannerBackgroundRightContainer = styled.div`
-  width: 100%;
-  overflow: hidden;
 `;
 
 // second slide
@@ -174,8 +163,6 @@ export {
   FirstSlideBackground,
   FirstSlideHeadline,
   FirstSlideSubhead,
-  BannerBackgroundLeftContainer,
-  BannerBackgroundRightContainer,
   SecondSlideText,
   NetworkImg,
   ThirdSlideNotice,

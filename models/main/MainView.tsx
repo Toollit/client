@@ -1,8 +1,7 @@
 import React from 'react';
 import AppLayout from '@/components/appLayout';
 import BannerPerson from '@/assets/images/BannerPerson';
-import BannerBackgroundLeft from '@/assets/images/BannerBackgroundLeft';
-import BannerBackgroundRight from '@/assets/images/BannerBackgroundRight';
+import BannerBackground from '@/assets/images/BannerBackground';
 import Bug from '@/assets/images/Bug';
 import NetworkLottieJson from 'public/static/lotties/network.json';
 import LottieAnimation from '@/components/commons/lottie';
@@ -19,8 +18,6 @@ import {
   FirstSlideBackground,
   FirstSlideHeadline,
   FirstSlideSubhead,
-  BannerBackgroundLeftContainer,
-  BannerBackgroundRightContainer,
   SecondSlideText,
   NetworkImg,
   ThirdSlideText,
@@ -66,12 +63,7 @@ const MainView = ({
             </BannerPersonImg>
 
             <FirstSlideBackground>
-              <BannerBackgroundLeftContainer>
-                <BannerBackgroundLeft />
-              </BannerBackgroundLeftContainer>
-              <BannerBackgroundRightContainer>
-                <BannerBackgroundRight />
-              </BannerBackgroundRightContainer>
+              <BannerBackground />
             </FirstSlideBackground>
           </BannerContainer>
 
