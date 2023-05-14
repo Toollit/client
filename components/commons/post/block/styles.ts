@@ -1,6 +1,10 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { mediaQueryTablet, mediaQueryMobile } from '@/styles/mediaQuery';
+import {
+  mediaQueryTablet,
+  mediaQueryMobile,
+  mediaQueryLaptop,
+} from '@/styles/mediaQuery';
 
 const Container = styled.div`
   width: 100%;
@@ -17,7 +21,7 @@ const Container = styled.div`
   isolation: isolate; // this attribute for overflow: hidden not working in safari Bug
   cursor: pointer;
 
-  ${mediaQueryTablet} {
+  ${mediaQueryLaptop} {
     :hover {
       img {
         transform: scale(1.1);
@@ -87,7 +91,8 @@ const RecruitmentType = styled.div<{
 
   ${mediaQueryTablet} {
     margin-right: 0.4rem;
-    padding: 0.4rem 1rem;
+    /* padding: 0.4rem 1rem; */
+    padding: 0.4rem 0.8rem;
   }
 
   /* circle member type design ** do not remove!!! ** */
