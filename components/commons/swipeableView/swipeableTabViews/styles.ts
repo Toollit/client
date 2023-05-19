@@ -1,33 +1,36 @@
 import styled from '@emotion/styled';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { styled as muiStyled } from '@mui/material/styles';
 
-const CustomMuiTabs = muiStyled(Tabs)(({ theme }) => ({
-  '&.MuiTabs-root': {
-    width: 'calc(100vw - 4rem)',
-    margin: '0 auto',
-  },
-  '& .MuiTabs-indicator': {
-    backgroundColor: '#303038',
-    width: '4.8rem !important',
-    marginLeft: '2.1rem',
-  },
+interface CustomMuiTabsProps {
+  width: number;
+}
 
-  [theme.breakpoints.up('laptop')]: {
-    display: 'none',
-  },
-})) as typeof Tabs;
+const CustomMuiTabs = styled(Tabs)<CustomMuiTabsProps>`
+  &.MuiTabs-root {
+    width: calc(100vw - 4rem);
+    margin: 0 auto;
+  }
 
-const CustomMuiTab = muiStyled(Tab)(({ theme }) => ({
-  '&.MuiTab-root': {
-    fontSize: '1.4rem',
-    color: 'gray',
-  },
+  & .MuiTabs-indicator {
+    background-color: #303038;
+    width: ${(props) => `${props.width * 0.1 - 3.2}rem`} !important;
+    margin-left: 1.6rem;
+    margin-right: 1.6rem;
+  }
+`;
 
-  '&.Mui-selected': {
-    color: '#303038',
-  },
-})) as typeof Tab;
+const CustomMuiTab = styled(Tab)`
+  &.MuiTab-root {
+    font-size: 1.4rem;
+    color: gray;
+    min-width: fit-content !important;
+    font-weight: 700;
+  }
+
+  &.Mui-selected {
+    color: #303038;
+  }
+`;
 
 export { CustomMuiTabs, CustomMuiTab };
