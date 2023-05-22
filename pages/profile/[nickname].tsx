@@ -8,10 +8,4 @@ const Profile: NextPage<ProfileProps> = () => {
   return <ProfileController />;
 };
 
-export const getServerSideProps: GetServerSideProps = async ({}) => {
-  return {
-    props: {},
-  };
-};
-
 export default Profile;
