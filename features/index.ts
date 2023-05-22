@@ -3,17 +3,22 @@ import { HYDRATE } from 'next-redux-wrapper';
 import userSlice, { UserState } from 'features/user';
 import signUpSlice, { SignUpState } from '@/features/signUp';
 import drawerSlice, { DrawerState } from '@/features/drawer';
+import swipeableViewSlice, {
+  SwipeableViewState,
+} from '@/features/swipeableView';
 
 export interface RootState {
   user: UserState;
   signUp: SignUpState;
   drawer: DrawerState;
+  swipeableView: SwipeableViewState;
 }
 
 const combineReducer = combineReducers({
   user: userSlice,
   signUp: signUpSlice,
   drawer: drawerSlice,
+  swipeableView: swipeableViewSlice,
 });
 
 export const rootReducer: Reducer<RootState, AnyAction> = (
