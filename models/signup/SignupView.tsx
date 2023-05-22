@@ -3,7 +3,7 @@ import AppLayout from 'components/appLayout';
 import { CloseBtn, DisabledBtn, SubmitBtn } from 'components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
-import InputError from '@/components/commons/Error/InputError';
+import InputError from '@/components/commons/error/InputError';
 import { Container, Form, InputContainer, PrivacyPolicy } from './styles';
 
 export interface SignUpViewProps {

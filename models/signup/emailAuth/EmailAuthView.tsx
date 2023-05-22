@@ -4,7 +4,7 @@ import { CloseBtn, DisabledBtn } from 'components/commons/button';
 import { SubmitBtn } from 'components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
-import InputError from '@/components/commons/Error/InputError';
+import InputError from '@/components/commons/error/InputError';
 import {
   Container,
   Form,

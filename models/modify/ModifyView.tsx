@@ -9,7 +9,7 @@ import {
   Button,
 } from './styles';
 import Title from '@/components/commons/title';
-import HashtagInput from '@/components/commons/HashtagInput';
+import HashtagInput from '@/components/commons/hashtagInput';
 import MemberTypeSelector from '@/components/commons/memberTypeSelector';
 import { Editor } from '@toast-ui/react-editor';
 import { ProjectDetail } from '@/apis/getProjectDetailFetcher';
