@@ -2,21 +2,19 @@ import React from 'react';
 import Link from 'next/link';
 import GetitLogo from '@/assets/images/GetitLogo';
 import { AccountCircleIcon, EditCircleIcon } from '@/assets/icons';
-import { Project, User } from '@/apis/userFetcher';
+import { User, Project } from '@/apis/profileFetcher';
 import Divider from '@/components/commons/divider';
-import SwiperCore from 'swiper';
+import Skeleton from '@/components/commons/skeleton';
+import ProfileMobileView from './ProfileMobileView';
 import {
   Container,
   ColumnLeftContainer,
   ColumnRightContainer,
   GNBArea,
-  GNBLogo,
-  GNBTitleContainer,
   StyledTitleLink,
   GNBTitle,
   ProfileArea,
   UserNickname,
-  UserEmail,
   ProfileImageContainer,
   HeaderLeft,
   HeaderLeftMenu,
@@ -24,28 +22,47 @@ import {
   DividerContainer,
   LogOut,
   Logo,
-  SettingsContainer,
-  DeleteUser,
-  UserProfileContainer,
-  SwipeableViewContainer,
-  SwipeableTabViewContainer,
+  ContentContainer,
+  CategoryTitle,
+  CategoryContent,
+  EditButton,
+  Text,
+  IconTextContainer,
+  CategoryContentContainer,
+  IntroduceContentContainer,
+  IntroduceContent,
+  ProgramOrSkillContainer,
+  HashtagContainer,
 } from './styles';
-import SwipeableTabView from '@/components/commons/swipeableView/swipeableTabViews';
+import PersonIcon from '@/assets/icons/PersonIcon';
+import PhoneIcon from '@/assets/icons/PhoneIcon';
+import MailIcon from '@/assets/icons/MailIcon';
+import Hashtag from '@/components/commons/hashtag';
 
 export interface ProfileViewProps {
-  swiperRef: React.MutableRefObject<SwiperCore | undefined>;
-  currentTab: 'viewProfile' | 'viewProjects' | 'viewBookmarks';
-  userProfile?: User;
+  tabs: { name: string; query: string }[];
+  currentTab: 'viewProfile' | 'viewProjects' | 'viewBookmarks' | undefined;
+  data?: User | Project[];
+  profileNickname: string;
   projects?: Project[];
   handleLogout: () => void;
+  isLaptop: boolean;
+  isLoadedData: {
+    viewProfile: boolean;
+    viewProjects: boolean;
+    viewBookmarks: boolean;
+  };
 }
 
 const ProfileView = ({
-  swiperRef,
+  tabs,
   currentTab,
-  userProfile,
+  data,
+  profileNickname,
   projects,
   handleLogout,
+  isLaptop,
+  isLoadedData,
 }: ProfileViewProps) => {
   return (
     <>
@@ -84,30 +101,27 @@ const ProfileView = ({
               </div>
             </ProfileImageContainer>
 
-            <UserNickname>{userProfile?.nickname}</UserNickname>
-            <UserEmail>{userProfile?.email}</UserEmail>
+            <UserNickname>{profileNickname}</UserNickname>
           </ProfileArea>
 
           <HeaderLeft>
             <HeaderLeftMenu currentTab={currentTab} role='menu'>
-              <li>
-                <Link
-                  href={`/profile/${userProfile?.nickname}?tab=viewProfile`}
-                >
-                  <a>내프로필</a>
-                </Link>
-              </li>
-
-              <li>
-                <Link href={`/profile/${userProfile?.nickname}?tab=project`}>
-                  <a>프로젝트</a>
-                </Link>
-              </li>
-              <li>
-                <Link href={`/profile/${userProfile?.nickname}?tab=bookmark`}>
-                  <a>북마크</a>
-                </Link>
-              </li>
+              {tabs.map((tab, index) => {
+                return (
+                  <li key={tab.name}>
+                    <Link
+                      href={{
+                        pathname: `/profile/${profileNickname}`,
+                        query: {
+                          tab: tab.query,
+                        },
+                      }}
+                    >
+                      <a>{tab.name}</a>
+                    </Link>
+                  </li>
+                );
+              })}
             </HeaderLeftMenu>
             <DividerContainer>
               <Divider type='thin' />
@@ -146,139 +160,195 @@ const ProfileView = ({
         </ColumnLeftContainer>
 
         <ColumnRightContainer>
-          {currentTab && (
-            <div>
+          {currentTab === 'viewProfile' ? (
+            isLoadedData.viewProfile &&
+            data !== undefined &&
+            'email' in data ? (
               <div>
-                <div>내 프로필</div>
-                <div>실명</div>
-                <div>핸드폰 번호 수정</div>
-                <div>이메일 수정</div>
-                <div>이메일 공개</div>
+                <ContentContainer>
+                  <CategoryTitle>내 프로필</CategoryTitle>
+                  <CategoryContentContainer>
+                    <CategoryContent>
+                      <IconTextContainer>
+                        <PersonIcon />
+                        <Text padding>{data.nickname}</Text>
+                      </IconTextContainer>
+                      <EditButton>닉네임수정</EditButton>
+                    </CategoryContent>
+
+                    <CategoryContent>
+                      <IconTextContainer>
+                        <PersonIcon />
+                        <Text padding>테스트</Text>
+                      </IconTextContainer>
+                      <EditButton>실명수정</EditButton>
+                    </CategoryContent>
+
+                    <CategoryContent>
+                      <IconTextContainer>
+                        <PhoneIcon />
+                        <Text padding>010-1234-5678</Text>
+                      </IconTextContainer>
+                      <EditButton>수정</EditButton>
+                    </CategoryContent>
+                    <CategoryContent>
+                      <IconTextContainer>
+                        <MailIcon />
+                        <Text padding>{data.email}</Text>
+                      </IconTextContainer>
+                      <EditButton>수정</EditButton>
+                    </CategoryContent>
+                  </CategoryContentContainer>
+                </ContentContainer>
+                <ContentContainer>
+                  <CategoryTitle>자기소개</CategoryTitle>
+                  <IntroduceContentContainer>
+                    <IntroduceContent>
+                      현재 작성된 자기소개가 없습니다. 현재 작성된 자기소개가
+                      없습니다.현재 작성된 자기소개가 없습니다. 현재 작성된
+                      자기소개가 없습니다.현재 작성된 자기소개가 없습니다. 현재
+                      작성된 자기소개가 없습니다.현재 작성된 자기소개가
+                      없습니다. 현재 작성된 자기소개가 없습니다. 현재 작성된
+                      자기소개가 없습니다. 현재 작성된 자기소개가 없습니다.현재
+                      작성된 자기소개가 없습니다. 현재 작성된 자기소개가
+                      없습니다.현재 작성된 자기소개가 없습니다. 현재 작성된
+                      자기소개가 없습니다.현재 작성된 자기소개가 없습니다. 현재
+                      작성된 자기소개가 없습니다.
+                    </IntroduceContent>
+                    <EditButton>수정</EditButton>
+                  </IntroduceContentContainer>
+                </ContentContainer>
+                <ContentContainer>
+                  <CategoryTitle>추가 정보</CategoryTitle>
+                  <CategoryContentContainer>
+                    <CategoryContent>
+                      <div>
+                        <Text>온/오프라인:</Text>
+                        <Text padding>온라인</Text>
+                      </div>
+                      <EditButton>수정</EditButton>
+                    </CategoryContent>
+                    <CategoryContent>
+                      <div>
+                        <Text>모임장소:</Text>
+                        <Text padding>상관없음</Text>
+                      </div>
+                      <EditButton>수정</EditButton>
+                    </CategoryContent>
+                    <CategoryContent>
+                      <div>
+                        <Text>모임시간:</Text>
+                        <Text padding>주중,주말 가능/시간대 미정</Text>
+                      </div>
+                      <EditButton>수정</EditButton>
+                    </CategoryContent>
+                    <CategoryContent>
+                      <div>
+                        <Text>관심 분야:</Text>
+                        <Text padding>
+                          공유서비스, O2O, 이커머스, 유틸, 금융
+                        </Text>
+                      </div>
+                      <EditButton>수정</EditButton>
+                    </CategoryContent>
+                    <CategoryContent>
+                      <div>
+                        <Text>경력사항:</Text>
+                        <Text padding>1년차</Text>
+                      </div>
+                      <EditButton>수정</EditButton>
+                    </CategoryContent>
+                  </CategoryContentContainer>
+                </ContentContainer>
+                <ContentContainer>
+                  <CategoryTitle>사용 프로그램 또는 기술</CategoryTitle>
+
+                  <ProgramOrSkillContainer>
+                    <HashtagContainer>
+                      {[
+                        'typescript',
+                        'react',
+                        'Nextjs',
+                        'nodejs',
+                        'expressjs',
+                        'typescript',
+                        'react',
+                        'Nextjs',
+                        'nodejs',
+                        'expressjs',
+                        'typescript',
+                        'react',
+                        'Nextjs',
+                        'nodejs',
+                        'expressjs',
+                        'typescript',
+                        'react',
+                        'Nextjs',
+                        'nodejs',
+                        'expressjs',
+                      ].map((hashtag, index) => {
+                        return (
+                          <Hashtag
+                            tagName={hashtag}
+                            key={`${hashtag}-${index}`}
+                          />
+                        );
+                      })}
+                    </HashtagContainer>
+
+                    <EditButton>수정</EditButton>
+                  </ProgramOrSkillContainer>
+                </ContentContainer>
               </div>
-              <div>간단한 자기소개</div>
-              <div>사용 프로그램 또는 기술</div>
-            </div>
-          )}
+            ) : (
+              <Skeleton />
+            )
+          ) : null}
+
+          {currentTab === 'viewProjects' ? (
+            isLoadedData.viewProjects ? (
+              <div>
+                <div>
+                  <div>viewProjects</div>
+                  <div>viewProjects</div>
+                  <div>viewProjects</div>
+                  <div>viewProjects</div>
+                  <div>viewProjects</div>
+                </div>
+                <div>간단한 자기소개</div>
+                <div>사용 프로그램 또는 기술</div>
+              </div>
+            ) : (
+              <Skeleton />
+            )
+          ) : null}
+
+          {currentTab === 'viewBookmarks' ? (
+            isLoadedData.viewBookmarks ? (
+              <div>
+                <div>
+                  <div>12342134</div>
+                  <div>12342134</div>
+                  <div>핸드폰 번호 수정</div>
+                  <div>이메일 수정</div>
+                  <div>이메일 공개</div>
+                </div>
+                <div>간단한 자기소개</div>
+                <div>사용 프로그램 또는 기술</div>
+              </div>
+            ) : (
+              <Skeleton />
+            )
+          ) : null}
         </ColumnRightContainer>
-        <SwipeableTabViewContainer>
-          <SwipeableTabView tabs={['내프로필', '프로젝트', '북마크']}>
-            <SwipeableViewContainer>
-              <UserProfileContainer>
-                <div>
-                  {/* <div>내 프로필</div> */}
-                  {/* <div>이름</div> */}
-                  {/* <div>핸드폰 번호 수정</div> */}
-                  <div>
-                    <div>이메일</div>
-                    <div>수정</div>
-                  </div>
-                  <Divider type='thin' />
-                </div>
-                <div>
-                  <div>자기소개</div>
-                  <div>수정</div>
-                </div>
 
-                <Divider type='thin' />
-
-                <div>
-                  <div>온/오프라인</div>
-                  <div>모임장소</div>
-                  <div>모임시간</div>
-                  <div>관심분야</div>
-                  <div>경력사항</div>
-                </div>
-                <div>
-                  <div>온/오프라인</div>
-                  <div>모임장소</div>
-                  <div>모임시간</div>
-                  <div>관심분야</div>
-                  <div>경력사항</div>
-                </div>
-                <div>
-                  <div>온/오프라인</div>
-                  <div>모임장소</div>
-                  <div>모임시간</div>
-                  <div>관심분야</div>
-                  <div>경력사항</div>
-                </div>
-                <div>
-                  <div>온/오프라인</div>
-                  <div>모임장소</div>
-                  <div>모임시간</div>
-                  <div>관심분야</div>
-                  <div>경력사항</div>
-                </div>
-                <div>
-                  <div>온/오프라인</div>
-                  <div>모임장소</div>
-                  <div>모임시간</div>
-                  <div>관심분야</div>
-                  <div>경력사항</div>
-                </div>
-                <div>
-                  <div>온/오프라인</div>
-                  <div>모임장소</div>
-                  <div>모임시간</div>
-                  <div>관심분야</div>
-                  <div>경력사항</div>
-                </div>
-                <div>
-                  <div>온/오프라인</div>
-                  <div>모임장소</div>
-                  <div>모임시간</div>
-                  <div>관심분야</div>
-                  <div>경력사항</div>
-                </div>
-                <div>
-                  <div>온/오프라인</div>
-                  <div>모임장소</div>
-                  <div>모임시간</div>
-                  <div>관심분야</div>
-                  <div>경력사항</div>
-                </div>
-                <div>
-                  <div>온/오프라인</div>
-                  <div>모임장소</div>
-                  <div>모임시간</div>
-                  <div>관심분야</div>
-                  <div>경력사항</div>
-                </div>
-
-                <Divider type='thin' />
-                <div>
-                  <div>사용 프로그램 또는 기술</div>
-                  <div>수정</div>
-                </div>
-              </UserProfileContainer>
-
-              <SettingsContainer>
-                <div>이메일 공개</div>
-
-                <div>on/off 토글</div>
-              </SettingsContainer>
-
-              <DeleteUser>{`회원탈퇴 >`}</DeleteUser>
-            </SwipeableViewContainer>
-            <SwipeableViewContainer>
-              {/* {({ isVisible }) => (
-              <div>Current slide is {isVisible ? 'active' : 'not active'}</div>
-            )} */}
-
-              {/* <div>{swiperSlide.isActive ? 'active' : 'no'}</div> */}
-              <div>프로젝트</div>
-              <div>프로젝트</div>
-              <div>프로젝트</div>
-              <div>프로젝트</div>
-            </SwipeableViewContainer>
-            <SwipeableViewContainer>
-              <div>북마크</div>
-              <div>북마크</div>
-              <div>북마크</div>
-              <div>북마크</div>
-            </SwipeableViewContainer>
-          </SwipeableTabView>
-        </SwipeableTabViewContainer>
+        {/* {!isLaptop && (
+          <ProfileMobileView
+            tabs={tabs}
+            currentTab={currentTab}
+            isLoadedData={isLoadedData}
+          />
+        )} */}
       </Container>
     </>
   );
