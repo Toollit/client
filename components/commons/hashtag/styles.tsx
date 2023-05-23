@@ -9,6 +9,8 @@ const HashtagBlock = styled.div`
   padding: 0.4rem 0.8rem;
   border-radius: 0.7rem;
   min-width: fit-content;
+  height: 2.4rem;
+  line-height: 1.3rem;
 `;
 
 export { HashtagBlock };
