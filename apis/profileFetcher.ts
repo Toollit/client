@@ -17,15 +17,15 @@ export interface Project {
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
 }
 
-export interface userAPIReq {}
+export interface profileAPIReq {}
 
-export interface userAPIRes {
+export interface profileAPIRes {
   success: boolean;
   message: null | string;
-  data: User;
+  data: User | Project[];
 }
 
-export const userFetcher = async (url: string) => {
-  const response = await serverInstance.get<userAPIRes>(url);
+export const profileFetcher = async (url: string) => {
+  const response = await serverInstance.get<profileAPIRes>(url);
   return response.data;
 };
