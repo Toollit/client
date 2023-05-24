@@ -5,6 +5,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
 
 const timeFormat = {
+  YYMMDD_hhmmss: 'YY.MM.DD HH:mm:ss',
   YYMMDD_hhmm: 'YY.MM.DD HH:mm',
   YYMMDD: 'YY.MM.DD',
 } as const;
