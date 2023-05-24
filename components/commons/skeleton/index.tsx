@@ -6,6 +6,10 @@ interface SkeletonProps {
   height?: number;
   shape?: 'circular' | 'rectangular' | 'rounded' | 'text';
   animation?: 'pulse' | 'wave';
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
 }
 
 const Skeleton = ({
@@ -13,6 +17,10 @@ const Skeleton = ({
   height = 20,
   shape = 'rounded',
   animation = 'wave',
+  top,
+  right,
+  bottom,
+  left,
 }: SkeletonProps) => {
   return (
     <StyledSkeleton
@@ -20,6 +28,10 @@ const Skeleton = ({
       variant={shape}
       width={width}
       height={height}
+      top={top}
+      right={right}
+      bottom={bottom}
+      left={left}
     />
   );
 };
