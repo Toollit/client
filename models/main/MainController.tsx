@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import MainView, { MainViewProps } from './MainView';
-import SwiperCore, { Autoplay } from 'swiper';
 import { useRouter } from 'next/router';
 import { getProjectsFetcher } from '@/apis/getProjectsFetcher';
 import { AUTH_USER, GET_PROJECTS_API_ENDPOINT } from '@/apis/keys';
@@ -26,9 +25,6 @@ const MainController = () => {
       },
     },
   );
-
-  // Swiper setting
-  SwiperCore.use([Autoplay]);
 
   const handleRouteProjectDetail = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {

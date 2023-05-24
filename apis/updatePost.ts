@@ -8,13 +8,13 @@ interface Project {
   hashtags: string[];
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
 }
-export interface CreateProjectAPIReq {
+export interface UpdateProjectAPIReq {
   postType: 'project' | 'free' | 'question';
   postId: string;
   data: Project;
 }
 
-export interface CreateProjectAPIRes {
+export interface UpdateProjectAPIRes {
   success: boolean;
   message: string | null;
   data: {
@@ -23,8 +23,8 @@ export interface CreateProjectAPIRes {
 }
 
 export const updatePostAPI = async (
-  data: CreateProjectAPIReq,
-): Promise<CreateProjectAPIRes | undefined> => {
+  data: UpdateProjectAPIReq,
+): Promise<UpdateProjectAPIRes | undefined> => {
   const response = await serverInstance.post(`/api/post/modify`, data);
   return response.data;
 };
