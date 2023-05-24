@@ -9,13 +9,18 @@ import { logoutAPI } from '@/apis/logout';
 import useWindowSize from '@/hooks/useWindowSize';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
+import { updateProfileAPI } from '@/apis/updateProfile';
 
 const ProfileController = () => {
   const router = useRouter();
   const { isLaptop } = useWindowSize();
-  const currentTabIndex = useSelector(
-    (state: RootState) => state.swipeableView.tabIndex,
-  );
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogTitle, setDialogTitle] = useState('');
+  const [dialogValue, setDialogValue] = useState('');
+  const [dialogEditType, setDialogEditType] = useState<
+    'standard' | 'multiline' | 'select'
+  >('standard');
+  const [dialogEditCategory, setDialogEditCategory] = useState('');
   const [profileNickname, setProfileNickname] = useState('');
   const [isLoadedData, setIsLoadedData] = useState({
     viewProfile: false,
@@ -35,7 +40,7 @@ const ProfileController = () => {
     | 'viewBookmarks'
     | undefined;
 
-  const { data } = useSWR(
+  const { data, mutate } = useSWR(
     nickname && currentTab
       ? `${GET_USER_PROFILE_API_ENDPOINT}/${nickname}?tab=${currentTab}`
       : null,
@@ -72,6 +77,84 @@ const ProfileController = () => {
     }
   }, [router]);
 
+  const handleEdit = useCallback((event: React.MouseEvent) => {
+    const title = event.currentTarget.getAttribute('data-edit-title');
+    const value = event.currentTarget.getAttribute('data-edit-value');
+    const editType = event.currentTarget.getAttribute('data-edit-type') as
+      | 'standard'
+      | 'multiline'
+      | 'select';
+    const editCategory = event.currentTarget.getAttribute('data-edit-category');
+
+    if (!(title && value && editType && editCategory)) {
+      return;
+    }
+    console.log({ title, value, editType, editCategory });
+
+    setDialogTitle(title);
+    setDialogEditType(editType);
+    setDialogEditCategory(editCategory);
+    setDialogOpen((prev) => {
+      if (prev === true) {
+        setDialogValue('');
+      }
+      if (prev === false) {
+        setDialogValue(value);
+      }
+      return !prev;
+    });
+  }, []);
+
+  const handleDialog = useCallback(
+    async (event: React.MouseEvent) => {
+      // 취소, 완료 버튼이 아닌 외부 클릭시 null
+      const edit = event.currentTarget.getAttribute('data-edit') as
+        | 'true'
+        | 'false'
+        | null;
+
+      if (edit === 'true') {
+        try {
+          if (dialogEditCategory === 'nickname') {
+            const response = await updateProfileAPI({
+              editCategory: dialogEditCategory,
+              data: dialogValue,
+            });
+
+            const nickname = response?.data.nickname;
+
+            if (nickname) {
+              router.replace(`/profile/${nickname}?tab=viewProfile`);
+            }
+
+            return setDialogOpen((prev) => !prev);
+          }
+
+          // if (dialogEditCategory === 'email') {
+          //   router.push('/profile/emailAuth');
+          //   return setDialogOpen((prev) => !prev);
+          // }
+        } catch (error) {
+          errorMessage(error);
+        }
+      }
+
+      if (edit === ('false' || null)) {
+        setDialogOpen((prev) => !prev);
+      }
+    },
+    [dialogEditCategory, dialogValue, router],
+  );
+
+  const handleDialogValue = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.currentTarget.value;
+
+      setDialogValue(value);
+    },
+    [],
+  );
+
   // 페이지 첫 로드시 query 조건이 없는 경우 tab 설정을 하기 위한 useEffect
   useEffect(() => {
     // default tab settings
@@ -99,6 +182,13 @@ const ProfileController = () => {
     handleLogout,
     isLaptop,
     isLoadedData,
+    handleEdit,
+    dialogOpen,
+    dialogTitle,
+    dialogValue,
+    handleDialogValue,
+    handleDialog,
+    dialogEditType,
   };
 
   return <ProfileView {...props} />;

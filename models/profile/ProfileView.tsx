@@ -6,6 +6,12 @@ import { User, Project } from '@/apis/profileFetcher';
 import Divider from '@/components/commons/divider';
 import Skeleton from '@/components/commons/skeleton';
 import ProfileMobileView from './ProfileMobileView';
+import PersonIcon from '@/assets/icons/PersonIcon';
+import PhoneIcon from '@/assets/icons/PhoneIcon';
+import MailIcon from '@/assets/icons/MailIcon';
+import Hashtag from '@/components/commons/hashtag';
+import Padding from '@/components/commons/padding';
+import Dialog from '@/components/commons/dialog';
 import {
   Container,
   ColumnLeftContainer,
@@ -34,10 +40,6 @@ import {
   ProgramOrSkillContainer,
   HashtagContainer,
 } from './styles';
-import PersonIcon from '@/assets/icons/PersonIcon';
-import PhoneIcon from '@/assets/icons/PhoneIcon';
-import MailIcon from '@/assets/icons/MailIcon';
-import Hashtag from '@/components/commons/hashtag';
 
 export interface ProfileViewProps {
   tabs: { name: string; query: string }[];
@@ -52,6 +54,13 @@ export interface ProfileViewProps {
     viewProjects: boolean;
     viewBookmarks: boolean;
   };
+  handleEdit: (event: React.MouseEvent) => void;
+  dialogOpen: boolean;
+  dialogTitle: string;
+  dialogValue: string;
+  handleDialogValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleDialog: (event: React.MouseEvent) => void;
+  dialogEditType: 'standard' | 'multiline' | 'select';
 }
 
 const ProfileView = ({
@@ -63,6 +72,13 @@ const ProfileView = ({
   handleLogout,
   isLaptop,
   isLoadedData,
+  handleEdit,
+  dialogOpen,
+  dialogTitle,
+  dialogValue,
+  handleDialogValue,
+  handleDialog,
+  dialogEditType,
 }: ProfileViewProps) => {
   return (
     <>
@@ -173,30 +189,52 @@ const ProfileView = ({
                         <PersonIcon />
                         <Text padding>{data.nickname}</Text>
                       </IconTextContainer>
-                      <EditButton>닉네임수정</EditButton>
+                      <EditButton
+                        data-edit-title='닉네임 수정'
+                        data-edit-value={data.nickname}
+                        data-edit-type='standard'
+                        data-edit-category='nickname'
+                        onClick={handleEdit}
+                      >
+                        닉네임수정
+                      </EditButton>
                     </CategoryContent>
-
-                    <CategoryContent>
+                    {/* <CategoryContent>
                       <IconTextContainer>
                         <PersonIcon />
                         <Text padding>테스트</Text>
                       </IconTextContainer>
-                      <EditButton>실명수정</EditButton>
-                    </CategoryContent>
+                      <EditButton data-edit-title='실명 수정' onClick={handleEdit}>
+                        실명수정
+                      </EditButton>
+                    </CategoryContent> */}
 
-                    <CategoryContent>
+                    {/* <CategoryContent>
                       <IconTextContainer>
                         <PhoneIcon />
                         <Text padding>010-1234-5678</Text>
                       </IconTextContainer>
-                      <EditButton>수정</EditButton>
-                    </CategoryContent>
+                      <EditButton
+                        data-edit-title='전화번호 수정'
+                        onClick={handleEdit}
+                      >
+                        수정
+                      </EditButton>
+                    </CategoryContent> */}
                     <CategoryContent>
                       <IconTextContainer>
                         <MailIcon />
                         <Text padding>{data.email}</Text>
                       </IconTextContainer>
-                      <EditButton>수정</EditButton>
+                      <EditButton
+                        data-edit-title='이메일 수정'
+                        data-edit-value={data.email}
+                        data-edit-type='standard'
+                        data-edit-category='email'
+                        onClick={handleEdit}
+                      >
+                        이메일수정
+                      </EditButton>
                     </CategoryContent>
                   </CategoryContentContainer>
                 </ContentContainer>
@@ -215,7 +253,15 @@ const ProfileView = ({
                       자기소개가 없습니다.현재 작성된 자기소개가 없습니다. 현재
                       작성된 자기소개가 없습니다.
                     </IntroduceContent>
-                    <EditButton>수정</EditButton>
+                    <EditButton
+                      data-edit-title='자기소개 수정'
+                      // data-edit-value={data.email}
+                      data-edit-type='multiline'
+                      data-edit-category='introduce'
+                      onClick={handleEdit}
+                    >
+                      수정
+                    </EditButton>
                   </IntroduceContentContainer>
                 </ContentContainer>
                 <ContentContainer>
@@ -226,21 +272,21 @@ const ProfileView = ({
                         <Text>온/오프라인:</Text>
                         <Text padding>온라인</Text>
                       </div>
-                      <EditButton>수정</EditButton>
+                      <EditButton onClick={handleEdit}>수정</EditButton>
                     </CategoryContent>
                     <CategoryContent>
                       <div>
                         <Text>모임장소:</Text>
                         <Text padding>상관없음</Text>
                       </div>
-                      <EditButton>수정</EditButton>
+                      <EditButton onClick={handleEdit}>수정</EditButton>
                     </CategoryContent>
                     <CategoryContent>
                       <div>
                         <Text>모임시간:</Text>
                         <Text padding>주중,주말 가능/시간대 미정</Text>
                       </div>
-                      <EditButton>수정</EditButton>
+                      <EditButton onClick={handleEdit}>수정</EditButton>
                     </CategoryContent>
                     <CategoryContent>
                       <div>
@@ -249,14 +295,14 @@ const ProfileView = ({
                           공유서비스, O2O, 이커머스, 유틸, 금융
                         </Text>
                       </div>
-                      <EditButton>수정</EditButton>
+                      <EditButton onClick={handleEdit}>수정</EditButton>
                     </CategoryContent>
                     <CategoryContent>
                       <div>
                         <Text>경력사항:</Text>
                         <Text padding>1년차</Text>
                       </div>
-                      <EditButton>수정</EditButton>
+                      <EditButton onClick={handleEdit}>수정</EditButton>
                     </CategoryContent>
                   </CategoryContentContainer>
                 </ContentContainer>
@@ -296,12 +342,17 @@ const ProfileView = ({
                       })}
                     </HashtagContainer>
 
-                    <EditButton>수정</EditButton>
+                    <EditButton onClick={handleEdit}>수정</EditButton>
                   </ProgramOrSkillContainer>
                 </ContentContainer>
               </div>
             ) : (
-              <Skeleton />
+              <>
+                <Skeleton height={200} top={3} />
+                <Skeleton height={200} top={3} />
+                <Skeleton height={200} top={3} />
+                <Skeleton height={200} top={3} />
+              </>
             )
           ) : null}
 
@@ -350,6 +401,14 @@ const ProfileView = ({
           />
         )} */}
       </Container>
+      <Dialog
+        type={dialogEditType}
+        open={dialogOpen}
+        handler={handleDialog}
+        title={dialogTitle}
+        value={dialogValue}
+        onChange={handleDialogValue}
+      />
     </>
   );
 };
