@@ -2,13 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface SwipeableViewState {
-  index: number;
-  type: 'move' | 'end';
+  tabIndex: number;
 }
 
 const initialState: SwipeableViewState = {
-  index: 0,
-  type: 'end',
+  tabIndex: 0,
 };
 
 const swipeableViewSlice = createSlice({
@@ -19,10 +17,8 @@ const swipeableViewSlice = createSlice({
       state,
       action: PayloadAction<SwipeableViewState>,
     ) => {
-      const { index, type } = action.payload;
-
-      state.index = index;
-      state.type = type;
+      const { tabIndex } = action.payload;
+      state.tabIndex = tabIndex;
     },
   },
 });
