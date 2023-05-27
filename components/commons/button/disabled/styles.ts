@@ -1,11 +1,13 @@
 import styled from '@emotion/styled';
 
-const Button = styled.div`
+const Button = styled.button`
   font-size: ${(props) => props.theme.fontSizes.base};
   font-weight: 600;
   border-style: none;
-  margin-bottom: 2rem;
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
   border-radius: 25rem;
+  width: 100%;
   height: 4rem;
   background-color: ${(props) => props.theme.colors.button.disabled};
   cursor: not-allowed;
