@@ -12,6 +12,7 @@ import MailIcon from '@/assets/icons/MailIcon';
 import Hashtag from '@/components/commons/hashtag';
 import Padding from '@/components/commons/padding';
 import Dialog from '@/components/commons/dialog';
+import { changeDateFormat } from '@/utils/changeDateFormat';
 import {
   Container,
   ColumnLeftContainer,
@@ -26,7 +27,7 @@ import {
   HeaderLeftMenu,
   HeaderLeftLink,
   DividerContainer,
-  LogOut,
+  LogInOut,
   Logo,
   ContentContainer,
   CategoryTitle,
@@ -42,12 +43,14 @@ import {
 } from './styles';
 
 export interface ProfileViewProps {
+  me: boolean;
+  loginState: string | undefined;
   tabs: { name: string; query: string }[];
   currentTab: 'viewProfile' | 'viewProjects' | 'viewBookmarks' | undefined;
   data?: User | Project[];
   profileNickname: string;
   projects?: Project[];
-  handleLogout: () => void;
+  handleLogInOut: () => void;
   isLaptop: boolean;
   isLoadedData: {
     viewProfile: boolean;
@@ -55,30 +58,20 @@ export interface ProfileViewProps {
     viewBookmarks: boolean;
   };
   handleEdit: (event: React.MouseEvent) => void;
-  dialogOpen: boolean;
-  dialogTitle: string;
-  dialogValue: string;
-  handleDialogValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDialog: (event: React.MouseEvent) => void;
-  dialogEditType: 'standard' | 'multiline' | 'select';
 }
 
 const ProfileView = ({
+  me,
+  loginState,
   tabs,
   currentTab,
   data,
   profileNickname,
   projects,
-  handleLogout,
+  handleLogInOut,
   isLaptop,
   isLoadedData,
   handleEdit,
-  dialogOpen,
-  dialogTitle,
-  dialogValue,
-  handleDialogValue,
-  handleDialog,
-  dialogEditType,
 }: ProfileViewProps) => {
   return (
     <>
@@ -146,7 +139,9 @@ const ProfileView = ({
             <HeaderLeftLink>
               <ul>
                 <li>
-                  <LogOut onClick={handleLogout}>로그아웃</LogOut>
+                  <LogInOut onClick={handleLogInOut}>
+                    {loginState ? '로그아웃' : '로그인'}
+                  </LogInOut>
                 </li>
                 <li>
                   <Link href='/'>
@@ -181,87 +176,74 @@ const ProfileView = ({
             data !== undefined &&
             'email' in data ? (
               <div>
-                <ContentContainer>
-                  <CategoryTitle>내 프로필</CategoryTitle>
-                  <CategoryContentContainer>
-                    <CategoryContent>
-                      <IconTextContainer>
-                        <PersonIcon />
-                        <Text padding>{data.nickname}</Text>
-                      </IconTextContainer>
-                      <EditButton
-                        data-edit-title='닉네임 수정'
-                        data-edit-value={data.nickname}
-                        data-edit-type='standard'
-                        data-edit-category='nickname'
-                        onClick={handleEdit}
-                      >
-                        닉네임수정
-                      </EditButton>
-                    </CategoryContent>
-                    {/* <CategoryContent>
-                      <IconTextContainer>
-                        <PersonIcon />
-                        <Text padding>테스트</Text>
-                      </IconTextContainer>
-                      <EditButton data-edit-title='실명 수정' onClick={handleEdit}>
-                        실명수정
-                      </EditButton>
-                    </CategoryContent> */}
+                {me && (
+                  <ContentContainer>
+                    <CategoryTitle>내 프로필</CategoryTitle>
+                    <CategoryContentContainer>
+                      <CategoryContent>
+                        <IconTextContainer>
+                          <PersonIcon />
+                          <Text padding>{data.nickname}</Text>
+                        </IconTextContainer>
+                        <EditButton
+                          data-edit-title='닉네임 수정'
+                          data-edit-value={data.nickname}
+                          data-edit-type='standard'
+                          data-edit-category='nickname'
+                          onClick={handleEdit}
+                        >
+                          닉네임수정
+                        </EditButton>
+                      </CategoryContent>
 
-                    {/* <CategoryContent>
-                      <IconTextContainer>
-                        <PhoneIcon />
-                        <Text padding>010-1234-5678</Text>
-                      </IconTextContainer>
-                      <EditButton
-                        data-edit-title='전화번호 수정'
-                        onClick={handleEdit}
-                      >
-                        수정
-                      </EditButton>
-                    </CategoryContent> */}
-                    <CategoryContent>
-                      <IconTextContainer>
-                        <MailIcon />
-                        <Text padding>{data.email}</Text>
-                      </IconTextContainer>
-                      <EditButton
-                        data-edit-title='이메일 수정'
-                        data-edit-value={data.email}
-                        data-edit-type='standard'
-                        data-edit-category='email'
-                        onClick={handleEdit}
-                      >
-                        이메일수정
-                      </EditButton>
-                    </CategoryContent>
-                  </CategoryContentContainer>
-                </ContentContainer>
+                      <CategoryContent>
+                        <IconTextContainer>
+                          <MailIcon />
+                          <Text padding>{data.email}</Text>
+                        </IconTextContainer>
+                      </CategoryContent>
+
+                      <CategoryContent>
+                        <IconTextContainer>
+                          <Text>가입방법:</Text>
+                          <Text padding>{data.signUpType}</Text>
+                        </IconTextContainer>
+                      </CategoryContent>
+
+                      <CategoryContent>
+                        <IconTextContainer>
+                          <Text>가입일:</Text>
+                          <Text padding>
+                            {changeDateFormat({
+                              date: data.createdAt,
+                              format: 'YYMMDD_hhmmss',
+                            })}
+                          </Text>
+                        </IconTextContainer>
+                      </CategoryContent>
+                    </CategoryContentContainer>
+                  </ContentContainer>
+                )}
+
                 <ContentContainer>
                   <CategoryTitle>자기소개</CategoryTitle>
                   <IntroduceContentContainer>
                     <IntroduceContent>
-                      현재 작성된 자기소개가 없습니다. 현재 작성된 자기소개가
-                      없습니다.현재 작성된 자기소개가 없습니다. 현재 작성된
-                      자기소개가 없습니다.현재 작성된 자기소개가 없습니다. 현재
-                      작성된 자기소개가 없습니다.현재 작성된 자기소개가
-                      없습니다. 현재 작성된 자기소개가 없습니다. 현재 작성된
-                      자기소개가 없습니다. 현재 작성된 자기소개가 없습니다.현재
-                      작성된 자기소개가 없습니다. 현재 작성된 자기소개가
-                      없습니다.현재 작성된 자기소개가 없습니다. 현재 작성된
-                      자기소개가 없습니다.현재 작성된 자기소개가 없습니다. 현재
-                      작성된 자기소개가 없습니다.
+                      {data.introduce || ''
+                        ? data.introduce
+                        : '현재 작성된 자기소개가 없습니다.'}
                     </IntroduceContent>
-                    <EditButton
-                      data-edit-title='자기소개 수정'
-                      // data-edit-value={data.email}
-                      data-edit-type='multiline'
-                      data-edit-category='introduce'
-                      onClick={handleEdit}
-                    >
-                      수정
-                    </EditButton>
+                    {me && (
+                      <EditButton
+                        data-edit-title='자기소개 수정'
+                        data-edit-value={data.introduce}
+                        data-edit-type='multiline'
+                        data-edit-category='introduce'
+                        onClick={handleEdit}
+                      >
+                        수정
+                      </EditButton>
+                    )}
                   </IntroduceContentContainer>
                 </ContentContainer>
                 <ContentContainer>
@@ -272,21 +254,21 @@ const ProfileView = ({
                         <Text>온/오프라인:</Text>
                         <Text padding>온라인</Text>
                       </div>
-                      <EditButton onClick={handleEdit}>수정</EditButton>
+                      {me && <EditButton onClick={handleEdit}>수정</EditButton>}
                     </CategoryContent>
                     <CategoryContent>
                       <div>
                         <Text>모임장소:</Text>
                         <Text padding>상관없음</Text>
                       </div>
-                      <EditButton onClick={handleEdit}>수정</EditButton>
+                      {me && <EditButton onClick={handleEdit}>수정</EditButton>}
                     </CategoryContent>
                     <CategoryContent>
                       <div>
                         <Text>모임시간:</Text>
                         <Text padding>주중,주말 가능/시간대 미정</Text>
                       </div>
-                      <EditButton onClick={handleEdit}>수정</EditButton>
+                      {me && <EditButton onClick={handleEdit}>수정</EditButton>}
                     </CategoryContent>
                     <CategoryContent>
                       <div>
@@ -295,14 +277,14 @@ const ProfileView = ({
                           공유서비스, O2O, 이커머스, 유틸, 금융
                         </Text>
                       </div>
-                      <EditButton onClick={handleEdit}>수정</EditButton>
+                      {me && <EditButton onClick={handleEdit}>수정</EditButton>}
                     </CategoryContent>
                     <CategoryContent>
                       <div>
                         <Text>경력사항:</Text>
                         <Text padding>1년차</Text>
                       </div>
-                      <EditButton onClick={handleEdit}>수정</EditButton>
+                      {me && <EditButton onClick={handleEdit}>수정</EditButton>}
                     </CategoryContent>
                   </CategoryContentContainer>
                 </ContentContainer>
@@ -342,7 +324,7 @@ const ProfileView = ({
                       })}
                     </HashtagContainer>
 
-                    <EditButton onClick={handleEdit}>수정</EditButton>
+                    {me && <EditButton onClick={handleEdit}>수정</EditButton>}
                   </ProgramOrSkillContainer>
                 </ContentContainer>
               </div>
@@ -392,23 +374,8 @@ const ProfileView = ({
             )
           ) : null}
         </ColumnRightContainer>
-
-        {/* {!isLaptop && (
-          <ProfileMobileView
-            tabs={tabs}
-            currentTab={currentTab}
-            isLoadedData={isLoadedData}
-          />
-        )} */}
       </Container>
-      <Dialog
-        type={dialogEditType}
-        open={dialogOpen}
-        handler={handleDialog}
-        title={dialogTitle}
-        value={dialogValue}
-        onChange={handleDialogValue}
-      />
+      <Dialog />
     </>
   );
 };

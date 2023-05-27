@@ -1,25 +1,30 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import ProfileView, { ProfileViewProps } from './ProfileView';
 import useSWR from 'swr';
-import { GET_USER_PROFILE_API_ENDPOINT } from '@/apis/keys';
-import { profileFetcher } from '@/apis/profileFetcher';
+import { AUTH_USER, GET_USER_PROFILE_API_ENDPOINT } from '@/apis/keys';
+import { User, profileFetcher } from '@/apis/profileFetcher';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/errorMessage';
 import { logoutAPI } from '@/apis/logout';
 import useWindowSize from '@/hooks/useWindowSize';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { updateProfileAPI } from '@/apis/updateProfile';
+import { authFetcher } from '@/apis/authFetcher';
+import { changeDateFormat } from '@/utils/changeDateFormat';
+import {
+  open as openDialog,
+  close as closeDialog,
+  updateValue,
+} from '@/features/dialog';
 
 const ProfileController = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
   const { isLaptop } = useWindowSize();
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogTitle, setDialogTitle] = useState('');
-  const [dialogValue, setDialogValue] = useState('');
-  const [dialogEditType, setDialogEditType] = useState<
-    'standard' | 'multiline' | 'select'
-  >('standard');
+
+  const newValue = useSelector((state: RootState) => state.dialog.newValue);
+
   const [dialogEditCategory, setDialogEditCategory] = useState('');
   const [profileNickname, setProfileNickname] = useState('');
   const [isLoadedData, setIsLoadedData] = useState({
@@ -40,7 +45,9 @@ const ProfileController = () => {
     | 'viewBookmarks'
     | undefined;
 
-  const { data, mutate } = useSWR(
+  const { data: user, mutate: userMutate } = useSWR(AUTH_USER, authFetcher);
+
+  const { data, mutate: profileMutate } = useSWR(
     nickname && currentTab
       ? `${GET_USER_PROFILE_API_ENDPOINT}/${nickname}?tab=${currentTab}`
       : null,
@@ -65,94 +72,80 @@ const ProfileController = () => {
     },
   );
 
-  const handleLogout = useCallback(async () => {
-    try {
-      const response = await logoutAPI();
+  const handleLogInOut = useCallback(async () => {
+    const isLoggedIn = user?.data?.nickname;
 
-      if (response?.success) {
-        router.push('/');
-      }
-    } catch (error) {
-      errorMessage(error);
-    }
-  }, [router]);
+    if (isLoggedIn) {
+      try {
+        const response = await logoutAPI();
 
-  const handleEdit = useCallback((event: React.MouseEvent) => {
-    const title = event.currentTarget.getAttribute('data-edit-title');
-    const value = event.currentTarget.getAttribute('data-edit-value');
-    const editType = event.currentTarget.getAttribute('data-edit-type') as
-      | 'standard'
-      | 'multiline'
-      | 'select';
-    const editCategory = event.currentTarget.getAttribute('data-edit-category');
-
-    if (!(title && value && editType && editCategory)) {
-      return;
-    }
-    console.log({ title, value, editType, editCategory });
-
-    setDialogTitle(title);
-    setDialogEditType(editType);
-    setDialogEditCategory(editCategory);
-    setDialogOpen((prev) => {
-      if (prev === true) {
-        setDialogValue('');
-      }
-      if (prev === false) {
-        setDialogValue(value);
-      }
-      return !prev;
-    });
-  }, []);
-
-  const handleDialog = useCallback(
-    async (event: React.MouseEvent) => {
-      // 취소, 완료 버튼이 아닌 외부 클릭시 null
-      const edit = event.currentTarget.getAttribute('data-edit') as
-        | 'true'
-        | 'false'
-        | null;
-
-      if (edit === 'true') {
-        try {
-          if (dialogEditCategory === 'nickname') {
-            const response = await updateProfileAPI({
-              editCategory: dialogEditCategory,
-              data: dialogValue,
-            });
-
-            const nickname = response?.data.nickname;
-
-            if (nickname) {
-              router.replace(`/profile/${nickname}?tab=viewProfile`);
-            }
-
-            return setDialogOpen((prev) => !prev);
-          }
-
-          // if (dialogEditCategory === 'email') {
-          //   router.push('/profile/emailAuth');
-          //   return setDialogOpen((prev) => !prev);
-          // }
-        } catch (error) {
-          errorMessage(error);
+        if (response?.success) {
+          userMutate();
+          router.push('/');
         }
+      } catch (error) {
+        errorMessage(error);
+      }
+    } else {
+      router.push('/login');
+    }
+  }, [router, user, userMutate]);
+
+  const handleEdit = useCallback(
+    (event: React.MouseEvent) => {
+      const title = event.currentTarget.getAttribute('data-edit-title');
+      const value = event.currentTarget.getAttribute('data-edit-value');
+      const editType = event.currentTarget.getAttribute('data-edit-type');
+      const editCategory =
+        event.currentTarget.getAttribute('data-edit-category');
+
+      console.log('handleEdit ===>', { title, value, editType, editCategory });
+
+      if (
+        title === null ||
+        value === null ||
+        editType === null ||
+        editCategory === null
+      ) {
+        return;
       }
 
-      if (edit === ('false' || null)) {
-        setDialogOpen((prev) => !prev);
+      if (
+        !(
+          editType === 'standard' ||
+          editType == 'multiline' ||
+          editType == 'select'
+        )
+      ) {
+        return;
+      }
+
+      if (editType === 'standard') {
+        setDialogEditCategory(editCategory);
+        return dispatch(
+          openDialog({
+            type: editType,
+            open: true,
+            title,
+            value,
+          }),
+        );
+      }
+
+      if (editType === 'multiline') {
+        setDialogEditCategory(editCategory);
+        return dispatch(
+          openDialog({
+            type: editType,
+            open: true,
+            title,
+            value,
+            maxLength: 1000,
+          }),
+        );
       }
     },
-    [dialogEditCategory, dialogValue, router],
-  );
-
-  const handleDialogValue = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const value = event.currentTarget.value;
-
-      setDialogValue(value);
-    },
-    [],
+    [dispatch],
   );
 
   // 페이지 첫 로드시 query 조건이 없는 경우 tab 설정을 하기 위한 useEffect
@@ -173,22 +166,74 @@ const ProfileController = () => {
     }
   }, [nickname]);
 
+  useEffect(() => {
+    if (newValue !== '') {
+      (async () => {
+        if (dialogEditCategory === 'nickname') {
+          const response = await updateProfileAPI({
+            editCategory: dialogEditCategory,
+            data: newValue,
+          });
+
+          userMutate();
+
+          const nickname = response?.data.nickname;
+
+          if (nickname) {
+            router.replace(`/profile/${nickname}?tab=viewProfile`);
+          }
+
+          setDialogEditCategory('');
+          dispatch(updateValue({ newValue: '' }));
+          dispatch(closeDialog());
+          return;
+        }
+
+        if (dialogEditCategory === 'introduce') {
+          if (newValue.length > 1000) {
+            return alert('자기소개는 1000자 이하여야 합니다.');
+          }
+
+          await updateProfileAPI({
+            editCategory: dialogEditCategory,
+            data: newValue,
+          });
+
+          profileMutate();
+
+          setDialogEditCategory('');
+          dispatch(updateValue({ newValue: '' }));
+          dispatch(closeDialog());
+          return;
+        }
+      })();
+    }
+  }, [
+    dispatch,
+    router,
+    newValue,
+    dialogEditCategory,
+    userMutate,
+    profileMutate,
+  ]);
+
+  useEffect(() => {
+    if (newValue) {
+    }
+  }, [newValue]);
+
   const props: ProfileViewProps = {
+    me: nickname === user?.data?.nickname,
+    loginState: user?.data?.nickname,
     tabs,
     currentTab,
     data: data?.data,
     profileNickname,
     // projects: data?.data.projects,
-    handleLogout,
+    handleLogInOut,
     isLaptop,
     isLoadedData,
     handleEdit,
-    dialogOpen,
-    dialogTitle,
-    dialogValue,
-    handleDialogValue,
-    handleDialog,
-    dialogEditType,
   };
 
   return <ProfileView {...props} />;
