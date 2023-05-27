@@ -6,12 +6,14 @@ import drawerSlice, { DrawerState } from '@/features/drawer';
 import swipeableViewSlice, {
   SwipeableViewState,
 } from '@/features/swipeableView';
+import dialogSlice, { DialogState } from '@/features/dialog';
 
 export interface RootState {
   user: UserState;
   signUp: SignUpState;
   drawer: DrawerState;
   swipeableView: SwipeableViewState;
+  dialog: DialogState;
 }
 
 const combineReducer = combineReducers({
@@ -19,6 +21,7 @@ const combineReducer = combineReducers({
   signUp: signUpSlice,
   drawer: drawerSlice,
   swipeableView: swipeableViewSlice,
+  dialog: dialogSlice,
 });
 
 export const rootReducer: Reducer<RootState, AnyAction> = (
