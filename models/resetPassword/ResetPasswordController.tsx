@@ -18,6 +18,7 @@ const ResetPasswordController = () => {
     useNoSpaceInput('');
   const [doubleCheckPasswordError, setDoubleCheckPasswordError] =
     useState(false);
+  const [requestPending, setRequestPending] = useState(false);
 
   const { data } = useSWR(AUTH_USER, authFetcher);
 
@@ -57,10 +58,15 @@ const ResetPasswordController = () => {
       }
 
       if (newPassword && doubleCheckPassword) {
+        setRequestPending(true);
+
         try {
           const resetPasswordAPIResponse = await resetPasswordAPI({
             password: newPassword,
           });
+
+          setRequestPending(false);
+
           if (resetPasswordAPIResponse?.success) {
             const logoutAPIResponse = await logoutAPI();
 
@@ -112,6 +118,7 @@ const ResetPasswordController = () => {
     doubleCheckPasswordError,
     handleSubmit,
     handleLogout,
+    requestPending,
   };
 
   return <ResetPasswordView {...props} />;
