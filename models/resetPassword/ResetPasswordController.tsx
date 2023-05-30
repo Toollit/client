@@ -76,6 +76,7 @@ const ResetPasswordController = () => {
             }
           }
         } catch (error) {
+          setRequestPending(false);
           errorMessage(error);
         }
       }

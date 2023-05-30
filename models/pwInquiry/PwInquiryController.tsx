@@ -51,6 +51,7 @@ const PwInquiryController = () => {
           router.push('/login');
         }
       } catch (error) {
+        setRequestPending(false);
         errorMessage(error);
       }
     },
