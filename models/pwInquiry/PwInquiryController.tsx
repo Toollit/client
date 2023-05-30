@@ -9,6 +9,7 @@ const PwInquiryController = () => {
   const router = useRouter();
   const [email, onChangeEmail] = useNoSpaceInput('');
   const [emailInvalidError, setEmailInvalidError] = useState(false);
+  const [requestPending, setRequestPending] = useState(false);
 
   const handleClose = useCallback(() => {
     router.back();
@@ -38,8 +39,12 @@ const PwInquiryController = () => {
         return setEmailInvalidError(true);
       }
 
+      setRequestPending(true);
+
       try {
         const response = await pwInquiryAPI({ email });
+
+        setRequestPending(false);
 
         if (response?.success) {
           alert(response.message);
@@ -68,6 +73,7 @@ const PwInquiryController = () => {
     emailInvalidError,
     handleSubmit,
     handleSignUp,
+    requestPending,
   };
   return <PwInquiryView {...props} />;
 };

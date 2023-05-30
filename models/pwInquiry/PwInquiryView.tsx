@@ -4,6 +4,7 @@ import { CloseBtn, SubmitBtn } from 'components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
 import InputError from '@/components/commons/error/InputError';
+import LoadingCircularProgress from '@/components/commons/loading';
 import {
   Container,
   Form,
@@ -19,6 +20,7 @@ export interface PwInquiryViewProps {
   emailInvalidError: boolean;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   handleSignUp: () => void;
+  requestPending: boolean;
 }
 
 const PwInquiryView = ({
@@ -28,6 +30,7 @@ const PwInquiryView = ({
   emailInvalidError,
   handleSubmit,
   handleSignUp,
+  requestPending,
 }: PwInquiryViewProps) => {
   return (
     <AppLayout nav={false}>
@@ -55,6 +58,7 @@ const PwInquiryView = ({
           </SignInBtn>
         </Form>
       </Container>
+      {requestPending && <LoadingCircularProgress />}
     </AppLayout>
   );
 };
