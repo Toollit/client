@@ -25,8 +25,12 @@ const Container = styled.div`
     :hover {
       img {
         transform: scale(1.1);
-        transition: all 0.3s ease 0s;
+        transition: all 1s ease 0s;
       }
+    }
+    img {
+      transform: scale(1);
+      transition: all 1s ease 0s;
     }
   }
 `;
