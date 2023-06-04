@@ -4,6 +4,8 @@ import SignUpView, { SignUpViewProps } from './SignUpView';
 import useNoSpaceInput from 'hooks/useNoSpaceInput';
 import { useDispatch } from 'react-redux';
 import { emailAuth } from '@/features/signUp';
+import { emailAuthAPI } from '@/apis/emailAuth';
+import { errorMessage } from '@/apis/errorMessage';
 
 const SignUpController = () => {
   const router = useRouter();
@@ -49,7 +51,7 @@ const SignUpController = () => {
   }, [password, passwordCheck]);
 
   const handleSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
+    async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
       const isValidEmail = checkEmailFormatValidate();
@@ -69,13 +71,20 @@ const SignUpController = () => {
       }
 
       if (fillFormComplete && isPasswordMatch) {
-        if (email === null || password === null) return;
+        if (email === null || password === null) {
+          return;
+        }
 
         const data = { email, password };
-
         dispatch(emailAuth(data));
 
-        router.push('/signUp/emailAuth');
+        try {
+          await emailAuthAPI({ email });
+
+          router.push('/signUp/emailAuth');
+        } catch (error) {
+          errorMessage(error);
+        }
       }
     },
     [

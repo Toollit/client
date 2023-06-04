@@ -20,7 +20,8 @@ export interface EmailAuthViewProps {
   invalidAuthNumsError: boolean;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   timer: string;
-  authNums: string;
+
+  isTimerLeft: boolean;
 }
 
 const EmailAuthView = ({
@@ -30,7 +31,7 @@ const EmailAuthView = ({
   invalidAuthNumsError,
   handleSubmit,
   timer,
-  authNums,
+  isTimerLeft,
 }: EmailAuthViewProps) => {
   return (
     <AppLayout nav={false}>
@@ -59,7 +60,11 @@ const EmailAuthView = ({
           </NoticeForSpam>
           <br />
 
-          {authNums ? <SubmitBtn text='확인' /> : <DisabledBtn text='확인' />}
+          {isTimerLeft ? (
+            <SubmitBtn text='확인' />
+          ) : (
+            <DisabledBtn text='확인' />
+          )}
         </Form>
       </Container>
     </AppLayout>
