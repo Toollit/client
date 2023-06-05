@@ -7,9 +7,6 @@ interface EmailAuthAPIReq {
 export interface EmailAuthAPIRes {
   success: boolean;
   message: string;
-  data: {
-    authNums: string;
-  };
 }
 
 export const emailAuthAPI = async (
