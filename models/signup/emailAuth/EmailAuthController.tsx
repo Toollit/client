@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { RootState } from 'store';
-import useNoSpaceInput from 'hooks/useNoSpaceInput';
+import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import EmailAuthView, { EmailAuthViewProps } from './EmailAuthView';
 import { emailAuth } from '@/features/signUp';
-import { signUpAPI, SignUpData } from 'apis/signUp';
+import { signUpAPI, SignUpData } from '@/apis/signUp';
 import useTimer from '@/hooks/useTimer';
 import { errorMessage } from '@/apis/errorMessage';
 import { emailVerifyAPI } from '@/apis/emailVerify';
@@ -17,21 +17,26 @@ const EmailAuthController = () => {
   const email = useSelector((state: RootState) => state.signUp.email);
   const password = useSelector((state: RootState) => state.signUp.password);
 
-  const [inputAuthNums, onChangeInputAuthNums] = useNoSpaceInput('');
-  const [invalidAuthNumsError, setInvalidAuthNumsError] = useState(false);
+  const [authCode, handleChangeAuthCode] = useNoSpaceInput('');
 
   const { timer, leftMinutes, leftSeconds } = useTimer({
     minutes: 3,
     seconds: 0,
   });
 
+  const [requestPending, setRequestPending] = useState(false);
+
   const handleClose = useCallback(() => {
-    router.replace('/signUp');
+    router.back();
   }, [router]);
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+
+      if (!email || !password) {
+        return;
+      }
 
       const isTimerEnd = leftMinutes + leftSeconds === 0;
 
@@ -39,37 +44,35 @@ const EmailAuthController = () => {
         return alert('인증시간이 만료되었습니다.');
       }
 
-      if (inputAuthNums === '') {
-        // return setInvalidAuthNumsError(true);
+      if (authCode === '') {
         return alert('인증번호를 입력해주세요.');
       }
 
-      //TODO 인증번호가 일치하지않습니다 오류 빨간색 글씨 지우기
-      if (inputAuthNums) {
+      if (authCode) {
         try {
-          await emailVerifyAPI({ email, authCode: inputAuthNums });
+          await emailVerifyAPI({ email, authCode });
 
+          setRequestPending(true);
           const data: SignUpData = { email, password, signUpType: 'email' };
 
           const response = await signUpAPI(data);
 
           if (response?.success) {
+            setRequestPending(false);
+
             alert('회원가입 완료. 환영합니다 🎉');
 
             return router.replace('/');
           }
         } catch (error) {
+          setRequestPending(false);
           errorMessage(error);
         }
       }
     },
 
-    [inputAuthNums, email, password, router, leftMinutes, leftSeconds],
+    [authCode, email, password, router, leftMinutes, leftSeconds],
   );
-
-  useEffect(() => {
-    setInvalidAuthNumsError(false);
-  }, [inputAuthNums]);
 
   // Initialize input information when going back
   useEffect(() => {
@@ -79,9 +82,7 @@ const EmailAuthController = () => {
     };
   }, [dispatch, email, password]);
 
-  //TODO 이 페이지로 넘어올때 /signUp/emailAuth 주소에서 넘어온게 아니면 redux store의 email, password 초기화
-  //TODO email, password가 없는 상태로 해당페이지 접근시 어떻게 처리할지 생각해보기
-
+  // Function for allow and disallow submit button
   const checkTimerLeftTime = useCallback(() => {
     if (email && password) {
       const isTimerEnd = leftMinutes + leftSeconds === 0;
@@ -96,22 +97,27 @@ const EmailAuthController = () => {
     }
   }, [email, password, leftMinutes, leftSeconds]);
 
+  // If the page is accessed in a way other than moving from the signUp page to the current page
   useEffect(() => {
-    const isTimerEnd = leftMinutes + leftSeconds === 0;
-    if (isTimerEnd) {
+    if (!email || !password) {
       const data = { email: '', password: '' };
+
       dispatch(emailAuth(data));
+
+      alert('비정상적인 접근입니다.');
+
+      router.replace('/');
     }
-  }, [leftMinutes, leftSeconds, dispatch]);
+  }, [email, password, dispatch, router]);
 
   const props: EmailAuthViewProps = {
     handleClose,
-    inputAuthNums,
-    onChangeInputAuthNums,
-    invalidAuthNumsError,
+    authCode,
+    handleChangeAuthCode,
     handleSubmit,
     timer: email && password ? timer : '00:00',
     isTimerLeft: checkTimerLeftTime(),
+    requestPending,
   };
   return <EmailAuthView {...props} />;
 };

@@ -19,6 +19,7 @@ const SignUpController = () => {
   const [passwordCheck, onChangePasswordCheck] = useNoSpaceInput('');
   const [passwordMismatchError, setPasswordMismatchError] = useState(false);
   const [fillFormComplete, setFillFormComplete] = useState(false);
+  const [requestPending, setRequestPending] = useState(false);
 
   const handleClose = useCallback(() => {
     router.push('/login');
@@ -75,14 +76,19 @@ const SignUpController = () => {
           return;
         }
 
+        setRequestPending(true);
+
         const data = { email, password };
         dispatch(emailAuth(data));
 
         try {
           await emailAuthAPI({ email });
 
+          setRequestPending(false);
+
           router.push('/signUp/emailAuth');
         } catch (error) {
+          setRequestPending(false);
           errorMessage(error);
         }
       }
@@ -131,6 +137,7 @@ const SignUpController = () => {
     passwordMismatchError,
     fillFormComplete,
     handleSubmit,
+    requestPending,
   };
   return <SignUpView {...props} />;
 };

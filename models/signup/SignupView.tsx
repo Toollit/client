@@ -1,9 +1,10 @@
 import React from 'react';
 import AppLayout from 'components/appLayout';
-import { CloseBtn, DisabledBtn, SubmitBtn } from 'components/commons/button';
+import { CloseBtn, DisabledBtn, SubmitBtn } from '@/components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
 import InputError from '@/components/commons/error/InputError';
+import LoadingCircularProgress from '@/components/commons/loading';
 import { Container, Form, InputContainer, PrivacyPolicy } from './styles';
 
 export interface SignUpViewProps {
@@ -19,6 +20,7 @@ export interface SignUpViewProps {
   passwordMismatchError: boolean;
   fillFormComplete: boolean;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  requestPending: boolean;
 }
 
 const SignUpView = ({
@@ -34,6 +36,7 @@ const SignUpView = ({
   passwordMismatchError,
   fillFormComplete,
   handleSubmit,
+  requestPending,
 }: SignUpViewProps) => {
   return (
     <AppLayout nav={false}>
@@ -96,6 +99,7 @@ const SignUpView = ({
           </PrivacyPolicy>
         </Form>
       </Container>
+      {requestPending && <LoadingCircularProgress />}
     </AppLayout>
   );
 };
