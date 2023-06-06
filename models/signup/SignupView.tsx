@@ -5,7 +5,8 @@ import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
 import InputError from '@/components/commons/error/InputError';
 import LoadingCircularProgress from '@/components/commons/loading';
-import { Container, Form, InputContainer, PrivacyPolicy } from './styles';
+import Link from 'next/link';
+import { Container, Form, InputContainer, PolicyNotice } from './styles';
 
 export interface SignUpViewProps {
   handleClose: () => void;
@@ -89,14 +90,22 @@ const SignUpView = ({
             <DisabledBtn text='다음' />
           )}
 
-          <PrivacyPolicy>
-            가입하면 <span>쿠키 사용</span>을 포함해 <span>이용약관</span> 및{' '}
-            <span>개인정보 처리방침에</span> 동의하게 됩니다. Getit은 계정을
-            안전하게 보호하고 광고를 포함한 맞춤 서비스를 제공하는 등 Getit
-            개인정보 처리방침에 명시된 목적을 위해 이메일 주소 정보를 사용할 수
-            있습니다. <span>자세히 알아보기.</span> 이메일을 제공하시면 다른
-            사람들이 이 정보로 내 계정을 찾을 수 있게 됩니다.
-          </PrivacyPolicy>
+          <PolicyNotice>
+            가입하면 쿠키 사용을 포함해{' '}
+            <Link href={'/policy/terms-of-service'}>
+              <a>이용약관</a>
+            </Link>{' '}
+            및{' '}
+            <Link href={'/policy/privacy'}>
+              <a>개인정보 처리방침</a>
+            </Link>{' '}
+            에 동의하게 됩니다. Getit은 계정을 안전하게 보호하고 광고를 포함한
+            맞춤 서비스를 제공하는 등 Getit 개인정보 처리방침에 명시된 목적을
+            위해 이메일 주소 정보를 사용할 수 있습니다.{' '}
+            <Link href={'/policy/privacy'}>
+              <a>자세히 알아보기.</a>
+            </Link>
+          </PolicyNotice>
         </Form>
       </Container>
       {requestPending && <LoadingCircularProgress />}
