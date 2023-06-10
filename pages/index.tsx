@@ -2,10 +2,10 @@ import type { NextPage, GetServerSideProps } from 'next';
 import { SWRConfig } from 'swr';
 import { getProjectsFetcher, Project } from '@/apis/getProjectsFetcher';
 import MainController from 'models/main/MainController';
-import { GET_PROJECTS_API_ENDPOINT } from '@/apis/keys';
+import { getProjectsKey } from '@/apis/keys';
 interface PageProps {
   fallback: {
-    [GET_PROJECTS_API_ENDPOINT: string]: Project[];
+    [key: string]: Project[];
   };
 }
 
@@ -17,13 +17,25 @@ const Home: NextPage<PageProps> = ({ fallback }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const projects = await getProjectsFetcher(GET_PROJECTS_API_ENDPOINT);
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const apiEndpoint = getProjectsKey();
+  const projects = await getProjectsFetcher(apiEndpoint);
+
+  const hasQueryData = Object.keys(query).length >= 1;
+
+  if (hasQueryData) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {
       fallback: {
-        [GET_PROJECTS_API_ENDPOINT]: projects,
+        [apiEndpoint]: projects,
       },
     },
   };
