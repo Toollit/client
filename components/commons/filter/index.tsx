@@ -1,25 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FilterIcon } from '@/assets/icons';
-import { Button, FilterMenu, FilterCondition } from './styles';
+import { useDispatch } from 'react-redux';
+import { updatePostOrder } from '@/features/order';
+import {
+  Button,
+  IconContainer,
+  Text,
+  FilterMenu,
+  FilterCondition,
+} from './styles';
 
 const Filter = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const dispatch = useDispatch();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [order, setOrder] = useState<'최신순' | '인기순'>('최신순');
+
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    // open
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+
+  const handleClose = (event: React.MouseEvent<HTMLLIElement>) => {
+    const { value } = event.currentTarget.dataset;
+
+    if (value === 'new') {
+      dispatch(updatePostOrder({ order: 'new' }));
+      setOrder('최신순');
+    }
+
+    if (value === 'popularity') {
+      dispatch(updatePostOrder({ order: 'popularity' }));
+      setOrder('인기순');
+    }
+
+    // close
     setAnchorEl(null);
   };
 
   return (
     <div>
       <Button onClick={handleClick}>
-        <FilterIcon />
+        <IconContainer>
+          <FilterIcon width={20} height={20} />
+        </IconContainer>
+        <Text>{order}</Text>
       </Button>
       <FilterMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <FilterCondition onClick={handleClose}>최신순</FilterCondition>
-        <FilterCondition onClick={handleClose}>인기순</FilterCondition>
+        <FilterCondition onClick={handleClose} data-value='new'>
+          최신순
+        </FilterCondition>
+        <FilterCondition onClick={handleClose} data-value='popularity'>
+          인기순
+        </FilterCondition>
       </FilterMenu>
     </div>
   );
