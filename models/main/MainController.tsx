@@ -10,18 +10,20 @@ import { errorMessage } from '@/apis/errorMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { updateTotalPage } from '@/features/pagination';
+import { updatePostOrder } from '@/features/order';
 
 const MainController = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
   const page = useSelector((state: RootState) => state.pagination.page);
+  const order = useSelector((state: RootState) => state.postOrder.order);
 
   const { cache }: { cache: Cache<AuthAPIRes> } = useSWRConfig();
 
   const isLoggedIn = cache.get(AUTH_USER)?.data?.data?.nickname;
 
-  const { data } = useSWR(getProjectsKey(page), getProjectsFetcher, {
+  const { data } = useSWR(getProjectsKey(page, order), getProjectsFetcher, {
     revalidateOnMount: false,
     errorRetryCount: 0,
     onError(err, key, config) {
@@ -59,6 +61,13 @@ const MainController = () => {
       dispatch(updateTotalPage({ totalPage: data.totalPage }));
     }
   }, [dispatch, data]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(updateTotalPage({ totalPage: 1 }));
+      dispatch(updatePostOrder({ order: null }));
+    };
+  }, [dispatch]);
 
   const props: MainViewProps = {
     projects: data?.projects,
