@@ -196,7 +196,7 @@ const HeaderLeftLink = styled.div`
   }
 `;
 
-const LogOut = styled.div`
+const LogInOut = styled.div`
   font-size: 1.4rem;
   color: ${(props) => props.theme.colors.gray};
 
@@ -339,7 +339,7 @@ export {
   HeaderLeftMenu,
   HeaderLeftLink,
   DividerContainer,
-  LogOut,
+  LogInOut,
   Logo,
   SettingsContainer,
   DeleteUser,

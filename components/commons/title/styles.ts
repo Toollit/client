@@ -10,11 +10,13 @@ const TitleContainer = styled.div`
 `;
 
 const TitleText = styled.h1`
-  font-size: ${(props) => props.theme.fontSizes.large};
+  /* font-size: ${(props) => props.theme.fontSizes.large};
 
   ${mediaQueryMobile} {
     font-size: ${(props) => props.theme.fontSizes.xxxlarge};
-  }
+  } */
+
+  font-size: 2rem;
 `;
 
 export { TitleContainer, TitleText };

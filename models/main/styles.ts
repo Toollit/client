@@ -139,7 +139,7 @@ const PostWriteButton = styled.button`
   border-style: none;
   background-color: #4dd290;
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1.3rem;
   padding: 1rem 2rem;
 `;
