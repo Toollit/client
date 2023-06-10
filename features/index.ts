@@ -8,6 +8,7 @@ import swipeableViewSlice, {
 } from '@/features/swipeableView';
 import dialogSlice, { DialogState } from '@/features/dialog';
 import paginationSlice, { PaginationState } from '@/features/pagination';
+import postOrderSlice, { PostOrderState } from '@/features/order';
 
 export interface RootState {
   user: UserState;
@@ -16,6 +17,7 @@ export interface RootState {
   swipeableView: SwipeableViewState;
   dialog: DialogState;
   pagination: PaginationState;
+  postOrder: PostOrderState;
 }
 
 const combineReducer = combineReducers({
@@ -25,6 +27,7 @@ const combineReducer = combineReducers({
   swipeableView: swipeableViewSlice,
   dialog: dialogSlice,
   pagination: paginationSlice,
+  postOrder: postOrderSlice,
 });
 
 export const rootReducer: Reducer<RootState, AnyAction> = (
