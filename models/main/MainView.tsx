@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid';
 import Filter from '@/components/commons/filter';
 import { Project } from '@/apis/getProjectsFetcher';
 import SwipeableCircularViews from '@/components/commons/swipeableView/swipeableCircularViews';
+import Pagination from '@/components/commons/pagination';
 import {
   Container,
   BannerContainer,
@@ -120,6 +121,7 @@ const MainView = ({
               );
             })}
           </Grid>
+          <Pagination />
         </PostContainer>
       </Container>
     </AppLayout>

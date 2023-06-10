@@ -1,30 +1,33 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import MainView, { MainViewProps } from './MainView';
 import { useRouter } from 'next/router';
 import { getProjectsFetcher } from '@/apis/getProjectsFetcher';
-import { AUTH_USER, GET_PROJECTS_API_ENDPOINT } from '@/apis/keys';
+import { AUTH_USER, getProjectsKey } from '@/apis/keys';
 import LoadingCircularProgress from '@/components/commons/loading';
 import useSWR, { useSWRConfig, Cache } from 'swr';
 import { AuthAPIRes } from '@/apis/authFetcher';
 import { errorMessage } from '@/apis/errorMessage';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { updateTotalPage } from '@/features/pagination';
 
 const MainController = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const page = useSelector((state: RootState) => state.pagination.page);
+
   const { cache }: { cache: Cache<AuthAPIRes> } = useSWRConfig();
 
   const isLoggedIn = cache.get(AUTH_USER)?.data?.data?.nickname;
 
-  const { data: projects } = useSWR(
-    GET_PROJECTS_API_ENDPOINT,
-    getProjectsFetcher,
-    {
-      revalidateOnMount: false,
-      errorRetryCount: 0,
-      onError(err, key, config) {
-        errorMessage(err);
-      },
+  const { data } = useSWR(getProjectsKey(page), getProjectsFetcher, {
+    revalidateOnMount: false,
+    errorRetryCount: 0,
+    onError(err, key, config) {
+      errorMessage(err);
     },
-  );
+  });
 
   const handleRouteProjectDetail = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -47,12 +50,18 @@ const MainController = () => {
     }
   }, [router, isLoggedIn]);
 
-  if (!projects) {
-    return <LoadingCircularProgress />;
-  }
+  // if (!projects) {
+  //   return <LoadingCircularProgress />;
+  // }
+
+  useEffect(() => {
+    if (data) {
+      dispatch(updateTotalPage({ totalPage: data.totalPage }));
+    }
+  }, [dispatch, data]);
 
   const props: MainViewProps = {
-    projects,
+    projects: data?.projects,
     createProject,
     handleRouteProjectDetail,
   };
