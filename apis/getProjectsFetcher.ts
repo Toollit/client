@@ -13,10 +13,11 @@ export interface GetProjectsAPIRes {
   message: string | null;
   data: {
     projects: Project[];
+    totalPage: number;
   };
 }
 
 export const getProjectsFetcher = async (url: string) => {
   const response = await serverInstance.get<GetProjectsAPIRes>(url);
-  return response.data.data.projects;
+  return response.data.data;
 };
