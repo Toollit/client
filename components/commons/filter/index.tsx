@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FilterIcon } from '@/assets/icons';
 import { useDispatch } from 'react-redux';
 import { updatePostOrder } from '@/features/order';
+import { updatePage, updateTotalPage } from '@/features/pagination';
 import {
   Button,
   IconContainer,
@@ -35,9 +36,17 @@ const Filter = () => {
       setOrder('인기순');
     }
 
+    // pagination reset
+    dispatch(updatePage({ page: 1 }));
+    dispatch(updateTotalPage({ totalPage: 1 }));
+
     // close
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    dispatch(updatePostOrder({ order: 'new' }));
+  }, [dispatch]);
 
   return (
     <div>
