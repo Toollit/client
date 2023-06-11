@@ -32,7 +32,7 @@ const InputContainer = styled.div`
 
 const Notice = styled.div`
   font-size: 1.2rem;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
 
   span {
     color: #26a063;

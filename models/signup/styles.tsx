@@ -29,12 +29,13 @@ const InputContainer = styled.div`
   position: relative;
 `;
 
-const PrivacyPolicy = styled.div`
+const PolicyNotice = styled.div`
   font-size: 1.2rem;
 
-  span {
+  a {
+    text-decoration: none;
     color: #26a063;
   }
 `;
 
-export { Container, Form, InputContainer, PrivacyPolicy };
+export { Container, Form, InputContainer, PolicyNotice };
