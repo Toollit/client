@@ -26,12 +26,11 @@ type RecruitmentType = 'developer' | 'designer' | 'pm' | 'anyone';
 
 interface BlockPostProps {
   content: Project;
-  onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-const BlockPost = ({ content, onClick }: BlockPostProps) => {
+const BlockPost = ({ content }: BlockPostProps) => {
   return (
-    <Container data-id={content.id} onClick={onClick}>
+    <Container>
       <ImageContainer>
         <ProjectImage
           src={project3}

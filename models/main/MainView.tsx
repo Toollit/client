@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import AppLayout from '@/components/appLayout';
 import BannerPerson from '@/assets/images/BannerPerson';
 import BannerBackground from '@/assets/images/BannerBackground';
@@ -28,19 +29,15 @@ import {
   PostFilterContainer,
   PostWriteButton,
   PostContainer,
+  StyledLink,
 } from './styles';
 
 export interface MainViewProps {
   projects: Project[] | undefined;
   createProject: () => void;
-  handleRouteProjectDetail: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-const MainView = ({
-  projects,
-  createProject,
-  handleRouteProjectDetail,
-}: MainViewProps) => {
+const MainView = ({ projects, createProject }: MainViewProps) => {
   return (
     <AppLayout nav={true}>
       <Container>
@@ -113,15 +110,16 @@ const MainView = ({
                   tablet={4}
                   laptop={4}
                 >
-                  <BlockPost
-                    content={project}
-                    onClick={handleRouteProjectDetail}
-                  />
+                  <Link href={`/project/${project.id}`} passHref>
+                    <StyledLink target='_blank'>
+                      <BlockPost content={project} />
+                    </StyledLink>
+                  </Link>
                 </Grid>
               );
             })}
           </Grid>
-          <Pagination />
+          <Pagination count={5} />
         </PostContainer>
       </Container>
     </AppLayout>

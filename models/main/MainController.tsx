@@ -3,13 +3,12 @@ import MainView, { MainViewProps } from './MainView';
 import { useRouter } from 'next/router';
 import { getProjectsFetcher } from '@/apis/getProjectsFetcher';
 import { AUTH_USER, getProjectsKey } from '@/apis/keys';
-import LoadingCircularProgress from '@/components/commons/loading';
 import useSWR, { useSWRConfig, Cache } from 'swr';
 import { AuthAPIRes } from '@/apis/authFetcher';
 import { errorMessage } from '@/apis/errorMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { updateTotalPage } from '@/features/pagination';
+import { resetPage, updateTotalPage } from '@/features/pagination';
 import { updatePostOrder } from '@/features/order';
 
 const MainController = () => {
@@ -31,18 +30,6 @@ const MainController = () => {
     },
   });
 
-  const handleRouteProjectDetail = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      event.preventDefault();
-      const target = event.currentTarget as HTMLDivElement;
-      const projectId = target.getAttribute('data-id');
-      if (projectId) {
-        return router.push(`project/${projectId}`);
-      }
-    },
-    [router],
-  );
-
   const createProject = useCallback(() => {
     if (isLoggedIn) {
       router.push('/project/create');
@@ -51,10 +38,6 @@ const MainController = () => {
       router.push('/login');
     }
   }, [router, isLoggedIn]);
-
-  // if (!projects) {
-  //   return <LoadingCircularProgress />;
-  // }
 
   useEffect(() => {
     if (data) {
@@ -66,13 +49,13 @@ const MainController = () => {
     return () => {
       dispatch(updateTotalPage({ totalPage: 1 }));
       dispatch(updatePostOrder({ order: null }));
+      dispatch(resetPage());
     };
   }, [dispatch]);
 
   const props: MainViewProps = {
     projects: data?.projects,
     createProject,
-    handleRouteProjectDetail,
   };
 
   return <MainView {...props} />;
