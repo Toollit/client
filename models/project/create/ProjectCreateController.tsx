@@ -1,19 +1,16 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
 import ProjectCreateView, { ProjectCreateViewProps } from './ProjectCreateView';
 import { createProjectAPI } from '@/apis/createProject';
 import useEditorContent from '@/hooks/useEditorContent';
 import { errorMessage } from '@/apis/errorMessage';
-import { useSWRConfig, Cache } from 'swr';
-import { AuthAPIRes } from '@/apis/authFetcher';
-import { AUTH_USER } from '@/apis/keys';
+import { useSWRConfig } from 'swr';
+import { getProjectsKey } from '@/apis/keys';
 
 const ProjectCreateController = () => {
   const router = useRouter();
 
-  const { cache }: { cache: Cache<AuthAPIRes> } = useSWRConfig();
-
-  const isLoggedIn = cache.get(AUTH_USER)?.data?.data?.nickname;
+  const { mutate } = useSWRConfig();
 
   const { titleRef, editorRef, handleData } = useEditorContent();
 
@@ -56,6 +53,7 @@ const ProjectCreateController = () => {
         const response = await createProjectAPI(projectData);
 
         if (response?.success) {
+          mutate(getProjectsKey());
           const projectId = response.data.projectId;
           router.push(`/project/${projectId}`);
         }
@@ -63,7 +61,7 @@ const ProjectCreateController = () => {
         errorMessage(error);
       }
     },
-    [router, editorRef, titleRef, handleData, hashtagRef],
+    [router, editorRef, titleRef, handleData, hashtagRef, mutate],
   );
 
   const props: ProjectCreateViewProps = {
