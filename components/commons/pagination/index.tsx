@@ -1,12 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { resetPage, updatePage } from '@/features/pagination';
+import { updatePage } from '@/features/pagination';
 import ArrowBackIcon from '@/assets/icons/ArrowBackIcon';
 import ArrowForwardIcon from '@/assets/icons/ArrowForwardIcon';
 import { Container, PageControlButton, PageNumberButton } from './styles';
 
-const Pagination = () => {
+interface PaginationProps {
+  count: number;
+}
+
+/**
+ * @props count - pagination 버튼이 최대로 보여질 갯수
+ *
+ */
+const Pagination = ({ count = 5 }: PaginationProps) => {
   const dispatch = useDispatch();
 
   const page = useSelector((state: RootState) => state.pagination.page);
@@ -15,11 +23,15 @@ const Pagination = () => {
   );
 
   const [slicePoint, setSlicePoint] = useState<[number, number]>([0, 0]);
+  const [startPoint, setStartPoint] = useState<Array<number>>([]);
+  const [lastStartPoint, setLastStartPoint] = useState(0);
+  const [startPointIndex, setStartPointIndex] = useState(0);
 
   const ScrollToTop = useCallback(() => {
-    // TODO 더 좋은 방법 생각해보기
     setTimeout(() => {
-      window.scrollTo({ top: 404, behavior: 'smooth' });
+      // nav 44, banner 360
+      // window.scrollTo({ top: 404, behavior: 'auto' });
+      window.scrollTo({ top: 0, behavior: 'auto' });
     }, 300);
   }, []);
 
@@ -38,62 +50,68 @@ const Pagination = () => {
   );
 
   const handlePreviousPage = useCallback(() => {
-    if (page === 1) {
+    if (page >= startPoint[0] && page < startPoint[1]) {
       return;
     }
 
-    dispatch(updatePage({ page: page - 1 }));
+    dispatch(updatePage({ page: startPoint[startPointIndex] - 1 }));
+
+    setStartPointIndex((prev) => prev - 1);
+
     ScrollToTop();
-  }, [dispatch, page, ScrollToTop]);
+  }, [dispatch, page, ScrollToTop, startPoint, startPointIndex]);
 
   const handleNextPage = useCallback(() => {
-    if (page === totalPage) {
+    if (page >= lastStartPoint && page <= totalPage) {
       return;
     }
 
-    dispatch(updatePage({ page: page + 1 }));
+    dispatch(updatePage({ page: startPoint[startPointIndex + 1] }));
+
+    setStartPointIndex((prev) => prev + 1);
+
     ScrollToTop();
-  }, [dispatch, page, ScrollToTop, totalPage]);
+  }, [
+    dispatch,
+    page,
+    ScrollToTop,
+    totalPage,
+    startPoint,
+    startPointIndex,
+    lastStartPoint,
+  ]);
 
   useEffect(() => {
     // redux store totalPage default value 1. so need to update new totalPage after controller inside api call
-    const paginationBreakpoint = Math.ceil(totalPage / 5);
+    const paginationBreakpoint = Math.ceil(totalPage / count);
 
-    // (5 * n) + 1 -> Formula for finding starting point
+    // (count * n) + 1 -> Formula for finding pagination block starting point  ex)(5 * n) + 1
     const startPoint = Array.from({ length: paginationBreakpoint }, (_, i) => {
-      return 5 * i + 1;
+      return count * i + 1;
     });
+
+    const lastStartPoint = startPoint[startPoint.length - 1];
+
+    setStartPoint(startPoint);
+    setLastStartPoint(lastStartPoint);
 
     const SlicePoint = [];
 
     for (let i = 0; i < startPoint.length; i++) {
-      SlicePoint.push({ sliceStart: i * 5, sliceEnd: i * 5 + 5 });
+      SlicePoint.push({ sliceStart: i * count, sliceEnd: i * count + count });
     }
-
-    // console.log('startPoint ===>', startPoint);
-    // console.log('slicePoint ===>', slicePoint);
 
     for (let i = 0; i < startPoint.length; i++) {
       if (startPoint[i] <= page) {
         setSlicePoint([SlicePoint[i].sliceStart, SlicePoint[i].sliceEnd]);
       }
     }
-  }, [totalPage, page]);
-
-  useEffect(() => {}, []);
-
-  // Initialize the pagination value when the pathname changes
-  // TODO 상세페이지 입장 후 뒤로왔을때 page 초기화 문제 해결하기
-  useEffect(() => {
-    return () => {
-      dispatch(resetPage());
-    };
-  }, [dispatch]);
+  }, [totalPage, page, count]);
 
   return (
     <Container>
       <PageControlButton onClick={handlePreviousPage}>
-        {page === 1 ? (
+        {page >= startPoint[0] && page < startPoint[1] ? (
           <ArrowBackIcon width={20} height={20} color='#00000014' />
         ) : (
           <ArrowBackIcon width={20} height={20} />
@@ -115,7 +133,7 @@ const Pagination = () => {
           }).slice(slicePoint[0], slicePoint[1])}
       </div>
       <PageControlButton onClick={handleNextPage}>
-        {page === totalPage ? (
+        {page >= lastStartPoint && page <= totalPage ? (
           <ArrowForwardIcon width={20} height={20} color='#00000014' />
         ) : (
           <ArrowForwardIcon width={20} height={20} />
