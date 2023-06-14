@@ -48,8 +48,8 @@ const useEditorContent = () => {
         return null;
       }
 
-      if (titleRef.current?.value.length > 50) {
-        alert('제목은 50자 이하로 작성 가능합니다.');
+      if (titleRef.current?.value.length > 100) {
+        alert('제목은 100자 이하로 작성 가능합니다.');
         return null;
       }
 
