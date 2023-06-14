@@ -155,6 +155,11 @@ const PostContainer = styled.div`
   }
 `;
 
+const StyledLink = styled.a`
+  text-decoration: none;
+  color: #000;
+`;
+
 export {
   Container,
   BannerContainer,
@@ -172,4 +177,5 @@ export {
   PostFilterContainer,
   PostWriteButton,
   PostContainer,
+  StyledLink,
 };

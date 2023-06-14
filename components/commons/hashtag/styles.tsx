@@ -11,6 +11,7 @@ const HashtagBlock = styled.div`
   min-width: fit-content;
   height: 2.4rem;
   line-height: 1.3rem;
+  white-space: nowrap;
 `;
 
 export { HashtagBlock };

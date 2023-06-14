@@ -63,7 +63,7 @@ const RecruitmentType = styled.div<{
   type: 'developer' | 'designer' | 'pm' | 'anyone';
 }>`
   width: fit-content;
-  margin: 0 0.8rem 0 0;
+  margin: 0 0.4rem 0 0;
   padding: 0.4rem 1rem;
   border-radius: ${(props) => props.theme.borderRadius.sharp};
   font-size: 0.8rem;
