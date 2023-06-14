@@ -50,7 +50,11 @@ const Pagination = ({ count = 5 }: PaginationProps) => {
   );
 
   const handlePreviousPage = useCallback(() => {
-    if (page >= startPoint[0] && page < startPoint[1]) {
+    if (
+      startPoint.length < 2 ||
+      startPoint[1] === undefined ||
+      page < startPoint[1]
+    ) {
       return;
     }
 
@@ -111,7 +115,9 @@ const Pagination = ({ count = 5 }: PaginationProps) => {
   return (
     <Container>
       <PageControlButton onClick={handlePreviousPage}>
-        {page >= startPoint[0] && page < startPoint[1] ? (
+        {startPoint.length < 2 ||
+        startPoint[1] === undefined ||
+        page < startPoint[1] ? (
           <ArrowBackIcon width={20} height={20} color='#00000014' />
         ) : (
           <ArrowBackIcon width={20} height={20} />
