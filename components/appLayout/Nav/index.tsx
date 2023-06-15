@@ -1,13 +1,11 @@
 import React, { useCallback } from 'react';
 import Link from 'next/link';
-import useSWR from 'swr';
-import { authFetcher } from '@/apis/authFetcher';
 import { AccountCircleIcon, MenuIcons, SearchIcon } from '@/assets/icons';
 import GetitLogo from '@/assets/images/GetitLogo';
-import { AUTH_USER } from '@/apis/keys';
 import SearchDrawer from '@/components/commons/drawer/search';
 import { openDrawer } from '@/features/drawer';
 import { useDispatch } from 'react-redux';
+import useAuth from '@/hooks/useAuth';
 import {
   NavContainer,
   Content,
@@ -23,9 +21,8 @@ import {
 const Nav = () => {
   const dispatch = useDispatch();
 
-  const { data } = useSWR(AUTH_USER, authFetcher);
-
-  const nickname = data?.data?.nickname;
+  const isLoggedIn = useAuth({});
+  const nickname = isLoggedIn;
 
   const handleSearchDrawer = useCallback(() => {
     dispatch(openDrawer({ type: 'search' }));
@@ -53,7 +50,8 @@ const Nav = () => {
                   </IconContainer>
                 </SearchDrawerBtn>
                 <li>
-                  <Link href={nickname ? `/profile/${nickname}` : '/login'}>
+                  {/* <Link href={nickname ? `/profile/${nickname}` : '/login'}> */}
+                  <Link href={isLoggedIn ? `/profile/${nickname}` : '/login'}>
                     <a>
                       <IconContainer>
                         <AccountCircleIcon />
