@@ -3,14 +3,15 @@ import { useRouter } from 'next/router';
 import ResetPasswordView, { ResetPasswordViewProps } from './ResetPasswordView';
 import { logoutAPI } from '@/apis/logout';
 import { resetPasswordAPI } from '@/apis/resetPassword';
-import useNoSpaceInput from 'hooks/useNoSpaceInput';
+import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { errorMessage } from '@/apis/errorMessage';
-import { authFetcher } from '@/apis/authFetcher';
 import { AUTH_USER } from '@/apis/keys';
-import useSWR from 'swr';
+import { useSWRConfig } from 'swr';
+import useAuth from '@/hooks/useAuth';
 
 const ResetPasswordController = () => {
   const router = useRouter();
+  const { mutate } = useSWRConfig();
 
   const [newPassword, onChangeNewPassword] = useNoSpaceInput('');
   const [newPasswordInvalidError, setNewPasswordInvalidError] = useState(false);
@@ -20,11 +21,7 @@ const ResetPasswordController = () => {
     useState(false);
   const [requestPending, setRequestPending] = useState(false);
 
-  const { data } = useSWR(AUTH_USER, authFetcher);
-
-  if (data?.message !== 'needResetPassword') {
-    router.replace('/');
-  }
+  const { message } = useAuth({});
 
   const checkPasswordValidate = useCallback(() => {
     // password 영문자, 숫자, 특수문자 조합 8 ~ 20자리 형식 확인 정규식
@@ -46,10 +43,10 @@ const ResetPasswordController = () => {
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      const isValidePassword = checkPasswordValidate();
+      const isValidationPassword = checkPasswordValidate();
       const isPasswordMatch = checkPasswordMatch();
 
-      if (!isValidePassword) {
+      if (!isValidationPassword) {
         return setNewPasswordInvalidError(true);
       }
 
@@ -92,15 +89,15 @@ const ResetPasswordController = () => {
 
   const handleLogout = useCallback(async () => {
     try {
-      const response = await logoutAPI();
+      await logoutAPI();
 
-      if (response?.success) {
-        router.replace('/');
-      }
+      mutate(AUTH_USER);
+
+      router.replace('/');
     } catch (error) {
       errorMessage(error);
     }
-  }, [router]);
+  }, [router, mutate]);
 
   useEffect(() => {
     setNewPasswordInvalidError(false);
@@ -109,6 +106,12 @@ const ResetPasswordController = () => {
   useEffect(() => {
     setDoubleCheckPasswordError(false);
   }, [doubleCheckPassword]);
+
+  useEffect(() => {
+    if (message !== 'needResetPassword') {
+      router.replace('/');
+    }
+  }, [message, router]);
 
   const props: ResetPasswordViewProps = {
     newPassword,
