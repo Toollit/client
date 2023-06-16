@@ -6,11 +6,17 @@ import useEditorContent from '@/hooks/useEditorContent';
 import { errorMessage } from '@/apis/errorMessage';
 import { useSWRConfig } from 'swr';
 import { getProjectsKey } from '@/apis/keys';
+import useAuth from '@/hooks/useAuth';
 
 const ProjectCreateController = () => {
   const router = useRouter();
 
   const { mutate } = useSWRConfig();
+
+  const isLoggedIn = useAuth({
+    redirectTo: '/login',
+    message: '로그인 후 이용 가능합니다.',
+  });
 
   const { titleRef, editorRef, handleData } = useEditorContent();
 
@@ -63,6 +69,10 @@ const ProjectCreateController = () => {
     },
     [router, editorRef, titleRef, handleData, hashtagRef, mutate],
   );
+
+  if (!isLoggedIn) {
+    return null;
+  }
 
   const props: ProjectCreateViewProps = {
     handleSubmit,
