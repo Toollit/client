@@ -5,7 +5,7 @@ import { AUTH_USER } from '@/apis/keys';
 import { AuthAPIRes } from '@/apis/authFetcher';
 
 interface Props {
-  redirectTo: string;
+  redirectTo?: string;
   message?: string;
 }
 
@@ -13,6 +13,12 @@ interface CacheData {
   cache: Cache<AuthAPIRes>;
 }
 
+/**
+ * @param redirectTo - redirect url if user is not loggedIn
+ * @param message - show message if user is not loggedIn
+ *
+ * *Description: redirectTo, message params is optional. If you do not pass anything to params, return the value that only user logged in or not.
+ */
 const useAuth = ({ redirectTo, message }: Props) => {
   const router = useRouter();
 
@@ -26,7 +32,9 @@ const useAuth = ({ redirectTo, message }: Props) => {
         alert(message);
       }
 
-      router.replace(redirectTo);
+      if (redirectTo) {
+        router.replace(redirectTo);
+      }
     }
   }, [router, isLoggedIn, message, redirectTo]);
 
