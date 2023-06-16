@@ -6,7 +6,7 @@ import { AuthAPIRes } from '@/apis/authFetcher';
 
 interface Props {
   redirectTo?: string;
-  message?: string;
+  alertMessage?: string;
 }
 
 interface CacheData {
@@ -18,7 +18,7 @@ interface CacheData {
  *
  * @typedef {Object} UseAuthProps
  * @property {string} redirectTo - The URL to redirect if the user is not logged in.
- * @property {string} message - The message to display if the user is not logged in.
+ * @property {string} alertMessage - The alertMessage to display if the user is not logged in.
  *
  * @typedef {Object} UseAuthReturn
  * @property {boolean} isLoggedIn - Indicates whether the user is logged in or not.
@@ -27,28 +27,31 @@ interface CacheData {
  * @param {UseAuthProps} params - The parameters for the useAuth hook.
  * @returns {UseAuthReturn} The return value of the useAuth hook.
  */
-const useAuth = ({ redirectTo, message }: Props) => {
+const useAuth = ({ redirectTo, alertMessage }: Props) => {
   const router = useRouter();
 
   const { cache }: CacheData = useSWRConfig();
 
-  const authUser = cache.get(AUTH_USER)?.data?.data.nickname;
+  const cacheData = cache.get(AUTH_USER)?.data;
+
+  const authUser = cacheData?.data?.nickname;
   const isLoggedIn = authUser ? true : false;
   const nickname = authUser ? authUser : null;
+  const message = cacheData?.message ? cacheData.message : null;
 
   useEffect(() => {
     if (isLoggedIn === false) {
-      if (message) {
-        alert(message);
+      if (alertMessage) {
+        alert(alertMessage);
       }
 
       if (redirectTo) {
         router.replace(redirectTo);
       }
     }
-  }, [router, isLoggedIn, message, redirectTo]);
+  }, [router, isLoggedIn, alertMessage, redirectTo]);
 
-  return { isLoggedIn, nickname };
+  return { isLoggedIn, nickname, message };
 };
 
 export default useAuth;
