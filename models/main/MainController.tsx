@@ -2,14 +2,14 @@ import React, { useCallback, useEffect } from 'react';
 import MainView, { MainViewProps } from './MainView';
 import { useRouter } from 'next/router';
 import { getProjectsFetcher } from '@/apis/getProjectsFetcher';
-import { AUTH_USER, getProjectsKey } from '@/apis/keys';
-import useSWR, { useSWRConfig, Cache } from 'swr';
-import { AuthAPIRes } from '@/apis/authFetcher';
+import { getProjectsKey } from '@/apis/keys';
+import useSWR from 'swr';
 import { errorMessage } from '@/apis/errorMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { resetPage, updateTotalPage } from '@/features/pagination';
 import { updatePostOrder } from '@/features/order';
+import useAuth from '@/hooks/useAuth';
 
 const MainController = () => {
   const router = useRouter();
@@ -18,9 +18,7 @@ const MainController = () => {
   const page = useSelector((state: RootState) => state.pagination.page);
   const order = useSelector((state: RootState) => state.postOrder.order);
 
-  const { cache }: { cache: Cache<AuthAPIRes> } = useSWRConfig();
-
-  const isLoggedIn = cache.get(AUTH_USER)?.data?.data?.nickname;
+  const isLoggedIn = useAuth({});
 
   const { data } = useSWR(getProjectsKey(page, order), getProjectsFetcher, {
     revalidateOnMount: false,
