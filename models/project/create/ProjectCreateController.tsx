@@ -15,7 +15,7 @@ const ProjectCreateController = () => {
 
   const { isLoggedIn } = useAuth({
     redirectTo: '/login',
-    message: '로그인 후 이용 가능합니다.',
+    alertMessage: '로그인 후 이용 가능합니다.',
   });
 
   const { titleRef, editorRef, handleData } = useEditorContent();
