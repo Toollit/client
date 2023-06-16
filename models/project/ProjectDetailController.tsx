@@ -5,10 +5,9 @@ import { useRouter } from 'next/router';
 import LoadingCircularProgress from '@/components/commons/loading';
 import useSWR from 'swr';
 import { getProjectDetailFetcher } from '@/apis/getProjectDetailFetcher';
-import { AUTH_USER, GET_PROJECT_DETAIL_API_ENDPOINT } from '@/apis/keys';
+import { GET_PROJECT_DETAIL_API_ENDPOINT } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
-import { useSWRConfig, Cache } from 'swr';
-import { AuthAPIRes } from '@/apis/authFetcher';
+import useAuth from '@/hooks/useAuth';
 
 const ProjectDetailController = () => {
   const [isClientRendering, setIsClientRendering] = useState(false);
@@ -17,9 +16,7 @@ const ProjectDetailController = () => {
     setIsClientRendering(true);
   }, []);
 
-  const { cache }: { cache: Cache<AuthAPIRes> } = useSWRConfig();
-
-  const loginUserNickname = cache.get(AUTH_USER)?.data?.data?.nickname;
+  const { nickname } = useAuth({});
 
   const router = useRouter();
   const postId = router.query.id;
@@ -68,7 +65,7 @@ const ProjectDetailController = () => {
       profileImage: projectDetail.writer.profileImage,
     },
     me: {
-      nickname: loginUserNickname ? loginUserNickname : null,
+      nickname,
     },
 
     //TODO comment 추가하기

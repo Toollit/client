@@ -18,7 +18,7 @@ const MainController = () => {
   const page = useSelector((state: RootState) => state.pagination.page);
   const order = useSelector((state: RootState) => state.postOrder.order);
 
-  const isLoggedIn = useAuth({});
+  const { isLoggedIn } = useAuth({});
 
   const { data } = useSWR(getProjectsKey(page, order), getProjectsFetcher, {
     revalidateOnMount: false,

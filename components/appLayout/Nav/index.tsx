@@ -21,8 +21,7 @@ import {
 const Nav = () => {
   const dispatch = useDispatch();
 
-  const isLoggedIn = useAuth({});
-  const nickname = isLoggedIn;
+  const { isLoggedIn, nickname } = useAuth({});
 
   const handleSearchDrawer = useCallback(() => {
     dispatch(openDrawer({ type: 'search' }));

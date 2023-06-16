@@ -13,7 +13,7 @@ const ProjectCreateController = () => {
 
   const { mutate } = useSWRConfig();
 
-  const isLoggedIn = useAuth({
+  const { isLoggedIn } = useAuth({
     redirectTo: '/login',
     message: '로그인 후 이용 가능합니다.',
   });
