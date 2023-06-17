@@ -6,7 +6,6 @@ const Button = styled.div`
   height: 5.3rem;
   align-items: center;
   padding: 0 1.6rem;
-  position: relative;
 `;
 
 const IconContainer = styled.div`

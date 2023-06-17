@@ -4,9 +4,8 @@ const ErrorMessage = styled.div`
   font-size: 1.4rem;
   color: ${(props) => props.theme.colors.error};
   position: absolute;
-  bottom: 0;
+  bottom: 0.2rem;
   left: 0;
-  transform: translateY(0.8rem);
 `;
 
 export { ErrorMessage };

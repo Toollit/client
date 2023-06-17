@@ -63,8 +63,7 @@ const Timer = styled.div`
   font-size: 1.4rem;
   position: absolute;
   right: 0;
-  bottom: 0;
-  transform: translateY(0.8rem);
+  bottom: 0rem;
 `;
 
 export { Container, Form, InputContainer, NextBtn, NoticeForSpam, Timer };

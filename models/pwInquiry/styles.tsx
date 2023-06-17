@@ -29,10 +29,9 @@ const Form = styled.form`
 `;
 
 const InputContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
-  position: relative;
-  height: 8.5rem;
 `;
 
 const SignInBtn = styled.div`

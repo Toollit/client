@@ -8,7 +8,7 @@ interface DisabledBtnProps {
 
 const DisabledBtn = ({ text, color = 'white' }: DisabledBtnProps) => {
   return (
-    <Button>
+    <Button disabled>
       <ContentContainer>
         <Text color={color}>{text}</Text>
       </ContentContainer>
