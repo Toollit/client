@@ -8,8 +8,7 @@ const CommonStyles = (theme: Theme) => css`
   border-radius: ${theme.borderRadius.sharp};
   padding: 0 1rem;
   font-size: 1.6rem;
-  margin-top: 1.2rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 2.2rem;
   z-index: 10;
 `;
 
