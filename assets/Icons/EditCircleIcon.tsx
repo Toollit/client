@@ -2,6 +2,7 @@ import React from 'react';
 import EditCircleFill0 from 'public/static/icons/edit/draft_orders_FILL0.svg';
 import EditCircleFill1 from 'public/static/icons/edit/draft_orders_FILL1.svg';
 import { IconProps } from './types';
+import { SVGContainer } from '@/styles/commons';
 
 const EditCircleIcon = ({
   fill = false,
@@ -10,11 +11,19 @@ const EditCircleIcon = ({
   color,
 }: IconProps) => {
   if (!fill) {
-    return <EditCircleFill0 width={width} height={height} fill={color} />;
+    return (
+      <SVGContainer width={width} height={height}>
+        <EditCircleFill0 width={'100%'} height={'100%'} fill={color} />
+      </SVGContainer>
+    );
   }
 
   if (fill) {
-    return <EditCircleFill1 width={width} height={height} fill={color} />;
+    return (
+      <SVGContainer width={width} height={height}>
+        <EditCircleFill1 width={'100%'} height={'100%'} fill={color} />
+      </SVGContainer>
+    );
   }
 
   return null;

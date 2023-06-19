@@ -1,5 +1,5 @@
 import React from 'react';
-import GoogleSvg from 'public/static/icons/socialIcon/Google.svg';
+import GoogleSvg from 'public/static/icons/social/Google.svg';
 
 const GoogleIcon = () => {
   return <GoogleSvg />;

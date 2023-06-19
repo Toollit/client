@@ -1,5 +1,6 @@
 import React from 'react';
 import LogoImg from 'public/static/images/GetitLogo.svg';
+import { SVGContainer } from '@/styles/commons';
 
 interface Props {
   width?: number;
@@ -7,7 +8,11 @@ interface Props {
 }
 
 const GetitLogo = ({ width = 25, height = 25 }: Props) => {
-  return <LogoImg width={width} height={height} />;
+  return (
+    <SVGContainer width={width} height={height}>
+      <LogoImg width={'100%'} height={'100%'} />
+    </SVGContainer>
+  );
 };
 
 export default GetitLogo;
