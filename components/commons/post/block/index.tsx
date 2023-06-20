@@ -63,7 +63,10 @@ const BlockPost = ({ content }: BlockPostProps) => {
 
         <MemberBookmarkViewContainer>
           <RecruitCompleteContent>
-            모집완료 <RecruitNumber>0 / 8</RecruitNumber>
+            모집완료{' '}
+            <RecruitNumber>
+              {content.memberNumber} / {content.recruitNumber}
+            </RecruitNumber>
           </RecruitCompleteContent>
           <BookmarkViewContainer>
             <BookmarkContainer>
