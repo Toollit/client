@@ -2,14 +2,13 @@ import { mediaQueryMobile } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 
 const Container = styled.div`
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  width: 100%;
   border: 1px solid ${(props) => props.theme.colors.border.base};
 `;
 
-const ContainerLabel = styled.div`
+const MemberTypeLabel = styled.div`
   font-size: 1.2rem;
-  padding: 0.5rem 0rem 0rem 1.5rem;
+  padding: 0.5rem 1rem 0rem 1rem;
 
   ${mediaQueryMobile} {
     font-size: 1.4rem;
@@ -28,11 +27,10 @@ const Type = styled.div<{
   display: flex;
   align-items: center;
   font-size: 1.2rem;
-  padding: 1rem 0.5rem;
   cursor: pointer;
 
   label {
-    padding: 0rem 0.5rem;
+    padding: 1rem 0.5rem;
     cursor: pointer;
   }
 
@@ -75,4 +73,4 @@ const Type = styled.div<{
   }
 `;
 
-export { Container, ContainerLabel, MemberTypeContainer, Type };
+export { Container, MemberTypeLabel, MemberTypeContainer, Type };

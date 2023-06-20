@@ -1,5 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Container, ContainerLabel, MemberTypeContainer, Type } from './styles';
+import {
+  Container,
+  MemberTypeLabel,
+  MemberTypeContainer,
+  Type,
+} from './styles';
 import { ProjectDetail } from '@/apis/getProjectDetailFetcher';
 
 interface MemberTypeProps {
@@ -7,13 +12,14 @@ interface MemberTypeProps {
     ('developer' | 'designer' | 'pm' | 'anyone')[]
   >;
   content?: ProjectDetail;
+  label: string;
 }
 
 /**
  * @props memberTypeRef - memberType 값들을 가져오기 위한 ref
  * @props content - 수정할 게시글 컨텐츠. modify 주소에서만 가져온다.
  */
-const MemberType = ({ memberTypeRef, content }: MemberTypeProps) => {
+const MemberType = ({ memberTypeRef, content, label }: MemberTypeProps) => {
   const [checked, setChecked] = useState({
     developer: false,
     designer: false,
@@ -53,7 +59,7 @@ const MemberType = ({ memberTypeRef, content }: MemberTypeProps) => {
 
   return (
     <Container>
-      <ContainerLabel>*모집인원 타입</ContainerLabel>
+      <MemberTypeLabel>{label}</MemberTypeLabel>
       <MemberTypeContainer>
         {(Object.keys(checked) as Array<keyof typeof checked>).map((type) => {
           return (
