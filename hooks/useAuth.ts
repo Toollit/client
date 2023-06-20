@@ -40,7 +40,7 @@ const useAuth = ({ redirectTo, alertMessage }: Props) => {
   const message = cacheData?.message ? cacheData.message : null;
 
   useEffect(() => {
-    if (isLoggedIn === false) {
+    if (cacheData !== undefined && isLoggedIn === false) {
       if (alertMessage) {
         alert(alertMessage);
       }
@@ -49,7 +49,7 @@ const useAuth = ({ redirectTo, alertMessage }: Props) => {
         router.replace(redirectTo);
       }
     }
-  }, [router, isLoggedIn, alertMessage, redirectTo]);
+  }, [router, cacheData, isLoggedIn, alertMessage, redirectTo]);
 
   return { isLoggedIn, nickname, message };
 };
