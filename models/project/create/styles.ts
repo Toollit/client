@@ -1,6 +1,7 @@
+import { mediaQueryMobile } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 
-const Container = styled.form`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
   max-width: 102.4rem;
@@ -11,15 +12,43 @@ const Container = styled.form`
   align-items: center;
 `;
 
-const ProjectTeamContainer = styled.div`
-  width: 100%;
+const RecruitNumberContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
+  border: 1px solid ${(props) => props.theme.colors.border.base};
+  border-radius: ${(props) => props.theme.borderRadius.sharp};
 `;
 
-const HashtagInputContainer = styled.div`
-  width: 100%;
-  margin-top: 2rem;
+const RecruitNumberLabel = styled.label`
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem 0rem 1rem;
+
+  ${mediaQueryMobile} {
+    font-size: 1.4rem;
+  }
+`;
+
+const RecruitNumberInput = styled.input`
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  width: 20rem;
+  height: 4rem;
+  margin: 1rem;
+  padding: 0rem 1rem;
+  border: 1px solid ${(props) => props.theme.colors.border.base};
+  border-radius: ${(props) => props.theme.borderRadius.sharp};
+
+  /* always show up / down arrow. but mobile view not working*/
+  ::-webkit-inner-spin-button,
+  ::-webkit-outer-spin-button {
+    opacity: 1;
+  }
+
+  :focus {
+    outline: none;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -44,9 +73,10 @@ const Button = styled.button`
 `;
 
 export {
-  Container,
-  ProjectTeamContainer,
-  HashtagInputContainer,
+  Form,
+  RecruitNumberContainer,
+  RecruitNumberLabel,
+  RecruitNumberInput,
   ButtonContainer,
   Button,
 };
