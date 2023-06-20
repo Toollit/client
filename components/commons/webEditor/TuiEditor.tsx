@@ -125,6 +125,12 @@ const TuiEditor = ({ titleRef, editorRef, content }: TuiEditorProps) => {
     return false;
   };
 
+  const handleKeydownSubmit = useCallback((event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      return event.preventDefault();
+    }
+  }, []);
+
   return (
     <>
       <TuiCustomGlobalStyles />
@@ -135,6 +141,7 @@ const TuiEditor = ({ titleRef, editorRef, content }: TuiEditorProps) => {
             name='title'
             ref={titleRef}
             defaultValue={content?.content.title || ''}
+            onKeyDown={handleKeydownSubmit}
           />
         </TitleInputContainer>
         <br />
