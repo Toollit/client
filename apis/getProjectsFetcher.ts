@@ -7,6 +7,8 @@ export interface Project {
   bookmarks: number;
   hashtags: string[];
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
+  memberNumber: number;
+  recruitNumber: number;
 }
 export interface GetProjectsAPIRes {
   success: boolean;

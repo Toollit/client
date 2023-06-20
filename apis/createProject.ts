@@ -7,6 +7,7 @@ export interface CreateProjectAPIReq {
   imageUrls: string[];
   hashtags: string[];
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
+  recruitNumber: number;
 }
 
 export interface CreateProjectAPIRes {
