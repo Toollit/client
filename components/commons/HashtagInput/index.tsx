@@ -60,8 +60,8 @@ const HashtagInput = ({ hashtagRef, content }: HashtagInputProps) => {
   );
 
   const onDeleteHashtag = useCallback(
-    (event: MouseEvent<HTMLButtonElement>) => {
-      const removeTarget = event.currentTarget.name;
+    (event: MouseEvent<HTMLSpanElement>) => {
+      const removeTarget = event.currentTarget.id;
 
       const filtered = hashtags.filter(
         (skill, index) => removeTarget !== `${skill}-${index}`,
@@ -82,13 +82,10 @@ const HashtagInput = ({ hashtagRef, content }: HashtagInputProps) => {
   return (
     <>
       <HashtagsContainer>
-        {hashtags.map((content, index) => (
-          <Hashtag key={`${content}-${index}`}>
-            <span>{content}</span>
-            <DeleteButton
-              name={`${content}-${index}`}
-              onClick={onDeleteHashtag}
-            >
+        {hashtags.map((hashtag, index) => (
+          <Hashtag key={`${hashtag}-${index}`}>
+            <span>{hashtag}</span>
+            <DeleteButton id={`${hashtag}-${index}`} onClick={onDeleteHashtag}>
               <CloseIcon width={20} height={20} />
             </DeleteButton>
           </Hashtag>

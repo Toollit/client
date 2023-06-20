@@ -22,7 +22,7 @@ const HashtagInputField = styled.input`
   }
 `;
 
-const DeleteButton = styled.button`
+const DeleteButton = styled.span`
   margin-left: 0.5rem;
   border-style: none;
   background-color: transparent;
