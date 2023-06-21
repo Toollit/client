@@ -21,7 +21,7 @@ import {
 const Nav = () => {
   const dispatch = useDispatch();
 
-  const { isLoggedIn, nickname } = useAuth({});
+  const { isAuthenticated, nickname } = useAuth();
 
   const handleSearchDrawer = useCallback(() => {
     dispatch(openDrawer({ type: 'search' }));
@@ -49,8 +49,9 @@ const Nav = () => {
                   </IconContainer>
                 </SearchDrawerBtn>
                 <li>
-                  {/* <Link href={nickname ? `/profile/${nickname}` : '/login'}> */}
-                  <Link href={isLoggedIn ? `/profile/${nickname}` : '/login'}>
+                  <Link
+                    href={isAuthenticated ? `/profile/${nickname}` : '/login'}
+                  >
                     <a>
                       <IconContainer>
                         <AccountCircleIcon />
