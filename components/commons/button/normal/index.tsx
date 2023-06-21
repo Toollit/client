@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Text, ContentContainer } from './styles';
 
 interface NormalBtnProps {
-  onClick?: (event: React.MouseEvent) => void;
+  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
   name?: string;
   text?: string;
   icon?: React.ReactNode;
