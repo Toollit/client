@@ -18,7 +18,7 @@ const MainController = () => {
   const page = useSelector((state: RootState) => state.pagination.page);
   const order = useSelector((state: RootState) => state.postOrder.order);
 
-  const { isLoggedIn } = useAuth({});
+  const { isAuthenticated } = useAuth();
 
   const { data } = useSWR(getProjectsKey(page, order), getProjectsFetcher, {
     revalidateOnMount: false,
@@ -29,13 +29,13 @@ const MainController = () => {
   });
 
   const createProject = useCallback(() => {
-    if (isLoggedIn) {
+    if (isAuthenticated) {
       router.push('/project/create');
     } else {
       alert('로그인 후 이용 가능합니다.');
       router.push('/login');
     }
-  }, [router, isLoggedIn]);
+  }, [router, isAuthenticated]);
 
   useEffect(() => {
     if (data) {
