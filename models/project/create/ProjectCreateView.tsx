@@ -65,6 +65,7 @@ const ProjectCreateView = ({
             max={100}
             ref={recruitCountRef}
             onKeyDown={handleKeydownSubmit}
+            autoComplete='off'
           />
         </RecruitNumberContainer>
 

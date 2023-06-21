@@ -6,17 +6,12 @@ import useEditorContent from '@/hooks/useEditorContent';
 import { errorMessage } from '@/apis/errorMessage';
 import { useSWRConfig } from 'swr';
 import { getProjectsKey } from '@/apis/keys';
-import useAuth from '@/hooks/useAuth';
+import PrivateRoute from '@/components/PrivateRoute';
 
 const ProjectCreateController = () => {
   const router = useRouter();
 
   const { mutate } = useSWRConfig();
-
-  const { isLoggedIn } = useAuth({
-    redirectTo: '/login',
-    alertMessage: '로그인 후 이용 가능합니다.',
-  });
 
   const { titleRef, editorRef, handleData } = useEditorContent();
 
@@ -87,10 +82,6 @@ const ProjectCreateController = () => {
     [],
   );
 
-  if (!isLoggedIn) {
-    return null;
-  }
-
   const props: ProjectCreateViewProps = {
     handleSubmit,
     titleRef,
@@ -100,7 +91,11 @@ const ProjectCreateController = () => {
     recruitCountRef,
     handleKeydownSubmit,
   };
-  return <ProjectCreateView {...props} />;
+  return (
+    <PrivateRoute accessibleUser='authorized'>
+      <ProjectCreateView {...props} />
+    </PrivateRoute>
+  );
 };
 
 export default ProjectCreateController;
