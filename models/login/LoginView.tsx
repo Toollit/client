@@ -26,7 +26,7 @@ export interface LoginViewProps {
   fillFormComplete: boolean;
   handleSignUpRouting: () => void;
   handlePwInquiryRouting: () => void;
-  handleSocialLogin: (event: React.MouseEvent) => void;
+  handleSocialLogin: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const LoginView = ({
@@ -66,6 +66,7 @@ const LoginView = ({
           <Divider type='text' text='또는' />
           <InputContainer show={showPasswordInput}>
             <Input
+              type='text'
               placeholder={'이메일 주소를 입력해주세요.'}
               onChange={handleEmail}
               value={email}

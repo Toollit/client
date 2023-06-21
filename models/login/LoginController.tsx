@@ -5,6 +5,7 @@ import LoginView, { LoginViewProps } from './LoginView';
 import { emailLoginAPI } from '@/apis/emailLogin';
 import { errorMessage } from '@/apis/errorMessage';
 import { AUTH_USER } from '@/apis/keys';
+import PrivateRoute from '@/components/PrivateRoute';
 
 const LoginController = () => {
   const router = useRouter();
@@ -61,9 +62,9 @@ const LoginController = () => {
   );
 
   const handleSocialLogin = useCallback(
-    (event: React.MouseEvent) => {
+    (event: React.MouseEvent<HTMLDivElement>) => {
       if (!event) return;
-      const target = event.currentTarget as HTMLDivElement;
+      const target = event.currentTarget;
       const loginType = target.getAttribute('data-name') as 'google' | 'github';
 
       const baseURL = process.env.NEXT_PUBLIC_SERVER_API_HOST;
@@ -156,7 +157,11 @@ const LoginController = () => {
     handleSocialLogin,
   };
 
-  return <LoginView {...props} />;
+  return (
+    <PrivateRoute accessibleUser='unauthorized'>
+      <LoginView {...props} />
+    </PrivateRoute>
+  );
 };
 
 export default LoginController;
