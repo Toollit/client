@@ -22,9 +22,7 @@ const paginationSlice = createSlice({
       const { page } = action.payload;
       state.page = page;
     },
-    resetPage: (state) => {
-      state.page = 1;
-    },
+
     updateTotalPage: (
       state,
       action: PayloadAction<Pick<PaginationState, 'totalPage'>>,
@@ -36,7 +34,6 @@ const paginationSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { updatePage, resetPage, updateTotalPage } =
-  paginationSlice.actions;
+export const { updatePage, updateTotalPage } = paginationSlice.actions;
 
 export default paginationSlice.reducer;
