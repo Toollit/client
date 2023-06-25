@@ -23,15 +23,6 @@ const Input = ({
   onChange,
   focus = false,
 }: InputProps) => {
-  const handleKeydownSubmit = useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === 'Enter') {
-        return event.preventDefault();
-      }
-    },
-    [],
-  );
-
   if (focus) {
     return (
       <FocusInput
@@ -39,7 +30,6 @@ const Input = ({
         value={value}
         placeholder={placeholder}
         onChange={onChange}
-        onKeyDown={handleKeydownSubmit}
       />
     );
   }
@@ -50,7 +40,6 @@ const Input = ({
       value={value}
       placeholder={placeholder}
       onChange={onChange}
-      onKeyDown={handleKeydownSubmit}
     />
   );
 };
