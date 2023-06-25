@@ -2,11 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface PostOrderState {
-  order: 'new' | 'popularity' | null;
+  order: 'new' | 'popularity';
 }
 
 const initialState: PostOrderState = {
-  order: null,
+  order: 'new',
 };
 
 const postOrderSlice = createSlice({
