@@ -1,25 +1,30 @@
-import React from 'react';
-import { Cache, useSWRConfig } from 'swr';
+import React, { useEffect } from 'react';
+import useSWR from 'swr';
 import { AUTH_USER } from '@/apis/keys';
-import { AuthAPIRes } from '@/apis/authFetcher';
-
-interface CacheData {
-  cache: Cache<AuthAPIRes>;
-}
+import { authFetcher } from '@/apis/authFetcher';
+import { useRouter } from 'next/router';
 
 /**
  * check user authentication hooks.
  */
 const useAuth = () => {
-  const { cache }: CacheData = useSWRConfig();
+  const router = useRouter();
+  const { data, isLoading } = useSWR(AUTH_USER, authFetcher);
 
-  const cacheData = cache.get(AUTH_USER)?.data;
+  const authUserNickname = data?.data.nickname;
+  const isAuthenticated = authUserNickname ? true : false;
+  const nickname = authUserNickname ? authUserNickname : null;
+  const message = data?.message ? data.message : null;
 
-  const authUser = cacheData?.data?.nickname;
-  const isAuthenticated = authUser ? true : false;
-  const isLoading = authUser === undefined ? true : false;
-  const nickname = authUser ? authUser : null;
-  const message = cacheData?.message ? cacheData.message : null;
+  useEffect(() => {
+    //temporary password login user check
+    if (message === 'needResetPassword') {
+      // prevent infinite routing loop
+      if (router.pathname !== '/resetPassword') {
+        router.replace('/resetPassword');
+      }
+    }
+  }, [router, message]);
 
   return { isLoading, isAuthenticated, nickname, message };
 };
