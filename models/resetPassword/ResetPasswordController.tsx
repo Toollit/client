@@ -8,10 +8,12 @@ import { errorMessage } from '@/apis/errorMessage';
 import { AUTH_USER } from '@/apis/keys';
 import { useSWRConfig } from 'swr';
 import useAuth from '@/hooks/useAuth';
+import PrivateRoute from '@/components/PrivateRoute';
 
 const ResetPasswordController = () => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
+  const { message } = useAuth();
 
   const [newPassword, onChangeNewPassword] = useNoSpaceInput('');
   const [newPasswordInvalidError, setNewPasswordInvalidError] = useState(false);
@@ -20,8 +22,6 @@ const ResetPasswordController = () => {
   const [doubleCheckPasswordError, setDoubleCheckPasswordError] =
     useState(false);
   const [requestPending, setRequestPending] = useState(false);
-
-  const { message } = useAuth({});
 
   const checkPasswordValidate = useCallback(() => {
     // password 영문자, 숫자, 특수문자 조합 8 ~ 20자리 형식 확인 정규식
@@ -125,7 +125,11 @@ const ResetPasswordController = () => {
     requestPending,
   };
 
-  return <ResetPasswordView {...props} />;
+  return (
+    <PrivateRoute accessibleUser='authorized'>
+      <ResetPasswordView {...props} />
+    </PrivateRoute>
+  );
 };
 
 export default ResetPasswordController;
