@@ -7,7 +7,7 @@ import useSWR from 'swr';
 import { errorMessage } from '@/apis/errorMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { resetPage, updateTotalPage } from '@/features/pagination';
+import { updatePage, updateTotalPage } from '@/features/pagination';
 import { updatePostOrder } from '@/features/order';
 import useAuth from '@/hooks/useAuth';
 
@@ -26,6 +26,7 @@ const MainController = () => {
     onError(err, key, config) {
       errorMessage(err);
     },
+    dedupingInterval: 60 * 10 * 1000,
   });
 
   const createProject = useCallback(() => {
@@ -46,8 +47,8 @@ const MainController = () => {
   useEffect(() => {
     return () => {
       dispatch(updateTotalPage({ totalPage: 1 }));
-      dispatch(updatePostOrder({ order: null }));
-      dispatch(resetPage());
+      dispatch(updatePostOrder({ order: 'new' }));
+      dispatch(updatePage({ page: 1 }));
     };
   }, [dispatch]);
 
