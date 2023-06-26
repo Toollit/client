@@ -44,10 +44,6 @@ const Filter = () => {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    dispatch(updatePostOrder({ order: 'new' }));
-  }, [dispatch]);
-
   return (
     <div>
       <Button onClick={handleClick}>
