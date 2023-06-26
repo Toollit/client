@@ -10,10 +10,13 @@ import { SWRDevTools } from 'swr-devtools';
 import { useEffect } from 'react';
 import useAuth from '@/hooks/useAuth';
 import store from '@/store/index';
+import { useSWRConfig } from 'swr';
+import { AUTH_USER } from '@/apis/keys';
 import { useRouter } from 'next/router';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+  const { mutate } = useSWRConfig();
 
   const { message } = useAuth();
 
@@ -30,6 +33,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       }
     }
   }, [router, message]);
+
+  useEffect(() => {
+    window.addEventListener('focus', () => {
+      mutate(AUTH_USER);
+    });
+  }, [mutate]);
 
   return (
     <>

@@ -9,6 +9,7 @@ import { authFetcher } from '@/apis/authFetcher';
 const useAuth = () => {
   const { data, isLoading } = useSWR(AUTH_USER, authFetcher, {
     dedupingInterval: 60 * 1000,
+    revalidateOnFocus: false,
   });
 
   const authUserNickname = data?.data.nickname;
