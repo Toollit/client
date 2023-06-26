@@ -43,12 +43,12 @@ const ImageContainer = styled.div`
 const ProjectImage = styled(Image)``;
 
 const RecruitmentTypeContainer = styled.div`
+  margin: 0.6rem 0.4rem;
   display: flex;
-  flex-wrap: wrap;
-  padding: 0.6rem 0.4rem;
+  overflow: scroll;
 
-  ${mediaQueryMobile} {
-    padding: 0.6rem 0.6rem;
+  ::-webkit-scrollbar {
+    display: none;
   }
 `;
 
@@ -57,12 +57,9 @@ const RecruitmentType = styled.div<{
 }>`
   width: fit-content;
   margin-right: 0.2rem;
-  padding: 0.4rem 0.2rem;
+  padding: 0.4rem 0.4rem;
   border-radius: ${(props) => props.theme.borderRadius.sharp};
-  font-size: 0.8rem;
-  /* zoom: 0.9; */
-  /* TODO chrome 브라우저 default font size 10 문제 해결하기 */
-
+  font-size: 1rem;
   font-weight: 600;
   line-height: 1.5;
   color: #fff;
@@ -88,18 +85,17 @@ const RecruitmentType = styled.div<{
     }
   }};
 
-  ${mediaQueryMobile} {
-    margin-right: 0.3rem;
-    padding: 0.4rem 0.3rem;
-  }
-
   ${mediaQueryTablet} {
     margin-right: 0.4rem;
-    /* padding: 0.4rem 1rem; */
     padding: 0.4rem 0.8rem;
   }
 
-  /* circle member type design ** do not remove!!! ** */
+  ${mediaQueryLaptop} {
+    padding: 0.4rem 1rem;
+  }
+
+  /* ***** do not remove!!! ***** */
+  /* circle shape member type design  */
   /* padding: 0;
     height: fit-content;
     background-color: #fff;
