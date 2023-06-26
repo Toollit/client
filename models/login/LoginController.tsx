@@ -22,10 +22,6 @@ const LoginController = () => {
     router.replace('/');
   }, [router]);
 
-  useEffect(() => {
-    passwordInputRef.current?.focus();
-  }, [showPasswordInput]);
-
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -121,26 +117,30 @@ const LoginController = () => {
       alert(
         '로그인한 계정에 이메일 정보가 없습니다. 이메일 정보를 등록해주세요.',
       );
-      router.replace('/login', undefined, { shallow: true });
+      router.replace('/login');
     }
 
     if (duplicate === 'true') {
       alert('동일한 이메일로 가입된 사용자가 존재합니다.');
-      router.replace('/login', undefined, { shallow: true });
+      router.replace('/login');
     }
 
     if (error === 'true') {
       alert('문제가 발생했습니다. 잠시 후 다시 시도해 주세요.');
-      router.replace('/login', undefined, { shallow: true });
+      router.replace('/login');
     }
 
     if (firstTime === 'true') {
       setTimeout(() => {
         alert('회원가입 완료. 환영합니다 🎉');
       }, 1000);
-      router.replace('/', undefined, { shallow: true });
+      router.replace('/');
     }
   }, [router]);
+
+  useEffect(() => {
+    passwordInputRef.current?.focus();
+  }, [showPasswordInput]);
 
   const props: LoginViewProps = {
     handleClose,
