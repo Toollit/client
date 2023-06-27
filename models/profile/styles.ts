@@ -64,17 +64,23 @@ const ProfileArea = styled.div`
 const ProfileImageContainer = styled.div`
   position: relative;
   text-align: center;
+`;
 
-  div {
-    border: 1px solid #fff;
-    border-radius: 50rem;
-    background-color: #fff;
-    width: 3.68rem;
-    height: 3.68rem;
-    position: absolute;
-    bottom: 1.3rem;
-    left: calc((100% / 2) + 2.5rem);
-  }
+const AccountCircleIconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const EditCircleIconContainer = styled.div`
+  border: 1px solid #fff;
+  border-radius: 50rem;
+  background-color: #fff;
+  width: 3.68rem;
+  height: 3.68rem;
+  position: absolute;
+  bottom: 1.3rem;
+  left: calc((100% / 2) + 2.5rem);
+  cursor: pointer;
 `;
 
 const UserNickname = styled.div`
@@ -333,6 +339,8 @@ export {
   GNBTitle,
   ProfileArea,
   ProfileImageContainer,
+  AccountCircleIconContainer,
+  EditCircleIconContainer,
   UserNickname,
   UserEmail,
   HeaderLeft,
