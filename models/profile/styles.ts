@@ -310,6 +310,7 @@ const IntroduceContentContainer = styled.div`
 const IntroduceContent = styled.div`
   font-size: 1.4rem;
   padding: 0rem 1rem;
+  word-break: break-all;
 `;
 
 const ProgramOrSkillContainer = styled.div`
