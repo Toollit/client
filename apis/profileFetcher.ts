@@ -6,6 +6,13 @@ export interface User {
   signUpType: 'google' | 'github' | 'email';
   createdAt: string;
   lastLoginAt: string;
+  introduce: string;
+  onOffline: string;
+  place: string;
+  contactTime: string;
+  interests: string;
+  career: string;
+  skills: string[];
 }
 
 export interface Project {
