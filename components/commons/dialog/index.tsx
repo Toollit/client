@@ -2,40 +2,46 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { DialogActions, DialogContent } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { close as closeDialog, updateValue } from '@/features/dialog';
+import { close as closeDialog, update as updateValue } from '@/features/dialog';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControl from '@mui/material/FormControl';
+import BpRadio from '@/components/commons/radio';
 import {
   CustomDialog,
   CustomDialogTitle,
   CustomDialogCancelButton,
   CustomDialogCompleteButton,
-  StyledInput,
-  StyledTextarea,
+  Input,
+  Textarea,
   TextCount,
+  FormControlLabel,
 } from './styles';
 
-// Dialog can only be opened through dispatch.
+/**
+ * Dialog can only be opened through dispatch.
+ */
 const Dialog = () => {
   const dispatch = useDispatch();
 
-  const type = useSelector((state: RootState) => state.dialog.type);
   const open = useSelector((state: RootState) => state.dialog.open);
+  const type = useSelector((state: RootState) => state.dialog.type);
+  const category = useSelector((state: RootState) => state.dialog.category);
   const title = useSelector((state: RootState) => state.dialog.title);
   const value = useSelector((state: RootState) => state.dialog.value);
   const maxLength = useSelector((state: RootState) => state.dialog.maxLength);
+  const selectList = useSelector((state: RootState) => state.dialog.selectList);
 
-  const [text, setText] = useState('');
+  const [newValue, setNewValue] = useState('');
 
-  const handleChangeText = useCallback(
+  const handleChangeValue = useCallback(
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const changedValue = event.currentTarget.value;
 
-      if (maxLength) {
-        if (changedValue.length > maxLength) {
-          return setText(changedValue.slice(0, maxLength));
-        }
+      if (maxLength && changedValue.length > maxLength) {
+        return setNewValue(changedValue.slice(0, maxLength));
       }
 
-      setText(changedValue);
+      setNewValue(changedValue);
     },
     [maxLength],
   );
@@ -49,7 +55,7 @@ const Dialog = () => {
         | null;
 
       if (edit === 'true') {
-        dispatch(updateValue({ newValue: text }));
+        dispatch(updateValue({ update: { category, newValue } }));
       }
 
       if (edit === 'false') {
@@ -60,12 +66,12 @@ const Dialog = () => {
         dispatch(closeDialog());
       }
     },
-    [dispatch, text],
+    [dispatch, category, newValue],
   );
 
   // initialValue settings
   useEffect(() => {
-    setText(value);
+    setNewValue(value);
   }, [value, open]);
 
   return (
@@ -73,22 +79,42 @@ const Dialog = () => {
       <CustomDialogTitle>{title}</CustomDialogTitle>
       <DialogContent>
         {type === 'standard' && (
-          <StyledInput autoFocus onChange={handleChangeText} value={text} />
+          <>
+            <Input autoFocus onChange={handleChangeValue} value={newValue} />
+            {maxLength && (
+              <TextCount>
+                {newValue.length}/{maxLength}
+              </TextCount>
+            )}
+          </>
         )}
 
         {type === 'multiline' && (
           <>
-            <StyledTextarea
-              autoFocus
-              onChange={handleChangeText}
-              value={text}
-            />
+            <Textarea autoFocus onChange={handleChangeValue} value={newValue} />
             {maxLength && (
               <TextCount>
-                {text.length}/{maxLength}
+                {newValue.length}/{maxLength}
               </TextCount>
             )}
           </>
+        )}
+        {type === 'select' && (
+          <FormControl>
+            <RadioGroup onChange={handleChangeValue}>
+              {selectList &&
+                selectList.map((value, index) => {
+                  return (
+                    <FormControlLabel
+                      key={`${value}-${index}`}
+                      value={value}
+                      label={value}
+                      control={<BpRadio />}
+                    />
+                  );
+                })}
+            </RadioGroup>
+          </FormControl>
         )}
       </DialogContent>
 

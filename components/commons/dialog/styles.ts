@@ -1,5 +1,10 @@
 import styled from '@emotion/styled';
-import { Dialog, DialogTitle, Button } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  Button,
+  FormControlLabel as MUIFormControlLabel,
+} from '@mui/material';
 
 const CustomDialog = styled(Dialog)`
   & .MuiDialog-paper {
@@ -43,7 +48,7 @@ const CustomDialogCompleteButton = styled(Button)`
   color: ${(props) => props.theme.colors.theme};
 `;
 
-const StyledInput = styled.input`
+const Input = styled.input`
   width: 100%;
   font-size: 1.4rem;
   border: none;
@@ -52,7 +57,7 @@ const StyledInput = styled.input`
   outline: none;
 `;
 
-const StyledTextarea = styled.textarea`
+const Textarea = styled.textarea`
   width: 100%;
   font-size: 1.4rem;
   padding: 0.4rem;
@@ -67,12 +72,19 @@ const TextCount = styled.div`
   padding-right: 0.5rem;
 `;
 
+const FormControlLabel = styled(MUIFormControlLabel)`
+  .MuiFormControlLabel-label {
+    font-size: 1.4rem;
+  }
+`;
+
 export {
   CustomDialog,
   CustomDialogTitle,
   CustomDialogCancelButton,
   CustomDialogCompleteButton,
-  StyledInput,
-  StyledTextarea,
+  Input,
+  Textarea,
   TextCount,
+  FormControlLabel,
 };
