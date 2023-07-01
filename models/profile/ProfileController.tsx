@@ -12,20 +12,24 @@ import { RootState } from '@/store';
 import { updateProfileAPI } from '@/apis/updateProfile';
 import { authFetcher } from '@/apis/authFetcher';
 import { changeDateFormat } from '@/utils/changeDateFormat';
-import {
-  open as openDialog,
-  close as closeDialog,
-  updateValue,
-} from '@/features/dialog';
+import { open as openDialog, close as closeDialog } from '@/features/dialog';
+import useAuth from '@/hooks/useAuth';
+import { useSWRConfig } from 'swr';
 
 const ProfileController = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { isLaptop } = useWindowSize();
+  const { mutate } = useSWRConfig();
 
-  const newValue = useSelector((state: RootState) => state.dialog.newValue);
+  const updatePage = useSelector((state: RootState) => state.dialog.page);
+  const updateCategory = useSelector(
+    (state: RootState) => state.dialog.update?.category,
+  );
+  const updateNewValue = useSelector(
+    (state: RootState) => state.dialog.update?.newValue,
+  );
 
-  const [dialogEditCategory, setDialogEditCategory] = useState('');
   const [profileNickname, setProfileNickname] = useState('');
   const [isLoadedData, setIsLoadedData] = useState({
     viewProfile: false,
@@ -77,76 +81,59 @@ const ProfileController = () => {
 
     if (isLoggedIn) {
       try {
-        const response = await logoutAPI();
+        await logoutAPI();
 
-        if (response?.success) {
-          userMutate();
-          router.push('/');
-        }
+        mutate(AUTH_USER);
+
+        router.push('/');
       } catch (error) {
         errorMessage(error);
       }
     } else {
       router.push('/login');
     }
-  }, [router, user, userMutate]);
+  }, [router, user, mutate]);
 
-  const handleEdit = useCallback(
-    (event: React.MouseEvent) => {
-      const title = event.currentTarget.getAttribute('data-edit-title');
-      const value = event.currentTarget.getAttribute('data-edit-value');
-      const editType = event.currentTarget.getAttribute('data-edit-type');
-      const editCategory =
-        event.currentTarget.getAttribute('data-edit-category');
+  const handleNickname = useCallback(
+    async (newValue: string) => {
+      const response = await updateProfileAPI({
+        category: 'nickname',
+        data: newValue,
+      });
 
-      console.log('handleEdit ===>', { title, value, editType, editCategory });
+      userMutate();
 
-      if (
-        title === null ||
-        value === null ||
-        editType === null ||
-        editCategory === null
-      ) {
-        return;
+      const nickname = response?.data.nickname;
+
+      if (nickname) {
+        router.replace(`/profile/${nickname}?tab=viewProfile`);
       }
 
-      if (
-        !(
-          editType === 'standard' ||
-          editType == 'multiline' ||
-          editType == 'select'
-        )
-      ) {
-        return;
-      }
-
-      if (editType === 'standard') {
-        setDialogEditCategory(editCategory);
-        return dispatch(
-          openDialog({
-            type: editType,
-            open: true,
-            title,
-            value,
-          }),
-        );
-      }
-
-      if (editType === 'multiline') {
-        setDialogEditCategory(editCategory);
-        return dispatch(
-          openDialog({
-            type: editType,
-            open: true,
-            title,
-            value,
-            maxLength: 1000,
-          }),
-        );
-      }
+      dispatch(closeDialog());
     },
-    [dispatch],
+    [dispatch, router, userMutate],
   );
+
+  const handleIntroduce = useCallback(
+    async (newValue: string) => {
+      await updateProfileAPI({
+        category: 'introduce',
+        data: newValue,
+      });
+
+      profileMutate();
+
+      dispatch(closeDialog());
+    },
+    [dispatch, profileMutate],
+  );
+
+  useEffect(() => {
+    console.log('updatePage ===>', updatePage);
+    // if(updatePage === 'profile'){
+
+    // }
+  }, [updatePage]);
 
   // 페이지 첫 로드시 query 조건이 없는 경우 tab 설정을 하기 위한 useEffect
   useEffect(() => {
@@ -166,62 +153,6 @@ const ProfileController = () => {
     }
   }, [nickname]);
 
-  useEffect(() => {
-    if (newValue !== '') {
-      (async () => {
-        if (dialogEditCategory === 'nickname') {
-          const response = await updateProfileAPI({
-            editCategory: dialogEditCategory,
-            data: newValue,
-          });
-
-          userMutate();
-
-          const nickname = response?.data.nickname;
-
-          if (nickname) {
-            router.replace(`/profile/${nickname}?tab=viewProfile`);
-          }
-
-          setDialogEditCategory('');
-          dispatch(updateValue({ newValue: '' }));
-          dispatch(closeDialog());
-          return;
-        }
-
-        if (dialogEditCategory === 'introduce') {
-          if (newValue.length > 1000) {
-            return alert('자기소개는 1000자 이하여야 합니다.');
-          }
-
-          await updateProfileAPI({
-            editCategory: dialogEditCategory,
-            data: newValue,
-          });
-
-          profileMutate();
-
-          setDialogEditCategory('');
-          dispatch(updateValue({ newValue: '' }));
-          dispatch(closeDialog());
-          return;
-        }
-      })();
-    }
-  }, [
-    dispatch,
-    router,
-    newValue,
-    dialogEditCategory,
-    userMutate,
-    profileMutate,
-  ]);
-
-  useEffect(() => {
-    if (newValue) {
-    }
-  }, [newValue]);
-
   const props: ProfileViewProps = {
     me: nickname === user?.data?.nickname,
     loginState: user?.data?.nickname,
@@ -229,11 +160,8 @@ const ProfileController = () => {
     currentTab,
     data: data?.data,
     profileNickname,
-    // projects: data?.data.projects,
     handleLogInOut,
-    isLaptop,
     isLoadedData,
-    handleEdit,
   };
 
   return <ProfileView {...props} />;

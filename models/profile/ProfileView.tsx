@@ -6,7 +6,7 @@ import { User, Project } from '@/apis/profileFetcher';
 import Divider from '@/components/commons/divider';
 import Skeleton from '@/components/commons/skeleton';
 import Dialog from '@/components/commons/dialog';
-import ProfileInfoView from './ProfileInfoView';
+import ProfileInfoBox from './ProfileInfoBox';
 import {
   Container,
   ColumnLeftContainer,
@@ -40,7 +40,6 @@ export interface ProfileViewProps {
     viewProjects: boolean;
     viewBookmarks: boolean;
   };
-  handleEdit: (event: React.MouseEvent) => void;
 }
 
 const ProfileView = ({
@@ -50,11 +49,8 @@ const ProfileView = ({
   currentTab,
   data,
   profileNickname,
-
   handleLogInOut,
-
   isLoadedData,
-  handleEdit,
 }: ProfileViewProps) => {
   return (
     <>
@@ -160,7 +156,7 @@ const ProfileView = ({
             <>
               {/* // data !== undefined && */}
               {isLoadedData.viewProfile && data && 'email' in data ? (
-                <ProfileInfoView me={me} data={data} handleEdit={handleEdit} />
+                <ProfileInfoBox me={me} data={data} />
               ) : (
                 <>
                   <Skeleton height={200} top={3} />
