@@ -42,11 +42,6 @@ const EditBtn = ({
   const dispatch = useDispatch();
 
   const handleEdit = useCallback(() => {
-    // check data transferred to the component props is incorrect. value can be null or '' so exclude
-    if (!text || !page || !type || !category || !title) {
-      return;
-    }
-
     if (type === 'standard') {
       return dispatch(
         openDialog({
@@ -85,7 +80,7 @@ const EditBtn = ({
         }),
       );
     }
-  }, [dispatch, text, category, type, title, value, maxLength, selectList]);
+  }, [dispatch, page, type, category, title, value, maxLength, selectList]);
 
   return <EditButton onClick={handleEdit}>{text}</EditButton>;
 };
