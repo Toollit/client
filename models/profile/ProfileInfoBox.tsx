@@ -3,11 +3,11 @@ import { User } from '@/apis/profileFetcher';
 import { PersonIcon, MailIcon } from '@/assets/icons';
 import { changeDateFormat } from '@/utils/changeDateFormat';
 import Hashtag from '@/components/commons/hashtag';
+import EditBtn from '@/components/commons/button/edit';
 import {
   ContentContainer,
   CategoryTitle,
   CategoryContent,
-  EditButton,
   Text,
   IconTextContainer,
   CategoryContentContainer,
@@ -20,10 +20,9 @@ import {
 interface ProfileInfoViewProps {
   me: boolean;
   data: User;
-  handleEdit: (event: React.MouseEvent) => void;
 }
 
-const ProfileInfoView = ({ me, data, handleEdit }: ProfileInfoViewProps) => {
+const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
   return (
     <>
       {/* first block */}
@@ -36,15 +35,15 @@ const ProfileInfoView = ({ me, data, handleEdit }: ProfileInfoViewProps) => {
                 <PersonIcon />
                 <Text padding>{data.nickname}</Text>
               </IconTextContainer>
-              <EditButton
-                data-edit-title='닉네임 수정'
-                data-edit-value={data.nickname}
-                data-edit-type='standard'
-                data-edit-category='nickname'
-                onClick={handleEdit}
-              >
-                닉네임수정
-              </EditButton>
+              <EditBtn
+                text={'닉네임수정'}
+                page={'profile'}
+                category={'nickname'}
+                type={'standard'}
+                title={'닉네임'}
+                value={data.nickname}
+                maxLength={20}
+              />
             </CategoryContent>
 
             <CategoryContent>
@@ -120,15 +119,15 @@ const ProfileInfoView = ({ me, data, handleEdit }: ProfileInfoViewProps) => {
               : data.introduce}
           </IntroduceContent>
           {me && (
-            <EditButton
-              data-edit-title='자기소개 수정'
-              data-edit-value={data.introduce}
-              data-edit-type='multiline'
-              data-edit-category='introduce'
-              onClick={handleEdit}
-            >
-              수정
-            </EditButton>
+            <EditBtn
+              text={'수정'}
+              page={'profile'}
+              category={'introduce'}
+              type={'multiline'}
+              title={'자기소개'}
+              value={data.introduce ?? ''}
+              maxLength={1000}
+            />
           )}
         </IntroduceContentContainer>
       </ContentContainer>
@@ -142,22 +141,51 @@ const ProfileInfoView = ({ me, data, handleEdit }: ProfileInfoViewProps) => {
               <Text>온/오프라인:</Text>
               <Text padding>{data.onOffline ?? '미입력'}</Text>
             </div>
-            {me && <EditButton onClick={handleEdit}>수정</EditButton>}
+            {me && (
+              <EditBtn
+                text={'수정'}
+                page={'profile'}
+                category={'onOffline'}
+                type={'select'}
+                title={'온/오프라인'}
+                value={data.onOffline ?? ''}
+                selectList={['온라인', '오프라인']}
+              />
+            )}
           </CategoryContent>
           <CategoryContent>
             <div>
               <Text>지역:</Text>
-              <Text padding>{data.meetingPlace ?? '미입력'}</Text>
+              <Text padding>{data.place ?? '미입력'}</Text>
             </div>
-            {me && <EditButton onClick={handleEdit}>수정</EditButton>}
+            {me && (
+              <EditBtn
+                text={'수정'}
+                page={'profile'}
+                category={'local'}
+                type={'select'}
+                title={'지역'}
+                value={data.place ?? ''}
+                selectList={['서울', '경기도']} // TODO 구글 지도에서 위치 찍어서 표시하도록하기? 주소검색?
+              />
+            )}
           </CategoryContent>
           <CategoryContent>
             <div>
               <Text>가능시간:</Text>
-              <Text padding>{data.meetingTime ?? '미입력'}</Text>
+              <Text padding>{data.contactTime ?? '미입력'}</Text>
               {/* 주중,주말 가능/시간대 미정 */}
             </div>
-            {me && <EditButton onClick={handleEdit}>수정</EditButton>}
+            {me && (
+              <EditBtn
+                text={'수정'}
+                page={'profile'}
+                category={''}
+                type={'select'}
+                title={'가능시간'}
+                value={data.contactTime ?? ''}
+              />
+            )}
           </CategoryContent>
           <CategoryContent>
             <div>
@@ -165,7 +193,17 @@ const ProfileInfoView = ({ me, data, handleEdit }: ProfileInfoViewProps) => {
               <Text padding>{data.interests ?? '미입력'}</Text>
               {/* 공유서비스, O2O, 이커머스, 유틸, 금융 */}
             </div>
-            {me && <EditButton onClick={handleEdit}>수정</EditButton>}
+            {me && (
+              <EditBtn
+                text={'수정'}
+                page={'profile'}
+                category={''}
+                type={'select'}
+                title={'관심분야'}
+                value={data.interests ?? ''}
+                selectList={['1', '2', '3']}
+              />
+            )}
           </CategoryContent>
           <CategoryContent>
             <div>
@@ -173,7 +211,16 @@ const ProfileInfoView = ({ me, data, handleEdit }: ProfileInfoViewProps) => {
               <Text padding>{data.career ?? '미입력'}</Text>
               {/* 1년차 취준생, 학생, 기타 */}
             </div>
-            {me && <EditButton onClick={handleEdit}>수정</EditButton>}
+            {me && (
+              <EditBtn
+                text={'수정'}
+                page={'profile'}
+                category={''}
+                type={'select'}
+                title={'경력사항'}
+                value={data.career ?? ''}
+              />
+            )}
           </CategoryContent>
         </CategoryContentContainer>
       </ContentContainer>
@@ -210,11 +257,20 @@ const ProfileInfoView = ({ me, data, handleEdit }: ProfileInfoViewProps) => {
             })}
           </HashtagContainer>
 
-          {me && <EditButton onClick={handleEdit}>수정</EditButton>}
+          {me && (
+            <EditBtn
+              text={'수정'}
+              page={'profile'}
+              category={''}
+              type={'select'}
+              title={'사용 프로그램 또는 기술'}
+              value={''}
+            />
+          )}
         </ProgramOrSkillContainer>
       </ContentContainer>
     </>
   );
 };
 
-export default ProfileInfoView;
+export default ProfileInfoBox;
