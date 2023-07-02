@@ -94,11 +94,15 @@ const ProfileController = () => {
     }
   }, [router, user, mutate]);
 
-  const handleNickname = useCallback(
-    async (newValue: string) => {
+  const handleUpdateNickname = useCallback(async () => {
+    if (!updateNewValue) {
+      return;
+    }
+
+    try {
       const response = await updateProfileAPI({
         category: 'nickname',
-        data: newValue,
+        data: updateNewValue,
       });
 
       userMutate();
@@ -110,30 +114,45 @@ const ProfileController = () => {
       }
 
       dispatch(closeDialog());
-    },
-    [dispatch, router, userMutate],
-  );
+    } catch (error) {
+      errorMessage(error);
+    }
+  }, [dispatch, router, userMutate, updateNewValue]);
 
-  const handleIntroduce = useCallback(
-    async (newValue: string) => {
+  const handleUpdateIntroduce = useCallback(async () => {
+    if (!updateNewValue) {
+      return;
+    }
+
+    try {
       await updateProfileAPI({
         category: 'introduce',
-        data: newValue,
+        data: updateNewValue,
       });
 
       profileMutate();
 
       dispatch(closeDialog());
-    },
-    [dispatch, profileMutate],
-  );
+    } catch (error) {
+      errorMessage(error);
+    }
+  }, [dispatch, profileMutate, updateNewValue]);
 
   useEffect(() => {
-    console.log('updatePage ===>', updatePage);
-    // if(updatePage === 'profile'){
+    if (updatePage !== 'profile') {
+      return;
+    }
 
-    // }
-  }, [updatePage]);
+    if (updateCategory === 'nickname') {
+      handleUpdateNickname();
+      return;
+    }
+
+    if (updateCategory === 'introduce') {
+      handleUpdateIntroduce();
+      return;
+    }
+  }, [updatePage, updateCategory, handleUpdateNickname, handleUpdateIntroduce]);
 
   // 페이지 첫 로드시 query 조건이 없는 경우 tab 설정을 하기 위한 useEffect
   useEffect(() => {
