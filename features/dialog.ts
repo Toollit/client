@@ -33,11 +33,12 @@ const dialogSlice = createSlice({
       state,
       action: PayloadAction<Omit<DialogState, 'open' | 'update'>>,
     ) => {
-      const { page, type, title, maxLength, value, selectList } =
+      const { page, type, category, title, maxLength, value, selectList } =
         action.payload;
       state.open = true;
       state.page = page;
       state.type = type;
+      state.category = category;
       state.title = title;
       state.value = value;
       state.maxLength = maxLength ?? null;
