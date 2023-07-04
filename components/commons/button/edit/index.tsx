@@ -6,13 +6,13 @@ import { EditButton } from './styles';
 interface EditBtnProps {
   text: string;
   page: string;
-  type: 'standard' | 'multiline' | 'select';
+  type: 'standard' | 'multiline' | 'select' | 'multiSelect';
   category: string;
   title: string;
   value: string;
+  placeholder?: string;
   maxLength?: number | null;
   selectList?: string[] | null;
-  fetchFunction: () => void;
 }
 
 /**
@@ -35,9 +35,9 @@ const EditBtn = ({
   category,
   title,
   value,
+  placeholder,
   maxLength,
   selectList,
-  fetchFunction,
 }: EditBtnProps) => {
   const dispatch = useDispatch();
 
@@ -50,6 +50,7 @@ const EditBtn = ({
           category,
           title,
           value,
+          placeholder,
           maxLength,
         }),
       );
@@ -63,6 +64,7 @@ const EditBtn = ({
           category,
           title,
           value,
+          placeholder,
           maxLength,
         }),
       );
@@ -80,7 +82,30 @@ const EditBtn = ({
         }),
       );
     }
-  }, [dispatch, page, type, category, title, value, maxLength, selectList]);
+
+    if (type === 'multiSelect') {
+      return dispatch(
+        openDialog({
+          page,
+          type,
+          category,
+          title,
+          value,
+          selectList,
+        }),
+      );
+    }
+  }, [
+    dispatch,
+    page,
+    type,
+    category,
+    title,
+    value,
+    placeholder,
+    maxLength,
+    selectList,
+  ]);
 
   return <EditButton onClick={handleEdit}>{text}</EditButton>;
 };
