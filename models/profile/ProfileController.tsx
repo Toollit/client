@@ -98,12 +98,12 @@ const ProfileController = () => {
     }
   }, [router, user, mutate]);
 
-  const handleUpdateNickname = useCallback(async () => {
+  const handleUpdateProfile = useCallback(async () => {
     if (updateNewValue === null || updateNewValue === undefined) {
       return;
     }
 
-    try {
+    if (updateCategory === 'nickname') {
       const response = await updateProfileAPI({
         category: 'nickname',
         data: updateNewValue,
@@ -118,174 +118,46 @@ const ProfileController = () => {
       }
 
       dispatch(closeDialog());
-    } catch (error) {
-      errorMessage(error);
-    }
-  }, [dispatch, router, userMutate, updateNewValue]);
 
-  const handleUpdateIntroduce = useCallback(async () => {
-    if (updateNewValue === null || updateNewValue === undefined) {
       return;
     }
 
-    try {
+    if (
+      updateCategory === 'introduce' ||
+      updateCategory === 'onOffline' ||
+      updateCategory === 'place' ||
+      updateCategory === 'contactTime' ||
+      updateCategory === 'interests' ||
+      updateCategory === 'career'
+    ) {
       await updateProfileAPI({
-        category: 'introduce',
+        category: updateCategory,
         data: updateNewValue,
       });
 
       profileMutate();
 
       dispatch(closeDialog());
-    } catch (error) {
-      errorMessage(error);
-    }
-  }, [dispatch, profileMutate, updateNewValue]);
-
-  const handleUpdateOnOffline = useCallback(async () => {
-    if (updateNewValue === null || updateNewValue === undefined) {
       return;
     }
-
-    try {
-      await updateProfileAPI({
-        category: 'onOffline',
-        data: updateNewValue,
-      });
-
-      profileMutate();
-
-      dispatch(closeDialog());
-    } catch (error) {
-      errorMessage(error);
-    }
-  }, [dispatch, profileMutate, updateNewValue]);
-
-  const handleUpdatePlace = useCallback(async () => {
-    if (updateNewValue === null || updateNewValue === undefined) {
-      return;
-    }
-
-    try {
-      await updateProfileAPI({
-        category: 'place',
-        data: updateNewValue,
-      });
-
-      profileMutate();
-
-      dispatch(closeDialog());
-    } catch (error) {
-      errorMessage(error);
-    }
-  }, [dispatch, profileMutate, updateNewValue]);
-
-  const handleUpdateContactTime = useCallback(async () => {
-    if (updateNewValue === null || updateNewValue === undefined) {
-      return;
-    }
-
-    try {
-      await updateProfileAPI({
-        category: 'contactTime',
-        data: updateNewValue,
-      });
-
-      profileMutate();
-
-      dispatch(closeDialog());
-    } catch (error) {
-      errorMessage(error);
-    }
-  }, [dispatch, profileMutate, updateNewValue]);
-
-  const handleUpdateInterests = useCallback(async () => {
-    if (updateNewValue === null || updateNewValue === undefined) {
-      return;
-    }
-
-    try {
-      await updateProfileAPI({
-        category: 'interests',
-        data: updateNewValue,
-      });
-
-      profileMutate();
-
-      dispatch(closeDialog());
-    } catch (error) {
-      errorMessage(error);
-    }
-  }, [dispatch, profileMutate, updateNewValue]);
-
-  const handleUpdateCareer = useCallback(async () => {
-    if (updateNewValue === null || updateNewValue === undefined) {
-      return;
-    }
-
-    try {
-      await updateProfileAPI({
-        category: 'career',
-        data: updateNewValue,
-      });
-
-      profileMutate();
-
-      dispatch(closeDialog());
-    } catch (error) {
-      errorMessage(error);
-    }
-  }, [dispatch, profileMutate, updateNewValue]);
+  }, [
+    dispatch,
+    router,
+    updateCategory,
+    updateNewValue,
+    userMutate,
+    profileMutate,
+  ]);
 
   useEffect(() => {
     if (updatePage !== 'profile') {
       return;
     }
 
-    if (updateCategory === 'nickname') {
-      handleUpdateNickname();
-      return;
+    if (updatePage === 'profile' && updateCategory) {
+      handleUpdateProfile();
     }
-
-    if (updateCategory === 'introduce') {
-      handleUpdateIntroduce();
-      return;
-    }
-
-    if (updateCategory === 'onOffline') {
-      handleUpdateOnOffline();
-      return;
-    }
-
-    if (updateCategory === 'place') {
-      handleUpdatePlace();
-      return;
-    }
-
-    if (updateCategory === 'contactTime') {
-      handleUpdateContactTime();
-      return;
-    }
-
-    if (updateCategory === 'interests') {
-      handleUpdateInterests();
-      return;
-    }
-    if (updateCategory === 'career') {
-      handleUpdateCareer();
-      return;
-    }
-  }, [
-    updatePage,
-    updateCategory,
-    handleUpdateNickname,
-    handleUpdateIntroduce,
-    handleUpdateOnOffline,
-    handleUpdatePlace,
-    handleUpdateContactTime,
-    handleUpdateInterests,
-    handleUpdateCareer,
-  ]);
+  }, [updatePage, updateCategory, handleUpdateProfile]);
 
   // 페이지 첫 로드시 query 조건이 없는 경우 tab 설정을 하기 위한 useEffect
   useEffect(() => {
