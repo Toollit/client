@@ -6,7 +6,7 @@ import { EditButton } from './styles';
 interface EditBtnProps {
   text: string;
   page: string;
-  type: 'standard' | 'multiline' | 'select' | 'multiSelect';
+  type: 'standard' | 'multiline' | 'select' | 'multiSelect' | 'hashtag';
   category: string;
   title: string;
   value: string;
@@ -92,6 +92,18 @@ const EditBtn = ({
           title,
           value,
           selectList,
+        }),
+      );
+    }
+
+    if (type === 'hashtag') {
+      return dispatch(
+        openDialog({
+          page,
+          type,
+          category,
+          title,
+          value,
         }),
       );
     }

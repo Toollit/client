@@ -128,7 +128,8 @@ const ProfileController = () => {
       updateCategory === 'place' ||
       updateCategory === 'contactTime' ||
       updateCategory === 'interests' ||
-      updateCategory === 'career'
+      updateCategory === 'career' ||
+      updateCategory === 'skills'
     ) {
       await updateProfileAPI({
         category: updateCategory,

@@ -4,7 +4,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 export interface DialogState {
   open: boolean;
   page: string;
-  type: 'standard' | 'multiline' | 'select' | 'multiSelect' | null;
+  type: 'standard' | 'multiline' | 'select' | 'multiSelect' | 'hashtag' | null;
   category: string;
   title: string;
   value: string;

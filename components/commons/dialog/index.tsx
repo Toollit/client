@@ -16,6 +16,7 @@ import {
   TextCount,
   FormControlLabel,
 } from './styles';
+import HashtagInput from '@/components/commons/hashtagInput';
 
 /**
  * Dialog can only be opened through dispatch.
@@ -37,6 +38,8 @@ const Dialog = () => {
   const [newValue, setNewValue] = useState('');
   const [checked, setChecked] = useState<string>('');
   const [checkedList, setCheckedList] = useState<string[]>([]);
+
+  const skillRef = useRef<string[]>([]);
 
   const handleChangeValue = useCallback(
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -95,6 +98,15 @@ const Dialog = () => {
         | null;
 
       if (edit === 'true') {
+        if (type === 'hashtag') {
+          // skills array to string for db saving;
+          const result = skillRef.current.toString();
+
+          return dispatch(
+            updateValue({ update: { category, newValue: result } }),
+          );
+        }
+
         dispatch(updateValue({ update: { category, newValue } }));
       }
 
@@ -106,7 +118,7 @@ const Dialog = () => {
         dispatch(closeDialog());
       }
     },
-    [dispatch, category, newValue],
+    [dispatch, type, category, newValue],
   );
 
   const handleCheckedMultiSelect = useCallback(
@@ -202,6 +214,8 @@ const Dialog = () => {
             </RadioGroup>
           </FormControl>
         )}
+
+        {type === 'hashtag' && <HashtagInput hashtagRef={skillRef} />}
       </DialogContent>
 
       <DialogActions>
