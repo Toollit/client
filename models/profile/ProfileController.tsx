@@ -12,7 +12,11 @@ import { RootState } from '@/store';
 import { updateProfileAPI } from '@/apis/updateProfile';
 import { authFetcher } from '@/apis/authFetcher';
 import { changeDateFormat } from '@/utils/changeDateFormat';
-import { open as openDialog, close as closeDialog } from '@/features/dialog';
+import {
+  open as openDialog,
+  close as closeDialog,
+  update,
+} from '@/features/dialog';
 import useAuth from '@/hooks/useAuth';
 import { useSWRConfig } from 'swr';
 
@@ -95,7 +99,7 @@ const ProfileController = () => {
   }, [router, user, mutate]);
 
   const handleUpdateNickname = useCallback(async () => {
-    if (!updateNewValue) {
+    if (updateNewValue === null || updateNewValue === undefined) {
       return;
     }
 
@@ -120,13 +124,108 @@ const ProfileController = () => {
   }, [dispatch, router, userMutate, updateNewValue]);
 
   const handleUpdateIntroduce = useCallback(async () => {
-    if (!updateNewValue) {
+    if (updateNewValue === null || updateNewValue === undefined) {
       return;
     }
 
     try {
       await updateProfileAPI({
         category: 'introduce',
+        data: updateNewValue,
+      });
+
+      profileMutate();
+
+      dispatch(closeDialog());
+    } catch (error) {
+      errorMessage(error);
+    }
+  }, [dispatch, profileMutate, updateNewValue]);
+
+  const handleUpdateOnOffline = useCallback(async () => {
+    if (updateNewValue === null || updateNewValue === undefined) {
+      return;
+    }
+
+    try {
+      await updateProfileAPI({
+        category: 'onOffline',
+        data: updateNewValue,
+      });
+
+      profileMutate();
+
+      dispatch(closeDialog());
+    } catch (error) {
+      errorMessage(error);
+    }
+  }, [dispatch, profileMutate, updateNewValue]);
+
+  const handleUpdatePlace = useCallback(async () => {
+    if (updateNewValue === null || updateNewValue === undefined) {
+      return;
+    }
+
+    try {
+      await updateProfileAPI({
+        category: 'place',
+        data: updateNewValue,
+      });
+
+      profileMutate();
+
+      dispatch(closeDialog());
+    } catch (error) {
+      errorMessage(error);
+    }
+  }, [dispatch, profileMutate, updateNewValue]);
+
+  const handleUpdateContactTime = useCallback(async () => {
+    if (updateNewValue === null || updateNewValue === undefined) {
+      return;
+    }
+
+    try {
+      await updateProfileAPI({
+        category: 'contactTime',
+        data: updateNewValue,
+      });
+
+      profileMutate();
+
+      dispatch(closeDialog());
+    } catch (error) {
+      errorMessage(error);
+    }
+  }, [dispatch, profileMutate, updateNewValue]);
+
+  const handleUpdateInterests = useCallback(async () => {
+    if (updateNewValue === null || updateNewValue === undefined) {
+      return;
+    }
+
+    try {
+      await updateProfileAPI({
+        category: 'interests',
+        data: updateNewValue,
+      });
+
+      profileMutate();
+
+      dispatch(closeDialog());
+    } catch (error) {
+      errorMessage(error);
+    }
+  }, [dispatch, profileMutate, updateNewValue]);
+
+  const handleUpdateCareer = useCallback(async () => {
+    if (updateNewValue === null || updateNewValue === undefined) {
+      return;
+    }
+
+    try {
+      await updateProfileAPI({
+        category: 'career',
         data: updateNewValue,
       });
 
@@ -152,7 +251,41 @@ const ProfileController = () => {
       handleUpdateIntroduce();
       return;
     }
-  }, [updatePage, updateCategory, handleUpdateNickname, handleUpdateIntroduce]);
+
+    if (updateCategory === 'onOffline') {
+      handleUpdateOnOffline();
+      return;
+    }
+
+    if (updateCategory === 'place') {
+      handleUpdatePlace();
+      return;
+    }
+
+    if (updateCategory === 'contactTime') {
+      handleUpdateContactTime();
+      return;
+    }
+
+    if (updateCategory === 'interests') {
+      handleUpdateInterests();
+      return;
+    }
+    if (updateCategory === 'career') {
+      handleUpdateCareer();
+      return;
+    }
+  }, [
+    updatePage,
+    updateCategory,
+    handleUpdateNickname,
+    handleUpdateIntroduce,
+    handleUpdateOnOffline,
+    handleUpdatePlace,
+    handleUpdateContactTime,
+    handleUpdateInterests,
+    handleUpdateCareer,
+  ]);
 
   // 페이지 첫 로드시 query 조건이 없는 경우 tab 설정을 하기 위한 useEffect
   useEffect(() => {
