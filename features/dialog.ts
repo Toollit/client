@@ -4,10 +4,11 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 export interface DialogState {
   open: boolean;
   page: string;
-  type: 'standard' | 'multiline' | 'select' | null;
+  type: 'standard' | 'multiline' | 'select' | 'multiSelect' | null;
   category: string;
   title: string;
   value: string;
+  placeholder?: string;
   maxLength?: number | null;
   selectList?: string[] | null;
   update: { category: string; newValue: string } | null;
@@ -20,6 +21,7 @@ const initialState: DialogState = {
   category: '',
   title: '',
   value: '',
+  placeholder: '',
   maxLength: null,
   selectList: null,
   update: null,
@@ -33,23 +35,34 @@ const dialogSlice = createSlice({
       state,
       action: PayloadAction<Omit<DialogState, 'open' | 'update'>>,
     ) => {
-      const { page, type, category, title, maxLength, value, selectList } =
-        action.payload;
+      const {
+        page,
+        type,
+        category,
+        title,
+        value,
+        placeholder,
+        maxLength,
+        selectList,
+      } = action.payload;
       state.open = true;
       state.page = page;
       state.type = type;
       state.category = category;
       state.title = title;
       state.value = value;
+      state.placeholder = placeholder;
       state.maxLength = maxLength ?? null;
-      state.selectList = type === 'select' && selectList ? selectList : null;
+      state.selectList = selectList ? selectList : null;
     },
     close: (state) => {
       state.open = false;
       state.page = '';
       state.type = null;
+      state.category = '';
       state.title = '';
       state.value = '';
+      state.placeholder = '';
       state.maxLength = null;
       state.selectList = null;
       state.update = null;
