@@ -28,6 +28,7 @@ const DeleteButton = styled.span`
   background-color: transparent;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const Hashtag = styled.span`
