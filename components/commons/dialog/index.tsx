@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DialogActions, DialogContent } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
@@ -28,10 +28,15 @@ const Dialog = () => {
   const category = useSelector((state: RootState) => state.dialog.category);
   const title = useSelector((state: RootState) => state.dialog.title);
   const value = useSelector((state: RootState) => state.dialog.value);
+  const placeholder = useSelector(
+    (state: RootState) => state.dialog.placeholder,
+  );
   const maxLength = useSelector((state: RootState) => state.dialog.maxLength);
   const selectList = useSelector((state: RootState) => state.dialog.selectList);
 
   const [newValue, setNewValue] = useState('');
+  const [checked, setChecked] = useState<string>('');
+  const [checkedList, setCheckedList] = useState<string[]>([]);
 
   const handleChangeValue = useCallback(
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -44,6 +49,41 @@ const Dialog = () => {
       setNewValue(changedValue);
     },
     [maxLength],
+  );
+
+  const handleSelect = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const changedValue = event.currentTarget.value;
+
+      setChecked(changedValue);
+      setNewValue(changedValue);
+    },
+    [],
+  );
+
+  const handleMultiSelect = useCallback(
+    (event: React.MouseEvent<HTMLInputElement>) => {
+      const clickValue = (event.target as HTMLInputElement).value;
+
+      if (clickValue === undefined) {
+        return;
+      }
+      const isFounded = checkedList.find((v) => v === clickValue);
+      const filteredValue = checkedList.filter((v) => v !== clickValue);
+
+      const result = isFounded ? filteredValue : [...checkedList, clickValue];
+
+      const removeEmptyStringIndex = result.indexOf('');
+
+      // item is found
+      if (removeEmptyStringIndex > -1) {
+        result.splice(removeEmptyStringIndex, 1); // 2nd parameter means remove one item only
+      }
+
+      setCheckedList(result);
+      setNewValue(result.toString());
+    },
+    [checkedList],
   );
 
   const handleDialog = useCallback(
@@ -69,10 +109,26 @@ const Dialog = () => {
     [dispatch, category, newValue],
   );
 
+  const handleCheckedMultiSelect = useCallback(
+    (item: string) => {
+      const isChecked = checkedList.find((v) => v === item);
+
+      return Boolean(isChecked);
+    },
+    [checkedList],
+  );
+
   // initialValue settings
   useEffect(() => {
     setNewValue(value);
-  }, [value, open]);
+    if (type === 'select') {
+      setChecked(value);
+    }
+
+    if (type === 'multiSelect') {
+      setCheckedList(value.split(','));
+    }
+  }, [open, value, type]);
 
   return (
     <CustomDialog open={open} onClose={handleDialog}>
@@ -80,7 +136,11 @@ const Dialog = () => {
       <DialogContent>
         {type === 'standard' && (
           <>
-            <Input autoFocus onChange={handleChangeValue} value={newValue} />
+            <Input
+              onChange={handleChangeValue}
+              value={newValue}
+              placeholder={placeholder ?? ''}
+            />
             {maxLength && (
               <TextCount>
                 {newValue.length}/{maxLength}
@@ -91,7 +151,11 @@ const Dialog = () => {
 
         {type === 'multiline' && (
           <>
-            <Textarea autoFocus onChange={handleChangeValue} value={newValue} />
+            <Textarea
+              onChange={handleChangeValue}
+              value={newValue}
+              placeholder={placeholder ?? ''}
+            />
             {maxLength && (
               <TextCount>
                 {newValue.length}/{maxLength}
@@ -99,17 +163,39 @@ const Dialog = () => {
             )}
           </>
         )}
+
         {type === 'select' && (
           <FormControl>
-            <RadioGroup onChange={handleChangeValue}>
+            <RadioGroup onChange={handleSelect}>
               {selectList &&
-                selectList.map((value, index) => {
+                selectList.map((item, index) => {
+                  console.log({ checked, item });
                   return (
                     <FormControlLabel
-                      key={`${value}-${index}`}
-                      value={value}
-                      label={value}
+                      key={`${item}-${index}`}
+                      value={item}
+                      label={item}
                       control={<BpRadio />}
+                      checked={checked === item}
+                    />
+                  );
+                })}
+            </RadioGroup>
+          </FormControl>
+        )}
+
+        {type === 'multiSelect' && (
+          <FormControl>
+            <RadioGroup onClick={handleMultiSelect}>
+              {selectList &&
+                selectList.map((item, index) => {
+                  return (
+                    <FormControlLabel
+                      key={`${item}-${index}`}
+                      value={item}
+                      label={item}
+                      control={<BpRadio />}
+                      checked={handleCheckedMultiSelect(item)}
                     />
                   );
                 })}
