@@ -11,15 +11,15 @@ interface MemberTypeProps {
   memberTypeRef: React.MutableRefObject<
     ('developer' | 'designer' | 'pm' | 'anyone')[]
   >;
-  content?: ProjectDetail;
+  memberTypes?: ('developer' | 'designer' | 'pm' | 'anyone')[];
   label: string;
 }
 
 /**
  * @props memberTypeRef - memberType 값들을 가져오기 위한 ref
- * @props content - 수정할 게시글 컨텐츠. modify 주소에서만 가져온다.
+ * @props memberTypes - 기존에 저장된 memberType 값들
  */
-const MemberType = ({ memberTypeRef, content, label }: MemberTypeProps) => {
+const MemberType = ({ memberTypeRef, memberTypes, label }: MemberTypeProps) => {
   const [checked, setChecked] = useState({
     developer: false,
     designer: false,
@@ -49,13 +49,13 @@ const MemberType = ({ memberTypeRef, content, label }: MemberTypeProps) => {
   useEffect(() => {
     setChecked((prevState) => {
       const newState = { ...prevState };
-      const memberTypes = content?.content.memberTypes;
+
       memberTypes?.forEach((key) => {
         newState[key] = true;
       });
       return newState;
     });
-  }, [content]);
+  }, [memberTypes]);
 
   return (
     <Container>
