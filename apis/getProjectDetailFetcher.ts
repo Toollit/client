@@ -12,6 +12,7 @@ export interface ProjectDetail {
     updatedAt: string | null;
     hashtags: string[];
     memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
+    recruitNumber: number;
   };
   // comments: {}[];
 }

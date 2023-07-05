@@ -7,6 +7,7 @@ interface Project {
   imageUrls: string[];
   hashtags: string[];
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
+  recruitNumber: number;
 }
 export interface UpdateProjectAPIReq {
   postType: 'project' | 'free' | 'question';
