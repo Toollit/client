@@ -215,7 +215,12 @@ const Dialog = () => {
           </FormControl>
         )}
 
-        {type === 'hashtag' && <HashtagInput hashtagRef={skillRef} />}
+        {type === 'hashtag' && (
+          <HashtagInput
+            hashtagRef={skillRef}
+            hashtags={[...value.split(',')]}
+          />
+        )}
       </DialogContent>
 
       <DialogActions>
