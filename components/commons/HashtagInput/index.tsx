@@ -6,22 +6,21 @@ import {
   DeleteButton,
   Hashtag,
 } from './styles';
-import { ProjectDetail } from '@/apis/getProjectDetailFetcher';
 
 interface HashtagInputProps {
   hashtagRef: React.MutableRefObject<string[]>;
-  content?: ProjectDetail;
+  hashtags?: string[];
 }
 
 /**
- * @props hashtagRef - hashtags 값들을 가져오기 위한 ref
- * @props content - 수정할 게시글 컨텐츠. modify 주소에서만 가져온다.
+ * @props hashtagRef - hashtags 값들을 가져가기 위한 ref
+ * @props hashtags - 기존에 저장된 hashtag 값들
  */
-const HashtagInput = ({ hashtagRef, content }: HashtagInputProps) => {
-  const [hashtags, setHashtags] = useState<Array<string>>([]);
+const HashtagInput = ({ hashtagRef, hashtags }: HashtagInputProps) => {
+  const [hashtagList, setHashtagList] = useState<Array<string>>([]);
   const [newHashtag, setNewHashtag] = useState('');
 
-  hashtagRef.current = hashtags;
+  hashtagRef.current = hashtagList;
 
   const handleHashtag = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,43 +45,42 @@ const HashtagInput = ({ hashtagRef, content }: HashtagInputProps) => {
           return alert('20자 이하로 입력하세요.');
         }
 
-        const isExistedHashtag = hashtags.includes('#' + newHashtag);
+        const isExistedHashtag = hashtagList.includes('#' + newHashtag);
 
         if (isExistedHashtag) {
           return alert('중복된 해시태그 입니다.');
         }
 
-        setHashtags([...hashtags, `#${newHashtag}`]);
+        setHashtagList([...hashtagList, `#${newHashtag}`]);
         setNewHashtag('');
       }
     },
-    [hashtags, newHashtag],
+    [hashtagList, newHashtag],
   );
 
   const onDeleteHashtag = useCallback(
     (event: MouseEvent<HTMLSpanElement>) => {
       const removeTarget = event.currentTarget.id;
 
-      const filtered = hashtags.filter(
+      const filtered = hashtagList.filter(
         (skill, index) => removeTarget !== `${skill}-${index}`,
       );
 
-      setHashtags(filtered);
+      setHashtagList(filtered);
     },
-    [hashtags],
+    [hashtagList],
   );
 
   useEffect(() => {
-    const hashtags = content?.content.hashtags;
     if (hashtags) {
-      setHashtags([...hashtags]);
+      setHashtagList([...hashtags]);
     }
-  }, [content]);
+  }, [hashtags]);
 
   return (
     <>
       <HashtagsContainer>
-        {hashtags.map((hashtag, index) => (
+        {hashtagList.map((hashtag, index) => (
           <Hashtag key={`${hashtag}-${index}`}>
             <span>{hashtag}</span>
             <DeleteButton id={`${hashtag}-${index}`} onClick={onDeleteHashtag}>
