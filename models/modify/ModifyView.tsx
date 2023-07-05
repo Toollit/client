@@ -1,6 +1,11 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import AppLayout from '@/components/appLayout';
+import Title from '@/components/commons/title';
+import HashtagInput from '@/components/commons/hashtagInput';
+import MemberTypeSelector from '@/components/commons/memberTypeSelector';
+import { Editor } from '@toast-ui/react-editor';
+import { ProjectDetail } from '@/apis/getProjectDetailFetcher';
 import {
   Container,
   ProjectTeamContainer,
@@ -8,11 +13,6 @@ import {
   ButtonContainer,
   Button,
 } from './styles';
-import Title from '@/components/commons/title';
-import HashtagInput from '@/components/commons/hashtagInput';
-import MemberTypeSelector from '@/components/commons/memberTypeSelector';
-import { Editor } from '@toast-ui/react-editor';
-import { ProjectDetail } from '@/apis/getProjectDetailFetcher';
 
 const DynamicTuiEditor = dynamic(
   () => import('@/components/commons/webEditor/TuiEditor'),
@@ -30,6 +30,7 @@ export interface ModifyViewProps {
     ('developer' | 'designer' | 'pm' | 'anyone')[]
   >;
   content?: ProjectDetail;
+  hashtags?: string[];
 }
 
 const ModifyView = ({
@@ -39,6 +40,7 @@ const ModifyView = ({
   hashtagRef,
   memberTypeRef,
   content,
+  hashtags,
 }: ModifyViewProps) => {
   return (
     <AppLayout nav={true}>
@@ -51,7 +53,7 @@ const ModifyView = ({
         />
 
         <HashtagInputContainer>
-          <HashtagInput hashtagRef={hashtagRef} content={content} />
+          <HashtagInput hashtagRef={hashtagRef} hashtags={hashtags} />
         </HashtagInputContainer>
 
         <ProjectTeamContainer>

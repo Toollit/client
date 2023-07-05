@@ -7,6 +7,7 @@ import { GET_PROJECT_DETAIL_API_ENDPOINT } from '@/apis/keys';
 import { getProjectDetailFetcher } from '@/apis/getProjectDetailFetcher';
 import useEditorContent from '@/hooks/useEditorContent';
 import { updatePostAPI } from '@/apis/updatePost';
+import PrivateRoute from '@/components/PrivateRoute';
 
 interface ModifyControllerProps {
   postId: string;
@@ -133,9 +134,14 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
     memberTypeRef,
     // TODO free, question 게시판 분기처리하기
     content: projectDetail,
+    hashtags: projectDetail?.content.hashtags,
   };
 
-  return <ModifyView {...props} />;
+  return (
+    <PrivateRoute accessibleUser='authorized'>
+      <ModifyView {...props} />
+    </PrivateRoute>
+  );
 };
 
 export default ModifyController;

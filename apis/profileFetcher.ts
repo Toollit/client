@@ -12,7 +12,7 @@ export interface User {
   contactTime: string;
   interests: string;
   career: string;
-  skills: string[];
+  skills: string;
 }
 
 export interface Project {
