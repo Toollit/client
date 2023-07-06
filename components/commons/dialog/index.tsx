@@ -218,7 +218,7 @@ const Dialog = () => {
         {type === 'hashtag' && (
           <HashtagInput
             hashtagRef={skillRef}
-            hashtags={[...value.split(',')]}
+            hashtags={value ? [...value.split(',')] : []}
             placeholder='*Enter를 눌러 입력해 주세요.'
           />
         )}
