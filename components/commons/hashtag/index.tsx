@@ -6,7 +6,7 @@ interface HashtagProps {
 }
 
 const Hashtag = ({ tagName }: HashtagProps) => {
-  return <HashtagBlock>{tagName}</HashtagBlock>;
+  return <HashtagBlock>{`#${tagName}`}</HashtagBlock>;
 };
 
 export default Hashtag;
