@@ -43,6 +43,8 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
   const memberTypeRef = useRef<('developer' | 'designer' | 'pm' | 'anyone')[]>(
     [],
   );
+  const recruitCountRef = useRef<HTMLInputElement>(null);
+
   const [postType, setPostType] = useState<'project' | 'free' | 'question'>();
 
   const handleSubmit = useCallback(
@@ -58,12 +60,18 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
         return alert('해시태그를 하나 이상 입력하세요.');
       }
 
-      if (hashtagRef.current.length > 15) {
+      if (hashtagRef.current.length > 10) {
         return alert('해시태그는 최대 10개까지 가능합니다.');
       }
 
       if (memberTypeRef.current.length < 1) {
         return alert('모집인원 타입을 하나 이상 선택하세요.');
+      }
+
+      const recruitCount = Number(recruitCountRef.current?.value);
+
+      if (1 > recruitCount || 100 < recruitCount || 0 === recruitCount) {
+        return alert('모집 인원은 숫자 1~100까지 가능합니다.');
       }
 
       if (
@@ -83,6 +91,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
           imageUrls: data?.imageUrls,
           hashtags: hashtagRef.current,
           memberTypes: memberTypeRef.current,
+          recruitNumber: recruitCount,
         },
       };
 
@@ -110,6 +119,15 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
     ],
   );
 
+  const handleKeydownSubmit = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter') {
+        return event.preventDefault();
+      }
+    },
+    [],
+  );
+
   useEffect(() => {
     router.asPath.split('/').find((type) => {
       if (type === 'project') {
@@ -132,9 +150,13 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
     editorRef,
     hashtagRef,
     memberTypeRef,
+    recruitCountRef,
+    handleKeydownSubmit,
     // TODO free, question 게시판 분기처리하기
     content: projectDetail,
     hashtags: projectDetail?.content.hashtags,
+    memberTypes: projectDetail?.content.memberTypes,
+    recruitNumber: projectDetail?.content.recruitNumber,
   };
 
   return (
