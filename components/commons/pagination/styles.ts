@@ -18,24 +18,19 @@ const PageControlButton = styled.button`
   justify-content: center;
   align-items: center;
   background-color: #fff;
-
-  ${mediaQueryLaptop} {
-    :hover {
-      background-color: rgba(0, 0, 0, 0.08);
-    }
-  }
 `;
 
 const PageNumberButton = styled.button<{ selected: boolean }>`
-  width: 4rem;
-  height: 4rem;
-  border: 1px solid ${(props) => props.theme.colors.gray};
-  margin: 0rem 0.1rem;
-  border-radius: ${(props) => props.theme.borderRadius.sharp};
-  background-color: ${(props) =>
-    props.selected ? 'rgba(0, 0, 0, 0.08)' : '#fff'};
-  font-size: 1.4rem;
-  color: #000;
+  border: none;
+  height: 100%;
+  padding: 0 2rem;
+  background-color: #fff;
+  font-size: 1.8rem;
+  color: ${(props) => (props.selected ? '#000' : '#d4d4d4')};
+
+  ${mediaQueryLaptop} {
+    font-size: 2rem;
+  }
 `;
 
 export { Container, PageControlButton, PageNumberButton };
