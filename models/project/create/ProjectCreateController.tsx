@@ -34,7 +34,7 @@ const ProjectCreateController = () => {
         return alert('해시태그를 하나 이상 입력하세요.');
       }
 
-      if (hashtagRef.current.length > 15) {
+      if (hashtagRef.current.length > 10) {
         return alert('해시태그는 최대 10개까지 가능합니다.');
       }
 

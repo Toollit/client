@@ -49,7 +49,10 @@ const ProjectCreateView = ({
         <DynamicTuiEditor titleRef={titleRef} editorRef={editorRef} />
         <br />
 
-        <HashtagInput hashtagRef={hashtagRef} />
+        <HashtagInput
+          hashtagRef={hashtagRef}
+          placeholder='*Enter를 눌러 해시태그를 작성해 주세요.'
+        />
         <br />
 
         <MemberTypeSelector memberTypeRef={memberTypeRef} label='*모집 타입' />
