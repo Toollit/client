@@ -93,7 +93,9 @@ const ProfileController = () => {
       } catch (error) {
         errorMessage(error);
       }
-    } else {
+    }
+
+    if (!isLoggedIn) {
       router.push('/login');
     }
   }, [router, user, mutate]);
@@ -103,43 +105,44 @@ const ProfileController = () => {
       return;
     }
 
-    if (updateCategory === 'nickname') {
-      const response = await updateProfileAPI({
-        category: 'nickname',
-        data: updateNewValue,
-      });
+    try {
+      if (updateCategory === 'nickname') {
+        const response = await updateProfileAPI({
+          category: 'nickname',
+          data: updateNewValue,
+        });
 
-      userMutate();
+        userMutate();
 
-      const nickname = response?.data.nickname;
+        const nickname = response?.data.nickname;
 
-      if (nickname) {
-        router.replace(`/profile/${nickname}?tab=viewProfile`);
+        if (nickname) {
+          router.replace(`/profile/${nickname}?tab=viewProfile`);
+        }
+
+        return dispatch(closeDialog());
       }
 
-      dispatch(closeDialog());
+      if (
+        updateCategory === 'introduce' ||
+        updateCategory === 'onOffline' ||
+        updateCategory === 'place' ||
+        updateCategory === 'contactTime' ||
+        updateCategory === 'interests' ||
+        updateCategory === 'career' ||
+        updateCategory === 'skills'
+      ) {
+        await updateProfileAPI({
+          category: updateCategory,
+          data: updateNewValue,
+        });
 
-      return;
-    }
+        profileMutate();
 
-    if (
-      updateCategory === 'introduce' ||
-      updateCategory === 'onOffline' ||
-      updateCategory === 'place' ||
-      updateCategory === 'contactTime' ||
-      updateCategory === 'interests' ||
-      updateCategory === 'career' ||
-      updateCategory === 'skills'
-    ) {
-      await updateProfileAPI({
-        category: updateCategory,
-        data: updateNewValue,
-      });
-
-      profileMutate();
-
-      dispatch(closeDialog());
-      return;
+        return dispatch(closeDialog());
+      }
+    } catch (error) {
+      errorMessage(error);
     }
   }, [
     dispatch,
