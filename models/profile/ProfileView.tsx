@@ -7,6 +7,7 @@ import Divider from '@/components/commons/divider';
 import Skeleton from '@/components/commons/skeleton';
 import Dialog from '@/components/commons/dialog';
 import ProfileInfoBox from './ProfileInfoBox';
+import SwipeableTabView from '@/components/commons/swipeableView/swipeableTabViews';
 import {
   Container,
   ColumnLeftContainer,
@@ -25,6 +26,12 @@ import {
   Logo,
   AccountCircleIconContainer,
   EditCircleIconContainer,
+  UserProfileContainer,
+  SettingsContainer,
+  DeleteUser,
+  MobileProfileContainer,
+  FooterLink,
+  FooterLogo,
 } from './styles';
 
 export interface ProfileViewProps {
@@ -113,6 +120,7 @@ const ProfileView = ({
                 );
               })}
             </HeaderLeftMenu>
+
             <DividerContainer>
               <Divider type='thin' />
             </DividerContainer>
@@ -150,7 +158,6 @@ const ProfileView = ({
             </HeaderLeftLink>
           </HeaderLeft>
         </ColumnLeftContainer>
-
         <ColumnRightContainer>
           {currentTab === 'viewProfile' ? (
             <>
@@ -167,9 +174,7 @@ const ProfileView = ({
               )}
             </>
           ) : null}
-
-          {currentTab === 'viewProjects' ? <></> : null}
-
+          {currentTab === 'viewProjects' ? <>viewProjects</> : null}
           {currentTab === 'viewBookmarks' ? (
             isLoadedData.viewBookmarks ? (
               <div>
@@ -188,6 +193,85 @@ const ProfileView = ({
             )
           ) : null}
         </ColumnRightContainer>
+
+        {/* mobile view */}
+        <MobileProfileContainer>
+          <SwipeableTabView tabs={tabs}>
+            <div>
+              {currentTab === 'viewProfile' ? (
+                <>
+                  {/* // data !== undefined && */}
+                  {isLoadedData.viewProfile && data && 'email' in data ? (
+                    <ProfileInfoBox me={me} data={data} />
+                  ) : (
+                    <>
+                      <Skeleton height={200} top={3} />
+                      <Skeleton height={200} top={3} />
+                      <Skeleton height={200} top={3} />
+                      <Skeleton height={200} top={3} />
+                    </>
+                  )}
+                </>
+              ) : null}
+            </div>
+            <div>
+              {currentTab === 'viewProjects' ? <div>viewProjects</div> : null}
+            </div>
+            <div>
+              {currentTab === 'viewBookmarks' ? (
+                isLoadedData.viewBookmarks ? (
+                  <div>
+                    <div>
+                      <div>12342134</div>
+                      <div>12342134</div>
+                      <div>핸드폰 번호 수정</div>
+                      <div>이메일 수정</div>
+                      <div>이메일 공개</div>
+                    </div>
+                    <div>간단한 자기소개</div>
+                    <div>사용 프로그램 또는 기술</div>
+                  </div>
+                ) : (
+                  <Skeleton />
+                )
+              ) : null}
+            </div>
+          </SwipeableTabView>
+          <FooterLink>
+            <ul>
+              <li>
+                <LogInOut onClick={handleLogInOut}>
+                  {loginState ? '로그아웃' : '로그인'}
+                </LogInOut>
+              </li>
+              <li>
+                <Link href='/'>
+                  <a>고객센터</a>
+                </Link>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <Link href={'/policy/terms-of-service'}>
+                  <a>이용약관</a>
+                </Link>
+              </li>
+
+              <li>
+                <Link href={'/policy/privacy'}>
+                  <a>개인정보처리방침</a>
+                </Link>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <Link href='/' passHref>
+                  <FooterLogo>Getit</FooterLogo>
+                </Link>
+              </li>
+            </ul>
+          </FooterLink>
+        </MobileProfileContainer>
       </Container>
       <Dialog />
     </>
