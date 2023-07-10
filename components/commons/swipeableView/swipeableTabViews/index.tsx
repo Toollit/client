@@ -2,9 +2,10 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import SwipeableViews, {
   OnSwitchingCallbackTypeDescriptor,
 } from 'react-swipeable-views';
-import { CustomMuiTabs, CustomMuiTab } from './styles';
 import { useDispatch } from 'react-redux';
 import { updateSwipeableViewState } from '@/features/swipeableView';
+import { useRouter } from 'next/router';
+import { CustomMuiTabs, CustomMuiTab } from './styles';
 
 interface SwipeableTabViewProps {
   tabs: { name: string; query: string }[];
@@ -18,6 +19,8 @@ const SwipeableTabView = ({
 }: // tabHandler,
 SwipeableTabViewProps) => {
   const dispatch = useDispatch();
+  const { push, query } = useRouter();
+
   const [currentTabIndex, setCurrentTabIndex] = useState(0);
 
   const tabRefs = useRef<HTMLDivElement[]>([]);
@@ -25,57 +28,79 @@ SwipeableTabViewProps) => {
   const [indicatorPosition, setIndicatorPosition] = useState(0);
 
   const handleChange = useCallback(
-    (event: React.SyntheticEvent, value: number) => {
-      setCurrentTabIndex(value);
+    (event: React.SyntheticEvent, tabIndex: number) => {
+      setCurrentTabIndex(tabIndex);
+
+      push({ query: { ...query, tab: tabs[tabIndex].query } }, undefined, {
+        shallow: true,
+      });
     },
-    [],
+    // [router,tabs],
+    [push, query, tabs],
   );
 
-  const handleChangeIndex = useCallback((index: number) => {
-    setCurrentTabIndex(index);
-  }, []);
+  const handleChangeIndex = useCallback(
+    (tabIndex: number) => {
+      setCurrentTabIndex(tabIndex);
 
-  const handleSwitching = useCallback(
-    (swipeDegree: number, type: OnSwitchingCallbackTypeDescriptor) => {
-      // swipe left
-      if (swipeDegree < currentTabIndex) {
-        const width: number = tabRefs.current[currentTabIndex - 1]?.offsetWidth;
-
-        const decimal = swipeDegree.toString().split('.')[1]?.slice(0, 2); // 소수점 이하 값만 가져옴
-
-        if (decimal === undefined) {
-          return;
-        }
-        const percent = Number(decimal);
-
-        setIndicatorPosition((100 - (width / 100) * percent) * -1);
-      }
-
-      // swipe right
-      if (swipeDegree > currentTabIndex) {
-        const width: number = tabRefs.current[currentTabIndex + 1]?.offsetWidth;
-
-        const decimal = swipeDegree.toString().split('.')[1]?.slice(0, 2); // 소수점 이하 값만 가져옴
-
-        if (decimal === undefined) {
-          return;
-        }
-        const percent = Number(decimal);
-
-        setIndicatorPosition((width / 100) * percent);
-      }
-
-      // if (type === 'end') {
-      //   console.log('currentTabIndex ===>', currentTabIndex);
-      //   setIndicatorPosition(tabRefs.current[currentTabIndex]?.offsetWidth);
-      // }
+      push({ query: { ...query, tab: tabs[tabIndex].query } }, undefined, {
+        shallow: true,
+      });
     },
-    [currentTabIndex],
+    [push, query, tabs],
   );
+
+  // const handleSwitching = useCallback(
+  //   (swipeDegree: number, type: OnSwitchingCallbackTypeDescriptor) => {
+  //     // swipe left
+  //     if (swipeDegree < currentTabIndex) {
+  //       const width: number = tabRefs.current[currentTabIndex - 1]?.offsetWidth;
+
+  //       const decimal = swipeDegree.toString().split('.')[1]?.slice(0, 2); // 소수점 이하 값만 가져옴
+
+  //       if (decimal === undefined) {
+  //         return;
+  //       }
+  //       const percent = Number(decimal);
+
+  //       setIndicatorPosition((100 - (width / 100) * percent) * -1);
+  //     }
+
+  //     // swipe right
+  //     if (swipeDegree > currentTabIndex) {
+  //       const width: number = tabRefs.current[currentTabIndex + 1]?.offsetWidth;
+
+  //       const decimal = swipeDegree.toString().split('.')[1]?.slice(0, 2); // 소수점 이하 값만 가져옴
+
+  //       if (decimal === undefined) {
+  //         return;
+  //       }
+  //       const percent = Number(decimal);
+
+  //       setIndicatorPosition((width / 100) * percent);
+  //     }
+
+  //     // if (type === 'end') {
+  //     //   console.log('currentTabIndex ===>', currentTabIndex);
+  //     //   setIndicatorPosition(tabRefs.current[currentTabIndex]?.offsetWidth);
+  //     // }
+  //   },
+  //   [currentTabIndex],
+  // );
 
   useEffect(() => {
     dispatch(updateSwipeableViewState({ tabIndex: currentTabIndex }));
   }, [currentTabIndex, dispatch]);
+
+  useEffect(() => {
+    const currentTab = query.tab;
+
+    tabs.findIndex((tab, index) => {
+      if (tab.query === currentTab) {
+        return setCurrentTabIndex(index);
+      }
+    });
+  }, [tabs, query.tab]);
 
   return (
     <div>
@@ -103,6 +128,7 @@ SwipeableTabViewProps) => {
         enableMouseEvents
         onChangeIndex={handleChangeIndex}
         // onSwitching={handleSwitching}
+        containerStyle={{ height: '100%' }}
       >
         {children}
       </SwipeableViews>
