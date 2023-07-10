@@ -269,30 +269,20 @@ const CategoryContent = styled.li`
   border-bottom: 1px solid ${(props) => props.theme.colors.border.divider};
 `;
 
-const Text = styled.span<{ padding?: boolean }>`
-  font-size: 1.4rem;
-  ${(props) => {
-    if (props.padding) {
-      return css`
-        padding-left: 0.5rem;
-      `;
-    } else {
-      return null;
-    }
-  }}
+const TextContainer = styled.div`
+  display: flex;
 `;
 
-const EditButton = styled.button`
+const SubTitle = styled.div`
   font-size: 1.4rem;
-  display: inline-block;
-  min-width: 4.8rem;
-  height: 2.4rem;
-  padding: 0.2rem 0.9rem;
-  border-radius: 0.4rem;
-  border: solid 1px rgba(212, 216, 229, 0.5);
-  background-color: rgba(212, 216, 229, 0.25);
-  text-align: center;
-  color: #7b8994;
+  word-break: keep-all;
+`;
+
+const Content = styled.span`
+  font-size: 1.4rem;
+  word-break: break-all;
+
+  padding: 0 0.5rem;
 `;
 
 const IconTextContainer = styled.div`
@@ -325,7 +315,19 @@ const HashtagContainer = styled.ul`
   display: flex;
   flex-wrap: wrap;
   overflow: scroll;
+
+  font-size: 1.4rem;
+
   ::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const MobileProfileContainer = styled.div`
+  width: 100vw;
+  padding: 0 2rem 5rem 2rem;
+
+  ${mediaQueryLaptop} {
     display: none;
   }
 `;
@@ -357,11 +359,13 @@ export {
   CategoryTitle,
   CategoryContentContainer,
   CategoryContent,
-  Text,
-  EditButton,
+  TextContainer,
+  SubTitle,
+  Content,
   IconTextContainer,
   IntroduceContentContainer,
   IntroduceContent,
   ProgramOrSkillContainer,
   HashtagContainer,
+  MobileProfileContainer,
 };
