@@ -8,7 +8,9 @@ import {
   ContentContainer,
   CategoryTitle,
   CategoryContent,
-  Text,
+  TextContainer,
+  SubTitle,
+  Content,
   IconTextContainer,
   CategoryContentContainer,
   IntroduceContentContainer,
@@ -25,7 +27,7 @@ interface ProfileInfoViewProps {
 const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
   return (
     <>
-      {/* first block */}
+      {/* basic info box */}
       {me ? (
         <ContentContainer>
           <CategoryTitle>내 프로필</CategoryTitle>
@@ -33,7 +35,7 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
             <CategoryContent>
               <IconTextContainer>
                 <PersonIcon />
-                <Text padding>{data.nickname}</Text>
+                <Content>{data.nickname}</Content>
               </IconTextContainer>
               <EditBtn
                 text={'닉네임수정'}
@@ -49,26 +51,26 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
             <CategoryContent>
               <IconTextContainer>
                 <MailIcon />
-                <Text padding>{data.email}</Text>
+                <Content>{data.email}</Content>
               </IconTextContainer>
             </CategoryContent>
 
             <CategoryContent>
               <IconTextContainer>
-                <Text>가입방법:</Text>
-                <Text padding>{data.signUpType}</Text>
+                <SubTitle>가입방법:</SubTitle>
+                <Content>{data.signUpType}</Content>
               </IconTextContainer>
             </CategoryContent>
 
             <CategoryContent>
               <IconTextContainer>
-                <Text>가입일:</Text>
-                <Text padding>
+                <SubTitle>가입일:</SubTitle>
+                <Content>
                   {changeDateFormat({
                     date: data.createdAt,
                     format: 'YYMMDD_hhmmss',
                   })}
-                </Text>
+                </Content>
               </IconTextContainer>
             </CategoryContent>
           </CategoryContentContainer>
@@ -80,36 +82,36 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
             <CategoryContent>
               <IconTextContainer>
                 <PersonIcon />
-                <Text padding>{data.nickname}</Text>
+                <Content>{data.nickname}</Content>
               </IconTextContainer>
             </CategoryContent>
             <CategoryContent>
               <IconTextContainer>
-                <Text>가입일:</Text>
-                <Text padding>
+                <SubTitle>가입일:</SubTitle>
+                <Content>
                   {changeDateFormat({
                     date: data.createdAt,
                     format: 'YYMMDD',
                   })}
-                </Text>
+                </Content>
               </IconTextContainer>
             </CategoryContent>
             <CategoryContent>
               <IconTextContainer>
-                <Text>최종 접속일:</Text>
-                <Text padding>
+                <SubTitle>최종 접속일:</SubTitle>
+                <Content>
                   {changeDateFormat({
                     date: data.lastLoginAt,
                     format: 'YYMMDD_hhmmss',
                   })}
-                </Text>
+                </Content>
               </IconTextContainer>
             </CategoryContent>
           </CategoryContentContainer>
         </ContentContainer>
       )}
 
-      {/* second block */}
+      {/* introduce box */}
       <ContentContainer>
         <CategoryTitle>자기소개</CategoryTitle>
         <IntroduceContentContainer>
@@ -132,19 +134,19 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
         </IntroduceContentContainer>
       </ContentContainer>
 
-      {/* third block */}
+      {/* additional info box */}
       <ContentContainer>
         <CategoryTitle>추가 정보</CategoryTitle>
         <CategoryContentContainer>
           <CategoryContent>
-            <div>
-              <Text>온/오프라인:</Text>
-              <Text padding>
+            <TextContainer>
+              <SubTitle>온/오프라인:</SubTitle>
+              <Content>
                 {data.onOffline === null || data.onOffline.length === 0
                   ? '미입력'
                   : data.onOffline}
-              </Text>
-            </div>
+              </Content>
+            </TextContainer>
             {me && (
               <EditBtn
                 text={'수정'}
@@ -162,14 +164,14 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
             )}
           </CategoryContent>
           <CategoryContent>
-            <div>
-              <Text>모임장소:</Text>
-              <Text padding>
+            <TextContainer>
+              <SubTitle>모임장소:</SubTitle>
+              <Content>
                 {data.place === null || data.place.length === 0
                   ? '미입력'
                   : data.place}
-              </Text>
-            </div>
+              </Content>
+            </TextContainer>
             {me && (
               <EditBtn
                 text={'수정'}
@@ -184,14 +186,14 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
             )}
           </CategoryContent>
           <CategoryContent>
-            <div>
-              <Text>모임시간:</Text>
-              <Text padding>
+            <TextContainer>
+              <SubTitle>모임시간:</SubTitle>
+              <Content>
                 {data.contactTime === null || data.contactTime.length === 0
                   ? '미입력'
                   : data.contactTime}
-              </Text>
-            </div>
+              </Content>
+            </TextContainer>
             {me && (
               <EditBtn
                 text={'수정'}
@@ -206,49 +208,61 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
             )}
           </CategoryContent>
           <CategoryContent>
-            <div>
-              <Text>관심분야:</Text>
-              <Text padding>
+            <TextContainer>
+              <SubTitle>관심분야:</SubTitle>
+              <Content>
                 {data.interests === null || data.interests.length === 0
                   ? '미입력'
                   : data.interests}
-              </Text>
-            </div>
+              </Content>
+            </TextContainer>
             {me && (
               <EditBtn
                 text={'수정'}
                 page={'profile'}
                 category={'interests'}
                 type={'multiSelect'}
-                title={'관심분야'}
+                title={'관심분야 (다중선택가능)'}
                 value={data.interests ?? ''}
                 selectList={[
+                  '인공지능',
+                  '가상현실(VR)',
+                  '증강현실(AR)',
+                  'O2O',
                   '공유서비스',
+                  '데이팅서비스',
+                  '여행',
+                  '소셜네트워크',
+                  '뷰티/패션',
                   '이커머스',
+                  '엔터테인먼트',
+                  '게임',
+                  '헬스/스포츠',
+                  '뉴스/정보',
                   '유틸',
                   '금융',
-                  '헬스케어',
-                  '소셜네트워크',
-                  '여행',
-                  '뉴스/정보',
-                  '게임',
-                  '엔터테인먼트',
+                  '부동산/인테리어',
+                  '종교',
+                  '교육',
                   '의료/병원',
-                  '기타',
+                  '모빌리티',
+                  '육아/출산',
+                  '사물인터넷',
+                  '블록체인',
                 ]}
                 maxLength={20}
               />
             )}
           </CategoryContent>
           <CategoryContent>
-            <div>
-              <Text>직무/경력:</Text>
-              <Text padding>
+            <TextContainer>
+              <SubTitle>직무/경력:</SubTitle>
+              <Content>
                 {data.career === null || data.career.length === 0
                   ? '미입력'
                   : data.career}
-              </Text>
-            </div>
+              </Content>
+            </TextContainer>
             {me && (
               <EditBtn
                 text={'수정'}
@@ -265,46 +279,28 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
         </CategoryContentContainer>
       </ContentContainer>
 
-      {/* fourth block */}
+      {/* usage program and skills */}
       <ContentContainer>
         <CategoryTitle>사용 프로그램 또는 기술</CategoryTitle>
 
         <ProgramOrSkillContainer>
           <HashtagContainer>
-            {[
-              'typescript',
-              'react',
-              'Nextjs',
-              'nodejs',
-              'expressjs',
-              'typescript',
-              'react',
-              'Nextjs',
-              'nodejs',
-              'expressjs',
-              'typescript',
-              'react',
-              'Nextjs',
-              'nodejs',
-              'expressjs',
-              'typescript',
-              'react',
-              'Nextjs',
-              'nodejs',
-              'expressjs',
-            ].map((hashtag, index) => {
-              return <Hashtag tagName={hashtag} key={`${hashtag}-${index}`} />;
-            })}
+            {data.skills === null || data.skills.length === 0
+              ? '현재 작성된 내용이 없습니다.'
+              : [...data.skills.split(',')].map((hashtag, index) => {
+                  return (
+                    <Hashtag tagName={hashtag} key={`${hashtag}-${index}`} />
+                  );
+                })}
           </HashtagContainer>
-
           {me && (
             <EditBtn
               text={'수정'}
               page={'profile'}
-              category={''}
-              type={'select'}
+              category={'skills'}
+              type={'hashtag'}
               title={'사용 프로그램 또는 기술'}
-              value={''}
+              value={data.skills ?? ''}
             />
           )}
         </ProgramOrSkillContainer>
