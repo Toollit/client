@@ -34,23 +34,29 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
           <CategoryContentContainer>
             <CategoryContent>
               <IconTextContainer>
-                <PersonIcon />
+                <div>
+                  <PersonIcon />
+                </div>
                 <Content>{data.nickname}</Content>
               </IconTextContainer>
-              <EditBtn
-                text={'닉네임수정'}
-                page={'profile'}
-                category={'nickname'}
-                type={'standard'}
-                title={'닉네임'}
-                value={data.nickname}
-                maxLength={20}
-              />
+              {me && (
+                <EditBtn
+                  text={'닉네임수정'}
+                  page={'profile'}
+                  category={'nickname'}
+                  type={'standard'}
+                  title={'닉네임'}
+                  value={data.nickname}
+                  maxLength={20}
+                />
+              )}
             </CategoryContent>
 
             <CategoryContent>
               <IconTextContainer>
-                <MailIcon />
+                <div>
+                  <MailIcon />
+                </div>
                 <Content>{data.email}</Content>
               </IconTextContainer>
             </CategoryContent>

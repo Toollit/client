@@ -84,7 +84,7 @@ const EditCircleIconContainer = styled.div`
 `;
 
 const UserNickname = styled.div`
-  font-size: 2rem;
+  font-size: 1.4rem;
 `;
 
 const UserEmail = styled.div``;
