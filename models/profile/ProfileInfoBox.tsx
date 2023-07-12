@@ -21,9 +21,10 @@ import {
 interface ProfileInfoViewProps {
   me: boolean;
   data: CustomMyProfile | CustomUserProfile;
+  editBtnHandler: (category: string) => void;
 }
 
-const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
+const ProfileInfoBox = ({ me, data, editBtnHandler }: ProfileInfoViewProps) => {
   return (
     <>
       {/* basic info box */}
@@ -40,12 +41,8 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
             {me && (
               <EditBtn
                 text={'닉네임수정'}
-                page={'profile'}
                 category={'nickname'}
-                type={'standard'}
-                title={'닉네임'}
-                value={data.nickname}
-                maxLength={20}
+                onClick={editBtnHandler}
               />
             )}
           </CategoryContent>
@@ -91,19 +88,13 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
         <CategoryTitle>자기소개</CategoryTitle>
         <IntroduceContentContainer>
           <IntroduceContent>
-            {data.introduce === null || data.introduce.length === 0
-              ? '작성된 내용이 없습니다.'
-              : data.introduce}
+            {data.introduce ?? '작성된 내용이 없습니다.'}
           </IntroduceContent>
           {me && (
             <EditBtn
               text={'수정'}
-              page={'profile'}
               category={'introduce'}
-              type={'multiline'}
-              title={'자기소개'}
-              value={data.introduce ?? ''}
-              maxLength={1000}
+              onClick={editBtnHandler}
             />
           )}
         </IntroduceContentContainer>
@@ -116,138 +107,65 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
           <CategoryContent>
             <TextContainer>
               <SubTitle>온/오프라인:</SubTitle>
-              <Content>
-                {data.onOffline === null || data.onOffline.length === 0
-                  ? '작성된 내용이 없습니다.'
-                  : data.onOffline}
-              </Content>
+              <Content>{data.onOffline ?? '작성된 내용이 없습니다.'}</Content>
             </TextContainer>
             {me && (
               <EditBtn
                 text={'수정'}
-                page={'profile'}
                 category={'onOffline'}
-                type={'select'}
-                title={'온/오프라인'}
-                value={data.onOffline ?? ''}
-                selectList={[
-                  '온라인 가능',
-                  '오프라인 가능',
-                  '온,오프라인 모두 가능',
-                ]}
+                onClick={editBtnHandler}
               />
             )}
           </CategoryContent>
           <CategoryContent>
             <TextContainer>
               <SubTitle>모임장소:</SubTitle>
-              <Content>
-                {data.place === null || data.place.length === 0
-                  ? '작성된 내용이 없습니다.'
-                  : data.place}
-              </Content>
+              <Content>{data.place ?? '작성된 내용이 없습니다.'}</Content>
             </TextContainer>
             {me && (
               <EditBtn
                 text={'수정'}
-                page={'profile'}
                 category={'place'}
-                type={'standard'}
-                title={'모임 장소'}
-                value={data.place ?? ''}
-                placeholder='ex) 서울특별시 종로구, 상관없음'
-                maxLength={30}
+                onClick={editBtnHandler}
               />
             )}
           </CategoryContent>
           <CategoryContent>
             <TextContainer>
               <SubTitle>모임시간:</SubTitle>
-              <Content>
-                {data.contactTime === null || data.contactTime.length === 0
-                  ? '작성된 내용이 없습니다.'
-                  : data.contactTime}
-              </Content>
+              <Content>{data.contactTime ?? '작성된 내용이 없습니다.'}</Content>
             </TextContainer>
             {me && (
               <EditBtn
                 text={'수정'}
-                page={'profile'}
                 category={'contactTime'}
-                type={'standard'}
-                title={'모임시간'}
-                value={data.contactTime ?? ''}
-                placeholder={'ex) 평일 9시~18시, 화요일 20시 이후'}
-                maxLength={30}
+                onClick={editBtnHandler}
               />
             )}
           </CategoryContent>
           <CategoryContent>
             <TextContainer>
               <SubTitle>관심분야:</SubTitle>
-              <Content>
-                {data.interests === null || data.interests.length === 0
-                  ? '작성된 내용이 없습니다.'
-                  : data.interests}
-              </Content>
+              <Content>{data.interests ?? '작성된 내용이 없습니다.'}</Content>
             </TextContainer>
             {me && (
               <EditBtn
                 text={'수정'}
-                page={'profile'}
                 category={'interests'}
-                type={'multiSelect'}
-                title={'관심분야 (다중선택가능)'}
-                value={data.interests ?? ''}
-                selectList={[
-                  '인공지능',
-                  '가상현실(VR)',
-                  '증강현실(AR)',
-                  'O2O',
-                  '공유서비스',
-                  '데이팅서비스',
-                  '여행',
-                  '소셜네트워크',
-                  '뷰티/패션',
-                  '이커머스',
-                  '엔터테인먼트',
-                  '게임',
-                  '헬스/스포츠',
-                  '뉴스/정보',
-                  '유틸',
-                  '금융',
-                  '부동산/인테리어',
-                  '종교',
-                  '교육',
-                  '의료/병원',
-                  '모빌리티',
-                  '육아/출산',
-                  '사물인터넷',
-                  '블록체인',
-                ]}
-                maxLength={20}
+                onClick={editBtnHandler}
               />
             )}
           </CategoryContent>
           <CategoryContent>
             <TextContainer>
               <SubTitle>직무/경력:</SubTitle>
-              <Content>
-                {data.career === null || data.career.length === 0
-                  ? '작성된 내용이 없습니다.'
-                  : data.career}
-              </Content>
+              <Content>{data.career ?? '작성된 내용이 없습니다.'}</Content>
             </TextContainer>
             {me && (
               <EditBtn
                 text={'수정'}
-                page={'profile'}
                 category={'career'}
-                type={'standard'}
-                title={'경력사항'}
-                value={data.career ?? ''}
-                placeholder={'ex) 3년차 개발자, 1년차 디자이너, 학생'}
-                maxLength={30}
+                onClick={editBtnHandler}
               />
             )}
           </CategoryContent>
@@ -271,13 +189,8 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
           {me && (
             <EditBtn
               text={'수정'}
-              page={'profile'}
               category={'skills'}
-              type={'hashtag'}
-              title={'사용 프로그램 또는 기술'}
-              // TODO 수정 필요
-              // value={data.skills ?? ''}
-              value={''}
+              onClick={editBtnHandler}
             />
           )}
         </ProgramOrSkillContainer>

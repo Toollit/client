@@ -56,6 +56,7 @@ export interface ProfileViewProps {
     viewProjects: boolean;
     viewBookmarks: boolean;
   };
+  handleEditBtn: (category: string) => void;
 }
 
 const ProfileView = ({
@@ -68,6 +69,7 @@ const ProfileView = ({
   profileNickname,
   handleLogInOut,
   isLoadedData,
+  handleEditBtn,
 }: ProfileViewProps) => {
   return (
     <>
@@ -173,7 +175,11 @@ const ProfileView = ({
             <>
               {/* // data !== undefined && */}
               {isLoadedData.viewProfile && profileData ? (
-                <ProfileInfoBox me={me} data={profileData} />
+                <ProfileInfoBox
+                  me={me}
+                  data={profileData}
+                  editBtnHandler={handleEditBtn}
+                />
               ) : (
                 <>
                   <Skeleton height={200} top={3} />
@@ -212,7 +218,11 @@ const ProfileView = ({
                 <>
                   {/* // data !== undefined && */}
                   {isLoadedData.viewProfile && profileData ? (
-                    <ProfileInfoBox me={me} data={profileData} />
+                    <ProfileInfoBox
+                      me={me}
+                      data={profileData}
+                      editBtnHandler={handleEditBtn}
+                    />
                   ) : (
                     <>
                       <Skeleton height={200} top={3} />
