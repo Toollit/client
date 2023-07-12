@@ -2,7 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import ProfileView, { ProfileViewProps } from './ProfileView';
 import useSWR from 'swr';
 import { AUTH_USER, GET_USER_PROFILE_API_ENDPOINT } from '@/apis/keys';
-import { User, profileFetcher } from '@/apis/profileFetcher';
+import {
+  MyProfile,
+  UserProfile,
+  profileInfoFetcher,
+} from '@/apis/profileInfoFetcher';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/errorMessage';
 import { logoutAPI } from '@/apis/logout';
@@ -19,13 +23,16 @@ import {
 } from '@/features/dialog';
 import useAuth from '@/hooks/useAuth';
 import { useSWRConfig } from 'swr';
+import Hashtag from '@/components/commons/hashtag';
 
 const ProfileController = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { isLaptop } = useWindowSize();
   const { mutate } = useSWRConfig();
 
+  const currentTabIndex = useSelector(
+    (state: RootState) => state.swipeableView.tabIndex,
+  );
   const updatePage = useSelector((state: RootState) => state.dialog.page);
   const updateCategory = useSelector(
     (state: RootState) => state.dialog.update?.category,
@@ -55,11 +62,11 @@ const ProfileController = () => {
 
   const { data: user, mutate: userMutate } = useSWR(AUTH_USER, authFetcher);
 
-  const { data, mutate: profileMutate } = useSWR(
+  const { data: profileData, mutate: profileMutate } = useSWR(
     nickname && currentTab
       ? `${GET_USER_PROFILE_API_ENDPOINT}/${nickname}?tab=${currentTab}`
       : null,
-    profileFetcher,
+    profileInfoFetcher,
     {
       revalidateOnFocus: false,
       shouldRetryOnError: false,
@@ -153,6 +160,45 @@ const ProfileController = () => {
     profileMutate,
   ]);
 
+  const handleProfileDataResponse = useCallback(
+    (data?: MyProfile | UserProfile) => {
+      if (!data) {
+        return;
+      }
+
+      if ('email' in data) {
+        return {
+          ...data,
+          createdAt: changeDateFormat({
+            date: data.createdAt,
+            format: 'YYMMDD_hhmmss',
+          }),
+          lastLoginAt: changeDateFormat({
+            date: data.lastLoginAt,
+            format: 'YYMMDD_hhmmss',
+          }),
+          skills: data.skills ? [...data.skills.split(',')] : [],
+        };
+      }
+
+      if (!('email' in data)) {
+        return {
+          ...data,
+          createdAt: changeDateFormat({
+            date: data.createdAt,
+            format: 'YYMMDD',
+          }),
+          lastLoginAt: changeDateFormat({
+            date: data.lastLoginAt,
+            format: 'YYMMDD_hhmmss',
+          }),
+          skills: data.skills ? [...data.skills.split(',')] : [],
+        };
+      }
+    },
+    [],
+  );
+
   useEffect(() => {
     if (updatePage !== 'profile') {
       return;
@@ -186,7 +232,7 @@ const ProfileController = () => {
     loginState: user?.data?.nickname,
     tabs,
     currentTab,
-    data: data?.data,
+    profileData: handleProfileDataResponse(profileData?.data),
     profileNickname,
     handleLogInOut,
     isLoadedData,

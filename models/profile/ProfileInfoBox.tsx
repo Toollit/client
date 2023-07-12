@@ -1,9 +1,8 @@
 import React from 'react';
-import { User } from '@/apis/profileFetcher';
 import { PersonIcon, MailIcon } from '@/assets/icons';
-import { changeDateFormat } from '@/utils/changeDateFormat';
 import Hashtag from '@/components/commons/hashtag';
 import EditBtn from '@/components/commons/button/edit';
+import { CustomMyProfile, CustomUserProfile } from './ProfileView';
 import {
   ContentContainer,
   CategoryTitle,
@@ -21,101 +20,71 @@ import {
 
 interface ProfileInfoViewProps {
   me: boolean;
-  data: User;
+  data: CustomMyProfile | CustomUserProfile;
 }
 
 const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
   return (
     <>
       {/* basic info box */}
-      {me ? (
-        <ContentContainer>
-          <CategoryTitle>내 프로필</CategoryTitle>
-          <CategoryContentContainer>
-            <CategoryContent>
-              <IconTextContainer>
-                <div>
-                  <PersonIcon />
-                </div>
-                <Content>{data.nickname}</Content>
-              </IconTextContainer>
-              {me && (
-                <EditBtn
-                  text={'닉네임수정'}
-                  page={'profile'}
-                  category={'nickname'}
-                  type={'standard'}
-                  title={'닉네임'}
-                  value={data.nickname}
-                  maxLength={20}
-                />
-              )}
-            </CategoryContent>
+      <ContentContainer>
+        <CategoryTitle>내 프로필</CategoryTitle>
+        <CategoryContentContainer>
+          <CategoryContent>
+            <IconTextContainer>
+              <div>
+                <PersonIcon />
+              </div>
+              <Content>{data.nickname}</Content>
+            </IconTextContainer>
+            {me && (
+              <EditBtn
+                text={'닉네임수정'}
+                page={'profile'}
+                category={'nickname'}
+                type={'standard'}
+                title={'닉네임'}
+                value={data.nickname}
+                maxLength={20}
+              />
+            )}
+          </CategoryContent>
 
+          {me && (
             <CategoryContent>
               <IconTextContainer>
                 <div>
                   <MailIcon />
                 </div>
-                <Content>{data.email}</Content>
+                <Content>{'email' in data && data.email}</Content>
               </IconTextContainer>
             </CategoryContent>
+          )}
 
+          {me && (
             <CategoryContent>
               <IconTextContainer>
                 <SubTitle>가입방법:</SubTitle>
-                <Content>{data.signUpType}</Content>
+                <Content>{'signUpType' in data && data.signUpType}</Content>
               </IconTextContainer>
             </CategoryContent>
+          )}
 
-            <CategoryContent>
-              <IconTextContainer>
-                <SubTitle>가입일:</SubTitle>
-                <Content>
-                  {changeDateFormat({
-                    date: data.createdAt,
-                    format: 'YYMMDD_hhmmss',
-                  })}
-                </Content>
-              </IconTextContainer>
-            </CategoryContent>
-          </CategoryContentContainer>
-        </ContentContainer>
-      ) : (
-        <ContentContainer>
-          <CategoryTitle>내 프로필</CategoryTitle>
-          <CategoryContentContainer>
-            <CategoryContent>
-              <IconTextContainer>
-                <PersonIcon />
-                <Content>{data.nickname}</Content>
-              </IconTextContainer>
-            </CategoryContent>
-            <CategoryContent>
-              <IconTextContainer>
-                <SubTitle>가입일:</SubTitle>
-                <Content>
-                  {changeDateFormat({
-                    date: data.createdAt,
-                    format: 'YYMMDD',
-                  })}
-                </Content>
-              </IconTextContainer>
-            </CategoryContent>
-            <CategoryContent>
-              <IconTextContainer>
-                <SubTitle>최종 접속일:</SubTitle>
-                <Content>
-                  {changeDateFormat({
-                    date: data.lastLoginAt,
-                    format: 'YYMMDD_hhmmss',
-                  })}
-                </Content>
-              </IconTextContainer>
-            </CategoryContent>
-          </CategoryContentContainer>
-        </ContentContainer>
-      )}
+          <CategoryContent>
+            <IconTextContainer>
+              <SubTitle>가입일:</SubTitle>
+              <Content>{data.createdAt}</Content>
+            </IconTextContainer>
+          </CategoryContent>
+
+          <CategoryContent>
+            <IconTextContainer>
+              <SubTitle>최종접속일:</SubTitle>
+              <Content>{data.lastLoginAt}</Content>
+            </IconTextContainer>
+          </CategoryContent>
+        </CategoryContentContainer>
+      </ContentContainer>
 
       {/* introduce box */}
       <ContentContainer>
@@ -123,7 +92,7 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
         <IntroduceContentContainer>
           <IntroduceContent>
             {data.introduce === null || data.introduce.length === 0
-              ? '현재 작성된 자기소개가 없습니다.'
+              ? '작성된 내용이 없습니다.'
               : data.introduce}
           </IntroduceContent>
           {me && (
@@ -149,7 +118,7 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
               <SubTitle>온/오프라인:</SubTitle>
               <Content>
                 {data.onOffline === null || data.onOffline.length === 0
-                  ? '미입력'
+                  ? '작성된 내용이 없습니다.'
                   : data.onOffline}
               </Content>
             </TextContainer>
@@ -174,7 +143,7 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
               <SubTitle>모임장소:</SubTitle>
               <Content>
                 {data.place === null || data.place.length === 0
-                  ? '미입력'
+                  ? '작성된 내용이 없습니다.'
                   : data.place}
               </Content>
             </TextContainer>
@@ -196,7 +165,7 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
               <SubTitle>모임시간:</SubTitle>
               <Content>
                 {data.contactTime === null || data.contactTime.length === 0
-                  ? '미입력'
+                  ? '작성된 내용이 없습니다.'
                   : data.contactTime}
               </Content>
             </TextContainer>
@@ -218,7 +187,7 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
               <SubTitle>관심분야:</SubTitle>
               <Content>
                 {data.interests === null || data.interests.length === 0
-                  ? '미입력'
+                  ? '작성된 내용이 없습니다.'
                   : data.interests}
               </Content>
             </TextContainer>
@@ -265,7 +234,7 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
               <SubTitle>직무/경력:</SubTitle>
               <Content>
                 {data.career === null || data.career.length === 0
-                  ? '미입력'
+                  ? '작성된 내용이 없습니다.'
                   : data.career}
               </Content>
             </TextContainer>
@@ -292,8 +261,8 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
         <ProgramOrSkillContainer>
           <HashtagContainer>
             {data.skills === null || data.skills.length === 0
-              ? '현재 작성된 내용이 없습니다.'
-              : [...data.skills.split(',')].map((hashtag, index) => {
+              ? '작성된 내용이 없습니다.'
+              : data.skills.map((hashtag, index) => {
                   return (
                     <Hashtag tagName={hashtag} key={`${hashtag}-${index}`} />
                   );
@@ -306,7 +275,9 @@ const ProfileInfoBox = ({ me, data }: ProfileInfoViewProps) => {
               category={'skills'}
               type={'hashtag'}
               title={'사용 프로그램 또는 기술'}
-              value={data.skills ?? ''}
+              // TODO 수정 필요
+              // value={data.skills ?? ''}
+              value={''}
             />
           )}
         </ProgramOrSkillContainer>

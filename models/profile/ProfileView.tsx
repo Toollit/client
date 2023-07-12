@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import GetitLogo from '@/assets/images/GetitLogo';
 import { AccountCircleIcon, EditCircleIcon } from '@/assets/icons';
-import { User, Project } from '@/apis/profileFetcher';
+import { MyProfile, UserProfile } from '@/apis/profileInfoFetcher';
 import Divider from '@/components/commons/divider';
 import Skeleton from '@/components/commons/skeleton';
 import Dialog from '@/components/commons/dialog';
@@ -34,12 +34,21 @@ import {
   FooterLogo,
 } from './styles';
 
+export interface CustomMyProfile extends Omit<MyProfile, 'skills'> {
+  skills: string[];
+}
+
+export interface CustomUserProfile extends Omit<UserProfile, 'skills'> {
+  skills: string[];
+}
+
 export interface ProfileViewProps {
   me: boolean;
   loginState?: string | null;
   tabs: { name: string; query: string }[];
   currentTab: 'viewProfile' | 'viewProjects' | 'viewBookmarks' | undefined;
-  data?: User | Project[];
+  // data?: User | Project[];
+  profileData?: CustomMyProfile | CustomUserProfile;
   profileNickname: string;
   handleLogInOut: () => void;
   isLoadedData: {
@@ -54,7 +63,8 @@ const ProfileView = ({
   loginState,
   tabs,
   currentTab,
-  data,
+  // data,
+  profileData,
   profileNickname,
   handleLogInOut,
   isLoadedData,
@@ -162,8 +172,8 @@ const ProfileView = ({
           {currentTab === 'viewProfile' ? (
             <>
               {/* // data !== undefined && */}
-              {isLoadedData.viewProfile && data && 'email' in data ? (
-                <ProfileInfoBox me={me} data={data} />
+              {isLoadedData.viewProfile && profileData ? (
+                <ProfileInfoBox me={me} data={profileData} />
               ) : (
                 <>
                   <Skeleton height={200} top={3} />
@@ -201,8 +211,8 @@ const ProfileView = ({
               {currentTab === 'viewProfile' ? (
                 <>
                   {/* // data !== undefined && */}
-                  {isLoadedData.viewProfile && data && 'email' in data ? (
-                    <ProfileInfoBox me={me} data={data} />
+                  {isLoadedData.viewProfile && profileData ? (
+                    <ProfileInfoBox me={me} data={profileData} />
                   ) : (
                     <>
                       <Skeleton height={200} top={3} />
