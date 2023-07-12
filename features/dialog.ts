@@ -15,15 +15,15 @@ export interface DialogState {
 }
 
 const initialState: DialogState = {
-  open: false,
-  page: '',
-  type: null,
-  category: '',
-  title: '',
-  value: '',
+  open: false, // dialog open
+  page: '', // dialog open page or update page
+  type: null, // dialog type
+  category: '', // update data category
+  title: '', // dialog title
+  value: '', // dialog value
   placeholder: '',
   maxLength: null,
-  selectList: null,
+  selectList: null, //  selectList required if dialog type is 'select' or 'multiSelect'
   update: null,
 };
 
