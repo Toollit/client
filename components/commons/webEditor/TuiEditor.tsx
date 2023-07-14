@@ -66,8 +66,10 @@ const TuiEditor = ({ titleRef, editorRef, content }: TuiEditorProps) => {
     const formData = new FormData();
     formData.append('postImage', blob);
 
+    const endpoint = '/api/post/project/content/uploadImage';
+
     try {
-      const response = await uploadImageAPI(formData);
+      const response = await uploadImageAPI(endpoint, formData);
 
       const imageUrl = response?.data.url;
 

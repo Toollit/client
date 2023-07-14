@@ -9,11 +9,9 @@ export interface UploadImageAPIRes {
 }
 
 export const uploadImageAPI = async (
-  image: UploadImageAPIReq,
+  endpoint: string,
+  data: UploadImageAPIReq,
 ): Promise<UploadImageAPIRes | undefined> => {
-  const response = await serverInstance.post(
-    '/api/post/project/content/uploadImage',
-    image,
-  );
+  const response = await serverInstance.post(endpoint, data);
   return response.data;
 };
