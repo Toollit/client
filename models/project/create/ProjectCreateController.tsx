@@ -62,7 +62,7 @@ const ProjectCreateController = () => {
         const response = await createProjectAPI(projectData);
 
         if (response?.success) {
-          mutate(getProjectsKey());
+          mutate(getProjectsKey(1, 'new'), undefined, true);
           const projectId = response.data.projectId;
           router.push(`/project/${projectId}`);
         }
