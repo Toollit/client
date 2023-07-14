@@ -31,6 +31,7 @@ import {
   MobileProfileContainer,
   FooterLink,
   FooterLogo,
+  ProfileImageSkeletonContainer,
 } from './styles';
 
 export interface CustomMyProfile extends Omit<MyProfile, 'skills'> {
@@ -95,39 +96,46 @@ const ProfileView = ({
           </GNBArea>
 
           <ProfileArea>
-            {/* TODO 스켈레톤 적용하기!!!!!!!!!!!! */}
-            {profileData?.profileImage ? (
-              <ProfileImageContainer>
-                <Image
-                  style={{ borderRadius: '25rem' }}
-                  src={profileData?.profileImage}
-                  alt={'profile image'}
-                  width={120}
-                  height={120}
-                  draggable={false}
-                />
-              </ProfileImageContainer>
+            {isLoadedData.viewProfile && profileData ? (
+              <>
+                {profileData?.profileImage ? (
+                  <ProfileImageContainer>
+                    <Image
+                      style={{ borderRadius: '25rem' }}
+                      src={profileData?.profileImage}
+                      alt={'profile image'}
+                      width={120}
+                      height={120}
+                      draggable={false}
+                    />
+                  </ProfileImageContainer>
+                ) : (
+                  <ProfileNoImageContainer>
+                    <NoImage>
+                      <AccountCircleIcon
+                        fill={true}
+                        width={150}
+                        height={150}
+                        color='#767678'
+                      />
+                    </NoImage>
+                  </ProfileNoImageContainer>
+                )}
+                {me && (
+                  <ImageEditBtn onClick={handleEditProfileImg}>
+                    <EditCircleIcon
+                      fill={true}
+                      width={35}
+                      height={35}
+                      color='#4dd290'
+                    />
+                  </ImageEditBtn>
+                )}
+              </>
             ) : (
-              <ProfileNoImageContainer>
-                <NoImage>
-                  <AccountCircleIcon
-                    fill={true}
-                    width={150}
-                    height={150}
-                    color='#767678'
-                  />
-                </NoImage>
-              </ProfileNoImageContainer>
-            )}
-            {me && (
-              <ImageEditBtn onClick={handleEditProfileImg}>
-                <EditCircleIcon
-                  fill={true}
-                  width={35}
-                  height={35}
-                  color='#4dd290'
-                />
-              </ImageEditBtn>
+              <ProfileImageSkeletonContainer>
+                <Skeleton shape='circular' width={120} height={120} top={3} />
+              </ProfileImageSkeletonContainer>
             )}
 
             <input

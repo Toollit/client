@@ -93,6 +93,12 @@ const ImageEditBtn = styled.div`
   cursor: pointer;
 `;
 
+const ProfileImageSkeletonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 15rem;
+`;
+
 const UserNickname = styled.div`
   font-size: 1.4rem;
 `;
@@ -379,6 +385,7 @@ export {
   ProfileImageContainer,
   NoImage,
   ImageEditBtn,
+  ProfileImageSkeletonContainer,
   UserNickname,
   UserEmail,
   HeaderLeft,
