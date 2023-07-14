@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import Link from 'next/link';
 import GetitLogo from '@/assets/images/GetitLogo';
 import { AccountCircleIcon, EditCircleIcon } from '@/assets/icons';
@@ -8,6 +8,7 @@ import Skeleton from '@/components/commons/skeleton';
 import Dialog from '@/components/commons/dialog';
 import ProfileInfoBox from './ProfileInfoBox';
 import SwipeableTabView from '@/components/commons/swipeableView/swipeableTabViews';
+import Image from 'next/image';
 import {
   Container,
   ColumnLeftContainer,
@@ -17,6 +18,7 @@ import {
   GNBTitle,
   ProfileArea,
   UserNickname,
+  ProfileNoImageContainer,
   ProfileImageContainer,
   HeaderLeft,
   HeaderLeftMenu,
@@ -24,11 +26,8 @@ import {
   DividerContainer,
   LogInOut,
   Logo,
-  AccountCircleIconContainer,
-  EditCircleIconContainer,
-  UserProfileContainer,
-  SettingsContainer,
-  DeleteUser,
+  NoImage,
+  ImageEditBtn,
   MobileProfileContainer,
   FooterLink,
   FooterLogo,
@@ -57,6 +56,9 @@ export interface ProfileViewProps {
     viewBookmarks: boolean;
   };
   handleEditBtn: (category: string) => void;
+  handleEditProfileImg: () => void;
+  profileImgRef: React.RefObject<HTMLInputElement>;
+  handleChangeProfileImg: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ProfileView = ({
@@ -70,6 +72,9 @@ const ProfileView = ({
   handleLogInOut,
   isLoadedData,
   handleEditBtn,
+  handleEditProfileImg,
+  profileImgRef,
+  handleChangeProfileImg,
 }: ProfileViewProps) => {
   return (
     <>
@@ -90,25 +95,48 @@ const ProfileView = ({
           </GNBArea>
 
           <ProfileArea>
-            <ProfileImageContainer>
-              {/* 이미지 없는 경우만 보이도록하기 */}
-              <AccountCircleIconContainer>
-                <AccountCircleIcon
-                  fill={true}
-                  width={130}
-                  height={130}
-                  color='#767678'
+            {/* TODO 스켈레톤 적용하기!!!!!!!!!!!! */}
+            {profileData?.profileImage ? (
+              <ProfileImageContainer>
+                <Image
+                  style={{ borderRadius: '25rem' }}
+                  src={profileData?.profileImage}
+                  alt={'profile image'}
+                  width={120}
+                  height={120}
+                  draggable={false}
                 />
-              </AccountCircleIconContainer>
-              <EditCircleIconContainer>
+              </ProfileImageContainer>
+            ) : (
+              <ProfileNoImageContainer>
+                <NoImage>
+                  <AccountCircleIcon
+                    fill={true}
+                    width={150}
+                    height={150}
+                    color='#767678'
+                  />
+                </NoImage>
+              </ProfileNoImageContainer>
+            )}
+            {me && (
+              <ImageEditBtn onClick={handleEditProfileImg}>
                 <EditCircleIcon
                   fill={true}
                   width={35}
                   height={35}
                   color='#4dd290'
                 />
-              </EditCircleIconContainer>
-            </ProfileImageContainer>
+              </ImageEditBtn>
+            )}
+
+            <input
+              hidden
+              type='file'
+              accept='image/jpg, image/jpeg, image/png'
+              ref={profileImgRef}
+              onChange={handleChangeProfileImg}
+            />
 
             <UserNickname>{profileNickname}</UserNickname>
           </ProfileArea>

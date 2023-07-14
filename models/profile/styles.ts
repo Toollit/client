@@ -59,26 +59,36 @@ const GNBTitle = styled.h1`
 const ProfileArea = styled.div`
   padding: 1.2rem 2rem;
   text-align: center;
+  position: relative;
+`;
+
+const ProfileNoImageContainer = styled.div`
+  position: relative;
+  height: 15rem;
 `;
 
 const ProfileImageContainer = styled.div`
   position: relative;
-  text-align: center;
+  height: 15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
-const AccountCircleIconContainer = styled.div`
+const NoImage = styled.div`
   display: flex;
   justify-content: center;
 `;
 
-const EditCircleIconContainer = styled.div`
+const ImageEditBtn = styled.div`
   border: 1px solid #fff;
   border-radius: 50rem;
   background-color: #fff;
   width: 3.68rem;
   height: 3.68rem;
   position: absolute;
-  bottom: 1.3rem;
+  bottom: 4.5rem;
   left: calc((100% / 2) + 2.5rem);
   cursor: pointer;
 `;
@@ -208,25 +218,6 @@ const LogInOut = styled.div`
 
 const Logo = styled.a`
   font-weight: 900;
-`;
-
-const DeleteUser = styled.div`
-  font-size: 1.5rem;
-`;
-
-const UserProfileContainer = styled.div`
-  width: calc(100vw - 4rem);
-  margin: 4rem auto;
-  border-radius: ${(props) => props.theme.borderRadius.base};
-  border: 1px solid ${(props) => props.theme.colors.border.base};
-  padding: 1.6rem;
-`;
-
-const SettingsContainer = styled.div`
-  border-radius: ${(props) => props.theme.borderRadius.base};
-  border: 1px solid ${(props) => props.theme.colors.border.base};
-  margin-bottom: 2.4rem;
-  padding: 1.6rem;
 `;
 
 const ContentContainer = styled.div`
@@ -384,9 +375,10 @@ export {
   StyledTitleLink,
   GNBTitle,
   ProfileArea,
+  ProfileNoImageContainer,
   ProfileImageContainer,
-  AccountCircleIconContainer,
-  EditCircleIconContainer,
+  NoImage,
+  ImageEditBtn,
   UserNickname,
   UserEmail,
   HeaderLeft,
@@ -395,9 +387,6 @@ export {
   DividerContainer,
   LogInOut,
   Logo,
-  SettingsContainer,
-  DeleteUser,
-  UserProfileContainer,
   ContentContainer,
   CategoryTitle,
   CategoryContentContainer,

@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import ProfileView, { ProfileViewProps } from './ProfileView';
 import useSWR from 'swr';
 import { AUTH_USER, GET_USER_PROFILE_API_ENDPOINT } from '@/apis/keys';
@@ -16,7 +22,6 @@ import { updateProfileAPI } from '@/apis/updateProfile';
 import { authFetcher } from '@/apis/authFetcher';
 import { changeDateFormat } from '@/utils/changeDateFormat';
 import { open as openDialog, close as closeDialog } from '@/features/dialog';
-import useAuth from '@/hooks/useAuth';
 import { useSWRConfig } from 'swr';
 
 const ProfileController = () => {
@@ -321,7 +326,6 @@ const ProfileController = () => {
               category: 'skills',
               title: '사용 프로그램 또는 기술',
               value: profileData?.data?.skills ?? '',
-              placeholder: 'ex) React, Figma, Adobe Photoshop',
               maxLength: 30,
             }),
           );
@@ -333,6 +337,41 @@ const ProfileController = () => {
     },
     [dispatch, profileData],
   );
+
+  const profileImgRef = useRef<HTMLInputElement>(null);
+
+  const uploadProfileImage = useCallback(
+    async (File: File) => {
+      const formData = new FormData();
+      formData.append('profileImage', File);
+
+      try {
+        await updateProfileAPI({ category: 'profileImage', data: formData });
+
+        profileMutate();
+      } catch (error) {
+        errorMessage(error);
+      }
+    },
+    [profileMutate],
+  );
+
+  const handleChangeProfileImg = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      if (!event.target.files) {
+        return;
+      }
+
+      const file = event.target.files[0];
+
+      uploadProfileImage(file);
+    },
+    [uploadProfileImage],
+  );
+
+  const handleEditProfileImg = useCallback(() => {
+    profileImgRef.current?.click();
+  }, []);
 
   useEffect(() => {
     if (updatePage !== 'profile') {
@@ -372,6 +411,9 @@ const ProfileController = () => {
     handleLogInOut,
     isLoadedData,
     handleEditBtn,
+    handleEditProfileImg,
+    profileImgRef,
+    handleChangeProfileImg,
   };
 
   return <ProfileView {...props} />;
