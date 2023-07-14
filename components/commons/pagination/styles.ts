@@ -26,7 +26,10 @@ const PageNumberButton = styled.button<{ selected: boolean }>`
   padding: 0 2rem;
   background-color: #fff;
   font-size: 1.8rem;
-  color: ${(props) => (props.selected ? '#000' : '#d4d4d4')};
+  /* color: ${(props) => (props.selected ? '#000' : '#d4d4d4')}; */
+  color: #000;
+  background-color: ${(props) => props.selected && '#99999930'};
+  border-radius: ${(props) => props.theme.borderRadius.base};
 
   ${mediaQueryLaptop} {
     font-size: 2rem;
