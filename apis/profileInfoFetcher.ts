@@ -13,6 +13,7 @@ export interface MyProfile {
   interests: string | null;
   career: string | null;
   skills: string | null;
+  profileImage: string | null;
 }
 
 export interface UserProfile {
@@ -26,6 +27,7 @@ export interface UserProfile {
   interests: string | null;
   career: string | null;
   skills: string | null;
+  profileImage: string | null;
 }
 
 export interface Project {
