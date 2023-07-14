@@ -89,6 +89,7 @@ const Dialog = () => {
     [checkedList],
   );
 
+  // handle dialog button
   const handleDialog = useCallback(
     (event: React.MouseEvent) => {
       // 완료 - 'true', 취소 - 'false', 그 외 - null
@@ -99,6 +100,12 @@ const Dialog = () => {
 
       if (edit === 'true') {
         if (type === 'hashtag') {
+          const skillsCount = skillRef.current.length;
+
+          if (maxLength && skillsCount > maxLength) {
+            return alert(`최대 ${maxLength}개까지 입력 가능합니다.`);
+          }
+
           // skills array to string for db saving;
           const result = skillRef.current.toString();
 
