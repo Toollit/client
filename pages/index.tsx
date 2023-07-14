@@ -18,7 +18,7 @@ const Home: NextPage<PageProps> = ({ fallback }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const apiEndpoint = getProjectsKey();
+  const apiEndpoint = getProjectsKey(1, 'new');
   const projects = await getProjectsFetcher(apiEndpoint);
 
   const hasQueryData = Object.keys(query).length >= 1;
