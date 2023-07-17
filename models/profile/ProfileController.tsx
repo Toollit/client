@@ -346,7 +346,15 @@ const ProfileController = () => {
       formData.append('profileImage', File);
 
       try {
-        await updateProfileAPI({ category: 'profileImage', data: formData });
+        await updateProfileAPI({
+          category: 'profileImage',
+          data: formData,
+          option: {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+        });
 
         profileMutate();
       } catch (error) {
