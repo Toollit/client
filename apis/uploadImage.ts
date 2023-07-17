@@ -12,6 +12,10 @@ export const uploadImageAPI = async (
   endpoint: string,
   data: UploadImageAPIReq,
 ): Promise<UploadImageAPIRes | undefined> => {
-  const response = await serverInstance.post(endpoint, data);
+  const response = await serverInstance.post(endpoint, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data;
 };
