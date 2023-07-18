@@ -17,6 +17,8 @@ import {
   StyledTitleLink,
   GNBTitle,
   ProfileArea,
+  EditMenu,
+  EditCondition,
   UserNickname,
   ProfileNoImageContainer,
   ProfileImageContainer,
@@ -47,8 +49,9 @@ export interface ProfileViewProps {
   loginState?: string | null;
   tabs: { name: string; query: string }[];
   currentTab: 'viewProfile' | 'viewProjects' | 'viewBookmarks' | undefined;
+  profileImageData?: string | null;
   // data?: User | Project[];
-  profileData?: CustomMyProfile | CustomUserProfile;
+  profileData?: CustomMyProfile | CustomUserProfile | null;
   profileNickname: string;
   handleLogInOut: () => void;
   isLoadedData: {
@@ -57,9 +60,12 @@ export interface ProfileViewProps {
     viewBookmarks: boolean;
   };
   handleEditBtn: (category: string) => void;
-  handleEditProfileImg: () => void;
   profileImgRef: React.RefObject<HTMLInputElement>;
   handleChangeProfileImg: (event: ChangeEvent<HTMLInputElement>) => void;
+  anchorEl: null | HTMLElement;
+  handleOpenEditSelector: (event: React.MouseEvent<HTMLDivElement>) => void;
+  handleEditSelector: (event: React.MouseEvent<HTMLLIElement>) => void;
+  open: boolean;
 }
 
 const ProfileView = ({
@@ -68,14 +74,18 @@ const ProfileView = ({
   tabs,
   currentTab,
   // data,
+  profileImageData,
   profileData,
   profileNickname,
   handleLogInOut,
   isLoadedData,
   handleEditBtn,
-  handleEditProfileImg,
   profileImgRef,
   handleChangeProfileImg,
+  anchorEl,
+  handleOpenEditSelector,
+  handleEditSelector,
+  open,
 }: ProfileViewProps) => {
   return (
     <>
@@ -96,13 +106,13 @@ const ProfileView = ({
           </GNBArea>
 
           <ProfileArea>
-            {isLoadedData.viewProfile && profileData ? (
+            {profileImageData !== undefined ? (
               <>
-                {profileData?.profileImage ? (
+                {profileImageData ? (
                   <ProfileImageContainer>
                     <Image
                       style={{ borderRadius: '25rem' }}
-                      src={profileData?.profileImage}
+                      src={profileImageData}
                       alt={'profile image'}
                       width={120}
                       height={120}
@@ -122,14 +132,35 @@ const ProfileView = ({
                   </ProfileNoImageContainer>
                 )}
                 {me && (
-                  <ImageEditBtn onClick={handleEditProfileImg}>
-                    <EditCircleIcon
-                      fill={true}
-                      width={35}
-                      height={35}
-                      color='#4dd290'
-                    />
-                  </ImageEditBtn>
+                  <>
+                    <ImageEditBtn onClick={handleOpenEditSelector}>
+                      <EditCircleIcon
+                        fill={true}
+                        width={35}
+                        height={35}
+                        color='#4dd290'
+                      />
+                    </ImageEditBtn>
+
+                    <EditMenu
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleEditSelector}
+                    >
+                      <EditCondition
+                        onClick={handleEditSelector}
+                        data-value='update'
+                      >
+                        수정
+                      </EditCondition>
+                      <EditCondition
+                        onClick={handleEditSelector}
+                        data-value='delete'
+                      >
+                        삭제
+                      </EditCondition>
+                    </EditMenu>
+                  </>
                 )}
               </>
             ) : (

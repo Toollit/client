@@ -10,6 +10,7 @@ import useSWR from 'swr';
 import { AUTH_USER, GET_USER_PROFILE_API_ENDPOINT } from '@/apis/keys';
 import {
   MyProfile,
+  ProfileImage,
   UserProfile,
   profileInfoFetcher,
 } from '@/apis/profileInfoFetcher';
@@ -39,6 +40,8 @@ const ProfileController = () => {
   const updateNewValue = useSelector(
     (state: RootState) => state.dialog.update?.newValue,
   );
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
   const [profileNickname, setProfileNickname] = useState('');
   const [isLoadedData, setIsLoadedData] = useState({
@@ -52,6 +55,8 @@ const ProfileController = () => {
     { name: '북마크', query: 'viewBookmarks' },
   ]);
 
+  const profileImgRef = useRef<HTMLInputElement>(null);
+
   const nickname = router.query.nickname;
   const currentTab = router.query.tab as
     | 'viewProfile'
@@ -60,6 +65,19 @@ const ProfileController = () => {
     | undefined;
 
   const { data: user, mutate: userMutate } = useSWR(AUTH_USER, authFetcher);
+
+  const { data: profileImageData, mutate: profileImageMutate } = useSWR(
+    nickname ? `${GET_USER_PROFILE_API_ENDPOINT}/${nickname}` : null,
+    profileInfoFetcher,
+    {
+      revalidateOnFocus: false,
+      shouldRetryOnError: false,
+      onError(err, key, config) {
+        errorMessage(err);
+        router.replace('/');
+      },
+    },
+  );
 
   const { data: profileData, mutate: profileMutate } = useSWR(
     nickname && currentTab
@@ -105,6 +123,76 @@ const ProfileController = () => {
       router.push('/login');
     }
   }, [router, user, mutate]);
+
+  const handleOpenEditSelector = (event: React.MouseEvent<HTMLDivElement>) => {
+    // open selector
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleEditSelector = useCallback(
+    async (event: React.MouseEvent<HTMLLIElement>) => {
+      const { value } = event.currentTarget.dataset;
+
+      if (value === 'update') {
+        profileImgRef.current?.click();
+      }
+
+      if (value === 'delete') {
+        try {
+          await updateProfileAPI({
+            category: 'profileImage',
+            data: 'delete',
+          });
+
+          // profileMutate();
+          profileImageMutate();
+        } catch (error) {
+          errorMessage(error);
+        }
+      }
+
+      // close
+      setAnchorEl(null);
+    },
+    [profileImageMutate],
+  );
+
+  const uploadProfileImage = useCallback(
+    async (File: File) => {
+      const formData = new FormData();
+      formData.append('profileImage', File);
+
+      try {
+        await updateProfileAPI({
+          category: 'profileImage',
+          data: formData,
+          option: {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+        });
+
+        profileImageMutate();
+      } catch (error) {
+        errorMessage(error);
+      }
+    },
+    [profileImageMutate],
+  );
+
+  const handleChangeProfileImg = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      if (!event.target.files) {
+        return;
+      }
+
+      const file = event.target.files[0];
+
+      uploadProfileImage(file);
+    },
+    [uploadProfileImage],
+  );
 
   const handleUpdateProfile = useCallback(async () => {
     if (updateNewValue === null || updateNewValue === undefined) {
@@ -200,6 +288,10 @@ const ProfileController = () => {
 
   const handleEditBtn = useCallback(
     (category: string) => {
+      if (!(profileData?.data && 'email' in profileData.data)) {
+        return;
+      }
+
       switch (category) {
         case 'nickname':
           dispatch(
@@ -338,49 +430,6 @@ const ProfileController = () => {
     [dispatch, profileData],
   );
 
-  const profileImgRef = useRef<HTMLInputElement>(null);
-
-  const uploadProfileImage = useCallback(
-    async (File: File) => {
-      const formData = new FormData();
-      formData.append('profileImage', File);
-
-      try {
-        await updateProfileAPI({
-          category: 'profileImage',
-          data: formData,
-          option: {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          },
-        });
-
-        profileMutate();
-      } catch (error) {
-        errorMessage(error);
-      }
-    },
-    [profileMutate],
-  );
-
-  const handleChangeProfileImg = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      if (!event.target.files) {
-        return;
-      }
-
-      const file = event.target.files[0];
-
-      uploadProfileImage(file);
-    },
-    [uploadProfileImage],
-  );
-
-  const handleEditProfileImg = useCallback(() => {
-    profileImgRef.current?.click();
-  }, []);
-
   useEffect(() => {
     if (updatePage !== 'profile') {
       return;
@@ -409,19 +458,31 @@ const ProfileController = () => {
     }
   }, [nickname]);
 
+  const isProfileImage = (data: any): data is ProfileImage => {
+    return data && 'profileImage' in data;
+  };
+
   const props: ProfileViewProps = {
     me: nickname === user?.data?.nickname,
     loginState: user?.data?.nickname,
     tabs,
     currentTab,
-    profileData: handleProfileDataResponse(profileData?.data),
+    profileImageData: isProfileImage(profileImageData?.data)
+      ? profileImageData?.data.profileImage
+      : null,
+    profileData: !isProfileImage(profileData?.data)
+      ? handleProfileDataResponse(profileData?.data)
+      : null,
     profileNickname,
     handleLogInOut,
     isLoadedData,
     handleEditBtn,
-    handleEditProfileImg,
     profileImgRef,
     handleChangeProfileImg,
+    anchorEl,
+    handleOpenEditSelector,
+    handleEditSelector,
+    open,
   };
 
   return <ProfileView {...props} />;
