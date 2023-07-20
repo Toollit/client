@@ -6,11 +6,12 @@ import React, {
   useState,
 } from 'react';
 import ProfileView, { ProfileViewProps } from './ProfileView';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import { AUTH_USER, GET_USER_PROFILE_API_ENDPOINT } from '@/apis/keys';
 import {
   MyProfile,
   ProfileImage,
+  Project,
   UserProfile,
   profileInfoFetcher,
 } from '@/apis/profileInfoFetcher';
@@ -23,7 +24,6 @@ import { updateProfileAPI } from '@/apis/updateProfile';
 import { authFetcher } from '@/apis/authFetcher';
 import { changeDateFormat } from '@/utils/changeDateFormat';
 import { open as openDialog, close as closeDialog } from '@/features/dialog';
-import { useSWRConfig } from 'swr';
 
 const ProfileController = () => {
   const dispatch = useDispatch();
@@ -44,11 +44,22 @@ const ProfileController = () => {
   const open = Boolean(anchorEl);
 
   const [profileNickname, setProfileNickname] = useState('');
+
   const [isLoadedData, setIsLoadedData] = useState({
-    viewProfile: false,
-    viewProjects: false,
-    viewBookmarks: false,
+    viewProfile: {
+      isLoaded: false,
+      data: null,
+    },
+    viewProjects: {
+      isLoaded: false,
+      data: null,
+    },
+    viewBookmarks: {
+      isLoaded: false,
+      data: null,
+    },
   });
+
   const [tabs] = useState([
     { name: '내프로필', query: 'viewProfile' },
     { name: '프로젝트', query: 'viewProjects' },
@@ -96,7 +107,10 @@ const ProfileController = () => {
           setIsLoadedData((prev) => {
             return {
               ...prev,
-              [currentTab]: true,
+              [currentTab]: {
+                isLoaded: true,
+                data: data.data,
+              },
             };
           });
         }
@@ -462,6 +476,18 @@ const ProfileController = () => {
     return data && 'profileImage' in data;
   };
 
+  const isProfileInfo = (data: any): data is MyProfile | UserProfile => {
+    return data && 'nickname' in data;
+  };
+
+  const isProject = (data: any): data is Project[] => {
+    if (Array.isArray(data)) {
+      return true;
+    }
+
+    return false;
+  };
+
   const props: ProfileViewProps = {
     me: nickname === user?.data?.nickname,
     loginState: user?.data?.nickname,
@@ -470,8 +496,11 @@ const ProfileController = () => {
     profileImageData: isProfileImage(profileImageData?.data)
       ? profileImageData?.data.profileImage
       : null,
-    profileData: !isProfileImage(profileData?.data)
-      ? handleProfileDataResponse(profileData?.data)
+    profileInfoData: isProfileInfo(isLoadedData.viewProfile.data)
+      ? handleProfileDataResponse(isLoadedData.viewProfile.data)
+      : null,
+    profileProjectData: isProject(isLoadedData.viewProjects.data)
+      ? isLoadedData.viewProjects.data
       : null,
     profileNickname,
     handleLogInOut,
