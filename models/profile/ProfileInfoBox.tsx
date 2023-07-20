@@ -20,7 +20,7 @@ import {
 
 interface ProfileInfoViewProps {
   me: boolean;
-  data: CustomMyProfile | CustomUserProfile;
+  data?: CustomMyProfile | CustomUserProfile | null;
   editBtnHandler: (category: string) => void;
 }
 
@@ -36,7 +36,7 @@ const ProfileInfoBox = ({ me, data, editBtnHandler }: ProfileInfoViewProps) => {
               <div>
                 <PersonIcon />
               </div>
-              <Content>{data.nickname}</Content>
+              <Content>{data?.nickname}</Content>
             </IconTextContainer>
             {me && (
               <EditBtn
@@ -53,7 +53,7 @@ const ProfileInfoBox = ({ me, data, editBtnHandler }: ProfileInfoViewProps) => {
                 <div>
                   <MailIcon />
                 </div>
-                <Content>{'email' in data && data.email}</Content>
+                <Content>{data && 'email' in data && data?.email}</Content>
               </IconTextContainer>
             </CategoryContent>
           )}
@@ -62,7 +62,9 @@ const ProfileInfoBox = ({ me, data, editBtnHandler }: ProfileInfoViewProps) => {
             <CategoryContent>
               <IconTextContainer>
                 <SubTitle>가입방법:</SubTitle>
-                <Content>{'signUpType' in data && data.signUpType}</Content>
+                <Content>
+                  {data && 'signUpType' in data && data?.signUpType}
+                </Content>
               </IconTextContainer>
             </CategoryContent>
           )}
@@ -70,14 +72,14 @@ const ProfileInfoBox = ({ me, data, editBtnHandler }: ProfileInfoViewProps) => {
           <CategoryContent>
             <IconTextContainer>
               <SubTitle>가입일:</SubTitle>
-              <Content>{data.createdAt}</Content>
+              <Content>{data?.createdAt}</Content>
             </IconTextContainer>
           </CategoryContent>
 
           <CategoryContent>
             <IconTextContainer>
               <SubTitle>최종접속일:</SubTitle>
-              <Content>{data.lastLoginAt}</Content>
+              <Content>{data?.lastLoginAt}</Content>
             </IconTextContainer>
           </CategoryContent>
         </CategoryContentContainer>
@@ -88,7 +90,7 @@ const ProfileInfoBox = ({ me, data, editBtnHandler }: ProfileInfoViewProps) => {
         <CategoryTitle>자기소개</CategoryTitle>
         <IntroduceContentContainer>
           <IntroduceContent>
-            {data.introduce ?? '작성된 내용이 없습니다.'}
+            {data?.introduce ?? '작성된 내용이 없습니다.'}
           </IntroduceContent>
           {me && (
             <EditBtn
@@ -107,7 +109,7 @@ const ProfileInfoBox = ({ me, data, editBtnHandler }: ProfileInfoViewProps) => {
           <CategoryContent>
             <TextContainer>
               <SubTitle>온/오프라인:</SubTitle>
-              <Content>{data.onOffline ?? '작성된 내용이 없습니다.'}</Content>
+              <Content>{data?.onOffline ?? '작성된 내용이 없습니다.'}</Content>
             </TextContainer>
             {me && (
               <EditBtn
@@ -120,7 +122,7 @@ const ProfileInfoBox = ({ me, data, editBtnHandler }: ProfileInfoViewProps) => {
           <CategoryContent>
             <TextContainer>
               <SubTitle>모임장소:</SubTitle>
-              <Content>{data.place ?? '작성된 내용이 없습니다.'}</Content>
+              <Content>{data?.place ?? '작성된 내용이 없습니다.'}</Content>
             </TextContainer>
             {me && (
               <EditBtn
@@ -133,7 +135,9 @@ const ProfileInfoBox = ({ me, data, editBtnHandler }: ProfileInfoViewProps) => {
           <CategoryContent>
             <TextContainer>
               <SubTitle>모임시간:</SubTitle>
-              <Content>{data.contactTime ?? '작성된 내용이 없습니다.'}</Content>
+              <Content>
+                {data?.contactTime ?? '작성된 내용이 없습니다.'}
+              </Content>
             </TextContainer>
             {me && (
               <EditBtn
@@ -146,7 +150,7 @@ const ProfileInfoBox = ({ me, data, editBtnHandler }: ProfileInfoViewProps) => {
           <CategoryContent>
             <TextContainer>
               <SubTitle>관심분야:</SubTitle>
-              <Content>{data.interests ?? '작성된 내용이 없습니다.'}</Content>
+              <Content>{data?.interests ?? '작성된 내용이 없습니다.'}</Content>
             </TextContainer>
             {me && (
               <EditBtn
@@ -159,7 +163,7 @@ const ProfileInfoBox = ({ me, data, editBtnHandler }: ProfileInfoViewProps) => {
           <CategoryContent>
             <TextContainer>
               <SubTitle>직무/경력:</SubTitle>
-              <Content>{data.career ?? '작성된 내용이 없습니다.'}</Content>
+              <Content>{data?.career ?? '작성된 내용이 없습니다.'}</Content>
             </TextContainer>
             {me && (
               <EditBtn
@@ -178,9 +182,9 @@ const ProfileInfoBox = ({ me, data, editBtnHandler }: ProfileInfoViewProps) => {
 
         <ProgramOrSkillContainer>
           <HashtagContainer>
-            {data.skills === null || data.skills.length === 0
+            {data?.skills === null || data?.skills.length === 0
               ? '작성된 내용이 없습니다.'
-              : data.skills.map((hashtag, index) => {
+              : data?.skills.map((hashtag, index) => {
                   return (
                     <Hashtag tagName={hashtag} key={`${hashtag}-${index}`} />
                   );
