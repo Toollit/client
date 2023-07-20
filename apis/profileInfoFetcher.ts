@@ -35,9 +35,10 @@ export interface Project {
   id: number;
   title: string;
   views: number;
-  bookmarks: number;
   hashtags: string[];
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
+  memberNumber: number;
+  recruitNumber: number;
 }
 
 export interface profileInfoAPIReq {}
@@ -45,8 +46,7 @@ export interface profileInfoAPIReq {}
 export interface profileInfoAPIRes {
   success: boolean;
   message: null | string;
-  // data: UserProfile | Project[];
-  data?: MyProfile | UserProfile | ProfileImage;
+  data?: MyProfile | UserProfile | ProfileImage | Project[];
 }
 
 export const profileInfoFetcher = async (url: string) => {
