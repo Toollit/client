@@ -1,26 +1,26 @@
-import {
-  mediaQueryLaptop,
-  mediaQueryMobile,
-  mediaQueryTablet,
-} from '@/styles/mediaQuery';
+import { mediaQueryLaptop } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 import { Theme, css } from '@emotion/react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 const Container = styled.div`
-  display: table;
-  width: 100%;
-  max-width: 102.4rem;
-  height: 100%;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+
+  ${mediaQueryLaptop} {
+    flex-direction: row;
+    width: 100%;
+    max-width: 102.4rem;
+    height: 100%;
+    margin: 0 auto;
+  }
 `;
 
 const ColumnLeftContainer = styled.div`
   background-color: linear-gradient(to bottom, #fff 0, #f9fbfc);
 
   ${mediaQueryLaptop} {
-    display: table-cell;
     width: 35%;
     background-color: #fff;
     box-shadow: 5px 1px 8px 0 rgba(0, 0, 0, 0.06);
@@ -46,13 +46,9 @@ const GNBArea = styled.div`
   display: flex;
 `;
 
-const GNBLogo = styled.div`
-  /* position: absolute; */
-  /* left: 2.4rem; */
-`;
-
-const StyledTitleLink = styled.a`
+const StyledLink = styled.a`
   text-decoration: none;
+  color: #000;
 `;
 
 const GNBTitle = styled.h1`
@@ -243,97 +239,6 @@ const Logo = styled.a`
   font-weight: 900;
 `;
 
-const ContentContainer = styled.div`
-  border: 1px solid ${(props) => props.theme.colors.border.base};
-  border-radius: ${(props) => props.theme.borderRadius.base};
-  border-top: none;
-  box-shadow: ${(props) => props.theme.boxShadow.base};
-  margin-top: 3rem;
-`;
-
-const CategoryTitle = styled.div`
-  font-size: 1.6rem;
-  font-weight: 700;
-  padding: 1rem 2rem;
-  border-radius: ${(props) => props.theme.borderRadius.base}
-    ${(props) => props.theme.borderRadius.base} 0 0;
-  color: #fff;
-  background-image: linear-gradient(
-    98deg,
-    ${(props) => props.theme.colors.theme},
-    #49c6dd
-  );
-`;
-
-const CategoryContentContainer = styled.ul`
-  padding: 0 1rem;
-
-  li:nth-last-of-type(1) {
-    border-bottom: none;
-  }
-`;
-
-const CategoryContent = styled.li`
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 0.5rem;
-  border-bottom: 1px solid ${(props) => props.theme.colors.border.divider};
-`;
-
-const TextContainer = styled.div`
-  display: flex;
-`;
-
-const SubTitle = styled.div`
-  font-size: 1.4rem;
-  word-break: keep-all;
-`;
-
-const Content = styled.span`
-  font-size: 1.4rem;
-  word-break: break-all;
-
-  padding: 0 0.5rem;
-`;
-
-const IconTextContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const IntroduceContentContainer = styled.div`
-  min-height: 8rem;
-  padding: 1rem 1rem;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const IntroduceContent = styled.div`
-  font-size: 1.4rem;
-  padding: 0rem 1rem;
-  word-break: break-all;
-`;
-
-const ProgramOrSkillContainer = styled.div`
-  min-height: 8rem;
-  padding: 1rem 1rem;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const HashtagContainer = styled.ul`
-  padding: 0rem 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  overflow: scroll;
-
-  font-size: 1.4rem;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
 const MobileProfileContainer = styled.div`
   width: 100vw;
   padding-bottom: 5rem;
@@ -343,285 +248,37 @@ const MobileProfileContainer = styled.div`
   }
 `;
 
-const FooterLink = styled.div`
-  padding: 4rem 3.9rem;
-
-  ul {
-    display: flex;
-    position: relative;
-    padding-bottom: 1.6rem;
-    justify-content: center;
-  }
-
-  li {
-    position: relative;
-    padding-left: 1.4rem;
-
-    ::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0.6rem;
-      width: 0.1rem;
-      height: 1.1rem;
-      margin-top: -0.55rem;
-      background-color: rgba(146, 146, 148, 0.3);
-    }
-  }
-
-  li:first-of-type {
-    padding-left: 0;
-
-    ::before {
-      display: none;
-    }
-  }
-
-  li a {
-    font-size: 1.4rem;
-    color: ${(props) => props.theme.colors.gray};
-    text-decoration: none;
-  }
-`;
-
-const FooterLogo = styled.a`
-  font-weight: 900;
-  font-size: 2rem !important;
-`;
-
 const SkeletonContainer = styled.div`
   padding: 0 2rem;
 `;
 
-const SwipeableViewContainer = styled.div`
-  padding: 0 2rem;
-`;
-
-const ProjectLeftContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-  isolation: isolate; // this attribute for overflow: hidden not working in safari Bug
-`;
-
-const ProjectRightContainer = styled.div`
-  margin: auto 0;
-  min-width: fit-content;
-`;
-
-const RecruitmentTypeContainer = styled.div`
-  margin: 0.6rem 0.4rem;
-  display: flex;
-  overflow: scroll;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const RecruitmentType = styled.div<{
-  type: 'developer' | 'designer' | 'pm' | 'anyone';
-}>`
-  width: fit-content;
-  margin-right: 0.2rem;
-  padding: 0.4rem 0.4rem;
-  border-radius: ${(props) => props.theme.borderRadius.sharp};
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.5;
-  color: #fff;
-  text-align: center;
-  background-color: ${(props) => {
-    const recruitmentType = props.type;
-
-    switch (recruitmentType) {
-      case 'developer':
-        return props.theme.colors.developer;
-
-      case 'designer':
-        return props.theme.colors.designer;
-
-      case 'pm':
-        return props.theme.colors.pm;
-
-      case 'anyone':
-        return props.theme.colors.anyone;
-
-      default:
-        break;
-    }
-  }};
-
-  ${mediaQueryTablet} {
-    margin-right: 0.4rem;
-    padding: 0.4rem 0.8rem;
-  }
-
-  ${mediaQueryLaptop} {
-    padding: 0.4rem 1rem;
-  }
-
-  /* ***** do not remove!!! ***** */
-  /* circle shape member type design  */
-  /* padding: 0;
-    height: fit-content;
-    background-color: #fff;
-    color: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1rem;
-    font-weight: 600;
-
-    ::before {
-      content: ' ';
-      display: block;
-      width: 0.8rem;
-      height: 0.8rem;
-      border-radius: 100%;
-      margin-right: 0.2rem;
-      background-color: ${(props) => {
-    const recruitmentType = props.type;
-
-    switch (recruitmentType) {
-      case 'developer':
-        return props.theme.colors.developer;
-
-      case 'designer':
-        return props.theme.colors.designer;
-
-      case 'pm':
-        return props.theme.colors.pm;
-
-      case 'anyone':
-        return props.theme.colors.anyone;
-
-      default:
-        break;
-    }
-  }};
-    } */
-`;
-
-const Title = styled.div`
-  font-size: 1.3rem;
-  padding: 0rem 0.8rem;
-  word-wrap: break-word;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-
-  ${mediaQueryMobile} {
-    font-size: 1.4rem;
-  }
-`;
-
-const MemberCount = styled.div`
-  display: flex;
-  justify-content: center;
-
-  padding: 0.3rem 0;
-`;
-
-const MemberCountText = styled.div`
-  padding: 0 0.4rem;
-  text-align: center;
-  color: #3da571;
-  font-size: 1.2rem;
-
-  ${mediaQueryLaptop} {
-    font-size: 1.3rem;
-  }
-`;
-
-const Views = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 0.3rem 0;
-`;
-
-const ViewText = styled.div`
-  padding: 0 0.4rem;
-  text-align: center;
-  font-size: 1.2rem;
-
-  ${mediaQueryLaptop} {
-    font-size: 1.3rem;
-  }
-`;
-
-const LoadMoreContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 2rem 0rem;
-`;
-const LoadMore = styled.button`
-  font-size: 1.4rem;
-  padding: 1rem 3rem;
-  border: none;
-  border-radius: ${(props) => props.theme.borderRadius.base};
-`;
-
-const StyledLink = styled.a`
-  text-decoration: none;
-  color: #000;
-`;
+// const SwipeableViewContainer = styled.div`
+//   padding: 0 2rem;
+// `;
 
 export {
   Container,
   ColumnLeftContainer,
   ColumnRightContainer,
   GNBArea,
-  GNBLogo,
-  StyledTitleLink,
+  StyledLink,
   GNBTitle,
   ProfileArea,
-  ProfileNoImageContainer,
-  ProfileImageContainer,
-  NoImage,
-  ImageEditBtn,
-  ProfileImageSkeletonContainer,
   EditMenu,
   EditCondition,
   UserNickname,
-  UserEmail,
+  ProfileNoImageContainer,
+  ProfileImageContainer,
   HeaderLeft,
   HeaderLeftMenu,
   HeaderLeftLink,
   DividerContainer,
   LogInOut,
   Logo,
-  ContentContainer,
-  CategoryTitle,
-  CategoryContentContainer,
-  CategoryContent,
-  TextContainer,
-  SubTitle,
-  Content,
-  IconTextContainer,
-  IntroduceContentContainer,
-  IntroduceContent,
-  ProgramOrSkillContainer,
-  HashtagContainer,
+  NoImage,
+  ImageEditBtn,
   MobileProfileContainer,
-  FooterLink,
-  FooterLogo,
+  ProfileImageSkeletonContainer,
   SkeletonContainer,
-  SwipeableViewContainer,
-  ProjectLeftContainer,
-  ProjectRightContainer,
-  RecruitmentTypeContainer,
-  RecruitmentType,
-  Title,
-  MemberCount,
-  MemberCountText,
-  Views,
-  ViewText,
-  LoadMoreContainer,
-  LoadMore,
-  StyledLink,
+  // SwipeableViewContainer,
 };
