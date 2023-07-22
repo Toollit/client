@@ -73,11 +73,8 @@ const ProgramOrSkillContainer = styled.div`
 `;
 
 const HashtagContainer = styled.ul`
-  /* padding: 0rem 1rem; */
   display: flex;
-  flex-wrap: nowrap;
-  overflow: scroll;
-
+  flex-wrap: wrap;
   font-size: 1.4rem;
 
   ::-webkit-scrollbar {
