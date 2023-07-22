@@ -1,23 +1,19 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import SwipeableViews, {
-  OnSwitchingCallbackTypeDescriptor,
-} from 'react-swipeable-views';
+import SwipeableViews, { Actions } from 'react-swipeable-views';
 import { useDispatch } from 'react-redux';
-import { updateSwipeableViewState } from '@/features/swipeableView';
+import {
+  updateSwipeableViewHeight,
+  updateSwipeableViewState,
+} from '@/features/swipeableView';
 import { useRouter } from 'next/router';
 import { CustomMuiTabs, CustomMuiTab } from './styles';
 
 interface SwipeableTabViewProps {
   tabs: { name: string; query: string }[];
   children: React.ReactNode;
-  // tabHandler: () => void;
 }
 
-const SwipeableTabView = ({
-  tabs,
-  children,
-}: // tabHandler,
-SwipeableTabViewProps) => {
+const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
   const dispatch = useDispatch();
   const { push, query } = useRouter();
 
@@ -42,6 +38,8 @@ SwipeableTabViewProps) => {
   const handleChangeIndex = useCallback(
     (tabIndex: number) => {
       setCurrentTabIndex(tabIndex);
+
+      window.scrollTo({ top: 0 });
 
       push({ query: { ...query, tab: tabs[tabIndex].query } }, undefined, {
         shallow: true,
@@ -88,6 +86,15 @@ SwipeableTabViewProps) => {
   //   [currentTabIndex],
   // );
 
+  const handleUpdateHeight = useCallback(
+    (actions: Actions) => {
+      dispatch(
+        updateSwipeableViewHeight({ updateHeightAction: actions.updateHeight }),
+      );
+    },
+    [dispatch],
+  );
+
   useEffect(() => {
     dispatch(updateSwipeableViewState({ tabIndex: currentTabIndex }));
   }, [currentTabIndex, dispatch]);
@@ -124,11 +131,12 @@ SwipeableTabViewProps) => {
       </CustomMuiTabs>
 
       <SwipeableViews
+        animateHeight={true}
+        action={handleUpdateHeight}
         index={currentTabIndex}
         enableMouseEvents
         onChangeIndex={handleChangeIndex}
         // onSwitching={handleSwitching}
-        containerStyle={{ height: '100%' }}
       >
         {children}
       </SwipeableViews>

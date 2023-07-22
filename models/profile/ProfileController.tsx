@@ -40,6 +40,10 @@ const ProfileController = () => {
   const updateNewValue = useSelector(
     (state: RootState) => state.dialog.update?.newValue,
   );
+  const updateSwipeableViewHeight = useSelector(
+    (state: RootState) => state.swipeableView.updateHeightAction,
+  );
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -113,6 +117,10 @@ const ProfileController = () => {
               },
             };
           });
+
+          if (updateSwipeableViewHeight) {
+            updateSwipeableViewHeight();
+          }
         }
       },
     },
