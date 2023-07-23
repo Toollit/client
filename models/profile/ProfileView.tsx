@@ -6,17 +6,17 @@ import { MyProfile, Project, UserProfile } from '@/apis/profileInfoFetcher';
 import Divider from '@/components/commons/divider';
 import Skeleton from '@/components/commons/skeleton';
 import Dialog from '@/components/commons/dialog';
-import ProfileInfoBox from './ProfileInfoBox';
+import ProfileInfoBox from './profileViewSection/ProfileInfoBox';
 import SwipeableTabView from '@/components/commons/swipeableView/swipeableTabViews';
 import Image from 'next/image';
-import ProfileProjectBox from './ProfileProjectBox';
-import ProfileFooterLink from './ProfileFooterLink';
+import ProfileProjectBox from './profileViewSection/ProfileProjectBox';
+import ProfileFooterLink from './profileViewSection/ProfileFooterLink';
 import {
   Container,
   ColumnLeftContainer,
   ColumnRightContainer,
   GNBArea,
-  StyledTitleLink,
+  StyledLink,
   GNBTitle,
   ProfileArea,
   EditMenu,
@@ -33,11 +33,9 @@ import {
   NoImage,
   ImageEditBtn,
   MobileProfileContainer,
-  FooterLink,
-  FooterLogo,
   ProfileImageSkeletonContainer,
-  SkeletonContainer,
-  SwipeableViewContainer,
+  ViewContainer,
+  // SwipeableViewContainer,
 } from './styles';
 
 export interface CustomMyProfile extends Omit<MyProfile, 'skills'> {
@@ -112,9 +110,9 @@ const ProfileView = ({
             </Link>
 
             <Link href={'/'} passHref>
-              <StyledTitleLink>
+              <StyledLink>
                 <GNBTitle>Getit 프로필</GNBTitle>
-              </StyledTitleLink>
+              </StyledLink>
             </Link>
           </GNBArea>
 
@@ -261,12 +259,12 @@ const ProfileView = ({
                   editBtnHandler={handleEditBtn}
                 />
               ) : (
-                <SkeletonContainer>
+                <>
                   <Skeleton height={200} top={3} />
                   <Skeleton height={200} top={3} />
                   <Skeleton height={200} top={3} />
                   <Skeleton height={200} top={3} />
-                </SkeletonContainer>
+                </>
               )}
             </>
           )}
@@ -276,12 +274,12 @@ const ProfileView = ({
               {isLoadedData.viewProjects.isLoaded ? (
                 <ProfileProjectBox data={profileProjectData} />
               ) : (
-                <SkeletonContainer>
+                <>
                   <Skeleton height={200} top={3} />
                   <Skeleton height={200} top={3} />
                   <Skeleton height={200} top={3} />
                   <Skeleton height={200} top={3} />
-                </SkeletonContainer>
+                </>
               )}
             </>
           )}
@@ -308,31 +306,29 @@ const ProfileView = ({
         {/* mobile view */}
         <MobileProfileContainer>
           <SwipeableTabView tabs={tabs}>
-            <div style={{ padding: '0 2rem' }}>
-              <>
-                {isLoadedData.viewProfile.isLoaded ? (
-                  <>
-                    <ProfileInfoBox
-                      me={me}
-                      data={profileInfoData}
-                      editBtnHandler={handleEditBtn}
-                    />
-                    <ProfileFooterLink
-                      loginState={loginState}
-                      handleLogInOut={handleLogInOut}
-                    />
-                  </>
-                ) : (
-                  <SkeletonContainer>
-                    <Skeleton height={200} top={3} />
-                    <Skeleton height={200} top={3} />
-                    <Skeleton height={200} top={3} />
-                    <Skeleton height={200} top={3} />
-                  </SkeletonContainer>
-                )}
-              </>
-            </div>
-            <div style={{ padding: '0 2rem' }}>
+            <ViewContainer>
+              {isLoadedData.viewProfile.isLoaded ? (
+                <>
+                  <ProfileInfoBox
+                    me={me}
+                    data={profileInfoData}
+                    editBtnHandler={handleEditBtn}
+                  />
+                  <ProfileFooterLink
+                    loginState={loginState}
+                    handleLogInOut={handleLogInOut}
+                  />
+                </>
+              ) : (
+                <>
+                  <Skeleton height={200} top={3} />
+                  <Skeleton height={200} top={3} />
+                  <Skeleton height={200} top={3} />
+                  <Skeleton height={200} top={3} />
+                </>
+              )}
+            </ViewContainer>
+            <ViewContainer>
               {isLoadedData.viewProjects.isLoaded ? (
                 <>
                   <ProfileProjectBox data={profileProjectData} />
@@ -342,15 +338,15 @@ const ProfileView = ({
                   />
                 </>
               ) : (
-                <SkeletonContainer>
+                <>
                   <Skeleton height={200} top={3} />
                   <Skeleton height={200} top={3} />
                   <Skeleton height={200} top={3} />
                   <Skeleton height={200} top={3} />
-                </SkeletonContainer>
+                </>
               )}
-            </div>
-            <div>
+            </ViewContainer>
+            <ViewContainer>
               {currentTab === 'viewBookmarks' ? (
                 isLoadedData.viewBookmarks ? (
                   <div>
@@ -368,7 +364,7 @@ const ProfileView = ({
                   <Skeleton />
                 )
               ) : null}
-            </div>
+            </ViewContainer>
           </SwipeableTabView>
         </MobileProfileContainer>
       </Container>

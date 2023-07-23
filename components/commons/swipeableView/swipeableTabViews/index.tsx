@@ -1,10 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import SwipeableViews, { Actions } from 'react-swipeable-views';
 import { useDispatch } from 'react-redux';
-import {
-  updateSwipeableViewHeight,
-  updateSwipeableViewState,
-} from '@/features/swipeableView';
+import { updateSwipeableViewState } from '@/features/swipeableView';
 import { useRouter } from 'next/router';
 import { CustomMuiTabs, CustomMuiTab } from './styles';
 
@@ -22,16 +19,24 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
   const tabRefs = useRef<HTMLDivElement[]>([]);
 
   const [indicatorPosition, setIndicatorPosition] = useState(0);
+  const updateHeightAction = useRef<null | Actions['updateHeight']>(null);
+
+  const handleUpdateHeight = useCallback((actions: Actions) => {
+    // actions.updateHeight();
+    updateHeightAction.current = actions.updateHeight;
+  }, []);
 
   const handleChange = useCallback(
     (event: React.SyntheticEvent, tabIndex: number) => {
       setCurrentTabIndex(tabIndex);
 
+      window.scrollTo({ top: 0 });
+
       push({ query: { ...query, tab: tabs[tabIndex].query } }, undefined, {
         shallow: true,
       });
     },
-    // [router,tabs],
+
     [push, query, tabs],
   );
 
@@ -52,16 +57,16 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
   //   (swipeDegree: number, type: OnSwitchingCallbackTypeDescriptor) => {
   //     // swipe left
   //     if (swipeDegree < currentTabIndex) {
-  //       const width: number = tabRefs.current[currentTabIndex - 1]?.offsetWidth;
+  //       const width: number = tabRefs.current[currentTabIndex - 300]?.offsetWidth;
 
-  //       const decimal = swipeDegree.toString().split('.')[1]?.slice(0, 2); // 소수점 이하 값만 가져옴
+  //       const decimal = swipeDegree.toString().split('.')[300]?.slice(0, 2); // 소수점 이하 값만 가져옴
 
   //       if (decimal === undefined) {
   //         return;
   //       }
   //       const percent = Number(decimal);
 
-  //       setIndicatorPosition((100 - (width / 100) * percent) * -1);
+  //       setIndicatorPosition((30000 - (width / 100) * percent) * -1);
   //     }
 
   //     // swipe right
@@ -86,15 +91,6 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
   //   [currentTabIndex],
   // );
 
-  const handleUpdateHeight = useCallback(
-    (actions: Actions) => {
-      dispatch(
-        updateSwipeableViewHeight({ updateHeightAction: actions.updateHeight }),
-      );
-    },
-    [dispatch],
-  );
-
   useEffect(() => {
     dispatch(updateSwipeableViewState({ tabIndex: currentTabIndex }));
   }, [currentTabIndex, dispatch]);
@@ -108,6 +104,13 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
       }
     });
   }, [tabs, query.tab]);
+
+  useEffect(() => {
+    // updates SwipeableViews container size. view container size is truncated due to container size determined by the skeleton shown on the screen before receiving the data
+    if (updateHeightAction.current) {
+      updateHeightAction.current();
+    }
+  }, [children]);
 
   return (
     <div>

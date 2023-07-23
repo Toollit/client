@@ -12,7 +12,6 @@ const Container = styled.div`
     flex-direction: row;
     width: 100%;
     max-width: 102.4rem;
-    height: 100%;
     margin: 0 auto;
   }
 `;
@@ -36,7 +35,7 @@ const ColumnRightContainer = styled.div`
   ${mediaQueryLaptop} {
     width: 65%;
     padding: 0 3rem 5rem 3rem;
-    display: table-cell;
+    display: initial;
   }
 `;
 
@@ -242,19 +241,16 @@ const Logo = styled.a`
 const MobileProfileContainer = styled.div`
   width: 100vw;
   padding-bottom: 5rem;
+  display: initial;
 
   ${mediaQueryLaptop} {
     display: none;
   }
 `;
 
-const SkeletonContainer = styled.div`
+const ViewContainer = styled.div`
   padding: 0 2rem;
 `;
-
-// const SwipeableViewContainer = styled.div`
-//   padding: 0 2rem;
-// `;
 
 export {
   Container,
@@ -279,6 +275,7 @@ export {
   ImageEditBtn,
   MobileProfileContainer,
   ProfileImageSkeletonContainer,
-  SkeletonContainer,
+  ViewContainer,
+
   // SwipeableViewContainer,
 };
