@@ -5,12 +5,11 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: table;
+  table-layout: fixed; // required!!!
+  width: 100%;
 
   ${mediaQueryLaptop} {
-    flex-direction: row;
-    width: 100%;
     max-width: 102.4rem;
     margin: 0 auto;
   }
@@ -20,6 +19,7 @@ const ColumnLeftContainer = styled.div`
   background-color: linear-gradient(to bottom, #fff 0, #f9fbfc);
 
   ${mediaQueryLaptop} {
+    display: table-cell;
     width: 35%;
     background-color: #fff;
     box-shadow: 5px 1px 8px 0 rgba(0, 0, 0, 0.06);
@@ -33,9 +33,9 @@ const ColumnRightContainer = styled.div`
   display: none;
 
   ${mediaQueryLaptop} {
+    display: table-cell;
     width: 65%;
     padding: 0 3rem 5rem 3rem;
-    display: initial;
   }
 `;
 
