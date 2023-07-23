@@ -19,6 +19,7 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
   const tabRefs = useRef<HTMLDivElement[]>([]);
 
   const [indicatorPosition, setIndicatorPosition] = useState(0);
+  const [offsetWidth, setOffsetWidth] = useState(0);
   const updateHeightAction = useRef<null | Actions['updateHeight']>(null);
 
   const handleUpdateHeight = useCallback((actions: Actions) => {
@@ -112,13 +113,18 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
     }
   }, [children]);
 
+  useEffect(() => {
+    const offsetWidth = tabRefs.current[currentTabIndex]?.offsetWidth;
+    setOffsetWidth(offsetWidth);
+  }, [currentTabIndex]);
+
   return (
     <div>
       <CustomMuiTabs
         value={currentTabIndex}
         onChange={handleChange}
         disabled
-        width={tabRefs.current[currentTabIndex]?.offsetWidth}
+        width={offsetWidth}
       >
         {tabs.map((tab, index) => {
           return (
