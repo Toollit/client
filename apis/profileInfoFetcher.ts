@@ -31,22 +31,12 @@ export interface UserProfile {
   skills: string | null;
 }
 
-export interface Project {
-  id: number;
-  title: string;
-  views: number;
-  hashtags: string[];
-  memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
-  memberNumber: number;
-  recruitNumber: number;
-}
-
 export interface profileInfoAPIReq {}
 
 export interface profileInfoAPIRes {
   success: boolean;
   message: null | string;
-  data?: MyProfile | UserProfile | ProfileImage | Project[];
+  data?: MyProfile | UserProfile | ProfileImage;
 }
 
 export const profileInfoFetcher = async (url: string) => {
