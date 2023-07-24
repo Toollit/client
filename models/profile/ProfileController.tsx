@@ -11,7 +11,6 @@ import { AUTH_USER, GET_USER_PROFILE_API_ENDPOINT } from '@/apis/keys';
 import {
   MyProfile,
   ProfileImage,
-  Project,
   UserProfile,
   profileInfoFetcher,
 } from '@/apis/profileInfoFetcher';
@@ -24,15 +23,18 @@ import { updateProfileAPI } from '@/apis/updateProfile';
 import { authFetcher } from '@/apis/authFetcher';
 import { changeDateFormat } from '@/utils/changeDateFormat';
 import { open as openDialog, close as closeDialog } from '@/features/dialog';
+import useWindowSize from '@/hooks/useWindowSize';
+import {
+  profileProjectsAPIRes,
+  profileProjectsFetcher,
+} from '@/apis/profileProjectsFetcher';
 
 const ProfileController = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { mutate } = useSWRConfig();
+  const { cache, mutate } = useSWRConfig();
+  const { isLaptop } = useWindowSize();
 
-  const currentTabIndex = useSelector(
-    (state: RootState) => state.swipeableView.tabIndex,
-  );
   const updatePage = useSelector((state: RootState) => state.dialog.page);
   const updateCategory = useSelector(
     (state: RootState) => state.dialog.update?.category,
@@ -46,28 +48,15 @@ const ProfileController = () => {
 
   const [profileNickname, setProfileNickname] = useState('');
 
-  const [isLoadedData, setIsLoadedData] = useState({
-    viewProfile: {
-      isLoaded: false,
-      data: null,
-    },
-    viewProjects: {
-      isLoaded: false,
-      data: null,
-    },
-    viewBookmarks: {
-      isLoaded: false,
-      data: null,
-    },
-  });
-
-  const [tabs] = useState([
+  const tabs = useRef([
     { name: '내프로필', query: 'viewProfile' },
     { name: '프로젝트', query: 'viewProjects' },
     { name: '북마크', query: 'viewBookmarks' },
   ]);
 
   const profileImgRef = useRef<HTMLInputElement>(null);
+
+  const [projectPostCount, setProjectPostCount] = useState(10); // Load by 10
 
   const nickname = router.query.nickname;
   const currentTab = router.query.tab as
@@ -76,48 +65,79 @@ const ProfileController = () => {
     | 'viewBookmarks'
     | undefined;
 
+  const isProfileImage = (data: any): data is ProfileImage => {
+    return data && 'profileImage' in data;
+  };
+
+  const isProfileInfo = (data: any): data is MyProfile | UserProfile => {
+    return data && 'nickname' in data;
+  };
+
+  const isProject = (data: any): data is profileProjectsAPIRes['data'] => {
+    // if (Array.isArray(data)) {
+    //   return true;
+    // }
+
+    if (data && 'projects' in data && 'total' in data) {
+      return true;
+    }
+
+    return false;
+  };
+
+  // Current Access User Self Information
   const { data: user, mutate: userMutate } = useSWR(AUTH_USER, authFetcher);
 
+  // Profile image fetcher
   const { data: profileImageData, mutate: profileImageMutate } = useSWR(
     nickname ? `${GET_USER_PROFILE_API_ENDPOINT}/${nickname}` : null,
     profileInfoFetcher,
     {
+      dedupingInterval: 60 * 1000,
       revalidateOnFocus: false,
       shouldRetryOnError: false,
       onError(err, key, config) {
         errorMessage(err);
-        router.replace('/');
       },
     },
   );
 
-  const { data: profileData, mutate: profileMutate } = useSWR(
-    nickname && currentTab
-      ? `${GET_USER_PROFILE_API_ENDPOINT}/${nickname}?tab=${currentTab}`
+  // Profile info fetcher
+  const { data: profileInfoData, mutate: profileInfoDataMutate } = useSWR(
+    nickname && currentTab === 'viewProfile'
+      ? `${GET_USER_PROFILE_API_ENDPOINT}/${nickname}?tab=viewProfile`
       : null,
     profileInfoFetcher,
     {
+      dedupingInterval: 60 * 1000,
       revalidateOnFocus: false,
       shouldRetryOnError: false,
       onError(err, key, config) {
         errorMessage(err);
-        router.replace('/');
-      },
-      onSuccess(data, key, config) {
-        if (typeof currentTab !== 'undefined') {
-          setIsLoadedData((prev) => {
-            return {
-              ...prev,
-              [currentTab]: {
-                isLoaded: true,
-                data: data.data,
-              },
-            };
-          });
-        }
       },
     },
   );
+
+  // Profile projects fetcher
+  const { data: profileProjectsData, mutate: profileProjectsDataMutate } =
+    useSWR(
+      nickname && currentTab === 'viewProjects'
+        ? `${GET_USER_PROFILE_API_ENDPOINT}/${nickname}?tab=viewProjects&count=${projectPostCount}`
+        : null,
+      profileProjectsFetcher,
+      {
+        // dedupingInterval: 60 * 1000,
+        revalidateOnFocus: false,
+        shouldRetryOnError: false,
+        onError(err, key, config) {
+          errorMessage(err);
+        },
+        onSuccess(data, key, config) {
+          const keys = cache;
+          console.log('keys ===>', keys);
+        },
+      },
+    );
 
   const handleLogInOut = useCallback(async () => {
     const isLoggedIn = user?.data?.nickname;
@@ -126,7 +146,9 @@ const ProfileController = () => {
       try {
         await logoutAPI();
 
-        mutate(AUTH_USER);
+        // mutate(AUTH_USER);
+        userMutate();
+        profileInfoDataMutate();
 
         router.push('/');
       } catch (error) {
@@ -137,7 +159,7 @@ const ProfileController = () => {
     if (!isLoggedIn) {
       router.push('/login');
     }
-  }, [router, user, mutate]);
+  }, [router, user, userMutate, profileInfoDataMutate]);
 
   const handleOpenEditSelector = (event: React.MouseEvent<HTMLDivElement>) => {
     // open selector
@@ -159,14 +181,13 @@ const ProfileController = () => {
             data: 'delete',
           });
 
-          // profileMutate();
           profileImageMutate();
         } catch (error) {
           errorMessage(error);
         }
       }
 
-      // close
+      // edit selector close
       setAnchorEl(null);
     },
     [profileImageMutate],
@@ -210,6 +231,7 @@ const ProfileController = () => {
   );
 
   const handleUpdateProfile = useCallback(async () => {
+    // empty string('') value can come from updateNewValue. so write null and undefined explicitly
     if (updateNewValue === null || updateNewValue === undefined) {
       return;
     }
@@ -221,13 +243,17 @@ const ProfileController = () => {
           data: updateNewValue,
         });
 
-        userMutate();
-
         const nickname = response?.data.nickname;
 
         if (nickname) {
           router.replace(`/profile/${nickname}?tab=viewProfile`);
         }
+
+        // If revalidate immediately. It will make an api request with the previous nickname value, resulting in an error. It should be handled asynchronously.
+        setTimeout(() => {
+          userMutate();
+          profileInfoDataMutate();
+        }, 100);
 
         return dispatch(closeDialog());
       }
@@ -246,7 +272,7 @@ const ProfileController = () => {
           data: updateNewValue,
         });
 
-        profileMutate();
+        profileInfoDataMutate();
 
         return dispatch(closeDialog());
       }
@@ -259,10 +285,10 @@ const ProfileController = () => {
     updateCategory,
     updateNewValue,
     userMutate,
-    profileMutate,
+    profileInfoDataMutate,
   ]);
 
-  const handleProfileDataResponse = useCallback(
+  const handleProfileInfoDataResponse = useCallback(
     (data?: MyProfile | UserProfile) => {
       if (!data) {
         return;
@@ -301,9 +327,9 @@ const ProfileController = () => {
     [],
   );
 
-  const handleEditBtn = useCallback(
+  const handleProfileInfoEditBtn = useCallback(
     (category: string) => {
-      if (!(profileData?.data && 'email' in profileData.data)) {
+      if (!(profileInfoData?.data && 'email' in profileInfoData.data)) {
         return;
       }
 
@@ -315,7 +341,7 @@ const ProfileController = () => {
               type: 'standard',
               category: 'nickname',
               title: '닉네임',
-              value: profileData?.data?.nickname ?? '',
+              value: profileInfoData?.data?.nickname ?? '',
               // placeholder: '',
               maxLength: 20,
             }),
@@ -328,7 +354,7 @@ const ProfileController = () => {
               type: 'multiline',
               category: 'introduce',
               title: '자기소개',
-              value: profileData?.data?.introduce ?? '',
+              value: profileInfoData?.data?.introduce ?? '',
               maxLength: 1000,
             }),
           );
@@ -340,7 +366,7 @@ const ProfileController = () => {
               type: 'select',
               category: 'onOffline',
               title: '온/오프라인',
-              value: profileData?.data?.onOffline ?? '',
+              value: profileInfoData?.data?.onOffline ?? '',
               selectList: [
                 '온라인 가능',
                 '오프라인 가능',
@@ -356,7 +382,7 @@ const ProfileController = () => {
               type: 'standard',
               category: 'place',
               title: '모임장소',
-              value: profileData?.data?.place ?? '',
+              value: profileInfoData?.data?.place ?? '',
               placeholder: 'ex) 서울특별시 종로구, 상관없음',
               maxLength: 30,
             }),
@@ -369,7 +395,7 @@ const ProfileController = () => {
               type: 'standard',
               category: 'contactTime',
               title: '모임시간',
-              value: profileData?.data?.contactTime ?? '',
+              value: profileInfoData?.data?.contactTime ?? '',
               placeholder: 'ex) 평일 9시~18시, 화요일 20시 이후',
               maxLength: 30,
             }),
@@ -382,7 +408,7 @@ const ProfileController = () => {
               type: 'multiSelect',
               category: 'interests',
               title: '관심분야 (다중선택가능)',
-              value: profileData?.data?.interests ?? '',
+              value: profileInfoData?.data?.interests ?? '',
               selectList: [
                 '인공지능',
                 '가상현실(VR)',
@@ -419,7 +445,7 @@ const ProfileController = () => {
               type: 'standard',
               category: 'career',
               title: '경력사항',
-              value: profileData?.data?.career ?? '',
+              value: profileInfoData?.data?.career ?? '',
               placeholder: 'ex) 3년차 개발자, 1년차 디자이너, 학생',
               maxLength: 30,
             }),
@@ -432,7 +458,7 @@ const ProfileController = () => {
               type: 'hashtag',
               category: 'skills',
               title: '사용 프로그램 또는 기술',
-              value: profileData?.data?.skills ?? '',
+              value: profileInfoData?.data?.skills ?? '',
               maxLength: 30,
             }),
           );
@@ -442,8 +468,12 @@ const ProfileController = () => {
           break;
       }
     },
-    [dispatch, profileData],
+    [dispatch, profileInfoData],
   );
+
+  const handleProjectLoadMore = useCallback(() => {
+    setProjectPostCount((prev) => prev + 10);
+  }, []);
 
   useEffect(() => {
     if (updatePage !== 'profile') {
@@ -473,46 +503,31 @@ const ProfileController = () => {
     }
   }, [nickname]);
 
-  const isProfileImage = (data: any): data is ProfileImage => {
-    return data && 'profileImage' in data;
-  };
-
-  const isProfileInfo = (data: any): data is MyProfile | UserProfile => {
-    return data && 'nickname' in data;
-  };
-
-  const isProject = (data: any): data is Project[] => {
-    if (Array.isArray(data)) {
-      return true;
-    }
-
-    return false;
-  };
-
   const props: ProfileViewProps = {
     me: nickname === user?.data?.nickname,
     loginState: user?.data?.nickname,
-    tabs,
+    tabs: tabs.current,
     currentTab,
     profileImageData: isProfileImage(profileImageData?.data)
       ? profileImageData?.data.profileImage
       : null,
-    profileInfoData: isProfileInfo(isLoadedData.viewProfile.data)
-      ? handleProfileDataResponse(isLoadedData.viewProfile.data)
+    profileInfoData: isProfileInfo(profileInfoData?.data)
+      ? handleProfileInfoDataResponse(profileInfoData?.data)
       : null,
-    profileProjectData: isProject(isLoadedData.viewProjects.data)
-      ? isLoadedData.viewProjects.data
+    profileProjectData: isProject(profileProjectsData?.data)
+      ? profileProjectsData?.data
       : null,
     profileNickname,
     handleLogInOut,
-    isLoadedData,
-    handleEditBtn,
+    handleProfileInfoEditBtn,
     profileImgRef,
     handleChangeProfileImg,
     anchorEl,
     handleOpenEditSelector,
     handleEditSelector,
     open,
+    handleProjectLoadMore,
+    isLaptop,
   };
 
   return <ProfileView {...props} />;

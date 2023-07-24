@@ -2,7 +2,8 @@ import React, { ChangeEvent } from 'react';
 import Link from 'next/link';
 import GetitLogo from '@/assets/images/GetitLogo';
 import { AccountCircleIcon, EditCircleIcon } from '@/assets/icons';
-import { MyProfile, Project, UserProfile } from '@/apis/profileInfoFetcher';
+import { MyProfile, UserProfile } from '@/apis/profileInfoFetcher';
+import { profileProjectsAPIRes } from '@/apis/profileProjectsFetcher';
 import Divider from '@/components/commons/divider';
 import Skeleton from '@/components/commons/skeleton';
 import Dialog from '@/components/commons/dialog';
@@ -53,30 +54,18 @@ export interface ProfileViewProps {
   currentTab: 'viewProfile' | 'viewProjects' | 'viewBookmarks' | undefined;
   profileImageData?: string | null;
   profileInfoData?: CustomMyProfile | CustomUserProfile | null;
-  profileProjectData?: Project[] | null;
+  profileProjectData?: profileProjectsAPIRes['data'] | null;
   profileNickname: string;
   handleLogInOut: () => void;
-  isLoadedData: {
-    viewProfile: {
-      isLoaded: boolean;
-      data: CustomMyProfile | CustomUserProfile | null;
-    };
-    viewProjects: {
-      isLoaded: boolean;
-      data: Project[] | null;
-    };
-    viewBookmarks: {
-      isLoaded: boolean;
-      data: null;
-    };
-  };
-  handleEditBtn: (category: string) => void;
+  handleProfileInfoEditBtn: (category: string) => void;
   profileImgRef: React.RefObject<HTMLInputElement>;
   handleChangeProfileImg: (event: ChangeEvent<HTMLInputElement>) => void;
   anchorEl: null | HTMLElement;
   handleOpenEditSelector: (event: React.MouseEvent<HTMLDivElement>) => void;
   handleEditSelector: (event: React.MouseEvent<HTMLLIElement>) => void;
   open: boolean;
+  handleProjectLoadMore: () => void;
+  isLaptop: boolean;
 }
 
 const ProfileView = ({
@@ -89,14 +78,15 @@ const ProfileView = ({
   profileProjectData,
   profileNickname,
   handleLogInOut,
-  isLoadedData,
-  handleEditBtn,
+  handleProfileInfoEditBtn,
   profileImgRef,
   handleChangeProfileImg,
   anchorEl,
   handleOpenEditSelector,
   handleEditSelector,
   open,
+  handleProjectLoadMore,
+  isLaptop,
 }: ProfileViewProps) => {
   return (
     <>
@@ -252,11 +242,11 @@ const ProfileView = ({
         <ColumnRightContainer>
           {currentTab === 'viewProfile' && (
             <>
-              {isLoadedData.viewProfile.isLoaded ? (
+              {profileInfoData ? (
                 <ProfileInfoBox
                   me={me}
                   data={profileInfoData}
-                  editBtnHandler={handleEditBtn}
+                  editBtnHandler={handleProfileInfoEditBtn}
                 />
               ) : (
                 <>
@@ -271,8 +261,11 @@ const ProfileView = ({
 
           {currentTab === 'viewProjects' && (
             <>
-              {isLoadedData.viewProjects.isLoaded ? (
-                <ProfileProjectBox data={profileProjectData} />
+              {profileProjectData ? (
+                <ProfileProjectBox
+                  data={profileProjectData}
+                  LoadMoreHandler={handleProjectLoadMore}
+                />
               ) : (
                 <>
                   <Skeleton height={200} top={3} />
@@ -284,7 +277,7 @@ const ProfileView = ({
             </>
           )}
 
-          {currentTab === 'viewBookmarks' ? (
+          {/* {currentTab === 'viewBookmarks' ? (
             isLoadedData.viewBookmarks ? (
               <div>
                 <div>
@@ -300,73 +293,78 @@ const ProfileView = ({
             ) : (
               <Skeleton />
             )
-          ) : null}
+          ) : null} */}
         </ColumnRightContainer>
 
         {/* mobile view */}
-        <MobileProfileContainer>
-          <SwipeableTabView tabs={tabs}>
-            <ViewContainer>
-              {isLoadedData.viewProfile.isLoaded ? (
-                <>
-                  <ProfileInfoBox
-                    me={me}
-                    data={profileInfoData}
-                    editBtnHandler={handleEditBtn}
-                  />
-                  <ProfileFooterLink
-                    loginState={loginState}
-                    handleLogInOut={handleLogInOut}
-                  />
-                </>
-              ) : (
-                <>
-                  <Skeleton height={200} top={3} />
-                  <Skeleton height={200} top={3} />
-                  <Skeleton height={200} top={3} />
-                  <Skeleton height={200} top={3} />
-                </>
-              )}
-            </ViewContainer>
-            <ViewContainer>
-              {isLoadedData.viewProjects.isLoaded ? (
-                <>
-                  <ProfileProjectBox data={profileProjectData} />
-                  <ProfileFooterLink
-                    loginState={loginState}
-                    handleLogInOut={handleLogInOut}
-                  />
-                </>
-              ) : (
-                <>
-                  <Skeleton height={200} top={3} />
-                  <Skeleton height={200} top={3} />
-                  <Skeleton height={200} top={3} />
-                  <Skeleton height={200} top={3} />
-                </>
-              )}
-            </ViewContainer>
-            <ViewContainer>
-              {currentTab === 'viewBookmarks' ? (
-                isLoadedData.viewBookmarks ? (
-                  <div>
-                    <div>
-                      <div>12342134</div>
-                      <div>12342134</div>
-                      <div>핸드폰 번호 수정</div>
-                      <div>이메일 수정</div>
-                      <div>이메일 공개</div>
-                    </div>
-                    <div>간단한 자기소개</div>
-                    <div>사용 프로그램 또는 기술</div>
-                  </div>
+        {!isLaptop && (
+          <MobileProfileContainer>
+            <SwipeableTabView tabs={tabs}>
+              <ViewContainer>
+                {profileInfoData ? (
+                  <>
+                    <ProfileInfoBox
+                      me={me}
+                      data={profileInfoData}
+                      editBtnHandler={handleProfileInfoEditBtn}
+                    />
+                    <ProfileFooterLink
+                      loginState={loginState}
+                      handleLogInOut={handleLogInOut}
+                    />
+                  </>
                 ) : (
-                  <Skeleton />
-                )
-              ) : null}
-            </ViewContainer>
-          </SwipeableTabView>
-        </MobileProfileContainer>
+                  <>
+                    <Skeleton height={200} top={3} />
+                    <Skeleton height={200} top={3} />
+                    <Skeleton height={200} top={3} />
+                    <Skeleton height={200} top={3} />
+                  </>
+                )}
+              </ViewContainer>
+              <ViewContainer>
+                {profileProjectData ? (
+                  <>
+                    <ProfileProjectBox
+                      data={profileProjectData}
+                      LoadMoreHandler={handleProjectLoadMore}
+                    />
+                    <ProfileFooterLink
+                      loginState={loginState}
+                      handleLogInOut={handleLogInOut}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Skeleton height={200} top={3} />
+                    <Skeleton height={200} top={3} />
+                    <Skeleton height={200} top={3} />
+                    <Skeleton height={200} top={3} />
+                  </>
+                )}
+              </ViewContainer>
+              <ViewContainer>
+                {currentTab === 'viewBookmarks' ? (
+                  true ? (
+                    <div>
+                      <div>
+                        <div>12342134</div>
+                        <div>12342134</div>
+                        <div>핸드폰 번호 수정</div>
+                        <div>이메일 수정</div>
+                        <div>이메일 공개</div>
+                      </div>
+                      <div>간단한 자기소개</div>
+                      <div>사용 프로그램 또는 기술</div>
+                    </div>
+                  ) : (
+                    <Skeleton />
+                  )
+                ) : null}
+              </ViewContainer>
+            </SwipeableTabView>
+          </MobileProfileContainer>
+        )}
       </Container>
       <Dialog />
     </>
