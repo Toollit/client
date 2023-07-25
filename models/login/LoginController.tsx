@@ -1,14 +1,14 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useSWRConfig } from 'swr';
 import LoginView, { LoginViewProps } from './LoginView';
 import { emailLoginAPI } from '@/apis/emailLogin';
 import { errorMessage } from '@/apis/errorMessage';
 import PrivateRoute from '@/components/PrivateRoute';
+import useCachedKeys from '@/hooks/useCachedKeys';
 
 const LoginController = () => {
   const router = useRouter();
-  const { mutate, cache } = useSWRConfig();
+  const { clearCache } = useCachedKeys();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,8 +16,6 @@ const LoginController = () => {
   const [fillFormComplete, setFillFormComplete] = useState(false);
 
   const passwordInputRef = useRef<HTMLInputElement>(null);
-
-  const cachedKeysRefs = useRef<string[]>([]);
 
   const handleClose = useCallback(() => {
     router.replace('/');
@@ -35,6 +33,13 @@ const LoginController = () => {
         setShowPasswordInput(true);
       }
 
+      // Focus password input. Process asynchronously because the password input must be focused after it is displayed
+      if (!password) {
+        return setTimeout(() => {
+          passwordInputRef.current?.focus();
+        }, 100);
+      }
+
       if (email && password) {
         const data = { email, password };
         try {
@@ -42,9 +47,7 @@ const LoginController = () => {
 
           if (response?.success) {
             // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
-            for (let i = 0; i < cachedKeysRefs.current.length; i++) {
-              mutate(cachedKeysRefs.current[i], undefined, true);
-            }
+            clearCache();
 
             if (response.message === 'needResetPassword') {
               return router.replace('/resetPassword');
@@ -58,7 +61,7 @@ const LoginController = () => {
       }
     },
 
-    [email, password, router, mutate],
+    [email, password, router, clearCache],
   );
 
   const handleSocialLogin = useCallback(
@@ -71,9 +74,7 @@ const LoginController = () => {
       const baseURL = process.env.NEXT_PUBLIC_SERVER_API_HOST;
 
       // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
-      for (let i = 0; i < cachedKeysRefs.current.length; i++) {
-        mutate(cachedKeysRefs.current[i], undefined, true);
-      }
+      clearCache();
 
       if (loginType === 'google') {
         return router.push(`${baseURL}/api/user/login/google`);
@@ -82,7 +83,7 @@ const LoginController = () => {
         return router.push(`${baseURL}/api/user/login/github`);
       }
     },
-    [router, mutate],
+    [router, clearCache],
   );
 
   const handleEmail = useCallback(
@@ -147,21 +148,6 @@ const LoginController = () => {
       router.replace('/');
     }
   }, [router]);
-
-  useEffect(() => {
-    const cachedKeys = cache.keys();
-
-    for (let key of cachedKeys) {
-      cachedKeysRefs.current = [...cachedKeysRefs.current, key];
-    }
-
-    console.log('cachedKeysRefs ===>', cachedKeysRefs.current);
-  }, [cache]);
-
-  // focus password input
-  useEffect(() => {
-    passwordInputRef.current?.focus();
-  }, [showPasswordInput]);
 
   const props: LoginViewProps = {
     handleClose,
