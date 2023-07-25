@@ -4,12 +4,11 @@ import { useSWRConfig } from 'swr';
 import LoginView, { LoginViewProps } from './LoginView';
 import { emailLoginAPI } from '@/apis/emailLogin';
 import { errorMessage } from '@/apis/errorMessage';
-import { AUTH_USER } from '@/apis/keys';
 import PrivateRoute from '@/components/PrivateRoute';
 
 const LoginController = () => {
   const router = useRouter();
-  const { mutate } = useSWRConfig();
+  const { mutate, cache } = useSWRConfig();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,6 +16,8 @@ const LoginController = () => {
   const [fillFormComplete, setFillFormComplete] = useState(false);
 
   const passwordInputRef = useRef<HTMLInputElement>(null);
+
+  const cachedKeysRefs = useRef<string[]>([]);
 
   const handleClose = useCallback(() => {
     router.replace('/');
@@ -40,7 +41,10 @@ const LoginController = () => {
           const response = await emailLoginAPI(data);
 
           if (response?.success) {
-            mutate(AUTH_USER);
+            // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
+            for (let i = 0; i < cachedKeysRefs.current.length; i++) {
+              mutate(cachedKeysRefs.current[i], undefined, true);
+            }
 
             if (response.message === 'needResetPassword') {
               return router.replace('/resetPassword');
@@ -60,10 +64,16 @@ const LoginController = () => {
   const handleSocialLogin = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       if (!event) return;
+
       const target = event.currentTarget;
       const loginType = target.getAttribute('data-name') as 'google' | 'github';
 
       const baseURL = process.env.NEXT_PUBLIC_SERVER_API_HOST;
+
+      // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
+      for (let i = 0; i < cachedKeysRefs.current.length; i++) {
+        mutate(cachedKeysRefs.current[i], undefined, true);
+      }
 
       if (loginType === 'google') {
         return router.push(`${baseURL}/api/user/login/google`);
@@ -72,7 +82,7 @@ const LoginController = () => {
         return router.push(`${baseURL}/api/user/login/github`);
       }
     },
-    [router],
+    [router, mutate],
   );
 
   const handleEmail = useCallback(
@@ -138,6 +148,17 @@ const LoginController = () => {
     }
   }, [router]);
 
+  useEffect(() => {
+    const cachedKeys = cache.keys();
+
+    for (let key of cachedKeys) {
+      cachedKeysRefs.current = [...cachedKeysRefs.current, key];
+    }
+
+    console.log('cachedKeysRefs ===>', cachedKeysRefs.current);
+  }, [cache]);
+
+  // focus password input
   useEffect(() => {
     passwordInputRef.current?.focus();
   }, [showPasswordInput]);
