@@ -1,23 +1,19 @@
+import { useEffect } from 'react';
 import type { AppProps } from 'next/app';
-import GlobalStyles from 'styles/GlobalStyles';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { SWRDevTools } from 'swr-devtools';
 import { Provider } from 'react-redux';
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import { ThemeProvider as MUIThemeProvider } from '@mui/material';
-import EmotionTheme from 'styles/theme';
-import { theme as MUITheme } from 'styles/muiTheme';
-import { SWRDevTools } from 'swr-devtools';
-import { useEffect } from 'react';
 import useAuth from '@/hooks/useAuth';
 import store from '@/store/index';
-import { useSWRConfig } from 'swr';
-import { AUTH_USER } from '@/apis/keys';
-import { useRouter } from 'next/router';
+import { theme as MUITheme } from 'styles/muiTheme';
+import GlobalStyles from 'styles/GlobalStyles';
+import EmotionTheme from 'styles/theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const { mutate } = useSWRConfig();
-
   const { message } = useAuth();
 
   useEffect(() => {
@@ -33,12 +29,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       }
     }
   }, [router, message]);
-
-  useEffect(() => {
-    window.addEventListener('focus', () => {
-      mutate(AUTH_USER);
-    });
-  }, [mutate]);
 
   return (
     <>
