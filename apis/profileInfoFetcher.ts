@@ -1,8 +1,5 @@
 import { serverInstance } from 'apis/axios';
 
-export interface ProfileImage {
-  profileImage: string | null;
-}
 export interface MyProfile {
   email: string;
   nickname: string;
@@ -36,7 +33,7 @@ export interface profileInfoAPIReq {}
 export interface profileInfoAPIRes {
   success: boolean;
   message: null | string;
-  data?: MyProfile | UserProfile | ProfileImage;
+  data?: MyProfile | UserProfile;
 }
 
 export const profileInfoFetcher = async (url: string) => {
