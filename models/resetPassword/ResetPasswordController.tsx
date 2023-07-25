@@ -5,15 +5,12 @@ import { logoutAPI } from '@/apis/logout';
 import { resetPasswordAPI } from '@/apis/resetPassword';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { errorMessage } from '@/apis/errorMessage';
-import { AUTH_USER } from '@/apis/keys';
-import { useSWRConfig } from 'swr';
 import useAuth from '@/hooks/useAuth';
 import PrivateRoute from '@/components/PrivateRoute';
 
 const ResetPasswordController = () => {
   const router = useRouter();
-  const { mutate } = useSWRConfig();
-  const { message } = useAuth();
+  const { message, mutate: authMutate } = useAuth();
 
   const [newPassword, onChangeNewPassword] = useNoSpaceInput('');
   const [newPasswordInvalidError, setNewPasswordInvalidError] = useState(false);
@@ -91,13 +88,13 @@ const ResetPasswordController = () => {
     try {
       await logoutAPI();
 
-      mutate(AUTH_USER);
+      authMutate();
 
       router.replace('/');
     } catch (error) {
       errorMessage(error);
     }
-  }, [router, mutate]);
+  }, [router, authMutate]);
 
   useEffect(() => {
     setNewPasswordInvalidError(false);
