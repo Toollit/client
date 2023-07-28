@@ -7,6 +7,7 @@ import swipeableViewSlice from '@/features/swipeableView';
 import dialogSlice from '@/features/dialog';
 import paginationSlice from '@/features/pagination';
 import postOrderSlice from '@/features/order';
+import isLoadingSlice from '@/features/loading';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -20,6 +21,7 @@ const makeStore = () => {
       dialog: dialogSlice,
       pagination: paginationSlice,
       postOrder: postOrderSlice,
+      isLoading: isLoadingSlice,
     },
     middleware: (getDefaultMiddleware) =>
       isDev ? [...getDefaultMiddleware(), logger] : [...getDefaultMiddleware()],
