@@ -1,9 +1,9 @@
 import React from 'react';
-import AppLayout from 'components/appLayout';
-import { CloseBtn, SubmitBtn } from 'components/commons/button';
+import AppLayout from '@/components/appLayout';
+import { CloseBtn, SubmitBtn } from '@/components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
-import InputError from '@/components/commons/error/InputError';
+import InputError from '@/components/commons/Error/InputError';
 import LoadingCircularProgress from '@/components/commons/loading';
 import {
   Container,
@@ -20,7 +20,7 @@ export interface PwInquiryViewProps {
   emailInvalidError: boolean;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   handleSignUp: () => void;
-  requestPending: boolean;
+  isLoading: boolean;
 }
 
 const PwInquiryView = ({
@@ -30,7 +30,7 @@ const PwInquiryView = ({
   emailInvalidError,
   handleSubmit,
   handleSignUp,
-  requestPending,
+  isLoading,
 }: PwInquiryViewProps) => {
   return (
     <AppLayout nav={false}>
@@ -58,7 +58,7 @@ const PwInquiryView = ({
           </SignInBtn>
         </Form>
       </Container>
-      {requestPending && <LoadingCircularProgress />}
+      {isLoading && <LoadingCircularProgress />}
     </AppLayout>
   );
 };

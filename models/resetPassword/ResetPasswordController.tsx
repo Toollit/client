@@ -1,16 +1,24 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import ResetPasswordView, { ResetPasswordViewProps } from './ResetPasswordView';
-import { logoutAPI } from '@/apis/logout';
 import { resetPasswordAPI } from '@/apis/resetPassword';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { errorMessage } from '@/apis/errorMessage';
 import useAuth from '@/hooks/useAuth';
 import PrivateRoute from '@/components/PrivateRoute';
+import useLogout from '@/hooks/useLogout';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { loading } from '@/features/loading';
+import { noop } from '@/utils/noop';
 
 const ResetPasswordController = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
-  const { message, mutate: authMutate } = useAuth();
+  const { message } = useAuth();
+  const { logOut } = useLogout();
+
+  const isLoading = useSelector((state: RootState) => state.isLoading.status);
 
   const [newPassword, onChangeNewPassword] = useNoSpaceInput('');
   const [newPasswordInvalidError, setNewPasswordInvalidError] = useState(false);
@@ -18,7 +26,6 @@ const ResetPasswordController = () => {
     useNoSpaceInput('');
   const [doubleCheckPasswordError, setDoubleCheckPasswordError] =
     useState(false);
-  const [requestPending, setRequestPending] = useState(false);
 
   const checkPasswordValidate = useCallback(() => {
     // password 영문자, 숫자, 특수문자 조합 8 ~ 20자리 형식 확인 정규식
@@ -52,25 +59,18 @@ const ResetPasswordController = () => {
       }
 
       if (newPassword && doubleCheckPassword) {
-        setRequestPending(true);
-
         try {
-          const resetPasswordAPIResponse = await resetPasswordAPI({
-            password: newPassword,
-          });
+          dispatch(loading({ status: true }));
 
-          setRequestPending(false);
+          const response = await resetPasswordAPI({ password: newPassword });
 
-          if (resetPasswordAPIResponse?.success) {
-            const logoutAPIResponse = await logoutAPI();
+          dispatch(loading({ status: false }));
 
-            if (logoutAPIResponse?.success) {
-              alert(resetPasswordAPIResponse.message);
-              router.replace('/login');
-            }
-          }
+          logOut({ push: '/login' });
+
+          alert(response?.message);
         } catch (error) {
-          setRequestPending(false);
+          dispatch(loading({ status: false }));
           errorMessage(error);
         }
       }
@@ -80,21 +80,14 @@ const ResetPasswordController = () => {
       checkPasswordMatch,
       newPassword,
       doubleCheckPassword,
-      router,
+      logOut,
+      dispatch,
     ],
   );
 
-  const handleLogout = useCallback(async () => {
-    try {
-      await logoutAPI();
-
-      authMutate();
-
-      router.replace('/');
-    } catch (error) {
-      errorMessage(error);
-    }
-  }, [router, authMutate]);
+  const handleLogout = useCallback(() => {
+    logOut({ replace: '/' });
+  }, [logOut]);
 
   useEffect(() => {
     setNewPasswordInvalidError(false);
@@ -111,15 +104,15 @@ const ResetPasswordController = () => {
   }, [message, router]);
 
   const props: ResetPasswordViewProps = {
-    newPassword,
-    onChangeNewPassword,
+    newPassword: newPassword ?? '',
+    onChangeNewPassword: isLoading ? noop : onChangeNewPassword,
     newPasswordInvalidError,
-    doubleCheckPassword,
-    onChangeDoubleCheckPassword,
+    doubleCheckPassword: doubleCheckPassword ?? '',
+    onChangeDoubleCheckPassword: isLoading ? noop : onChangeDoubleCheckPassword,
     doubleCheckPasswordError,
     handleSubmit,
     handleLogout,
-    requestPending,
+    isLoading,
   };
 
   return (

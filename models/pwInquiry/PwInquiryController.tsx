@@ -1,68 +1,74 @@
-import { pwInquiryAPI } from '@/apis/pwInquiry';
-import useNoSpaceInput from 'hooks/useNoSpaceInput';
-import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
+import { pwInquiryAPI } from '@/apis/pwInquiry';
+import useNoSpaceInput from '@/hooks/useNoSpaceInput';
+import { useRouter } from 'next/router';
 import PwInquiryView, { PwInquiryViewProps } from './PwInquiryView';
 import { errorMessage } from '@/apis/errorMessage';
+import { useDispatch, useSelector } from 'react-redux';
+import { loading } from '@/features/loading';
+import { RootState } from '@/store';
+import { noop } from '@/utils/noop';
 
 const PwInquiryController = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
+
+  const isLoading = useSelector((state: RootState) => state.isLoading.status);
+
   const [email, onChangeEmail] = useNoSpaceInput('');
   const [emailInvalidError, setEmailInvalidError] = useState(false);
-  const [requestPending, setRequestPending] = useState(false);
 
   const handleClose = useCallback(() => {
     router.back();
   }, [router]);
 
-  const checkEmailFormatValidate = useCallback(() => {
-    // email 형식 확인 정규식
+  // check email format
+  const checkEmailFormatValidate = useCallback((email: string) => {
     const emailValidationRegexp =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    const isEmailValidate = emailValidationRegexp.test(email as string);
+    const isEmailValidate = emailValidationRegexp.test(email);
 
     return isEmailValidate;
-  }, [email]);
+  }, []);
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      const isValidEmail = checkEmailFormatValidate();
-
       if (!email) {
-        return setEmailInvalidError(true);
+        return;
       }
+
+      const isValidEmail = checkEmailFormatValidate(email);
 
       if (!isValidEmail) {
         return setEmailInvalidError(true);
       }
 
-      setRequestPending(true);
-
       try {
+        dispatch(loading({ status: true }));
+
         const response = await pwInquiryAPI({ email });
 
-        setRequestPending(false);
+        alert(response?.message);
 
-        if (response?.success) {
-          alert(response.message);
-          router.push('/login');
-        }
+        dispatch(loading({ status: false }));
+
+        router.push('/login');
       } catch (error) {
-        setRequestPending(false);
+        dispatch(loading({ status: false }));
         errorMessage(error);
       }
     },
-    [email, router, checkEmailFormatValidate],
+    [email, router, checkEmailFormatValidate, dispatch],
   );
 
   const handleSignUp = useCallback(() => {
     router.push('/signUp');
   }, [router]);
 
-  // input 입력시 에러 제거
+  // remove error message when input value is changed
   useEffect(() => {
     setEmailInvalidError(false);
   }, [email]);
@@ -70,11 +76,11 @@ const PwInquiryController = () => {
   const props: PwInquiryViewProps = {
     handleClose,
     email,
-    onChangeEmail,
+    onChangeEmail: isLoading ? noop : onChangeEmail,
     emailInvalidError,
     handleSubmit,
     handleSignUp,
-    requestPending,
+    isLoading,
   };
   return <PwInquiryView {...props} />;
 };

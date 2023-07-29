@@ -9,6 +9,11 @@ interface LogOut {
   replace?: string;
 }
 
+/**
+ * logout hooks
+ * delete user authentication cookies
+ * delete swr cached data(revalidate all SWR keys)
+ */
 const useLogout = () => {
   const router = useRouter();
 

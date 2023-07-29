@@ -1,24 +1,24 @@
 import React from 'react';
 import AppLayout from 'components/appLayout';
-import { NormalBtn, SubmitBtn } from 'components/commons/button';
+import { NormalBtn, SubmitBtn } from '@/components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
-import InputError from '@/components/commons/error/InputError';
+import InputError from '@/components/commons/Error/InputError';
 import LoadingCircularProgress from '@/components/commons/loading';
 import { Container, Form, InputContainer, Notice } from './styles';
 
 export interface ResetPasswordViewProps {
-  newPassword: string | null;
+  newPassword: string;
   onChangeNewPassword: (event: React.ChangeEvent<HTMLInputElement>) => void;
   newPasswordInvalidError: boolean;
-  doubleCheckPassword: string | null;
+  doubleCheckPassword: string;
   onChangeDoubleCheckPassword: (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => void;
   doubleCheckPasswordError: boolean;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   handleLogout: () => void;
-  requestPending: boolean;
+  isLoading: boolean;
 }
 
 const ResetPasswordView = ({
@@ -30,7 +30,7 @@ const ResetPasswordView = ({
   doubleCheckPasswordError,
   handleSubmit,
   handleLogout,
-  requestPending,
+  isLoading,
 }: ResetPasswordViewProps) => {
   return (
     <AppLayout nav={false}>
@@ -43,7 +43,7 @@ const ResetPasswordView = ({
               type='password'
               placeholder={'새로운 비밀번호'}
               onChange={onChangeNewPassword}
-              value={newPassword as string}
+              value={newPassword}
               focus={true}
             />
             {newPasswordInvalidError && (
@@ -56,7 +56,7 @@ const ResetPasswordView = ({
               type='password'
               placeholder={'새로운 비밀번호 확인'}
               onChange={onChangeDoubleCheckPassword}
-              value={doubleCheckPassword as string}
+              value={doubleCheckPassword}
               focus={true}
             />
             {doubleCheckPasswordError && (
@@ -73,7 +73,7 @@ const ResetPasswordView = ({
           <NormalBtn text='로그아웃' onClick={handleLogout} />
         </Form>
       </Container>
-      {requestPending && <LoadingCircularProgress />}
+      {isLoading && <LoadingCircularProgress />}
     </AppLayout>
   );
 };
