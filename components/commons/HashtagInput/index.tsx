@@ -6,6 +6,7 @@ import {
   DeleteButton,
   Hashtag,
 } from './styles';
+import { useRouter } from 'next/router';
 
 interface HashtagInputProps {
   hashtagRef: React.MutableRefObject<string[]>;
@@ -23,6 +24,9 @@ const HashtagInput = ({
   hashtags,
   placeholder,
 }: HashtagInputProps) => {
+  const router = useRouter();
+  const pathname = router.asPath;
+
   const [hashtagList, setHashtagList] = useState<Array<string>>([]);
   const [newHashtag, setNewHashtag] = useState('');
 
@@ -69,12 +73,12 @@ const HashtagInput = ({
       const removeTarget = event.currentTarget.id;
 
       const filtered = hashtagList.filter(
-        (skill, index) => removeTarget !== `${skill}-${index}`,
+        (skill) => removeTarget !== `${pathname}/${skill}`,
       );
 
       setHashtagList(filtered);
     },
-    [hashtagList],
+    [hashtagList, pathname],
   );
 
   useEffect(() => {
@@ -86,10 +90,13 @@ const HashtagInput = ({
   return (
     <>
       <HashtagsContainer>
-        {hashtagList.map((hashtag, index) => (
-          <Hashtag key={`${hashtag}-${index}`}>
+        {hashtagList.map((hashtag) => (
+          <Hashtag key={`${pathname}/${hashtag}`}>
             <span>{`#${hashtag}`}</span>
-            <DeleteButton id={`${hashtag}-${index}`} onClick={onDeleteHashtag}>
+            <DeleteButton
+              id={`${pathname}/${hashtag}`}
+              onClick={onDeleteHashtag}
+            >
               <CloseIcon width={20} height={20} />
             </DeleteButton>
           </Hashtag>
