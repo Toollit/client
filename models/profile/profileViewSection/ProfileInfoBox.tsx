@@ -2,7 +2,11 @@ import React from 'react';
 import { PersonIcon, MailIcon } from '@/assets/icons';
 import Hashtag from '@/components/commons/hashtag';
 import EditBtn from '@/components/commons/button/edit';
-import { CustomMyProfile, CustomUserProfile } from '../ProfileView';
+import {
+  MyProfile,
+  ProfileInfoAPIRes,
+  UserProfile,
+} from '@/apis/profileInfoFetcher';
 import {
   BoxContainer,
   BoxTitle,
@@ -17,9 +21,19 @@ import {
   HashtagContainer,
 } from './ProfileInfoBox.styles';
 
+interface CustomMyProfile extends Omit<MyProfile, 'skills'> {
+  skills: string[];
+}
+
+interface CustomUserProfile extends Omit<UserProfile, 'skills'> {
+  skills: string[];
+}
+
+export type ProfileInfoData = CustomMyProfile | CustomUserProfile;
+
 interface ProfileInfoViewProps {
   me: boolean;
-  data?: CustomMyProfile | CustomUserProfile | null;
+  data?: ProfileInfoData | null;
   editBtnHandler: (category: string) => void;
 }
 

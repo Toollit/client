@@ -2,15 +2,17 @@ import React, { ChangeEvent } from 'react';
 import Link from 'next/link';
 import GetitLogo from '@/assets/images/GetitLogo';
 import { AccountCircleIcon, EditCircleIcon } from '@/assets/icons';
-import { MyProfile, UserProfile } from '@/apis/profileInfoFetcher';
-import { profileProjectsAPIRes } from '@/apis/profileProjectsFetcher';
 import Divider from '@/components/commons/divider';
 import Skeleton from '@/components/commons/skeleton';
 import Dialog from '@/components/commons/dialog';
-import ProfileInfoBox from './profileViewSection/ProfileInfoBox';
+import ProfileInfoBox, {
+  ProfileInfoData,
+} from './profileViewSection/ProfileInfoBox';
 import SwipeableTabView from '@/components/commons/swipeableView/swipeableTabViews';
 import Image from 'next/image';
-import ProfileProjectBox from './profileViewSection/ProfileProjectBox';
+import ProfileProjectBox, {
+  ProfileProjectsData,
+} from './profileViewSection/ProfileProjectBox';
 import ProfileFooterLink from './profileViewSection/ProfileFooterLink';
 import {
   Container,
@@ -39,22 +41,14 @@ import {
   // SwipeableViewContainer,
 } from './styles';
 
-export interface CustomMyProfile extends Omit<MyProfile, 'skills'> {
-  skills: string[];
-}
-
-export interface CustomUserProfile extends Omit<UserProfile, 'skills'> {
-  skills: string[];
-}
-
 export interface ProfileViewProps {
   me: boolean;
   loginState?: string | null;
   tabs: { name: string; query: string }[];
   currentTab: 'viewProfile' | 'viewProjects' | 'viewBookmarks' | undefined;
   profileImageData?: string | null;
-  profileInfoData?: CustomMyProfile | CustomUserProfile | null;
-  profileProjectData?: profileProjectsAPIRes['data'] | null;
+  profileInfoData?: ProfileInfoData | null;
+  profileProjectData?: ProfileProjectsData | null;
   profileNickname: string;
   handleLogInOut: () => void;
   handleProfileInfoEditBtn: (category: string) => void;
@@ -264,7 +258,7 @@ const ProfileView = ({
               {profileProjectData ? (
                 <ProfileProjectBox
                   data={profileProjectData}
-                  LoadMoreHandler={handleProjectLoadMore}
+                  loadMore={handleProjectLoadMore}
                 />
               ) : (
                 <>
@@ -327,7 +321,7 @@ const ProfileView = ({
                   <>
                     <ProfileProjectBox
                       data={profileProjectData}
-                      LoadMoreHandler={handleProjectLoadMore}
+                      loadMore={handleProjectLoadMore}
                     />
                     <ProfileFooterLink
                       loginState={loginState}

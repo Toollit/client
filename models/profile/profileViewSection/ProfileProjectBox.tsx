@@ -1,8 +1,8 @@
 import React from 'react';
-import { Project } from '@/apis/profileInfoFetcher';
 import Hashtag from '@/components/commons/hashtag';
 import { PersonIcon, ViewIcon } from '@/assets/icons';
 import Link from 'next/link';
+import { Project } from '@/apis/profileProjectsFetcher';
 import {
   BoxContainer,
   BoxTitle,
@@ -21,65 +21,92 @@ import {
   LoadMore,
   LoadMoreContainer,
   StyledLink,
+  Notice,
+  GoToParticipateProject,
 } from './ProfileProjectBox.styles';
 
-interface ProfileProjectViewProps {
-  data?: Project[] | null;
+interface CustomProject extends Omit<Project, 'memberTypes'> {
+  memberTypes: ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 }
 
-const ProfileProjectBox = ({ data }: ProfileProjectViewProps) => {
+export interface ProfileProjectsData {
+  projects: CustomProject[] | null;
+  total: number;
+  showLoadMore: boolean;
+}
+
+interface ProfileProjectViewProps {
+  data?: ProfileProjectsData;
+  loadMore: () => void;
+}
+
+const ProfileProjectBox = ({ data, loadMore }: ProfileProjectViewProps) => {
   return (
     <BoxContainer>
       <BoxTitle>참여 프로젝트</BoxTitle>
       <BoxContent>
-        {data &&
-          data?.map((v, i) => {
-            return (
-              <Link key={`${v.id}-${i}`} href={`/project/${v.id}/`} passHref>
-                <StyledLink>
-                  <ContentBlock key={`${v.title}-${i}`}>
-                    <ColumnLeftContainer>
-                      <RecruitmentTypeContainer>
-                        {v.memberTypes.map((type, index) => {
-                          return (
-                            <RecruitmentType key={type + index} type={type}>
-                              {type === 'pm'
-                                ? type.toUpperCase()
-                                : type.charAt(0).toUpperCase() + type.slice(1)}
-                            </RecruitmentType>
-                          );
-                        })}
-                      </RecruitmentTypeContainer>
+        {data ? (
+          <>
+            {data.projects?.map((project, index) => {
+              return (
+                <Link
+                  key={`/profile/project/${project.id}`}
+                  href={`/project/${project.id}`}
+                  passHref
+                >
+                  <StyledLink>
+                    <ContentBlock>
+                      <ColumnLeftContainer>
+                        <RecruitmentTypeContainer>
+                          {project.memberTypes.map((type) => {
+                            return (
+                              <RecruitmentType key={type} type={type}>
+                                {type}
+                              </RecruitmentType>
+                            );
+                          })}
+                        </RecruitmentTypeContainer>
 
-                      <ProjectTitle>{v.title}</ProjectTitle>
+                        <ProjectTitle>{project.title}</ProjectTitle>
 
-                      <HashtagContainer>
-                        {v.hashtags.map((hashtag) => {
-                          return (
-                            <Hashtag key={`${hashtag}`} tagName={hashtag} />
-                          );
-                        })}
-                      </HashtagContainer>
-                    </ColumnLeftContainer>
+                        <HashtagContainer>
+                          {project.hashtags.map((hashtag) => {
+                            return (
+                              <Hashtag key={`${hashtag}`} tagName={hashtag} />
+                            );
+                          })}
+                        </HashtagContainer>
+                      </ColumnLeftContainer>
 
-                    <ColumnRightContainer>
-                      <MemberCount>
-                        <PersonIcon width={20} height={20} />
-                        <MemberCountText>{`${v.memberNumber} / ${v.recruitNumber}`}</MemberCountText>
-                      </MemberCount>
-                      <Views>
-                        <ViewIcon width={20} height={20} />
-                        <ViewText>{v.views}</ViewText>
-                      </Views>
-                    </ColumnRightContainer>
-                  </ContentBlock>
-                </StyledLink>
-              </Link>
-            );
-          })}
-        <LoadMoreContainer>
-          <LoadMore>더보기</LoadMore>
-        </LoadMoreContainer>
+                      <ColumnRightContainer>
+                        <MemberCount>
+                          <PersonIcon width={20} height={20} />
+                          <MemberCountText>{`${project.memberNumber} / ${project.recruitNumber}`}</MemberCountText>
+                        </MemberCount>
+                        <Views>
+                          <ViewIcon width={20} height={20} />
+                          <ViewText>{project.views}</ViewText>
+                        </Views>
+                      </ColumnRightContainer>
+                    </ContentBlock>
+                  </StyledLink>
+                </Link>
+              );
+            })}
+            {data.showLoadMore && (
+              <LoadMoreContainer>
+                <LoadMore onClick={loadMore}>더보기</LoadMore>
+              </LoadMoreContainer>
+            )}
+          </>
+        ) : (
+          <>
+            <Notice>참여 중인 프로젝트가 없습니다.</Notice>
+            <Link href={'/'} passHref>
+              <GoToParticipateProject>참여하러가기</GoToParticipateProject>
+            </Link>
+          </>
+        )}
       </BoxContent>
     </BoxContainer>
   );
