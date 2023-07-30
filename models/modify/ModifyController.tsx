@@ -3,8 +3,8 @@ import ModifyView, { ModifyViewProps } from './ModifyView';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/errorMessage';
-import { GET_PROJECT_DETAIL_API_ENDPOINT } from '@/apis/keys';
-import { getProjectDetailFetcher } from '@/apis/getProjectDetailFetcher';
+import { getProjectDetailKey } from '@/apis/keys';
+import { projectDetailFetcher } from '@/apis/projectDetailFetcher';
 import useEditorContent from '@/hooks/useEditorContent';
 import { updatePostAPI } from '@/apis/updatePost';
 import PrivateRoute from '@/components/PrivateRoute';
@@ -17,9 +17,10 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
   const router = useRouter();
 
   // TODO free, question swr 작성하기
+  // 상세페이지와 수정시 사용하는 api가 동일하여 수정시에는 조회수 증가를 제한하기위해 config 옵션으로 수정하기 위해서 호출했는지 여부를 서버로 전달한다.
   const { data: projectDetail, mutate: projectDetailRevalidation } = useSWR(
     [
-      GET_PROJECT_DETAIL_API_ENDPOINT + `/${postId}`,
+      postId ? getProjectDetailKey(postId) : null,
       {
         headers: {
           modify: true,
@@ -27,7 +28,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
       },
     ],
 
-    ([url, config]) => getProjectDetailFetcher(url, config),
+    ([url, config]) => (url ? projectDetailFetcher(url, config) : null),
     {
       revalidateOnFocus: false,
       errorRetryCount: 0,
@@ -98,11 +99,11 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
       try {
         const response = await updatePostAPI(postData);
 
-        if (response?.success) {
-          const postId = response.data.postId;
-          router.push(`/${postType}/${postId}`);
-          projectDetailRevalidation();
-        }
+        const postId = response?.data.postId;
+
+        router.push(`/${postType}/${postId}`);
+
+        projectDetailRevalidation();
       } catch (error) {
         errorMessage(error);
       }
@@ -119,6 +120,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
     ],
   );
 
+  // hashtag 입력 폼에서 enter를 사용하여 값을 입력할 때 폼이 제출되는 문제로 인해 이벤트 오류를 막기 위해서 작성되었다.
   const handleKeydownSubmit = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter') {

@@ -1,21 +1,30 @@
 import React from 'react';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import ModifyController from '@/models/modify/ModifyController';
 
-interface ModifyPageProps {
+interface PageProps {
   postId: string;
 }
 
-const Modify = ({ postId }: ModifyPageProps) => {
+const Modify: NextPage<PageProps> = ({ postId }) => {
   return <ModifyController postId={postId} />;
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const postId = params?.id;
 
+  if (!Array.isArray(postId) && postId !== undefined) {
+    return {
+      props: {
+        postId,
+      },
+    };
+  }
+
   return {
-    props: {
-      postId,
+    redirect: {
+      permanent: false,
+      destination: '/notice/error',
     },
   };
 };

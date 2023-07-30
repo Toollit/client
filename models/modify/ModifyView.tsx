@@ -2,10 +2,10 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import AppLayout from '@/components/appLayout';
 import Title from '@/components/commons/title';
-import HashtagInput from '@/components/commons/hashtagInput';
+import HashtagInput from '@/components/commons/HashtagInput';
 import MemberTypeSelector from '@/components/commons/memberTypeSelector';
 import { Editor } from '@toast-ui/react-editor';
-import { ProjectDetail } from '@/apis/getProjectDetailFetcher';
+import { ProjectDetail } from '@/apis/projectDetailFetcher';
 import {
   Form,
   ButtonContainer,
@@ -32,7 +32,7 @@ export interface ModifyViewProps {
   >;
   recruitCountRef: React.RefObject<HTMLInputElement>;
   handleKeydownSubmit: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-  content?: ProjectDetail;
+  content?: ProjectDetail | null;
   hashtags?: string[];
   memberTypes?: ('developer' | 'designer' | 'pm' | 'anyone')[];
   recruitNumber?: number;
