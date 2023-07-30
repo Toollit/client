@@ -1,4 +1,3 @@
-import useSWR from 'swr';
 import { serverInstance } from './axios';
 
 export interface ProjectDetail {
@@ -17,14 +16,14 @@ export interface ProjectDetail {
   // comments: {}[];
 }
 
-export interface GetProjectDetailAPIRes {
+export interface ProjectDetailAPIRes {
   success: boolean;
   message: string | null;
   data: ProjectDetail;
 }
 
-export const getProjectDetailFetcher = async (url: string, config?: any) => {
-  const response = await serverInstance.get<GetProjectDetailAPIRes>(
+export const projectDetailFetcher = async (url: string, config?: any) => {
+  const response = await serverInstance.get<ProjectDetailAPIRes>(
     url,
     config ? config : {},
   );
