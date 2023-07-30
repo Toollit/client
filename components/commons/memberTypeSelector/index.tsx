@@ -5,7 +5,6 @@ import {
   MemberTypeContainer,
   Type,
 } from './styles';
-import { ProjectDetail } from '@/apis/getProjectDetailFetcher';
 
 interface MemberTypeProps {
   memberTypeRef: React.MutableRefObject<

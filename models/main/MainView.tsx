@@ -111,7 +111,7 @@ const MainView = ({ projects, createProject }: MainViewProps) => {
                   laptop={4}
                 >
                   <Link href={`/project/${project.id}`} passHref>
-                    <StyledLink target='_blank'>
+                    <StyledLink>
                       <BlockPost content={project} />
                     </StyledLink>
                   </Link>

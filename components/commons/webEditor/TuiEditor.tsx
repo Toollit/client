@@ -11,7 +11,7 @@ import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import fontSize from 'tui-editor-plugin-font-size';
 import 'tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css';
 import { errorMessage } from '@/apis/errorMessage';
-import { ProjectDetail } from '@/apis/getProjectDetailFetcher';
+import { ProjectDetail } from '@/apis/projectDetailFetcher';
 import {
   TuiCustomGlobalStyles,
   TuiContainer,
@@ -24,7 +24,7 @@ type HookMapKey = keyof HookMap;
 interface TuiEditorProps {
   titleRef: React.RefObject<HTMLInputElement>;
   editorRef: React.RefObject<Editor>;
-  content?: ProjectDetail;
+  content?: ProjectDetail | null;
 }
 /**
  * @param titleRef - 제목 값을 받아오기 위한 ref

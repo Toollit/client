@@ -39,6 +39,7 @@ import {
 const DynamicTuiViewer = dynamic(
   () => import('@/components/commons/webEditor/TuiViewer'),
   {
+    loading: () => <>Loading...</>,
     ssr: false,
   },
 );
