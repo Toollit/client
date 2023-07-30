@@ -6,6 +6,7 @@ import { AccountCircleIcon } from '@/assets/icons';
 import { ShareIcon, BookmarkIcon } from '@/assets/icons';
 import MoreButton from '@/components/commons/moreButton';
 import Hashtag from '@/components/commons/hashtag';
+import { ProjectDetail } from '@/apis/projectDetailFetcher';
 import {
   Container,
   ColumnContainer,
@@ -30,7 +31,9 @@ import {
   WriterLastLoginAtContainer,
   Writer,
   LastLoginAt,
-  TrendingPostsContainer,
+  ProjectMemberContainerTablet,
+  ProjectMemberContainerMobile,
+  StyledImage,
 } from './styles';
 
 const DynamicTuiViewer = dynamic(
@@ -40,28 +43,15 @@ const DynamicTuiViewer = dynamic(
   },
 );
 
-interface Content {
-  title: string;
-  createdAt: string;
-  updatedAt: string;
-  views: number;
-  nickname: string;
-  contentHTML: string;
-  contentMarkdown: string;
-  hashtags: string[];
-  memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
-}
-
-interface Writer {
-  nickname: string;
-  lastLoginAt: string;
-  profileImage: string;
+interface ProjectDetailContent
+  extends Omit<ProjectDetail['content'], 'memberTypes'> {
+  memberTypes: ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 }
 
 export interface ProjectDetailViewProps {
   isClientRendering: boolean;
-  content: Content;
-  writer: Writer;
+  writer: ProjectDetail['writer'];
+  content: ProjectDetailContent;
   me: {
     nickname: string | null;
   };
@@ -84,9 +74,7 @@ const ProjectDetailView = ({
                   {content.memberTypes.map((type, index) => {
                     return (
                       <RecruitmentType key={type + index} type={type}>
-                        {type === 'pm'
-                          ? type.toUpperCase()
-                          : type.charAt(0).toUpperCase() + type.slice(1)}
+                        {type}
                       </RecruitmentType>
                     );
                   })}
@@ -97,7 +85,7 @@ const ProjectDetailView = ({
                 <DateAndViewContainer>
                   <Date>
                     <CreatedAt>작성일: {content.createdAt}</CreatedAt>
-                    {content.updatedAt !== '' && (
+                    {content.updatedAt && (
                       <UpdatedAt>수정됨: {content.updatedAt}</UpdatedAt>
                     )}
                   </Date>
@@ -106,6 +94,7 @@ const ProjectDetailView = ({
                 </DateAndViewContainer>
               </ProjectContentTopContainer>
 
+              {/* The current page that can be ssr, but the TUI editor only supports csr, so the data is not rendered properly during ssr, so I wrote it like this to randomly put the data on the screen for seo. */}
               {isClientRendering ? (
                 <DynamicTuiViewer content={content.contentHTML} />
               ) : (
@@ -138,9 +127,16 @@ const ProjectDetailView = ({
             <WriterInfoContainer>
               <ProfileImageContainer>
                 {writer.profileImage ? (
-                  <></> // 프로필 이미지 넣기
+                  <StyledImage
+                    src={writer.profileImage}
+                    alt={`${writer.nickname} profile image`}
+                    width={80}
+                    height={80}
+                    draggable={false}
+                    priority
+                  />
                 ) : (
-                  <AccountCircleIcon fill={false} width={60} height={60} />
+                  <AccountCircleIcon fill={false} width={80} height={80} />
                 )}
               </ProfileImageContainer>
               <WriterLastLoginAtContainer>
@@ -154,9 +150,15 @@ const ProjectDetailView = ({
                 </LastLoginAt>
               </WriterLastLoginAtContainer>
             </WriterInfoContainer>
-            <TrendingPostsContainer>최신 인기 게시글</TrendingPostsContainer>
+            <ProjectMemberContainerTablet>
+              참여중인 멤버
+            </ProjectMemberContainerTablet>
           </ColumnRightContainer>
         </ColumnContainer>
+        {/* mobile version */}
+        <ProjectMemberContainerMobile>
+          참여중인 멤버
+        </ProjectMemberContainerMobile>
       </Container>
     </AppLayout>
   );

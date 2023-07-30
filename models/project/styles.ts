@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Image from 'next/image';
 import { mediaQueryMobile, mediaQueryTablet } from '@/styles/mediaQuery';
 
 const Container = styled.div`
@@ -60,13 +61,13 @@ const RecruitmentTypeContainer = styled.div`
 `;
 
 const RecruitmentType = styled.div<{
-  type: 'developer' | 'designer' | 'pm' | 'anyone';
+  type: 'Developer' | 'Designer' | 'PM' | 'Anyone';
 }>`
   width: fit-content;
-  margin: 0 0.4rem 0 0;
+  margin-right: 0.4rem;
   padding: 0.4rem 1rem;
   border-radius: ${(props) => props.theme.borderRadius.sharp};
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 600;
   line-height: 1.5;
   color: #fff;
@@ -75,16 +76,16 @@ const RecruitmentType = styled.div<{
     const recruitmentType = props.type;
 
     switch (recruitmentType) {
-      case 'developer':
+      case 'Developer':
         return props.theme.colors.developer;
 
-      case 'designer':
+      case 'Designer':
         return props.theme.colors.designer;
 
-      case 'pm':
+      case 'PM':
         return props.theme.colors.pm;
 
-      case 'anyone':
+      case 'Anyone':
         return props.theme.colors.anyone;
 
       default:
@@ -197,12 +198,20 @@ const WriterInfoContainer = styled.div`
 `;
 
 const ProfileImageContainer = styled.div`
-  height: 6rem;
+  position: relative;
+  height: fit-content;
   margin-right: 0.5rem;
+  padding: 0.5rem;
 
   ${mediaQueryTablet} {
+    height: fit-content;
+    padding: 0;
     margin: 0 auto;
   }
+`;
+
+const StyledImage = styled(Image)`
+  border-radius: 25rem;
 `;
 
 const WriterLastLoginAtContainer = styled.div`
@@ -253,11 +262,17 @@ const LastLoginAt = styled.div`
   }
 `;
 
-const TrendingPostsContainer = styled.div`
+const ProjectMemberContainerTablet = styled.div`
   display: none;
 
   ${mediaQueryTablet} {
     display: initial;
+  }
+`;
+
+const ProjectMemberContainerMobile = styled.div`
+  ${mediaQueryTablet} {
+    display: none;
   }
 `;
 
@@ -280,11 +295,12 @@ export {
   ButtonContainer,
   BookmarkButton,
   ShareButton,
-  // MoreButton,
   WriterLastLoginAtContainer,
   ProfileImageContainer,
   WriterInfoContainer,
   Writer,
   LastLoginAt,
-  TrendingPostsContainer,
+  ProjectMemberContainerTablet,
+  ProjectMemberContainerMobile,
+  StyledImage,
 };

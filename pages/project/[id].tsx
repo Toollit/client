@@ -1,41 +1,43 @@
 import React from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
+import Head from 'next/head';
 import { SWRConfig } from 'swr';
 import {
-  getProjectDetailFetcher,
+  projectDetailFetcher,
   ProjectDetail,
-} from '@/apis/getProjectDetailFetcher';
+} from '@/apis/projectDetailFetcher';
 import ProjectDetailController from '@/models/project/ProjectDetailController';
-import { GET_PROJECT_DETAIL_API_ENDPOINT } from '@/apis/keys';
+import { getProjectDetailKey } from '@/apis/keys';
 
 interface PageProps {
   fallback: {
-    [GET_PROJECT_DETAIL_API_ENDPOINT: string]: ProjectDetail;
+    [getProjectDetailKey: string]: ProjectDetail;
   };
 }
 
-const Post: NextPage<PageProps> = ({ fallback }) => {
+const Project: NextPage<PageProps> = ({ fallback }) => {
   return (
     <SWRConfig value={{ fallback }}>
+      <Head>
+        <title>프로젝트</title>
+      </Head>
       <ProjectDetailController />
     </SWRConfig>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const postId = params?.id;
+  const postId = params?.id as string;
 
-  const projectDetail = await getProjectDetailFetcher(
-    GET_PROJECT_DETAIL_API_ENDPOINT + `/${postId}`,
-  );
+  const projectDetail = await projectDetailFetcher(getProjectDetailKey(postId));
 
   return {
     props: {
       fallback: {
-        [GET_PROJECT_DETAIL_API_ENDPOINT + `/${postId}`]: projectDetail,
+        [getProjectDetailKey(postId)]: projectDetail,
       },
     },
   };
 };
 
-export default Post;
+export default Project;
