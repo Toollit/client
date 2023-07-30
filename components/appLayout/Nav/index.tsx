@@ -16,12 +16,25 @@ import {
   ColumnRightContainer,
   StyledLink,
   SearchDrawerBtn,
+  ResetPage,
 } from './styles';
+import { useRouter } from 'next/router';
+import { updatePostOrder } from '@/features/order';
+import { updatePage } from '@/features/pagination';
 
 const Nav = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const { isAuthenticated, nickname } = useAuth();
+
+  const isMainPage = router.asPath === '/';
+
+  const handlePagination = useCallback(() => {
+    dispatch(updatePostOrder({ order: 'new' }));
+    dispatch(updatePage({ page: 1 }));
+    window.scrollTo({ top: 0 });
+  }, [dispatch]);
 
   const handleSearchDrawer = useCallback(() => {
     dispatch(openDrawer({ type: 'search' }));
@@ -33,12 +46,19 @@ const Nav = () => {
         <Content>
           <NavList>
             <ColumnLeftContainer>
-              <Link href='/' passHref>
-                <StyledLink>
+              {isMainPage ? (
+                <ResetPage onClick={handlePagination}>
                   <GetitLogo />
                   <LogoText>Getit</LogoText>
-                </StyledLink>
-              </Link>
+                </ResetPage>
+              ) : (
+                <Link href='/' passHref>
+                  <StyledLink>
+                    <GetitLogo />
+                    <LogoText>Getit</LogoText>
+                  </StyledLink>
+                </Link>
+              )}
             </ColumnLeftContainer>
 
             <ColumnRightContainer>
