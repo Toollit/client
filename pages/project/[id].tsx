@@ -1,7 +1,7 @@
 import React from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
-import Head from 'next/head';
 import { SWRConfig } from 'swr';
+import Head from 'next/head';
 import {
   projectDetailFetcher,
   ProjectDetail,
@@ -27,15 +27,26 @@ const Project: NextPage<PageProps> = ({ fallback }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const postId = params?.id as string;
+  const postId = params?.id;
 
-  const projectDetail = await projectDetailFetcher(getProjectDetailKey(postId));
+  if (!Array.isArray(postId) && postId !== undefined) {
+    const projectDetail = await projectDetailFetcher(
+      getProjectDetailKey(postId),
+    );
+
+    return {
+      props: {
+        fallback: {
+          [getProjectDetailKey(postId)]: projectDetail,
+        },
+      },
+    };
+  }
 
   return {
-    props: {
-      fallback: {
-        [getProjectDetailKey(postId)]: projectDetail,
-      },
+    redirect: {
+      permanent: false,
+      destination: '/notice/error',
     },
   };
 };
