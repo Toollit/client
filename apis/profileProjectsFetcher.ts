@@ -10,19 +10,19 @@ export interface Project {
   recruitNumber: number;
 }
 
-export interface profileProjectsAPIReq {}
+export interface ProfileProjectsAPIReq {}
 
-export interface profileProjectsAPIRes {
+export interface ProfileProjectsAPIRes {
   success: boolean;
   message: null | string;
   data?: {
-    projects: Project[];
+    projects: Project[] | null;
     total: number;
   };
 }
 
 export const profileProjectsFetcher = async (url: string) => {
-  const response = await serverInstance.get<profileProjectsAPIRes>(url);
+  const response = await serverInstance.get<ProfileProjectsAPIRes>(url);
 
   return response.data;
 };

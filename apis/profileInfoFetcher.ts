@@ -28,15 +28,15 @@ export interface UserProfile {
   skills: string | null;
 }
 
-export interface profileInfoAPIReq {}
+export interface ProfileInfoAPIReq {}
 
-export interface profileInfoAPIRes {
+export interface ProfileInfoAPIRes {
   success: boolean;
   message: null | string;
   data?: MyProfile | UserProfile;
 }
 
 export const profileInfoFetcher = async (url: string) => {
-  const response = await serverInstance.get<profileInfoAPIRes>(url);
+  const response = await serverInstance.get<ProfileInfoAPIRes>(url);
   return response.data;
 };
