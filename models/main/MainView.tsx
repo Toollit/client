@@ -103,7 +103,7 @@ const MainView = ({ projects, createProject }: MainViewProps) => {
             {projects?.map((project) => {
               return (
                 <Grid
-                  key={project.id}
+                  key={`/${project.id}`}
                   item
                   xsMobile={6}
                   mobile={6}
