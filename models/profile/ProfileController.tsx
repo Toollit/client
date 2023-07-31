@@ -42,15 +42,15 @@ interface CachedData<T> {
 interface ProfilePageData {
   profileInfo: {
     isLoaded: boolean;
-    data?: null | ProfileInfoAPIRes['data'];
+    data: null | ProfileInfoAPIRes['data'];
   };
   projects: {
     isLoaded: boolean;
-    data?: null | ProfileProjectsAPIRes['data'];
+    data: null | ProfileProjectsAPIRes['data'];
   };
   bookmarks: {
     isLoaded: boolean;
-    data?: null;
+    data: null;
   };
 }
 
@@ -107,18 +107,6 @@ const ProfileController = () => {
     | 'viewProjects'
     | 'viewBookmarks'
     | undefined;
-
-  const isProfileImage = (data: any): data is ProfileImage => {
-    return data && 'profileImage' in data;
-  };
-
-  const isProfileInfo = (data: any): data is ProfileInfoAPIRes['data'] => {
-    return data && 'nickname' in data;
-  };
-
-  const isProject = (data: any): data is ProfileProjectsAPIRes['data'] => {
-    return data && 'projects' in data && 'total' in data;
-  };
 
   // Current Access User Self Information
   const { nickname: accessUser, mutate: authMutate } = useAuth();
@@ -188,16 +176,17 @@ const ProfileController = () => {
                 ...prev,
                 projects: {
                   isLoaded: true,
-                  data: {
-                    projects:
-                      res.data?.projects && prev.projects.data?.projects
-                        ? [
+                  data:
+                    prev.projects.data && res.data
+                      ? {
+                          projects: [
                             ...prev.projects.data?.projects,
                             ...res.data?.projects,
-                          ]
-                        : null,
-                    total: res.data ? res.data.total : 0,
-                  },
+                          ],
+
+                          total: res.data?.total,
+                        }
+                      : null,
                 },
               };
             });
@@ -358,11 +347,12 @@ const ProfileController = () => {
   ]);
 
   const handleProfileInfoDataResponse = useCallback(
-    (data?: ProfileInfoAPIRes['data']) => {
+    (data: ProfileInfoAPIRes['data'] | null) => {
       if (!data) {
-        return;
+        return null;
       }
 
+      // login user data
       if ('email' in data) {
         return {
           ...data,
@@ -378,20 +368,19 @@ const ProfileController = () => {
         };
       }
 
-      if (!('email' in data)) {
-        return {
-          ...data,
-          createdAt: changeDateFormat({
-            date: data.createdAt,
-            format: 'YYMMDD',
-          }),
-          lastLoginAt: changeDateFormat({
-            date: data.lastLoginAt,
-            format: 'YYMMDD_hhmmss',
-          }),
-          skills: data.skills ? [...data.skills.split(',')] : [],
-        };
-      }
+      // not login user data
+      return {
+        ...data,
+        createdAt: changeDateFormat({
+          date: data.createdAt,
+          format: 'YYMMDD',
+        }),
+        lastLoginAt: changeDateFormat({
+          date: data.lastLoginAt,
+          format: 'YYMMDD_hhmmss',
+        }),
+        skills: data.skills ? [...data.skills.split(',')] : [],
+      };
     },
     [],
   );
@@ -541,36 +530,74 @@ const ProfileController = () => {
   );
 
   const handleProfileProjectDataResponse = useCallback(
-    (data?: ProfileProjectsAPIRes['data']) => {
-      const dataConverter = (projects?: Project[] | null) => {
-        if (projects) {
-          return projects.map((project) => {
-            return {
-              ...project,
-              memberTypes: project.memberTypes.map((type) => {
-                return type === 'pm'
-                  ? type.toUpperCase()
-                  : type.charAt(0).toUpperCase() + type.slice(1);
-              }) as CustomMemberTypes,
-            };
-          });
-        } else {
-          return null;
-        }
-      };
+    (data: ProfileProjectsAPIRes['data'] | null) => {
+      const convertedData = data?.projects.map((project) => {
+        return {
+          ...project,
+          memberTypes: project.memberTypes.map((type) => {
+            return type === 'pm'
+              ? type.toUpperCase()
+              : type.charAt(0).toUpperCase() + type.slice(1);
+          }) as CustomMemberTypes,
+        };
+      });
+
+      if (!data) {
+        return null;
+      }
+
+      if (data.projects.length < 1) {
+        return {
+          projects: [],
+          total: data.total,
+          showLoadMore: data.projects.length !== data.total,
+        };
+      }
 
       return {
-        projects: dataConverter(data?.projects),
-        total: data?.total ? data.total : 0,
-        showLoadMore: data?.projects?.length !== data?.total,
+        projects: convertedData ?? [],
+        total: data.total,
+        showLoadMore: data.projects.length !== data.total,
       };
     },
     [],
   );
 
   const handleProjectLoadMore = useCallback(() => {
+    if (!nickname) {
+      return;
+    }
     setProjectPostCount((prev) => prev + 10);
-  }, []);
+
+    // Update project list with cached data. However, if there is no cached data, request it to the server
+    const postCount = projectPostCount + 10;
+
+    const profileProjectsCachedData = cache.get(
+      getProfileProjectsKey(nickname, postCount),
+    )?.data?.data as ProfileProjectsAPIRes['data'];
+
+    if (profileProjectsCachedData !== undefined) {
+      setData((prev) => {
+        return {
+          ...prev,
+          projects: {
+            isLoaded: true,
+            data:
+              prev.projects.data && profileProjectsCachedData
+                ? {
+                    projects: [
+                      ...prev.projects.data?.projects,
+                      ...profileProjectsCachedData.projects,
+                    ],
+
+                    total: prev.projects.data.total,
+                  }
+                : null,
+          },
+        };
+      });
+    }
+  }, [cache, nickname, projectPostCount]);
 
   useEffect(() => {
     if (updatePage !== 'profile') {
@@ -588,32 +615,32 @@ const ProfileController = () => {
       return;
     }
 
-    if (!data.profileInfo.data && profileInfoData) {
-      const profileInfoData = cache.get(getProfileInfoKey(nickname))?.data
-        ?.data as ProfileInfoAPIRes['data'];
+    const profileInfoCachedData = cache.get(getProfileInfoKey(nickname))?.data
+      ?.data as ProfileInfoAPIRes['data'];
 
+    const profileProjectsCachedData = cache.get(
+      getProfileProjectsKey(nickname, projectPostCount),
+    )?.data?.data as ProfileProjectsAPIRes['data'];
+
+    if (!data.profileInfo.data && profileInfoCachedData) {
       setData((prev) => {
         return {
           ...prev,
           profileInfo: {
             isLoaded: true,
-            data: profileInfoData,
+            data: profileInfoCachedData,
           },
         };
       });
     }
 
-    if (!data.projects.data && profileProjectsData) {
-      const profileProjectsData = cache.get(
-        getProfileProjectsKey(nickname, projectPostCount),
-      )?.data?.data as ProfileProjectsAPIRes['data'];
-
+    if (!data.projects.data && profileProjectsCachedData) {
       setData((prev) => {
         return {
           ...prev,
           projects: {
             isLoaded: true,
-            data: profileProjectsData,
+            data: profileProjectsCachedData,
           },
         };
       });
@@ -650,15 +677,9 @@ const ProfileController = () => {
     loginState: accessUser,
     tabs: tabs.current,
     currentTab,
-    profileImageData: isProfileImage(profileImageData?.data)
-      ? profileImageData?.data.profileImage
-      : null,
-    profileInfoData: isProfileInfo(data.profileInfo.data)
-      ? handleProfileInfoDataResponse(data.profileInfo.data)
-      : null,
-    profileProjectData: isProject(data.projects.data)
-      ? handleProfileProjectDataResponse(data.projects.data)
-      : null,
+    profileImageData: profileImageData?.data?.profileImage ?? null,
+    profileInfoData: handleProfileInfoDataResponse(data.profileInfo.data),
+    profileProjectData: handleProfileProjectDataResponse(data.projects.data),
     profileNickname,
     handleLogInOut,
     handleProfileInfoEditBtn,

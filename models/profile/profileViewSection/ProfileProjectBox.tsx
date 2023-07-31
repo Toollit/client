@@ -36,7 +36,7 @@ export interface ProfileProjectsData {
 }
 
 interface ProfileProjectViewProps {
-  data?: ProfileProjectsData;
+  data: ProfileProjectsData | null;
   loadMore: () => void;
 }
 
@@ -45,7 +45,7 @@ const ProfileProjectBox = ({ data, loadMore }: ProfileProjectViewProps) => {
     <BoxContainer>
       <BoxTitle>참여 프로젝트</BoxTitle>
       <BoxContent>
-        {data ? (
+        {data && data.total > 0 ? (
           <>
             {data.projects?.map((project, index) => {
               return (

@@ -46,9 +46,9 @@ export interface ProfileViewProps {
   loginState?: string | null;
   tabs: { name: string; query: string }[];
   currentTab: 'viewProfile' | 'viewProjects' | 'viewBookmarks' | undefined;
-  profileImageData?: string | null;
-  profileInfoData?: ProfileInfoData | null;
-  profileProjectData?: ProfileProjectsData | null;
+  profileImageData: string | null;
+  profileInfoData: ProfileInfoData | null;
+  profileProjectData: ProfileProjectsData | null;
   profileNickname: string;
   handleLogInOut: () => void;
   handleProfileInfoEditBtn: (category: string) => void;
