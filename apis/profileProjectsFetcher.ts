@@ -16,7 +16,7 @@ export interface ProfileProjectsAPIRes {
   success: boolean;
   message: null | string;
   data?: {
-    projects: Project[] | null;
+    projects: Project[] | [];
     total: number;
   };
 }
