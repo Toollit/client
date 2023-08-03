@@ -5,7 +5,12 @@ import GetitLogo from '@/assets/images/GetitLogo';
 import SearchDrawer from '@/components/commons/drawer/search';
 import { openDrawer } from '@/features/drawer';
 import { useDispatch } from 'react-redux';
-import useAuth from '@/hooks/useAuth';
+import { useRouter } from 'next/router';
+import { updatePostOrder } from '@/features/order';
+import { updatePage } from '@/features/pagination';
+import { mutate } from 'swr';
+import { authUserKey } from '@/apis/keys';
+import { errorMessage } from '@/apis/errorMessage';
 import {
   NavContainer,
   Content,
@@ -18,15 +23,10 @@ import {
   SearchDrawerBtn,
   ResetPage,
 } from './styles';
-import { useRouter } from 'next/router';
-import { updatePostOrder } from '@/features/order';
-import { updatePage } from '@/features/pagination';
 
 const Nav = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-
-  const { isAuthenticated, nickname } = useAuth();
 
   const isMainPage = router.asPath === '/';
 
@@ -39,6 +39,29 @@ const Nav = () => {
   const handleSearchDrawer = useCallback(() => {
     dispatch(openDrawer({ type: 'search' }));
   }, [dispatch]);
+
+  const handleRoute = useCallback(
+    async (event: React.MouseEvent) => {
+      event.preventDefault();
+
+      try {
+        const {
+          data: { nickname },
+        } = await mutate(authUserKey);
+
+        if (nickname) {
+          router.push(`/profile/${nickname}`);
+        }
+
+        if (!nickname) {
+          router.push('/login');
+        }
+      } catch (error) {
+        errorMessage(error);
+      }
+    },
+    [router],
+  );
 
   return (
     <>
@@ -69,10 +92,8 @@ const Nav = () => {
                   </IconContainer>
                 </SearchDrawerBtn>
                 <li>
-                  <Link
-                    href={isAuthenticated ? `/profile/${nickname}` : '/login'}
-                  >
-                    <a>
+                  <Link href={'/profile'}>
+                    <a onClick={handleRoute}>
                       <IconContainer>
                         <AccountCircleIcon />
                       </IconContainer>
