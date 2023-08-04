@@ -119,7 +119,7 @@ const MainView = ({ projects, createProject }: MainViewProps) => {
               );
             })}
           </Grid>
-          <Pagination count={5} />
+          <Pagination buttons={5} />
         </PostContainer>
       </Container>
     </AppLayout>

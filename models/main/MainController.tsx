@@ -1,24 +1,21 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import MainView, { MainViewProps } from './MainView';
 import { useRouter } from 'next/router';
 import { getProjectsFetcher } from '@/apis/getProjectsFetcher';
 import { getProjectsKey } from '@/apis/keys';
 import useSWR from 'swr';
 import { errorMessage } from '@/apis/errorMessage';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import { updatePage, updateTotalPage } from '@/features/pagination';
-import { updatePostOrder } from '@/features/order';
+import { useDispatch } from 'react-redux';
+import { updateTotalPage } from '@/features/pagination';
 import useAuth from '@/hooks/useAuth';
 
 const MainController = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-
-  const page = useSelector((state: RootState) => state.pagination.page);
-  const order = useSelector((state: RootState) => state.postOrder.order);
-
   const { isAuthenticated } = useAuth();
+
+  const [page, setPage] = useState(0);
+  const [order, setOrder] = useState<'new' | 'popularity'>('new');
 
   const { data } = useSWR(getProjectsKey(page, order), getProjectsFetcher, {
     revalidateOnMount: false,
@@ -38,19 +35,39 @@ const MainController = () => {
     }
   }, [router, isAuthenticated]);
 
+  // Set total page for pagination
   useEffect(() => {
     if (data) {
       dispatch(updateTotalPage({ totalPage: data.totalPage }));
     }
-  }, [dispatch, data]);
 
-  useEffect(() => {
     return () => {
       dispatch(updateTotalPage({ totalPage: 1 }));
-      dispatch(updatePostOrder({ order: 'new' }));
-      dispatch(updatePage({ page: 1 }));
     };
-  }, [dispatch]);
+  }, [dispatch, data]);
+
+  // Set the current page and post order for pagination
+  useEffect(() => {
+    const page = router.query['page'];
+    const order = router.query['order'];
+
+    if (page === undefined || order === undefined) {
+      setPage(1);
+      setOrder('new');
+      return;
+    }
+
+    if (Array.isArray(page) || Array.isArray(order)) {
+      return;
+    }
+
+    if (order !== 'new' && order !== 'popularity') {
+      return;
+    }
+
+    setPage(Number(page));
+    setOrder(order);
+  }, [router]);
 
   const props: MainViewProps = {
     projects: data?.projects,
