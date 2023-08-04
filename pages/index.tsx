@@ -18,19 +18,59 @@ const Home: NextPage<PageProps> = ({ fallback }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const apiEndpoint = getProjectsKey(1, 'new');
-  const projects = await getProjectsFetcher(apiEndpoint);
+  // If no queries exist. Basic request when entering the homepage
+  if (Object.keys(query).length === 0) {
+    const apiEndpoint = getProjectsKey(1, 'new');
+    const projects = await getProjectsFetcher(apiEndpoint);
 
-  const hasQueryData = Object.keys(query).length >= 1;
-
-  if (hasQueryData) {
     return {
-      redirect: {
-        destination: '/',
-        permanent: false,
+      props: {
+        fallback: {
+          [apiEndpoint]: projects,
+        },
       },
     };
   }
+
+  const hasMultipleQueries = Object.keys(query).length > 2;
+
+  // Check 3 or more queries
+  if (hasMultipleQueries) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const hasPageQuery = Object.keys(query).findIndex(
+    (query) => query === 'page',
+  );
+
+  const hasOrderQuery = Object.keys(query).findIndex(
+    (query) => query === 'order',
+  );
+
+  // Check presence or absence of the query required
+  if (hasPageQuery === -1 || hasOrderQuery === -1) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const pageNumber = Number(query[Object.keys(query)[hasPageQuery]]);
+  const orderValue = query[Object.keys(query)[hasOrderQuery]];
+
+  const isPageValueNaN = isNaN(pageNumber);
+  const isOrderValue = orderValue === 'new' || orderValue === 'popularity';
+
+  // Check query value is normal
+  if (isPageValueNaN || !isOrderValue) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const apiEndpoint = getProjectsKey(pageNumber, orderValue);
+  const projects = await getProjectsFetcher(apiEndpoint);
 
   return {
     props: {
