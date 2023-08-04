@@ -1,27 +1,28 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { updatePage } from '@/features/pagination';
 import ArrowBackIcon from '@/assets/icons/ArrowBackIcon';
 import ArrowForwardIcon from '@/assets/icons/ArrowForwardIcon';
 import { Container, PageControlButton, PageNumberButton } from './styles';
 
 interface PaginationProps {
-  count: number;
+  buttons: number;
 }
 
 /**
- * @props count - pagination 버튼이 최대로 보여질 갯수
+ * @props buttons - Maximum number of pagination buttons to be displayed
  *
  */
-const Pagination = ({ count = 5 }: PaginationProps) => {
-  const dispatch = useDispatch();
+const Pagination = ({ buttons = 5 }: PaginationProps) => {
+  const router = useRouter();
 
-  const page = useSelector((state: RootState) => state.pagination.page);
   const totalPage = useSelector(
     (state: RootState) => state.pagination.totalPage,
   );
 
+  const [page, setPage] = useState(0);
+  const [order, setOrder] = useState<'new' | 'popularity'>('new');
   const [slicePoint, setSlicePoint] = useState<[number, number]>([0, 0]);
   const [startPoint, setStartPoint] = useState<Array<number>>([]);
   const [lastStartPoint, setLastStartPoint] = useState(0);
@@ -35,21 +36,27 @@ const Pagination = ({ count = 5 }: PaginationProps) => {
     }, 300);
   }, []);
 
-  const handlePagination = useCallback(
+  const handlePage = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      const pageNumber = Number(event.currentTarget.value);
+      const targePageNumber = Number(event.currentTarget.value);
 
-      if (page === pageNumber) {
+      // prevent same page router push
+      if (page === targePageNumber) {
         return;
       }
 
-      dispatch(updatePage({ page: pageNumber }));
-      ScrollToTop();
+      router.push({
+        pathname: router.pathname,
+        query: {
+          page: targePageNumber,
+          order: order,
+        },
+      });
     },
-    [dispatch, ScrollToTop, page],
+    [router, page, order],
   );
 
-  const handlePreviousPage = useCallback(() => {
+  const handlePreviousPageBlock = useCallback(() => {
     if (
       startPoint.length < 2 ||
       startPoint[1] === undefined ||
@@ -58,63 +65,98 @@ const Pagination = ({ count = 5 }: PaginationProps) => {
       return;
     }
 
-    dispatch(updatePage({ page: startPoint[startPointIndex] - 1 }));
+    router.push({
+      pathname: router.pathname,
+      query: {
+        page: startPoint[startPointIndex] - 1,
+        order: order,
+      },
+    });
 
     setStartPointIndex((prev) => prev - 1);
+  }, [router, startPoint, startPointIndex, order, page]);
 
-    ScrollToTop();
-  }, [dispatch, page, ScrollToTop, startPoint, startPointIndex]);
-
-  const handleNextPage = useCallback(() => {
+  const handleNextPageBlock = useCallback(() => {
     if (page >= lastStartPoint && page <= totalPage) {
       return;
     }
 
-    dispatch(updatePage({ page: startPoint[startPointIndex + 1] }));
+    router.push({
+      pathname: router.pathname,
+      query: {
+        page: startPoint[startPointIndex + 1],
+        order: order,
+      },
+    });
 
     setStartPointIndex((prev) => prev + 1);
-
-    ScrollToTop();
   }, [
-    dispatch,
-    page,
-    ScrollToTop,
+    router,
     totalPage,
     startPoint,
     startPointIndex,
     lastStartPoint,
+    order,
+    page,
   ]);
 
   useEffect(() => {
-    // redux store totalPage default value 1. so need to update new totalPage after controller inside api call
-    const paginationBreakpoint = Math.ceil(totalPage / count);
+    // redux store totalPage default value 1. so need to update new totalPage after api call
+    const paginationBreakpoint = Math.ceil(totalPage / buttons);
 
-    // (count * n) + 1 -> Formula for finding pagination block starting point  ex)(5 * n) + 1
+    // (buttons * n) + 1 -> Formula for finding pagination block starting point  ex)(5 * n) + 1
     const startPoint = Array.from({ length: paginationBreakpoint }, (_, i) => {
-      return count * i + 1;
+      return buttons * i + 1;
     });
 
     const lastStartPoint = startPoint[startPoint.length - 1];
 
+    // Set page block starting point
     setStartPoint(startPoint);
     setLastStartPoint(lastStartPoint);
 
     const SlicePoint = [];
 
     for (let i = 0; i < startPoint.length; i++) {
-      SlicePoint.push({ sliceStart: i * count, sliceEnd: i * count + count });
+      SlicePoint.push({
+        sliceStart: i * buttons,
+        sliceEnd: i * buttons + buttons,
+      });
     }
 
     for (let i = 0; i < startPoint.length; i++) {
-      if (startPoint[i] <= page) {
+      if (startPoint[i] <= Number(page)) {
         setSlicePoint([SlicePoint[i].sliceStart, SlicePoint[i].sliceEnd]);
       }
     }
-  }, [totalPage, page, count]);
+  }, [router, totalPage, buttons, page]);
+
+  // Set the current page and post order for pagination
+  useEffect(() => {
+    const page = router.query['page'];
+    const order = router.query['order'];
+
+    if (page === undefined || order === undefined) {
+      setPage(1);
+      setOrder('new');
+      return;
+    }
+
+    if (Array.isArray(page) || Array.isArray(order)) {
+      return;
+    }
+
+    if (order !== 'new' && order !== 'popularity') {
+      return;
+    }
+
+    setPage(Number(page));
+    setOrder(order);
+  }, [router]);
 
   return (
     <Container>
-      <PageControlButton onClick={handlePreviousPage}>
+      <PageControlButton onClick={handlePreviousPageBlock}>
         {startPoint.length < 2 ||
         startPoint[1] === undefined ||
         page < startPoint[1] ? (
@@ -130,7 +172,7 @@ const Pagination = ({ count = 5 }: PaginationProps) => {
               <PageNumberButton
                 key={i + 1}
                 value={i + 1}
-                onClick={handlePagination}
+                onClick={handlePage}
                 selected={i + 1 === page ? true : false}
               >
                 {i + 1}
@@ -138,7 +180,7 @@ const Pagination = ({ count = 5 }: PaginationProps) => {
             );
           }).slice(slicePoint[0], slicePoint[1])}
       </div>
-      <PageControlButton onClick={handleNextPage}>
+      <PageControlButton onClick={handleNextPageBlock}>
         {page >= lastStartPoint && page <= totalPage ? (
           <ArrowForwardIcon width={20} height={20} color='#00000014' />
         ) : (
