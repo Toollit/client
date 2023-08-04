@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { FilterIcon } from '@/assets/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { updatePostOrder } from '@/features/order';
-import { RootState } from '@/store';
 import {
   Button,
   IconContainer,
@@ -12,16 +10,18 @@ import {
 } from './styles';
 
 const Filter = () => {
-  const dispatch = useDispatch();
-
-  const order = useSelector((state: RootState) => state.postOrder.order);
+  const router = useRouter();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [orderText, setOrderText] = useState<'최신순' | '인기순'>('최신순');
+  const [displayOrderText, setDisplayOrderText] = useState<'최신순' | '인기순'>(
+    '최신순',
+  );
 
   const open = Boolean(anchorEl);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleOpenOrderSelector = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     // open
     setAnchorEl(event.currentTarget);
   };
@@ -30,39 +30,50 @@ const Filter = () => {
     (event: React.MouseEvent<HTMLLIElement>) => {
       const { value } = event.currentTarget.dataset;
 
-      if (value === 'new') {
-        dispatch(updatePostOrder({ order: 'new' }));
+      if (value === 'new' || value === 'popularity') {
+        router.push({
+          pathname: router.pathname,
+          query: {
+            page: 1,
+            order: value,
+          },
+        });
       }
-
-      if (value === 'popularity') {
-        dispatch(updatePostOrder({ order: 'popularity' }));
-      }
-
-      window.scrollTo({ top: 0 });
 
       // close
       setAnchorEl(null);
     },
-    [dispatch],
+    [router],
   );
 
+  // Set post order
   useEffect(() => {
+    const order = router.query['order'];
+
+    if (Array.isArray(order) || order === undefined) {
+      return;
+    }
+
+    if (order !== 'new' && order !== 'popularity') {
+      return;
+    }
+
     if (order === 'new') {
-      setOrderText('최신순');
+      setDisplayOrderText('최신순');
     }
 
     if (order === 'popularity') {
-      setOrderText('인기순');
+      setDisplayOrderText('인기순');
     }
-  }, [order]);
+  }, [router]);
 
   return (
     <div>
-      <Button onClick={handleClick}>
+      <Button onClick={handleOpenOrderSelector}>
         <IconContainer>
           <FilterIcon width={20} height={20} />
         </IconContainer>
-        <Text>{orderText}</Text>
+        <Text>{displayOrderText}</Text>
       </Button>
       <FilterMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <FilterCondition onClick={handleClose} data-value='new'>
