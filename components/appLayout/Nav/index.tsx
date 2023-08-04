@@ -6,8 +6,6 @@ import SearchDrawer from '@/components/commons/drawer/search';
 import { openDrawer } from '@/features/drawer';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { updatePostOrder } from '@/features/order';
-import { updatePage } from '@/features/pagination';
 import { mutate } from 'swr';
 import { authUserKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
@@ -21,20 +19,27 @@ import {
   ColumnRightContainer,
   StyledLink,
   SearchDrawerBtn,
-  ResetPage,
 } from './styles';
 
 const Nav = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const isMainPage = router.asPath === '/';
+  const handleLogoRoute = useCallback(
+    (event: React.MouseEvent) => {
+      event.preventDefault();
 
-  const handlePagination = useCallback(() => {
-    dispatch(updatePostOrder({ order: 'new' }));
-    dispatch(updatePage({ page: 1 }));
-    window.scrollTo({ top: 0 });
-  }, [dispatch]);
+      const isMainPage = router.asPath === '/';
+
+      // If click logo, you are supposed to go to the main page. One problem that arise here. If current page is the main page, but if you route it back to the main page, an API request will be made to the server due to the getServersideProps written for seo. so prevent api request if current page is main page
+      if (isMainPage) {
+        return;
+      } else {
+        router.push('/');
+      }
+    },
+    [router],
+  );
 
   const handleSearchDrawer = useCallback(() => {
     dispatch(openDrawer({ type: 'search' }));
@@ -69,19 +74,12 @@ const Nav = () => {
         <Content>
           <NavList>
             <ColumnLeftContainer>
-              {isMainPage ? (
-                <ResetPage onClick={handlePagination}>
+              <Link href='/' passHref>
+                <StyledLink onClick={handleLogoRoute}>
                   <GetitLogo />
                   <LogoText>Getit</LogoText>
-                </ResetPage>
-              ) : (
-                <Link href='/' passHref>
-                  <StyledLink>
-                    <GetitLogo />
-                    <LogoText>Getit</LogoText>
-                  </StyledLink>
-                </Link>
-              )}
+                </StyledLink>
+              </Link>
             </ColumnLeftContainer>
 
             <ColumnRightContainer>

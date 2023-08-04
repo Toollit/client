@@ -35,13 +35,6 @@ const ColumnRightContainer = styled.li`
   }
 `;
 
-const ResetPage = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
-
 const StyledLink = styled.a`
   display: flex;
   justify-content: center;
@@ -74,7 +67,6 @@ export {
   ColumnRightContainer,
   Content,
   NavList,
-  ResetPage,
   StyledLink,
   LogoText,
   IconContainer,
