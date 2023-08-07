@@ -1,6 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Nav from './Nav';
-import { Container } from './styles';
+import Alert from '@/components/commons/alert';
+import { RootState } from '@/store';
+import { Container, Content } from './styles';
 
 interface Props {
   children: React.ReactNode;
@@ -8,10 +11,16 @@ interface Props {
 }
 
 const AppLayout = ({ children, nav }: Props) => {
+  const alertState = useSelector((state: RootState) => state.alert);
+
   return (
     <Container>
       {nav && <Nav />}
-      {children}
+      <Content nav={true}>{children}</Content>
+
+      {alertState.show && (
+        <Alert type={alertState.type} text={alertState.text} />
+      )}
     </Container>
   );
 };
