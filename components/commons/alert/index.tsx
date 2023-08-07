@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Alert as MUIAlert } from '@mui/material';
 import { Container, Title, Content } from './styles';
+import { useDispatch } from 'react-redux';
+import { hideAlert } from '@/features/alert';
 
 interface AlertProps {
-  type: 'error' | 'warning' | 'info' | 'success';
+  type: 'error' | 'warning' | 'info' | 'success' | null;
   text: string;
 }
 
 const Alert = ({ type, text }: AlertProps) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      dispatch(hideAlert());
+    }, 2000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [dispatch]);
+
   switch (type) {
     case 'error':
       return (
@@ -48,6 +62,9 @@ const Alert = ({ type, text }: AlertProps) => {
           </MUIAlert>
         </Container>
       );
+
+    case null:
+      return null;
 
     default:
       break;

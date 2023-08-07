@@ -2,14 +2,14 @@ import { mediaQueryMobile } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 
 const Container = styled.div`
-  position: sticky;
-  bottom: 3rem;
-  right: 0;
+  position: fixed;
+  right: 1rem;
+  bottom: 2rem;
   width: calc(100vw - 2rem);
   margin: 0 auto;
 
   ${mediaQueryMobile} {
-    max-width: 40rem;
+    max-width: 30rem;
     width: 100%;
     margin: 0 0 0 auto;
     right: 2rem;
