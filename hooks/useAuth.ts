@@ -7,14 +7,18 @@ import { authFetcher } from '@/apis/authFetcher';
  * check user authentication hooks.
  */
 const useAuth = () => {
-  const { data, isLoading, mutate } = useSWRImmutable(authUserKey, authFetcher);
+  const {
+    data,
+    isLoading,
+    mutate: authMutate,
+  } = useSWRImmutable(authUserKey, authFetcher);
 
   const authUserNickname = data?.data.nickname;
   const isAuthenticated = authUserNickname ? true : false;
   const nickname = authUserNickname ? authUserNickname : null;
   const message = data?.message ? data.message : null;
 
-  return { isLoading, isAuthenticated, nickname, message, mutate };
+  return { isLoading, isAuthenticated, nickname, message, authMutate };
 };
 
 export default useAuth;
