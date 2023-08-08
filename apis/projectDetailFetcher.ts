@@ -27,5 +27,5 @@ export const projectDetailFetcher = async (url: string, config?: any) => {
     url,
     config ? config : {},
   );
-  return response.data.data;
+  return response.data;
 };
