@@ -7,13 +7,16 @@ import {
   ProjectDetailAPIRes,
   projectDetailFetcher,
 } from '@/apis/projectDetailFetcher';
-import { getCheckBookmarkKey, getProjectDetailKey } from '@/apis/keys';
+import {
+  getProjectDetailBookmarkCheckKey,
+  getProjectDetailKey,
+} from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
 import useAuth from '@/hooks/useAuth';
 import { useDispatch } from 'react-redux';
 import { showAlert } from '@/features/alert';
 import { bookmarkAPI } from '@/apis/bookmark';
-import { checkBookmarkFetcher } from '@/apis/checkBookmarkFetcher';
+import { projectDetailBookmarkCheckFetcher } from '@/apis/projectDetailBookmarkCheckFetcher';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
@@ -41,8 +44,8 @@ const ProjectDetailController = () => {
   );
 
   const { data: bookmark, mutate: bookmarkMutate } = useSWR(
-    postId ? getCheckBookmarkKey(postId) : null,
-    checkBookmarkFetcher,
+    postId ? getProjectDetailBookmarkCheckKey(postId) : null,
+    projectDetailBookmarkCheckFetcher,
     {
       revalidateOnFocus: false,
       errorRetryCount: 0,

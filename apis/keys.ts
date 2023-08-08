@@ -12,7 +12,7 @@ export const getProjectDetailKey = (postId: string) => {
   return `${PROJECT_DETAIL_API_ENDPOINT}/${postId}`;
 };
 
-export const getCheckBookmarkKey = (postId: string) => {
+export const getProjectDetailBookmarkCheckKey = (postId: string) => {
   return `${PROJECT_DETAIL_API_ENDPOINT}/${postId}/checkBookmark`;
 };
 

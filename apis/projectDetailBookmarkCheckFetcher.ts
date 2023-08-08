@@ -8,7 +8,7 @@ export interface CheckBookmarkAPIRes {
   };
 }
 
-export const checkBookmarkFetcher = async (url: string) => {
+export const projectDetailBookmarkCheckFetcher = async (url: string) => {
   const response = await serverInstance.get<CheckBookmarkAPIRes>(url);
   return response.data;
 };
