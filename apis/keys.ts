@@ -1,7 +1,6 @@
 // const AUTH_USER_API_ENDPOINT = '/api/auth/user';
 export const authUserKey = '/api/auth/user';
 
-export const GET_PROJECTS_API_ENDPOINT = '/api/post/projects?page=1';
 export const getProjectsKey = (page: number, order: 'new' | 'popularity') => {
   return `/api/post/projects?page=${page}&order=${order ?? 'new'}`;
 };
@@ -9,8 +8,12 @@ export const getProjectsKey = (page: number, order: 'new' | 'popularity') => {
 // project detail page
 export const PROJECT_DETAIL_API_ENDPOINT = '/api/post/project';
 
-export const getProjectDetailKey = (projectId: string) => {
-  return `${PROJECT_DETAIL_API_ENDPOINT}/${projectId}`;
+export const getProjectDetailKey = (postId: string) => {
+  return `${PROJECT_DETAIL_API_ENDPOINT}/${postId}`;
+};
+
+export const getCheckBookmarkKey = (postId: string) => {
+  return `${PROJECT_DETAIL_API_ENDPOINT}/${postId}/checkBookmark`;
 };
 
 // profile page
