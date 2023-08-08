@@ -7,6 +7,7 @@ import { ShareIcon, BookmarkIcon } from '@/assets/icons';
 import MoreButton from '@/components/commons/moreButton';
 import Hashtag from '@/components/commons/hashtag';
 import { ProjectDetail } from '@/apis/projectDetailFetcher';
+import Skeleton from '@/components/commons/skeleton';
 import {
   Container,
   ColumnContainer,
@@ -51,117 +52,137 @@ interface ProjectDetailContent
 
 export interface ProjectDetailViewProps {
   isClientRendering: boolean;
-  writer: ProjectDetail['writer'];
-  content: ProjectDetailContent;
-  me: {
-    nickname: string | null;
-  };
+  me: boolean;
+  postId: string;
+  writer?: ProjectDetail['writer'];
+  content?: ProjectDetailContent;
+  bookmark?: boolean;
+  handleBookmark: () => void;
+  handleShare: () => void;
 }
 
 const ProjectDetailView = ({
   isClientRendering,
+  me,
+  postId,
   content,
   writer,
-  me,
+  bookmark,
+  handleBookmark,
+  handleShare,
 }: ProjectDetailViewProps) => {
   return (
-    <AppLayout nav={true}>
-      <Container>
-        <ColumnContainer>
-          <ColumnLeftContainer>
-            <ProjectContentContainer>
-              <ProjectContentTopContainer>
-                <RecruitmentTypeContainer>
-                  {content.memberTypes.map((type, index) => {
-                    return (
-                      <RecruitmentType key={type + index} type={type}>
-                        {type}
-                      </RecruitmentType>
-                    );
-                  })}
-                </RecruitmentTypeContainer>
+    <>
+      <AppLayout nav={true}>
+        <Container>
+          <ColumnContainer>
+            <ColumnLeftContainer>
+              {content ? (
+                <ProjectContentContainer>
+                  <ProjectContentTopContainer>
+                    <RecruitmentTypeContainer>
+                      {content.memberTypes.map((type, index) => {
+                        return (
+                          <RecruitmentType key={type + index} type={type}>
+                            {type}
+                          </RecruitmentType>
+                        );
+                      })}
+                    </RecruitmentTypeContainer>
 
-                <Title text={content.title} />
+                    <Title text={content.title} />
 
-                <DateAndViewContainer>
-                  <Date>
-                    <CreatedAt>작성일: {content.createdAt}</CreatedAt>
-                    {content.updatedAt && (
-                      <UpdatedAt>수정됨: {content.updatedAt}</UpdatedAt>
-                    )}
-                  </Date>
+                    <DateAndViewContainer>
+                      <Date>
+                        <CreatedAt>작성일: {content.createdAt}</CreatedAt>
+                        {content.updatedAt && (
+                          <UpdatedAt>수정됨: {content.updatedAt}</UpdatedAt>
+                        )}
+                      </Date>
 
-                  <Views>조회수: {content.views}</Views>
-                </DateAndViewContainer>
-              </ProjectContentTopContainer>
+                      <Views>조회수: {content.views}</Views>
+                    </DateAndViewContainer>
+                  </ProjectContentTopContainer>
 
-              {/* The current page that can be ssr, but the TUI editor only supports csr, so the data is not rendered properly during ssr, so I wrote it like this to randomly put the data on the screen for seo. */}
-              {isClientRendering ? (
-                <DynamicTuiViewer content={content.contentHTML} />
+                  {/* The current page that can be ssr, but the TUI editor only supports csr, so the data is not rendered properly during ssr, so I wrote it like this to randomly put the data on the screen for seo. */}
+                  {isClientRendering ? (
+                    <DynamicTuiViewer content={content.contentHTML} />
+                  ) : (
+                    <p>{content.contentMarkdown}</p>
+                  )}
+
+                  <ProjectContentBottomContainer>
+                    <HashtagsContainer>
+                      {content.hashtags.map((hashtag, index) => {
+                        return (
+                          <Hashtag
+                            tagName={hashtag}
+                            key={`/project/${postId}/${hashtag}`}
+                          />
+                        );
+                      })}
+                    </HashtagsContainer>
+                    <ButtonContainer>
+                      <BookmarkButton onClick={handleBookmark}>
+                        <BookmarkIcon fill={bookmark} />
+                        <span>북마크</span>
+                      </BookmarkButton>
+                      <ShareButton onClick={handleShare}>
+                        <ShareIcon />
+                        <span>공유</span>
+                      </ShareButton>
+                      <MoreButton isMine={me} />
+                    </ButtonContainer>
+                  </ProjectContentBottomContainer>
+                </ProjectContentContainer>
               ) : (
-                <p>{content.contentMarkdown}</p>
+                <Skeleton height={500} />
+              )}
+            </ColumnLeftContainer>
+            <ColumnRightContainer>
+              {writer ? (
+                <WriterInfoContainer>
+                  <ProfileImageContainer>
+                    {writer.profileImage ? (
+                      <StyledImage
+                        src={writer.profileImage}
+                        alt={`${writer.nickname} profile image`}
+                        width={80}
+                        height={80}
+                        draggable={false}
+                        priority
+                      />
+                    ) : (
+                      <AccountCircleIcon fill={false} width={80} height={80} />
+                    )}
+                  </ProfileImageContainer>
+                  <WriterLastLoginAtContainer>
+                    <Writer>
+                      <div>작성자</div>
+                      <div>{writer.nickname}</div>
+                    </Writer>
+                    <LastLoginAt>
+                      <div>마지막 접속</div>
+                      <div>{writer.lastLoginAt}</div>
+                    </LastLoginAt>
+                  </WriterLastLoginAtContainer>
+                </WriterInfoContainer>
+              ) : (
+                <Skeleton height={200} />
               )}
 
-              <ProjectContentBottomContainer>
-                <HashtagsContainer>
-                  {content.hashtags.map((hashtag, index) => {
-                    return (
-                      <Hashtag tagName={hashtag} key={`${hashtag}-${index}`} />
-                    );
-                  })}
-                </HashtagsContainer>
-                <ButtonContainer>
-                  <BookmarkButton>
-                    <BookmarkIcon />
-                    <span>북마크</span>
-                  </BookmarkButton>
-                  <ShareButton>
-                    <ShareIcon />
-                    <span>공유</span>
-                  </ShareButton>
-                  <MoreButton isMine={writer.nickname === me.nickname} />
-                </ButtonContainer>
-              </ProjectContentBottomContainer>
-            </ProjectContentContainer>
-          </ColumnLeftContainer>
-          <ColumnRightContainer>
-            <WriterInfoContainer>
-              <ProfileImageContainer>
-                {writer.profileImage ? (
-                  <StyledImage
-                    src={writer.profileImage}
-                    alt={`${writer.nickname} profile image`}
-                    width={80}
-                    height={80}
-                    draggable={false}
-                    priority
-                  />
-                ) : (
-                  <AccountCircleIcon fill={false} width={80} height={80} />
-                )}
-              </ProfileImageContainer>
-              <WriterLastLoginAtContainer>
-                <Writer>
-                  <div>작성자</div>
-                  <div>{writer.nickname}</div>
-                </Writer>
-                <LastLoginAt>
-                  <div>마지막 접속</div>
-                  <div>{writer.lastLoginAt}</div>
-                </LastLoginAt>
-              </WriterLastLoginAtContainer>
-            </WriterInfoContainer>
-            <ProjectMemberContainerTablet>
-              참여중인 멤버
-            </ProjectMemberContainerTablet>
-          </ColumnRightContainer>
-        </ColumnContainer>
-        {/* mobile version */}
-        <ProjectMemberContainerMobile>
-          참여중인 멤버
-        </ProjectMemberContainerMobile>
-      </Container>
-    </AppLayout>
+              <ProjectMemberContainerTablet>
+                참여중인 멤버
+              </ProjectMemberContainerTablet>
+            </ColumnRightContainer>
+          </ColumnContainer>
+          {/* mobile version */}
+          <ProjectMemberContainerMobile>
+            참여중인 멤버
+          </ProjectMemberContainerMobile>
+        </Container>
+      </AppLayout>
+    </>
   );
 };
 
