@@ -53,7 +53,7 @@ const RecruitmentTypeContainer = styled.div`
 `;
 
 const RecruitmentType = styled.div<{
-  type: 'developer' | 'designer' | 'pm' | 'anyone';
+  type: 'Developer' | 'Designer' | 'PM' | 'Anyone';
 }>`
   width: fit-content;
   margin-right: 0.2rem;
@@ -68,16 +68,16 @@ const RecruitmentType = styled.div<{
     const recruitmentType = props.type;
 
     switch (recruitmentType) {
-      case 'developer':
+      case 'Developer':
         return props.theme.colors.developer;
 
-      case 'designer':
+      case 'Designer':
         return props.theme.colors.designer;
 
-      case 'pm':
+      case 'PM':
         return props.theme.colors.pm;
 
-      case 'anyone':
+      case 'Anyone':
         return props.theme.colors.anyone;
 
       default:
@@ -117,16 +117,16 @@ const RecruitmentType = styled.div<{
     const recruitmentType = props.type;
 
     switch (recruitmentType) {
-      case 'developer':
+      case 'Developer':
         return props.theme.colors.developer;
 
-      case 'designer':
+      case 'Designer':
         return props.theme.colors.designer;
 
-      case 'pm':
+      case 'PM':
         return props.theme.colors.pm;
 
-      case 'anyone':
+      case 'Anyone':
         return props.theme.colors.anyone;
 
       default:

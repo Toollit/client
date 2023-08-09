@@ -6,7 +6,7 @@ import BannerBackground from '@/assets/images/BannerBackground';
 import Bug from '@/assets/images/Bug';
 import NetworkLottieJson from 'public/static/lotties/network.json';
 import LottieAnimation from '@/components/commons/lottie';
-import BlockPost from '@/components/commons/post/block';
+import BlockPost, { CustomProject } from '@/components/commons/post/block';
 import Grid from '@mui/material/Grid';
 import Filter from '@/components/commons/filter';
 import { Project } from '@/apis/getProjectsFetcher';
@@ -33,7 +33,7 @@ import {
 } from './styles';
 
 export interface MainViewProps {
-  projects: Project[] | undefined;
+  projects?: CustomProject[];
   createProject: () => void;
 }
 
@@ -100,10 +100,10 @@ const MainView = ({ projects, createProject }: MainViewProps) => {
 
         <PostContainer>
           <Grid container spacing={1}>
-            {projects?.map((project) => {
+            {projects?.map((project, index) => {
               return (
                 <Grid
-                  key={`/${project.id}`}
+                  key={`/${project.id}-${index}`}
                   item
                   xsMobile={6}
                   mobile={6}
