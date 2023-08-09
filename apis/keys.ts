@@ -1,8 +1,13 @@
 // const AUTH_USER_API_ENDPOINT = '/api/auth/user';
 export const authUserKey = '/api/auth/user';
 
+// main page
 export const getProjectsKey = (page: number, order: 'new' | 'popularity') => {
   return `/api/post/projects?page=${page}&order=${order ?? 'new'}`;
+};
+
+export const getProjectsBookmarkCheckKey = () => {
+  return `/api/post/projects/checkBookmark`;
 };
 
 // project detail page
