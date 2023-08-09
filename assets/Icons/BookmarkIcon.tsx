@@ -4,11 +4,16 @@ import BookmarkFILL1 from 'public/static/icons/bookmark/bookmark_FILL1.svg';
 import { IconProps } from './types';
 import { SVGContainer } from '@/styles/commons';
 
-const BookmarkIcon = ({ fill = false, width = 24, height = 24 }: IconProps) => {
+const BookmarkIcon = ({
+  fill = false,
+  width = 24,
+  height = 24,
+  color,
+}: IconProps) => {
   if (!fill) {
     return (
       <SVGContainer width={width} height={height}>
-        <BookmarkFILL0 width={'100%'} height={'100%'} />
+        <BookmarkFILL0 width={'100%'} height={'100%'} fill={color} />
       </SVGContainer>
     );
   }
@@ -16,7 +21,7 @@ const BookmarkIcon = ({ fill = false, width = 24, height = 24 }: IconProps) => {
   if (fill) {
     return (
       <SVGContainer width={width} height={height}>
-        <BookmarkFILL1 width={'100%'} height={'100%'} />
+        <BookmarkFILL1 width={'100%'} height={'100%'} fill={color} />
       </SVGContainer>
     );
   }
