@@ -28,14 +28,6 @@ const Pagination = ({ buttons = 5 }: PaginationProps) => {
   const [lastStartPoint, setLastStartPoint] = useState(0);
   const [startPointIndex, setStartPointIndex] = useState(0);
 
-  const ScrollToTop = useCallback(() => {
-    setTimeout(() => {
-      // nav 44, banner 360
-      // window.scrollTo({ top: 404, behavior: 'auto' });
-      window.scrollTo({ top: 0, behavior: 'auto' });
-    }, 300);
-  }, []);
-
   const handlePage = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       const targePageNumber = Number(event.currentTarget.value);
