@@ -155,10 +155,10 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
     recruitCountRef,
     handleKeydownSubmit,
     // TODO free, question 게시판 분기처리하기
-    content: projectDetail,
-    hashtags: projectDetail?.content.hashtags,
-    memberTypes: projectDetail?.content.memberTypes,
-    recruitNumber: projectDetail?.content.recruitNumber,
+    content: projectDetail?.data,
+    hashtags: projectDetail?.data.content.hashtags,
+    memberTypes: projectDetail?.data.content.memberTypes,
+    recruitNumber: projectDetail?.data.content.recruitNumber,
   };
 
   return (

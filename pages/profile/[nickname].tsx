@@ -1,5 +1,5 @@
 import React from 'react';
-import { NextPage, GetServerSideProps } from 'next';
+import { NextPage } from 'next';
 import ProfileController from '@/models/profile/ProfileController';
 
 interface ProfileProps {}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Nav from './Nav';
+import Nav from './nav';
 import Alert from '@/components/commons/alert';
 import { RootState } from '@/store';
 import { Container, Content } from './styles';
