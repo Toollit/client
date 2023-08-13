@@ -1,32 +1,31 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
 import ArrowBackIcon from '@/assets/icons/ArrowBackIcon';
 import ArrowForwardIcon from '@/assets/icons/ArrowForwardIcon';
 import { Container, PageControlButton, PageNumberButton } from './styles';
 
 interface PaginationProps {
   buttons: number;
+  totalPage: number;
 }
 
 /**
  * @props buttons - Maximum number of pagination buttons to be displayed
- *
+ * @props totalPage - Total number of pagination pages
  */
-const Pagination = ({ buttons = 5 }: PaginationProps) => {
+const Pagination = ({ buttons = 5, totalPage = 1 }: PaginationProps) => {
   const router = useRouter();
 
-  const totalPage = useSelector(
-    (state: RootState) => state.pagination.totalPage,
-  );
-
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [order, setOrder] = useState<'new' | 'popularity'>('new');
   const [slicePoint, setSlicePoint] = useState<[number, number]>([0, 0]);
   const [startPoint, setStartPoint] = useState<Array<number>>([]);
   const [lastStartPoint, setLastStartPoint] = useState(0);
   const [startPointIndex, setStartPointIndex] = useState(0);
+
+  const ScrollToTop = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, []);
 
   const handlePage = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -37,15 +36,21 @@ const Pagination = ({ buttons = 5 }: PaginationProps) => {
         return;
       }
 
-      router.push({
-        pathname: router.pathname,
-        query: {
-          page: targePageNumber,
-          order: order,
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            page: targePageNumber,
+            order: order,
+          },
         },
-      });
+        undefined,
+        { shallow: true },
+      );
+
+      ScrollToTop();
     },
-    [router, page, order],
+    [router, page, order, ScrollToTop],
   );
 
   const handlePreviousPageBlock = useCallback(() => {
@@ -57,29 +62,41 @@ const Pagination = ({ buttons = 5 }: PaginationProps) => {
       return;
     }
 
-    router.push({
-      pathname: router.pathname,
-      query: {
-        page: startPoint[startPointIndex] - 1,
-        order: order,
+    router.push(
+      {
+        pathname: router.pathname,
+        query: {
+          page: startPoint[startPointIndex] - 1,
+          order: order,
+        },
       },
-    });
+      undefined,
+      { shallow: true },
+    );
+
+    ScrollToTop();
 
     setStartPointIndex((prev) => prev - 1);
-  }, [router, startPoint, startPointIndex, order, page]);
+  }, [router, startPoint, startPointIndex, order, page, ScrollToTop]);
 
   const handleNextPageBlock = useCallback(() => {
     if (page >= lastStartPoint && page <= totalPage) {
       return;
     }
 
-    router.push({
-      pathname: router.pathname,
-      query: {
-        page: startPoint[startPointIndex + 1],
-        order: order,
+    router.push(
+      {
+        pathname: router.pathname,
+        query: {
+          page: startPoint[startPointIndex + 1],
+          order: order,
+        },
       },
-    });
+      undefined,
+      { shallow: true },
+    );
+
+    ScrollToTop();
 
     setStartPointIndex((prev) => prev + 1);
   }, [
@@ -90,10 +107,10 @@ const Pagination = ({ buttons = 5 }: PaginationProps) => {
     lastStartPoint,
     order,
     page,
+    ScrollToTop,
   ]);
 
   useEffect(() => {
-    // redux store totalPage default value 1. so need to update new totalPage after api call
     const paginationBreakpoint = Math.ceil(totalPage / buttons);
 
     // (buttons * n) + 1 -> Formula for finding pagination block starting point  ex)(5 * n) + 1
@@ -123,27 +140,27 @@ const Pagination = ({ buttons = 5 }: PaginationProps) => {
     }
   }, [router, totalPage, buttons, page]);
 
-  // Set the current page and post order for pagination
+  // Set page and order according to query value
   useEffect(() => {
-    const page = router.query['page'];
-    const order = router.query['order'];
+    const pageQuery = router.query['page'];
+    const orderQuery = router.query['order'];
 
-    if (page === undefined || order === undefined) {
+    if (Array.isArray(pageQuery) || Array.isArray(orderQuery)) {
+      return;
+    }
+
+    if (pageQuery === undefined || orderQuery === undefined) {
       setPage(1);
       setOrder('new');
       return;
     }
 
-    if (Array.isArray(page) || Array.isArray(order)) {
+    if (orderQuery !== 'new' && orderQuery !== 'popularity') {
       return;
     }
 
-    if (order !== 'new' && order !== 'popularity') {
-      return;
-    }
-
-    setPage(Number(page));
-    setOrder(order);
+    setPage(Number(pageQuery));
+    setOrder(orderQuery);
   }, [router]);
 
   return (
