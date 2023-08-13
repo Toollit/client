@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import MainView, { MainViewProps } from './MainView';
 import { useRouter } from 'next/router';
+import useSWR from 'swr';
+import MainView, { MainViewProps } from './MainView';
 import { getProjectsFetcher } from '@/apis/getProjectsFetcher';
 import { getProjectsBookmarkCheckKey, getProjectsKey } from '@/apis/keys';
-import useSWR from 'swr';
 import { errorMessage } from '@/apis/errorMessage';
-import { useDispatch } from 'react-redux';
-import { updateTotalPage } from '@/features/pagination';
 import useAuth from '@/hooks/useAuth';
 import { projectsBookmarkCheckFetcher } from '@/apis/projectsBookmarkCheckFetcher';
 
@@ -14,22 +12,21 @@ type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
 const MainController = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
   const { authMutate } = useAuth();
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [order, setOrder] = useState<'new' | 'popularity'>('new');
 
   const { data: projectsRes } = useSWR(
     getProjectsKey(page, order),
     getProjectsFetcher,
     {
+      dedupingInterval: 60 * 10 * 1000,
       revalidateOnMount: false,
       errorRetryCount: 0,
       onError(err, key, config) {
         errorMessage(err);
       },
-      dedupingInterval: 60 * 10 * 1000,
     },
   );
 
@@ -37,11 +34,11 @@ const MainController = () => {
     getProjectsBookmarkCheckKey(),
     projectsBookmarkCheckFetcher,
     {
+      dedupingInterval: 60 * 10 * 1000,
       errorRetryCount: 0,
       onError(err, key, config) {
         errorMessage(err);
       },
-      dedupingInterval: 60 * 10 * 1000,
     },
   );
 
@@ -74,7 +71,6 @@ const MainController = () => {
     // memeber type convert. developer -> Developer, designer -> Designer, pm -> PM, anyone -> Anyone
     const resultMemberTypeConverter = resultBookmarkCheckProjects?.map(
       (project) => {
-        console.log('test', project);
         return {
           ...project,
           memberTypes: project.memberTypes?.map((type) => {
@@ -89,43 +85,48 @@ const MainController = () => {
     return resultMemberTypeConverter;
   }, [projectsRes, bookmarksRes]);
 
-  // Set total page for pagination
+  // Set up page and order to request data to the server
   useEffect(() => {
-    if (projectsRes) {
-      dispatch(updateTotalPage({ totalPage: projectsRes.totalPage }));
+    const pageQuery = router.query['page'];
+    const orderQuery = router.query['order'];
+
+    // Preventing Infinite Requests
+    if (router.asPath === '/') {
+      if (page === 1 && order === 'new') {
+        return;
+      }
     }
 
-    return () => {
-      dispatch(updateTotalPage({ totalPage: 1 }));
-    };
-  }, [dispatch, projectsRes]);
+    if (Array.isArray(pageQuery) || Array.isArray(orderQuery)) {
+      return;
+    }
 
-  // Set the current page and post order for pagination
-  useEffect(() => {
-    const page = router.query['page'];
-    const order = router.query['order'];
-
-    if (page === undefined || order === undefined) {
+    if (
+      pageQuery === undefined ||
+      orderQuery === undefined ||
+      pageQuery === '' ||
+      orderQuery === ''
+    ) {
       setPage(1);
       setOrder('new');
+      router.replace('/', undefined, { shallow: true });
       return;
     }
 
-    if (Array.isArray(page) || Array.isArray(order)) {
+    if (orderQuery !== 'new' && orderQuery !== 'popularity') {
       return;
     }
 
-    if (order !== 'new' && order !== 'popularity') {
-      return;
-    }
-
-    setPage(Number(page));
-    setOrder(order);
-  }, [router]);
+    setPage(Number(pageQuery));
+    setOrder(orderQuery);
+  }, [router, page, order]);
 
   const props: MainViewProps = {
     projects: handleProcessData(),
     createProject,
+    pagination: {
+      totalPage: projectsRes?.totalPage ? projectsRes.totalPage : 1,
+    },
   };
 
   return <MainView {...props} />;

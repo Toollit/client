@@ -35,9 +35,12 @@ import {
 export interface MainViewProps {
   projects?: CustomProject[];
   createProject: () => void;
+  pagination: {
+    totalPage: number;
+  };
 }
 
-const MainView = ({ projects, createProject }: MainViewProps) => {
+const MainView = ({ projects, createProject, pagination }: MainViewProps) => {
   return (
     <AppLayout nav={true}>
       <Container>
@@ -119,7 +122,7 @@ const MainView = ({ projects, createProject }: MainViewProps) => {
               );
             })}
           </Grid>
-          <Pagination buttons={5} />
+          <Pagination buttons={5} totalPage={pagination.totalPage} />
         </PostContainer>
       </Container>
     </AppLayout>
