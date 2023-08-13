@@ -29,13 +29,15 @@ const Nav = () => {
     (event: React.MouseEvent) => {
       event.preventDefault();
 
+      window.scrollTo({ top: 0, behavior: 'auto' });
+
       const isMainPage = router.asPath === '/';
 
       // If click logo, you are supposed to go to the main page. One problem that arise here. If current page is the main page, but if you route it back to the main page, an API request will be made to the server due to the getServersideProps written for seo. so prevent api request if current page is main page
       if (isMainPage) {
         return;
       } else {
-        router.push('/');
+        router.push('/', undefined, { shallow: true });
       }
     },
     [router],
