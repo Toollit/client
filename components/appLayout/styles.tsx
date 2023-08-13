@@ -5,8 +5,8 @@ const Container = styled.div`
 `;
 
 const Content = styled.div<{ nav: boolean }>`
-  height: ${(props) => (props.nav ? `calc(100% - 4.4rem)` : '100%')};
-  overflow-y: auto;
+  min-height: ${(props) => (props.nav ? `calc(100% - 4.4rem)` : '100%')};
+  height: auto;
 `;
 
 export { Container, Content };
