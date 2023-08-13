@@ -58,7 +58,7 @@ const MainController = () => {
   }, [router, authMutate]);
 
   const handleProcessData = useCallback(() => {
-    const projects = projectsRes?.projects;
+    const projects = projectsRes?.data.projects;
     const bookmarks = bookmarksRes?.data.bookmarks;
 
     // bookmark checking
@@ -125,7 +125,7 @@ const MainController = () => {
     projects: handleProcessData(),
     createProject,
     pagination: {
-      totalPage: projectsRes?.totalPage ? projectsRes.totalPage : 1,
+      totalPage: projectsRes?.data.totalPage ? projectsRes.data.totalPage : 1,
     },
   };
 

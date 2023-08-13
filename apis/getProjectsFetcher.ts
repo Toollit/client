@@ -21,5 +21,5 @@ export interface GetProjectsAPIRes {
 
 export const getProjectsFetcher = async (url: string) => {
   const response = await serverInstance.get<GetProjectsAPIRes>(url);
-  return response.data.data;
+  return response.data;
 };
