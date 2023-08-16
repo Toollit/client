@@ -11,10 +11,12 @@ import store from '@/store/index';
 import { theme as MUITheme } from 'styles/muiTheme';
 import GlobalStyles from 'styles/GlobalStyles';
 import EmotionTheme from 'styles/theme';
+import usePathHistory from '@/hooks/usePathHistory';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const { message } = useAuth();
+  usePathHistory({ saveAction: true });
 
   useEffect(() => {
     window.history.scrollRestoration = 'manual';
