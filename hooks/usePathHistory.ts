@@ -14,11 +14,10 @@ const usePathHistory = ({ saveAction = false }: Props) => {
   const pathHistoryRef = useRef<string[]>();
 
   useEffect(() => {
+    const newPathHistory = router.asPath;
+    const storedPathHistory = localStorage.getItem('pathHistory');
+
     if (saveAction) {
-      const newPathHistory = router.pathname;
-
-      const storedPathHistory = localStorage.getItem('pathHistory');
-
       // Save the first path array if there is no path history history
       if (!storedPathHistory) {
         return localStorage.setItem(
@@ -27,8 +26,16 @@ const usePathHistory = ({ saveAction = false }: Props) => {
         );
       }
 
+      // If already have a saved path history
       if (storedPathHistory) {
         const existPathHistory: string[] = JSON.parse(storedPathHistory);
+
+        // Avoid storing duplicate path history when reloading from the same page.
+        if (existPathHistory[existPathHistory.length - 1] === newPathHistory) {
+          return;
+        }
+
+        // Up to 5 path history records are allowed
 
         if (existPathHistory.length < 5) {
           const history = [...existPathHistory, newPathHistory];
@@ -36,16 +43,15 @@ const usePathHistory = ({ saveAction = false }: Props) => {
           return localStorage.setItem('pathHistory', JSON.stringify(history));
         }
 
-        // Up to 5 path history records are allowed
         if (existPathHistory.length >= 5) {
           const history = [...existPathHistory, newPathHistory].slice(1);
 
           return localStorage.setItem('pathHistory', JSON.stringify(history));
         }
       }
-    } else {
-      const storedPathHistory = localStorage.getItem('pathHistory');
+    }
 
+    if (!saveAction) {
       if (storedPathHistory) {
         const existPathHistory: string[] = JSON.parse(storedPathHistory);
         pathHistoryRef.current = existPathHistory;
