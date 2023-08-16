@@ -46,7 +46,7 @@ const BlockPost = ({ content }: BlockPostProps) => {
       <RecruitmentTypeContainer>
         {content.memberTypes?.map((type, index) => {
           return (
-            <RecruitmentType key={type + index} type={type}>
+            <RecruitmentType key={`/${type}-${index}`} type={type}>
               {type}
             </RecruitmentType>
           );
@@ -58,7 +58,7 @@ const BlockPost = ({ content }: BlockPostProps) => {
       <ContentFooterContainer>
         <HashtagContainer>
           {content.hashtags?.map((hashtag, index) => {
-            return <Hashtag tagName={hashtag} key={`/${hashtag}-${index}`} />;
+            return <Hashtag key={`/${hashtag}-${index}`} tagName={hashtag} />;
           })}
         </HashtagContainer>
 
