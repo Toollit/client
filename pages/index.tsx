@@ -7,12 +7,14 @@ interface PageProps {
   fallback: {
     [key: string]: Project[];
   };
+  pageNumber: number;
+  orderValue: 'new' | 'popularity';
 }
 
-const Home: NextPage<PageProps> = ({ fallback }) => {
+const Home: NextPage<PageProps> = ({ fallback, pageNumber, orderValue }) => {
   return (
     <SWRConfig value={{ fallback }}>
-      <MainController />
+      <MainController pageNumber={pageNumber} orderValue={orderValue} />
     </SWRConfig>
   );
 };
@@ -70,6 +72,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
 
   const apiEndpoint = getProjectsKey(pageNumber, orderValue);
+
   const projects = await getProjectsFetcher(apiEndpoint);
 
   return {
@@ -77,6 +80,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       fallback: {
         [apiEndpoint]: projects,
       },
+      pageNumber,
+      orderValue,
     },
   };
 };

@@ -9,7 +9,6 @@ import LottieAnimation from '@/components/commons/lottie';
 import BlockPost, { CustomProject } from '@/components/commons/post/block';
 import Grid from '@mui/material/Grid';
 import Filter from '@/components/commons/filter';
-import { Project } from '@/apis/getProjectsFetcher';
 import SwipeableCircularViews from '@/components/commons/swipeableView/swipeableCircularViews';
 import Pagination from '@/components/commons/pagination';
 import {

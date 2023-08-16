@@ -10,12 +10,17 @@ import { projectsBookmarkCheckFetcher } from '@/apis/projectsBookmarkCheckFetche
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
-const MainController = () => {
+interface Props {
+  pageNumber: number;
+  orderValue: 'new' | 'popularity';
+}
+
+const MainController = ({ pageNumber = 1, orderValue = 'new' }: Props) => {
   const router = useRouter();
   const { authMutate } = useAuth();
 
-  const [page, setPage] = useState(1);
-  const [order, setOrder] = useState<'new' | 'popularity'>('new');
+  const [page, setPage] = useState(pageNumber);
+  const [order, setOrder] = useState<'new' | 'popularity'>(orderValue);
 
   const { data: projectsRes } = useSWR(
     getProjectsKey(page, order),
