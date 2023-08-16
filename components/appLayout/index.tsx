@@ -4,6 +4,7 @@ import Nav from './nav';
 import Alert from '@/components/commons/alert';
 import { RootState } from '@/store';
 import { Container, Content } from './styles';
+import Report from '@/components/commons/report';
 
 interface Props {
   children: React.ReactNode;
@@ -21,6 +22,7 @@ const AppLayout = ({ children, nav }: Props) => {
       {alertState.show && (
         <Alert type={alertState.type} text={alertState.text} />
       )}
+      <Report />
     </Container>
   );
 };
