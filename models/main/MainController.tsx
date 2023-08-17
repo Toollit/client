@@ -132,6 +132,8 @@ const MainController = ({ pageNumber = 1, orderValue = 'new' }: Props) => {
     pagination: {
       totalPage: projectsRes?.data.totalPage ? projectsRes.data.totalPage : 1,
     },
+    page,
+    order,
   };
 
   return <MainView {...props} />;

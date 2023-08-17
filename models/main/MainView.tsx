@@ -37,9 +37,17 @@ export interface MainViewProps {
   pagination: {
     totalPage: number;
   };
+  page: number;
+  order: 'new' | 'popularity';
 }
 
-const MainView = ({ projects, createProject, pagination }: MainViewProps) => {
+const MainView = ({
+  projects,
+  createProject,
+  pagination,
+  page,
+  order,
+}: MainViewProps) => {
   return (
     <AppLayout nav={true}>
       <Container>
@@ -112,7 +120,10 @@ const MainView = ({ projects, createProject, pagination }: MainViewProps) => {
                   tablet={4}
                   laptop={4}
                 >
-                  <Link href={`/project/${project.id}`} passHref>
+                  <Link
+                    href={`/project/${project.id}?from=/&page=${page}&order=${order}`}
+                    passHref
+                  >
                     <StyledLink>
                       <BlockPost content={project} />
                     </StyledLink>
