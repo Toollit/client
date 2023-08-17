@@ -1,14 +1,15 @@
 import styled from '@emotion/styled';
 import { mediaQueryTablet } from '@/styles/mediaQuery';
 
-const Button = styled.div`
+const Container = styled.div`
   display: flex;
-  height: 5.3rem;
+  height: 6rem;
   align-items: center;
   padding: 0 1.6rem;
+  position: relative;
 `;
 
-const IconContainer = styled.div`
+const Button = styled.div`
   display: flex;
   padding: 0.5rem;
   cursor: pointer;
@@ -26,4 +27,13 @@ const IconContainer = styled.div`
   }
 `;
 
-export { Button, IconContainer };
+const Title = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.6rem;
+  font-weight: 500;
+`;
+
+export { Container, Button, Title };

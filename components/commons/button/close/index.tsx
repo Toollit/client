@@ -1,18 +1,20 @@
 import React from 'react';
 import { CloseIcon } from '@/assets/icons';
-import { Button, IconContainer } from './styles';
+import { Container, Button, Title } from './styles';
 
 interface CloseBtnProps {
   onClick: () => void;
+  title?: string;
 }
 
-const CloseBtn = ({ onClick }: CloseBtnProps) => {
+const CloseBtn = ({ onClick, title }: CloseBtnProps) => {
   return (
-    <Button>
-      <IconContainer onClick={onClick}>
+    <Container>
+      <Button onClick={onClick}>
         <CloseIcon />
-      </IconContainer>
-    </Button>
+      </Button>
+      <Title>{title}</Title>
+    </Container>
   );
 };
 
