@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { deletePostAPI } from '@/apis/deletePost';
 import { errorMessage } from '@/apis/errorMessage';
+import { openReport } from '@/features/report';
+import useAuth from '@/hooks/useAuth';
 
 interface MoreProps {
   isMine: boolean;
@@ -17,6 +19,9 @@ const More = ({ isMine }: MoreProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const postId = router.query.id;
+
+  // Current Access User Self Information
+  const { nickname: accessUser, authMutate } = useAuth();
 
   const [postType, setPostType] = useState<'project' | 'free' | 'question'>();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -61,13 +66,20 @@ const More = ({ isMine }: MoreProps) => {
     }
   }, [postType, postId, router]);
 
-  const handleReport = useCallback(() => {
-    console.log('handleReport');
+  const handleReport = useCallback(async () => {
+    const auth = await authMutate();
+
+    if (!auth?.success) {
+      alert('로그인 후 이용 가능합니다.');
+      return router.push('/login');
+    }
+
     setAnchorEl(null);
-  }, []);
+    dispatch(openReport());
+  }, [dispatch, router, authMutate]);
 
   useEffect(() => {
-    const postType = router.asPath.split('/').find((type) => {
+    router.asPath.split('/').find((type) => {
       if (type === 'project') {
         return setPostType('project');
       }
