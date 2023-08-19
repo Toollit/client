@@ -1,3 +1,4 @@
+import { mediaQueryLaptop, mediaQueryTablet } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 
 const NavContainer = styled.nav`
@@ -18,6 +19,9 @@ const ColumnContainer = styled.div`
 
   /* padding-left: max(2.2rem, env(safe-area-inset-left)); */
   /* padding-right: max(2.2rem, env(safe-area-inset-right)); */
+  ${mediaQueryLaptop} {
+    padding: 0 0.5rem;
+  }
 `;
 
 const ColumnLeftContainer = styled.ul`
