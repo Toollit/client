@@ -25,6 +25,7 @@ const styles = css`
 
   a {
     cursor: pointer;
+    text-decoration: none;
 
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -35,6 +36,10 @@ const styles = css`
   }
 
   ul {
+    list-style: none;
+  }
+
+  li {
     list-style: none;
   }
 
