@@ -11,14 +11,11 @@ import { authUserKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
 import {
   NavContainer,
-  Content,
-  IconContainer,
-  NavList,
+  ColumnContainer,
   ColumnLeftContainer,
-  LogoText,
   ColumnRightContainer,
   StyledLink,
-  SearchDrawerBtn,
+  LogoText,
 } from './styles';
 
 const Nav = () => {
@@ -73,48 +70,46 @@ const Nav = () => {
   return (
     <>
       <NavContainer>
-        <Content>
-          <NavList>
-            <ColumnLeftContainer>
+        <ColumnContainer>
+          <ColumnLeftContainer>
+            <li>
+              <Link href='/'>
+                <a onClick={handleLogoRoute}>
+                  <GetitLogo />
+                </a>
+              </Link>
+            </li>
+            <li>
               <Link href='/' passHref>
                 <StyledLink onClick={handleLogoRoute}>
-                  <GetitLogo />
                   <LogoText>Getit</LogoText>
                 </StyledLink>
               </Link>
-            </ColumnLeftContainer>
+            </li>
+          </ColumnLeftContainer>
 
-            <ColumnRightContainer>
-              <ul>
-                <SearchDrawerBtn onClick={handleSearchDrawer}>
-                  <IconContainer>
-                    <SearchIcon />
-                  </IconContainer>
-                </SearchDrawerBtn>
-                <li>
-                  <Link href={'/profile'}>
-                    <a onClick={handleRoute}>
-                      <IconContainer>
-                        <AccountCircleIcon />
-                      </IconContainer>
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href={'/menu'}>
-                    <a>
-                      <IconContainer>
-                        <MenuIcons />
-                      </IconContainer>
-                    </a>
-                  </Link>
-                </li>
-              </ul>
-            </ColumnRightContainer>
-          </NavList>
-        </Content>
+          <ColumnRightContainer>
+            <li onClick={handleSearchDrawer}>
+              <SearchIcon />
+              <SearchDrawer />
+            </li>
+            <li>
+              <Link href={'/profile'}>
+                <a onClick={handleRoute}>
+                  <AccountCircleIcon />
+                </a>
+              </Link>
+            </li>
+            <li>
+              <Link href={'/menu'}>
+                <a>
+                  <MenuIcons />
+                </a>
+              </Link>
+            </li>
+          </ColumnRightContainer>
+        </ColumnContainer>
       </NavContainer>
-      <SearchDrawer />
     </>
   );
 };
