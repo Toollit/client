@@ -1,5 +1,5 @@
 import React from 'react';
-import CloseFill0 from 'public/static/icons/close/close_FILL0.svg';
+import CloseFill0 from 'public/static/icons/close/close_FILL0_wght500.svg';
 import { IconProps } from './types';
 import { SVGContainer } from '@/styles/commons';
 
