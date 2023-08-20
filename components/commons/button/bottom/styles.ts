@@ -9,7 +9,8 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   height: 9rem;
-  background: #fffffff5;
+  /* background: #fffffff5; */
+  background: transparent;
 `;
 
 const Button = styled.button<{ disabled: boolean }>`

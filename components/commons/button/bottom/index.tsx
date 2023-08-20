@@ -4,7 +4,7 @@ import { Container, Button } from './styles';
 interface Props {
   text: string;
   disabled?: boolean;
-  onClick: (event: React.MouseEvent) => void;
+  onClick?: (event: React.MouseEvent) => void;
 }
 
 const BottomBtn = ({ text, disabled = false, onClick }: Props) => {
