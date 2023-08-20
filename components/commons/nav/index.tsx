@@ -17,6 +17,7 @@ import {
   ColumnRightContainer,
   StyledLink,
   LogoText,
+  Title,
 } from './styles';
 
 // optional value only use with close type and back type
@@ -127,8 +128,9 @@ const Nav = ({ type, title, menu, onClick, boundary = true }: NavProps) => {
       return (
         <Container boundary={boundary}>
           <ColumnContainer>
+            <Title>{title}</Title>
             <ColumnLeftContainer>
-              <BackBtn onClick={onClick} title={title} menu={menu} />
+              <BackBtn onClick={onClick} />
             </ColumnLeftContainer>
             <ColumnRightContainer></ColumnRightContainer>
           </ColumnContainer>
@@ -139,8 +141,9 @@ const Nav = ({ type, title, menu, onClick, boundary = true }: NavProps) => {
       return (
         <Container boundary={boundary}>
           <ColumnContainer>
+            <Title>{title}</Title>
             <ColumnLeftContainer>
-              <CloseBtn onClick={onClick} title={title} menu={menu} />
+              <CloseBtn onClick={onClick} />
             </ColumnLeftContainer>
             <ColumnRightContainer></ColumnRightContainer>
           </ColumnContainer>

@@ -54,6 +54,15 @@ const LogoText = styled.h1`
   padding: 0rem 0.4rem;
 `;
 
+const Title = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.6rem;
+  font-weight: 500;
+`;
+
 export {
   Container,
   ColumnContainer,
@@ -61,4 +70,5 @@ export {
   ColumnRightContainer,
   StyledLink,
   LogoText,
+  Title,
 };
