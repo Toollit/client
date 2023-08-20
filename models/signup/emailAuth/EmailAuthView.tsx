@@ -1,6 +1,6 @@
 import React from 'react';
 import AppLayout from '@/components/appLayout';
-import { CloseBtn, DisabledBtn } from '@/components/commons/button';
+import { DisabledBtn } from '@/components/commons/button';
 import { SubmitBtn } from '@/components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
@@ -33,10 +33,8 @@ const EmailAuthView = ({
   requestPending,
 }: EmailAuthViewProps) => {
   return (
-    <AppLayout nav={false}>
+    <AppLayout type='close' onClick={handleClose} boundary={false}>
       <Container>
-        <CloseBtn onClick={handleClose} />
-
         <Form onSubmit={handleSubmit}>
           <Title text='Getit 이메일 계정 인증' />
 

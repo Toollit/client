@@ -1,7 +1,7 @@
 import React from 'react';
 import AppLayout from '@/components/appLayout';
 import { GoogleIcon, GithubIcon } from '@/assets/icons';
-import { CloseBtn, NormalBtn, SubmitBtn } from '@/components/commons/button';
+import { NormalBtn, SubmitBtn } from '@/components/commons/button';
 import Title from '@/components/commons/title';
 import Divider from '@/components/commons/divider';
 import Input from '@/components/commons/input';
@@ -44,10 +44,8 @@ const LoginView = ({
   handleSocialLogin,
 }: LoginViewProps) => {
   return (
-    <AppLayout nav={false}>
+    <AppLayout type='close' onClick={handleClose} boundary={false}>
       <Container>
-        <CloseBtn onClick={handleClose} />
-
         <Form onSubmit={handleSubmit}>
           <Title text='Getit 로그인' />
 

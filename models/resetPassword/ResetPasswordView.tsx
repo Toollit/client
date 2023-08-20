@@ -33,7 +33,7 @@ const ResetPasswordView = ({
   isLoading,
 }: ResetPasswordViewProps) => {
   return (
-    <AppLayout nav={false}>
+    <AppLayout type='none'>
       <Container>
         <Form onSubmit={handleSubmit}>
           <Title text='Getit 비밀번호 재설정' />

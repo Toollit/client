@@ -1,6 +1,6 @@
 import React from 'react';
 import AppLayout from '@/components/appLayout';
-import { CloseBtn, SubmitBtn } from '@/components/commons/button';
+import { SubmitBtn } from '@/components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
 import InputError from '@/components/commons/error/InputError';
@@ -33,10 +33,8 @@ const PwInquiryView = ({
   isLoading,
 }: PwInquiryViewProps) => {
   return (
-    <AppLayout nav={false}>
+    <AppLayout type='close' onClick={handleClose} boundary={false}>
       <Container>
-        <CloseBtn onClick={handleClose} />
-
         <Form onSubmit={handleSubmit}>
           <Title text='Getit 계정 찾기' />
           <InputContainer>

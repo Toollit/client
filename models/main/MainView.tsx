@@ -49,7 +49,7 @@ const MainView = ({
   order,
 }: MainViewProps) => {
   return (
-    <AppLayout nav={true}>
+    <AppLayout type='default'>
       <Container>
         <SwipeableCircularViews autoPlay={true} interval={4000}>
           <BannerContainer order={'first'}>

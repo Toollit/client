@@ -1,6 +1,5 @@
 import React from 'react';
 import AppLayout from '@/components/appLayout';
-import { CloseBtn } from '@/components/commons/button';
 import { Container } from './styles';
 
 export interface TermsOfServiceViewProps {
@@ -9,8 +8,7 @@ export interface TermsOfServiceViewProps {
 
 const TermsOfServiceView = ({ handleClose }: TermsOfServiceViewProps) => {
   return (
-    <AppLayout nav={false}>
-      <CloseBtn onClick={handleClose} />
+    <AppLayout type='close' boundary={false} onClick={handleClose}>
       <Container>
         <h3>
           <strong>제1장. 약관 및 계약</strong>

@@ -52,7 +52,7 @@ const ModifyView = ({
   recruitNumber,
 }: ModifyViewProps) => {
   return (
-    <AppLayout nav={true}>
+    <AppLayout type='default'>
       <Form onSubmit={handleSubmit}>
         <Title text='프로젝트 수정' />
         <DynamicTuiEditor
