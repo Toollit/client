@@ -82,7 +82,7 @@ const Nav = ({ type, title, menu, onClick, boundary = true }: NavProps) => {
     case 'default':
       return (
         <Container boundary={boundary}>
-          <ColumnContainer type='default'>
+          <ColumnContainer>
             <ColumnLeftContainer>
               <li>
                 <Link href='/'>
