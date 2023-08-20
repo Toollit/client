@@ -1,11 +1,11 @@
 import { mediaQueryLaptop, mediaQueryTablet } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 
-const NavContainer = styled.nav`
-  border-bottom: 1px solid #eee;
+const Container = styled.nav<{ boundary: boolean }>`
+  border-bottom: ${(props) => (props.boundary ? '1px solid #eee' : 'none')};
 `;
 
-const ColumnContainer = styled.div`
+const ColumnContainer = styled.div<{ type?: 'default' }>`
   display: flex;
   min-height: 6rem;
   height: 6rem;
@@ -13,7 +13,7 @@ const ColumnContainer = styled.div`
   padding: 0 1.5rem;
   justify-content: space-between;
   margin: 0 auto;
-  max-width: 102.4rem;
+  max-width: ${(props) => props.type === 'default' && '102.4rem'};
   width: 100%;
   position: relative;
 
@@ -55,7 +55,7 @@ const LogoText = styled.h1`
 `;
 
 export {
-  NavContainer,
+  Container,
   ColumnContainer,
   ColumnLeftContainer,
   ColumnRightContainer,
