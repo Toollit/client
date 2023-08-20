@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { mediaQueryLaptop } from '@/styles/mediaQuery';
+import { mediaQueryTablet } from '@/styles/mediaQuery';
 
 const Button = styled.div`
   display: flex;
@@ -11,7 +11,7 @@ const Button = styled.div`
     background-color: ${(props) => props.theme.colors.button.activeGray};
   }
 
-  ${mediaQueryLaptop} {
+  ${mediaQueryTablet} {
     :hover {
       border-radius: 25rem;
       background-color: ${(props) => props.theme.colors.button.hoverGray};
