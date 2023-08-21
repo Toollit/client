@@ -1,27 +1,5 @@
 import styled from '@emotion/styled';
 
-const Container = styled.div`
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: calc(100vw - 4rem);
-  margin: 2rem auto 0 2rem;
-  /* padding-bottom: 12rem; */
-`;
-
 const DefaultInfoContainer = styled.div`
   margin-top: 2rem;
   display: flex;
@@ -106,8 +84,6 @@ const TextCount = styled.div`
 `;
 
 export {
-  Container,
-  Form,
   ListTitle,
   ListGroup,
   TextArea,
