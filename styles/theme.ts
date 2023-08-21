@@ -80,9 +80,15 @@ const boxShadow = {
   hover: `0px 0px #767678, 0px 0 0.4rem #767678`,
 };
 
+const layout = {
+  navHeight: '6rem',
+  bottomButtonHeight: '9rem',
+};
+
 const theme = {
   fontSizes,
   colors,
+  layout,
   paddings,
   margins,
   interval,

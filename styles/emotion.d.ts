@@ -83,6 +83,11 @@ declare module '@emotion/react' {
       base: string;
       hover: string;
     };
+
+    layout: {
+      navHeight: string;
+      bottomButtonHeight: string;
+    };
   }
 }
 
