@@ -1,10 +1,14 @@
 import styled from '@emotion/styled';
 
-const Container = styled.div`
-  position: relative;
-  min-height: 100vh;
+const Form = styled.form`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  min-height: ${(props) => `calc(100vh - ${props.theme.layout.navHeight})`};
+  height: 100%;
+  margin: 0 auto;
+  max-width: 32rem;
+  width: 100%;
 
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -12,15 +16,6 @@ const Container = styled.div`
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin: auto auto;
-  min-width: 36.4rem;
-  max-width: 36.4rem;
-  padding: 0 3.2rem 4.8rem 3.2rem;
 `;
 
 const InputContainer = styled.div`
@@ -66,4 +61,4 @@ const Timer = styled.div`
   bottom: 0rem;
 `;
 
-export { Container, Form, InputContainer, NextBtn, NoticeForSpam, Timer };
+export { Form, InputContainer, NextBtn, NoticeForSpam, Timer };
