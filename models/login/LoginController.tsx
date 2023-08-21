@@ -18,7 +18,7 @@ const LoginController = () => {
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
   const handleClose = useCallback(() => {
-    router.replace('/');
+    router.back();
   }, [router]);
 
   const handleSubmit = useCallback(
@@ -113,10 +113,6 @@ const LoginController = () => {
     [],
   );
 
-  const handleSignUpRouting = useCallback(() => {
-    router.push('/signUp');
-  }, [router]);
-
   const handlePwInquiryRouting = useCallback(() => {
     router.push('/pwInquiry');
   }, [router]);
@@ -159,7 +155,6 @@ const LoginController = () => {
     passwordInputRef,
     showPasswordInput,
     fillFormComplete,
-    handleSignUpRouting,
     handlePwInquiryRouting,
     handleSocialLogin,
   };

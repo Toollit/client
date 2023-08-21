@@ -1,12 +1,15 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { mediaQueryMobile } from '@/styles/mediaQuery';
 
-const Container = styled.div`
-  position: relative;
-  min-height: 100vh;
+const Form = styled.form`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  min-height: ${(props) => `calc(100vh - ${props.theme.layout.navHeight})`};
+  height: 100%;
+  margin: 0 auto;
+  max-width: 32rem;
+  width: 100%;
 
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -14,19 +17,6 @@ const Container = styled.div`
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin: auto auto;
-  width: calc(100vw - 6rem);
-
-  ${mediaQueryMobile} {
-    min-width: 36.4rem;
-    max-width: 36.4rem;
-    padding: 0 3.2rem 4.8rem 3.2rem;
-  }
 `;
 
 const InputContainer = styled.div<{ show: boolean }>`
@@ -74,22 +64,17 @@ const PasswordInput = styled.input`
   }
 `;
 
-const SignInBtn = styled.div`
+const SignInInduce = styled.span`
   color: ${(props) => props.theme.colors.text.gray};
   font-size: 1.5rem;
 `;
 
-const SignInAccent = styled.span`
+const StyledLink = styled.a`
   color: ${(props) => props.theme.colors.theme};
+  margin-left: 1rem;
+  font-size: 1.5rem;
   font-weight: 500;
   cursor: pointer;
 `;
 
-export {
-  Container,
-  Form,
-  InputContainer,
-  PasswordInput,
-  SignInBtn,
-  SignInAccent,
-};
+export { Form, InputContainer, PasswordInput, SignInInduce, StyledLink };

@@ -6,13 +6,13 @@ import Title from '@/components/commons/title';
 import Divider from '@/components/commons/divider';
 import Input from '@/components/commons/input';
 import {
-  Container,
   Form,
   InputContainer,
   PasswordInput,
-  SignInBtn,
-  SignInAccent,
+  SignInInduce,
+  StyledLink,
 } from './styles';
+import Link from 'next/link';
 
 export interface LoginViewProps {
   handleClose: () => void;
@@ -24,7 +24,6 @@ export interface LoginViewProps {
   passwordInputRef: React.RefObject<HTMLInputElement>;
   showPasswordInput: boolean;
   fillFormComplete: boolean;
-  handleSignUpRouting: () => void;
   handlePwInquiryRouting: () => void;
   handleSocialLogin: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
@@ -39,60 +38,60 @@ const LoginView = ({
   passwordInputRef,
   showPasswordInput,
   fillFormComplete,
-  handleSignUpRouting,
   handlePwInquiryRouting,
   handleSocialLogin,
 }: LoginViewProps) => {
   return (
     <AppLayout type='close' onClick={handleClose} boundary={false}>
-      <Container>
-        <Form onSubmit={handleSubmit}>
-          <Title text='Getit 로그인' />
+      <Form onSubmit={handleSubmit}>
+        <Title text='Getit 로그인' />
 
-          <NormalBtn
-            text='Google 계정으로 로그인'
-            icon={<GoogleIcon />}
-            name='google'
-            onClick={handleSocialLogin}
+        <NormalBtn
+          text='Google 계정으로 로그인'
+          icon={<GoogleIcon />}
+          name='google'
+          onClick={handleSocialLogin}
+        />
+        <NormalBtn
+          text='Github 계정으로 로그인'
+          icon={<GithubIcon />}
+          name='github'
+          onClick={handleSocialLogin}
+        />
+        <Divider type='text' text='또는' />
+        <InputContainer show={showPasswordInput}>
+          <Input
+            type='text'
+            placeholder={'이메일 주소를 입력해주세요.'}
+            onChange={handleEmail}
+            value={email}
+            focus={true}
           />
-          <NormalBtn
-            text='Github 계정으로 로그인'
-            icon={<GithubIcon />}
-            name='github'
-            onClick={handleSocialLogin}
-          />
-          <Divider type='text' text='또는' />
-          <InputContainer show={showPasswordInput}>
-            <Input
-              type='text'
-              placeholder={'이메일 주소를 입력해주세요.'}
-              onChange={handleEmail}
-              value={email}
-              focus={true}
+          {showPasswordInput && (
+            <PasswordInput
+              type='password'
+              placeholder='비밀번호를 입력해주세요.'
+              onChange={handlePassword}
+              value={password}
+              ref={passwordInputRef}
             />
-            {showPasswordInput && (
-              <PasswordInput
-                type='password'
-                placeholder='비밀번호를 입력해주세요.'
-                onChange={handlePassword}
-                value={password}
-                ref={passwordInputRef}
-              />
-            )}
-          </InputContainer>
+          )}
+        </InputContainer>
 
-          <SubmitBtn text={fillFormComplete ? '확인' : '다음'} />
+        <SubmitBtn text={fillFormComplete ? '확인' : '다음'} />
 
-          <NormalBtn
-            text='비밀번호를 잊으셨나요?'
-            onClick={handlePwInquiryRouting}
-          />
-          <SignInBtn>
-            계정이 없으신가요?{' '}
-            <SignInAccent onClick={handleSignUpRouting}>가입하기</SignInAccent>
-          </SignInBtn>
-        </Form>
-      </Container>
+        <NormalBtn
+          text='비밀번호를 잊으셨나요?'
+          onClick={handlePwInquiryRouting}
+        />
+
+        <div>
+          <SignInInduce>계정이 없으신가요?</SignInInduce>
+          <Link href={'/signUp'}>
+            <StyledLink>가입하기</StyledLink>
+          </Link>
+        </div>
+      </Form>
     </AppLayout>
   );
 };
