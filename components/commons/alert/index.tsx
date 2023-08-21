@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react';
 import { Alert as MUIAlert } from '@mui/material';
 import { Container, Title, Content } from './styles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { hideAlert } from '@/features/alert';
+import { RootState } from '@/store';
 
-interface AlertProps {
-  type: 'error' | 'warning' | 'info' | 'success' | null;
-  text: string;
-}
-
-const Alert = ({ type, text }: AlertProps) => {
+const Alert = () => {
   const dispatch = useDispatch();
+  const type = useSelector((state: RootState) => state.alert.type);
+  const text = useSelector((state: RootState) => state.alert.text);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
