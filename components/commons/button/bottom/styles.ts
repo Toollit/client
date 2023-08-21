@@ -11,20 +11,25 @@ const Container = styled.div`
   height: 9rem;
   /* background: #fffffff5; */
   background: transparent;
+  max-width: 102.4rem;
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 `;
 
 const Button = styled.button<{ disabled: boolean }>`
-  width: calc(100vw - 4rem);
+  width: 100%;
   height: 5rem;
   background-color: ${(props) =>
     props.disabled
       ? props.theme.colors.button.disabled
       : props.theme.colors.theme};
-  margin: 0 auto;
   border: none;
   border-radius: 25rem;
   color: #ffffff;
   font-size: 1.6rem;
+
   cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
 `;
 
