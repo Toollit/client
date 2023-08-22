@@ -10,8 +10,6 @@ const Content = styled.div<{ hasBottomButton?: boolean }>`
   margin: 0 auto;
   min-height: ${(props) => `calc(100vh - ${props.theme.layout.navHeight})`};
   overflow-y: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
   padding-bottom: ${(props) =>
     props.hasBottomButton && props.theme.layout.bottomButtonHeight};
 `;
