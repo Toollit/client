@@ -4,8 +4,6 @@ import styled from '@emotion/styled';
 const Container = styled.div`
   display: flex;
   justify-content: center;
-
-  padding: 4rem 0rem 8rem;
 `;
 
 const PageControlButton = styled.button`
