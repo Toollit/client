@@ -41,17 +41,20 @@ const verticalInterval = {
   base: `10rem 0 1rem 0`,
 };
 
-const colors = {
+export const colors = {
   theme: '#4dd290',
   black: '#303038', // #3c4043
   white: '#ffffff',
   lightGray: '#f2f2f2',
   gray: '#767678',
-  error: '#e5503c',
   developer: '#4dd290',
   designer: '#ffb65a',
   pm: '#fc9557',
   anyone: '#868686',
+  error: '#e5503c',
+  warning: '#ffb65a',
+  info: '#767678',
+  success: '#4dd290',
   button: {
     activeGreen: '#3da571',
     activeGray: 'rgba(15, 20, 25, 0.2)',
