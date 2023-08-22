@@ -1,9 +1,7 @@
 import styled from '@emotion/styled';
 import { mediaQueryTablet } from '@/styles/mediaQuery';
 
-const Container = styled.section``;
-
-const BannerContainer = styled.div<{ order: 'first' | 'second' | 'third' }>`
+const Banner = styled.div<{ order: 'first' | 'second' | 'third' }>`
   position: relative;
   max-width: 102.4rem;
   width: 100%;
@@ -118,12 +116,8 @@ const BugImage = styled.div`
 ``;
 
 // 게시글 필터링, 작성 버튼
-const PostWriteFilterContainer = styled.div`
+const PostFilterWriteContainer = styled.div`
   display: flex;
-  max-width: 102.4rem;
-  margin: 0 auto;
-  margin-top: 1.5rem;
-  padding: 0rem 2rem;
   align-items: center;
 `;
 
@@ -145,15 +139,6 @@ const PostWriteButton = styled.button`
 `;
 
 // 게시글 목록 관련
-const PostContainer = styled.div`
-  max-width: 102.4rem;
-  margin: 0 auto;
-  padding: 1rem 1rem;
-
-  ${mediaQueryTablet} {
-    padding: 1rem 0.5rem;
-  }
-`;
 
 const StyledLink = styled.a`
   text-decoration: none;
@@ -161,8 +146,7 @@ const StyledLink = styled.a`
 `;
 
 export {
-  Container,
-  BannerContainer,
+  Banner,
   FirstSlideText,
   BannerPersonImg,
   FirstSlideBackground,
@@ -173,9 +157,8 @@ export {
   ThirdSlideNotice,
   ThirdSlideText,
   BugImage,
-  PostWriteFilterContainer,
+  PostFilterWriteContainer,
   PostFilterContainer,
   PostWriteButton,
-  PostContainer,
   StyledLink,
 };

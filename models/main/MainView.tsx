@@ -11,9 +11,10 @@ import Grid from '@mui/material/Grid';
 import Filter from '@/components/commons/filter';
 import SwipeableCircularViews from '@/components/commons/swipeableView/swipeableCircularViews';
 import Pagination from '@/components/commons/pagination';
+import SearchDrawer from '@/components/commons/drawer/search';
+import Block from '@/components/commons/block';
 import {
-  Container,
-  BannerContainer,
+  Banner,
   FirstSlideText,
   BannerPersonImg,
   FirstSlideBackground,
@@ -24,10 +25,9 @@ import {
   ThirdSlideText,
   ThirdSlideNotice,
   BugImage,
-  PostWriteFilterContainer,
+  PostFilterWriteContainer,
   PostFilterContainer,
   PostWriteButton,
-  PostContainer,
   StyledLink,
 } from './styles';
 
@@ -50,9 +50,9 @@ const MainView = ({
 }: MainViewProps) => {
   return (
     <AppLayout type='default'>
-      <Container>
+      <Block>
         <SwipeableCircularViews autoPlay={true} interval={4000}>
-          <BannerContainer order={'first'}>
+          <Banner order={'first'}>
             <FirstSlideText>
               <FirstSlideHeadline>
                 IT 프로젝트 모집
@@ -73,9 +73,9 @@ const MainView = ({
             <FirstSlideBackground>
               <BannerBackground />
             </FirstSlideBackground>
-          </BannerContainer>
+          </Banner>
 
-          <BannerContainer order={'second'}>
+          <Banner order={'second'}>
             <SecondSlideText>
               <div>전 세계에 있는 관심사가 비슷한 사람들과</div>
               <div>프로젝트를 진행해 보세요.</div>
@@ -83,9 +83,9 @@ const MainView = ({
             <NetworkImg>
               <LottieAnimation lottieJson={NetworkLottieJson} />
             </NetworkImg>
-          </BannerContainer>
+          </Banner>
 
-          <BannerContainer order={'third'}>
+          <Banner order={'third'}>
             <ThirdSlideText>
               <ThirdSlideNotice>Notice</ThirdSlideNotice>
               <div>버그 리포트를 해주신 분 중</div>
@@ -96,45 +96,54 @@ const MainView = ({
             <BugImage>
               <Bug />
             </BugImage>
-          </BannerContainer>
+          </Banner>
         </SwipeableCircularViews>
+      </Block>
 
-        <PostWriteFilterContainer>
+      <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={1.5}>
+        <PostFilterWriteContainer>
           <PostFilterContainer>
             <Filter />
           </PostFilterContainer>
           <PostWriteButton onClick={createProject}>
             프로젝트 생성
           </PostWriteButton>
-        </PostWriteFilterContainer>
+        </PostFilterWriteContainer>
+      </Block>
 
-        <PostContainer>
-          <Grid container spacing={1}>
-            {projects?.map((project, index) => {
-              return (
-                <Grid
-                  key={`/${project.id}-${index}`}
-                  item
-                  xsMobile={6}
-                  mobile={6}
-                  tablet={4}
-                  laptop={4}
+      <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={1.5}>
+        <Grid container spacing={1}>
+          {projects?.map((project, index) => {
+            return (
+              <Grid
+                key={`/${project.id}-${index}`}
+                item
+                xsMobile={6}
+                mobile={6}
+                tablet={4}
+                laptop={4}
+              >
+                <Link
+                  href={`/project/${project.id}?from=/&page=${page}&order=${order}`}
+                  passHref
                 >
-                  <Link
-                    href={`/project/${project.id}?from=/&page=${page}&order=${order}`}
-                    passHref
-                  >
-                    <StyledLink>
-                      <BlockPost content={project} />
-                    </StyledLink>
-                  </Link>
-                </Grid>
-              );
-            })}
-          </Grid>
-          <Pagination buttons={5} totalPage={pagination.totalPage} />
-        </PostContainer>
-      </Container>
+                  <StyledLink>
+                    <BlockPost content={project} />
+                  </StyledLink>
+                </Link>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Block>
+
+      <Block paddingTop={4} paddingBottom={8}>
+        <Pagination buttons={5} totalPage={pagination.totalPage} />
+      </Block>
+
+      <Block>
+        <SearchDrawer />
+      </Block>
     </AppLayout>
   );
 };
