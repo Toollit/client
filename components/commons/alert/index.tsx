@@ -1,24 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Alert as MUIAlert } from '@mui/material';
 import { Container, Title, Content } from './styles';
-import { useDispatch, useSelector } from 'react-redux';
-import { hideAlert } from '@/features/alert';
+import { useSelector } from 'react-redux';
+
 import { RootState } from '@/store';
 
 const Alert = () => {
-  const dispatch = useDispatch();
   const type = useSelector((state: RootState) => state.alert.type);
   const text = useSelector((state: RootState) => state.alert.text);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      dispatch(hideAlert());
-    }, 2000);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [dispatch]);
 
   switch (type) {
     case 'error':
