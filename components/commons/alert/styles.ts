@@ -16,7 +16,7 @@ const Container = styled.div`
   }
 `;
 
-const Title = styled.h3`
+const Category = styled.div`
   font-size: 1.4rem;
 `;
 
@@ -24,4 +24,4 @@ const Content = styled.p`
   font-size: 1.4rem;
 `;
 
-export { Container, Title, Content };
+export { Container, Category, Content };

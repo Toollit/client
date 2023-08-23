@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert as MUIAlert } from '@mui/material';
-import { Container, Title, Content } from './styles';
+import { Container, Category, Content } from './styles';
 import { useSelector } from 'react-redux';
 
 import { RootState } from '@/store';
@@ -14,7 +14,7 @@ const Alert = () => {
       return (
         <Container>
           <MUIAlert severity='error'>
-            <Title>Error</Title>
+            <Category>Error</Category>
             <Content>{text}</Content>
           </MUIAlert>
         </Container>
@@ -24,7 +24,7 @@ const Alert = () => {
       return (
         <Container>
           <MUIAlert severity='warning'>
-            <Title>Warning</Title>
+            <Category>Warning</Category>
             <Content>{text}</Content>
           </MUIAlert>
         </Container>
@@ -34,7 +34,7 @@ const Alert = () => {
       return (
         <Container>
           <MUIAlert severity='info'>
-            <Title>Info</Title>
+            <Category>Info</Category>
             <Content>{text}</Content>
           </MUIAlert>
         </Container>
@@ -44,7 +44,7 @@ const Alert = () => {
       return (
         <Container>
           <MUIAlert severity='success'>
-            <Title>Success</Title>
+            <Category>Success</Category>
             <Content>{text}</Content>
           </MUIAlert>
         </Container>
