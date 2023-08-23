@@ -2,22 +2,21 @@ import React, { useCallback } from 'react';
 import Link from 'next/link';
 import { AccountCircleIcon, MenuIcons, SearchIcon } from '@/assets/icons';
 import GetitLogo from '@/assets/images/GetitLogo';
-import SearchDrawer from '@/components/commons/drawer/search';
-import { openDrawer } from '@/features/drawer';
-import { useDispatch } from 'react-redux';
+import { closeDrawer, openDrawer } from '@/features/drawer';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { mutate } from 'swr';
-import { authUserKey } from '@/apis/keys';
-import { errorMessage } from '@/apis/errorMessage';
 import { CloseBtn, BackBtn } from '@/components/commons/button';
+import { RootState } from '@/store';
+import useAuth from '@/hooks/useAuth';
 import {
   Container,
   ColumnContainer,
   ColumnLeftContainer,
   ColumnRightContainer,
-  StyledLink,
+  StyledLogoLink,
   LogoText,
   Title,
+  StyledLink,
 } from './styles';
 
 // optional value only use with close type and back type
@@ -25,13 +24,17 @@ export interface NavProps {
   type: 'default' | 'close' | 'back' | 'none';
   title?: string;
   menu?: React.ReactNode[]; // right side menu
+  boundary?: boolean; // border bottom line
   onClick?: () => void;
-  boundary?: boolean;
 }
 
-const Nav = ({ type, title, menu, onClick, boundary = true }: NavProps) => {
+const Nav = ({ type, title, menu, boundary = true, onClick }: NavProps) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { nickname } = useAuth();
+  const searchDrawerOpenState = useSelector(
+    (state: RootState) => state.drawer.search,
+  );
 
   const handleLogoRoute = useCallback(
     (event: React.MouseEvent) => {
@@ -52,31 +55,14 @@ const Nav = ({ type, title, menu, onClick, boundary = true }: NavProps) => {
   );
 
   const handleSearchDrawer = useCallback(() => {
-    dispatch(openDrawer({ type: 'search' }));
-  }, [dispatch]);
+    if (searchDrawerOpenState) {
+      return dispatch(closeDrawer({ type: 'search' }));
+    }
 
-  const handleProfileRoute = useCallback(
-    async (event: React.MouseEvent) => {
-      event.preventDefault();
-
-      try {
-        const {
-          data: { nickname },
-        } = await mutate(authUserKey);
-
-        if (nickname) {
-          router.push(`/profile/${nickname}`);
-        }
-
-        if (!nickname) {
-          router.push('/login');
-        }
-      } catch (error) {
-        errorMessage(error);
-      }
-    },
-    [router],
-  );
+    if (!searchDrawerOpenState) {
+      return dispatch(openDrawer({ type: 'search' }));
+    }
+  }, [dispatch, searchDrawerOpenState]);
 
   switch (type) {
     case 'default':
@@ -86,37 +72,30 @@ const Nav = ({ type, title, menu, onClick, boundary = true }: NavProps) => {
             <ColumnLeftContainer>
               <li>
                 <Link href='/'>
-                  <a onClick={handleLogoRoute}>
+                  <StyledLogoLink onClick={handleLogoRoute}>
                     <GetitLogo />
-                  </a>
-                </Link>
-              </li>
-              <li>
-                <Link href='/' passHref>
-                  <StyledLink onClick={handleLogoRoute}>
                     <LogoText>Getit</LogoText>
-                  </StyledLink>
+                  </StyledLogoLink>
                 </Link>
               </li>
             </ColumnLeftContainer>
 
             <ColumnRightContainer>
               <li onClick={handleSearchDrawer}>
-                <SearchIcon />
-                <SearchDrawer />
+                <SearchIcon width={28} height={28} />
               </li>
               <li>
-                <Link href={'/profile'}>
-                  <a onClick={handleProfileRoute}>
-                    <AccountCircleIcon />
-                  </a>
+                <Link href={nickname ? `/profile/${nickname}` : '/login'}>
+                  <StyledLink>
+                    <AccountCircleIcon width={28} height={28} />
+                  </StyledLink>
                 </Link>
               </li>
               <li>
                 <Link href={'/menu'}>
-                  <a>
-                    <MenuIcons />
-                  </a>
+                  <StyledLink>
+                    <MenuIcons width={28} height={28} />
+                  </StyledLink>
                 </Link>
               </li>
             </ColumnRightContainer>
