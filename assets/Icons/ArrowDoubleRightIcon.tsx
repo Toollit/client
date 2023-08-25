@@ -1,12 +1,17 @@
 import React from 'react';
-import ArrowDoubleRight from 'public/static/icons/arrow/keyboard_double_arrow_right.svg';
 import { IconProps } from './types';
 import { SVGContainer } from '@/styles/commons';
+import ArrowDoubleRight from 'public/static/icons/arrow/keyboard_double_arrow_right.svg';
 
-const ArrowDoubleRightIcon = ({ width = 24, height = 24 }: IconProps) => {
+const ArrowDoubleRightIcon = ({
+  fill = false,
+  width = 24,
+  height = 24,
+  color,
+}: IconProps) => {
   return (
     <SVGContainer width={width} height={height}>
-      <ArrowDoubleRight width={'100%'} height={'100%'} />
+      <ArrowDoubleRight width={'100%'} height={'100%'} fill={color} />
     </SVGContainer>
   );
 };

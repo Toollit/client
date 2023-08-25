@@ -1,8 +1,8 @@
 import React from 'react';
-import EditCircleFill0 from 'public/static/icons/edit/draft_orders_FILL0.svg';
-import EditCircleFill1 from 'public/static/icons/edit/draft_orders_FILL1.svg';
 import { IconProps } from './types';
 import { SVGContainer } from '@/styles/commons';
+import EditCircleFill0 from 'public/static/icons/edit/draft_orders_FILL0.svg';
+import EditCircleFill1 from 'public/static/icons/edit/draft_orders_FILL1.svg';
 
 const EditCircleIcon = ({
   fill = false,

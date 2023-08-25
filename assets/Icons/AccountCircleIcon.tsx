@@ -1,8 +1,8 @@
 import React from 'react';
-import AccountCircleFill0 from 'public/static/icons/accountCircle/account_circle_FILL0.svg';
-import AccountCircleFill1 from 'public/static/icons/accountCircle/account_circle_FILL1.svg';
 import { IconProps } from './types';
 import { SVGContainer } from '@/styles/commons';
+import AccountCircleFill0 from 'public/static/icons/accountCircle/account_circle_FILL0.svg';
+import AccountCircleFill1 from 'public/static/icons/accountCircle/account_circle_FILL1.svg';
 
 const AccountCircleIcon = ({
   fill = false,

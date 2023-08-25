@@ -1,8 +1,8 @@
 import React from 'react';
-import BookmarkFILL0 from 'public/static/icons/bookmark/bookmark_FILL0.svg';
-import BookmarkFILL1 from 'public/static/icons/bookmark/bookmark_FILL1.svg';
 import { IconProps } from './types';
 import { SVGContainer } from '@/styles/commons';
+import BookmarkFILL0 from 'public/static/icons/bookmark/bookmark_FILL0.svg';
+import BookmarkFILL1 from 'public/static/icons/bookmark/bookmark_FILL1.svg';
 
 const BookmarkIcon = ({
   fill = false,

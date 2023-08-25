@@ -18,6 +18,8 @@ import MenuIcons from './MenuIcon';
 import MoreIcon from './MoreIcon';
 import PersonIcon from './PersonIcon';
 import PhoneIcon from './PhoneIcon';
+import RadioButtonCheckedIcon from './RadioButtonCheckedIcon';
+import RadioButtonUnCheckedIcon from './RadioButtonUnCheckedIcon';
 import SearchIcon from './SearchIcon';
 import ShareIcon from './ShareIcon';
 import ViewIcon from './ViewIcon';
@@ -43,6 +45,8 @@ export {
   MoreIcon,
   PersonIcon,
   PhoneIcon,
+  RadioButtonCheckedIcon,
+  RadioButtonUnCheckedIcon,
   SearchIcon,
   ShareIcon,
   ViewIcon,
