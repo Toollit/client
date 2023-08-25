@@ -1,0 +1,38 @@
+{
+  "SVG Icon Component Format": {
+    "prefix": "Icon",
+    "body": [
+      "import React from 'react';",
+      "import { IconProps } from './types';",
+      "import { SVGContainer } from '@/styles/commons';",
+      "",
+      "const ${1:${TM_FILENAME_BASE}} = ({",
+      "fill = false,",
+      "width = 24,",
+      "height = 24,",
+      "color,",
+      "}: IconProps) => {",
+      "if (!fill) {",
+      "return (",
+      "<SVGContainer width={width} height={height}>",
+      "<${2:${TM_FILENAME_BASE}}Fill0 width={'100%'} height={'100%'} fill={color} />",
+      "</SVGContainer>",
+      ");",
+      "}",
+      "",
+      "if (fill) {",
+      "return (",
+      "<SVGContainer width={width} height={height}>",
+      "<${3:${TM_FILENAME_BASE}}Fill1 width={'100%'} height={'100%'} fill={color} />",
+      "</SVGContainer>",
+      ");",
+      "}",
+      "",
+      "return null;",
+      "};",
+      "",
+      "export default ${4:${TM_FILENAME_BASE}};"
+    ],
+    "description": "SVG Icon Component"
+  }
+}
