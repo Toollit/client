@@ -26,7 +26,9 @@ const AppLayout = ({
         boundary={boundary}
         onClick={onClick}
       />
-      <Content hasBottomButton={hasBottomButton}>{children}</Content>
+      <Content type={type} hasBottomButton={hasBottomButton}>
+        {children}
+      </Content>
       <Alert />
     </Container>
   );

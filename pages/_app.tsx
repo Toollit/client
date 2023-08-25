@@ -36,6 +36,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>Getit</title>
+        <meta name='viewport' content='viewport-fit=cover' />
         <meta
           name='description'
           content='IT Project Recruitment Community Platform. The unicorn startup you envy also started at a small meeting.'
