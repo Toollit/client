@@ -5,18 +5,16 @@ import Title from '@/components/commons/title';
 import HashtagInput from '@/components/commons/hashtagInput';
 import MemberTypeSelector from '@/components/commons/memberTypeSelector';
 import { Editor } from '@toast-ui/react-editor';
-import {
-  Form,
-  RecruitNumberContainer,
-  RecruitNumberInput,
-  ButtonContainer,
-  Button,
-  RecruitNumberLabel,
-} from './styles';
+import Label from '@/components/commons/label';
+import Block from '@/components/commons/block';
+import { Button } from '@/components/commons/button';
+import LoadingCircularProgress from '@/components/commons/loading';
+import { RecruitNumberInput, ButtonContainer } from './styles';
 
 const DynamicTuiEditor = dynamic(
-  () => import('@/components/commons/webEditor/TuiEditor'),
+  () => import('../../../components/commons/webEditor/TuiEditor'),
   {
+    loading: () => <LoadingCircularProgress />,
     ssr: false,
   },
 );
@@ -44,22 +42,30 @@ const ProjectCreateView = ({
 }: ProjectCreateViewProps) => {
   return (
     <AppLayout type='default'>
-      <Form onSubmit={handleSubmit}>
-        <Title text='프로젝트 생성' />
-        <DynamicTuiEditor titleRef={titleRef} editorRef={editorRef} />
-        <br />
+      <form onSubmit={handleSubmit}>
+        <Block paddingLeft={1.5} paddingRight={1.5}>
+          <Title text='프로젝트 생성' />
+        </Block>
 
-        <HashtagInput
-          hashtagRef={hashtagRef}
-          placeholder='*Enter를 눌러 해시태그를 작성해 주세요.'
-        />
-        <br />
+        <Block paddingLeft={1.5} paddingRight={1.5}>
+          <DynamicTuiEditor titleRef={titleRef} editorRef={editorRef} />
+        </Block>
 
-        <MemberTypeSelector memberTypeRef={memberTypeRef} label='*모집 타입' />
-        <br />
+        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
+          <Label text='#해시태그' />
+          <HashtagInput
+            hashtagRef={hashtagRef}
+            placeholder='*Enter를 눌러 해시태그를 작성해 주세요.'
+          />
+        </Block>
 
-        <RecruitNumberContainer>
-          <RecruitNumberLabel htmlFor='recruit'>*모집 인원</RecruitNumberLabel>
+        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
+          <Label text='모집 타입' />
+          <MemberTypeSelector memberTypeRef={memberTypeRef} />
+        </Block>
+
+        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
+          <Label htmlFor='recruit' text='모집 인원' />
           <RecruitNumberInput
             type='number'
             name='recruit'
@@ -70,12 +76,19 @@ const ProjectCreateView = ({
             onKeyDown={handleKeydownSubmit}
             autoComplete='off'
           />
-        </RecruitNumberContainer>
+        </Block>
 
-        <ButtonContainer>
-          <Button>작성 완료</Button>
-        </ButtonContainer>
-      </Form>
+        <Block
+          paddingLeft={1.5}
+          paddingRight={1.5}
+          paddingTop={4}
+          paddingBottom={8}
+        >
+          <ButtonContainer>
+            <Button type='submit' text='작성 완료' width={15} />
+          </ButtonContainer>
+        </Block>
+      </form>
     </AppLayout>
   );
 };
