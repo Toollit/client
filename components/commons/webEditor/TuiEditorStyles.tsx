@@ -117,14 +117,6 @@ const TuiCustomStyles = css`
   }
 `;
 
-const TuiContainer = styled.div`
-  width: 100%;
-`;
-
-const TitleInputContainer = styled.div`
-  width: 100%;
-`;
-
 const TitleInput = styled.input`
   width: 100%;
   height: 4rem;
@@ -142,4 +134,4 @@ const TuiCustomGlobalStyles = () => {
   return <Global styles={TuiCustomStyles} />;
 };
 
-export { TuiCustomGlobalStyles, TuiContainer, TitleInputContainer, TitleInput };
+export { TuiCustomGlobalStyles, TitleInput };
