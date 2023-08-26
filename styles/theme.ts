@@ -56,10 +56,10 @@ export const colors = {
   info: '#767678',
   success: '#4dd290',
   button: {
-    activeGreen: '#3da571',
+    darkGreen: '#3da571',
     activeGray: 'rgba(15, 20, 25, 0.2)',
     disabled: '#0f141950',
-    hoverGreen: '#f0fff0',
+    lightGreen: '#f0fff0',
     hoverGray: 'rgba(15, 20, 25, 0.1)',
   },
   border: {

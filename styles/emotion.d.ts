@@ -58,10 +58,10 @@ declare module '@emotion/react' {
       pm: string;
       anyone: string;
       button: {
-        activeGreen: string;
+        darkGreen: string;
         activeGray: string;
         disabled: string;
-        hoverGreen: string;
+        lightGreen: string;
         hoverGray: string;
       };
       border: {
