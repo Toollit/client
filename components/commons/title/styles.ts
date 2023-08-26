@@ -1,7 +1,6 @@
-import { mediaQueryMobile } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 
-const TitleContainer = styled.div`
+const Container = styled.div`
   min-height: 7.2rem;
   height: fit-content;
   padding: 2.5rem 0rem;
@@ -9,14 +8,8 @@ const TitleContainer = styled.div`
   word-wrap: break-word;
 `;
 
-const TitleText = styled.h1`
-  /* font-size: ${(props) => props.theme.fontSizes.large};
-
-  ${mediaQueryMobile} {
-    font-size: ${(props) => props.theme.fontSizes.xxxlarge};
-  } */
-
+const Text = styled.h1`
   font-size: 2rem;
 `;
 
-export { TitleContainer, TitleText };
+export { Container, Text };
