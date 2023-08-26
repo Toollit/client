@@ -2,7 +2,7 @@ import React from 'react';
 import { StyledLabel } from './styles';
 
 interface LabelProps {
-  htmlFor: string;
+  htmlFor?: string;
   text: string;
 }
 
