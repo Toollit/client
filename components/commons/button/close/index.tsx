@@ -6,7 +6,7 @@ interface CloseBtnProps {
   onClick?: () => void;
 }
 
-const CloseBtn = ({ onClick }: CloseBtnProps) => {
+const CloseButton = ({ onClick }: CloseBtnProps) => {
   return (
     <Button onClick={onClick}>
       <CloseIcon />
@@ -14,4 +14,4 @@ const CloseBtn = ({ onClick }: CloseBtnProps) => {
   );
 };
 
-export default CloseBtn;
+export default CloseButton;

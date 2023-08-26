@@ -1,29 +1,91 @@
-import { mediaQueryTablet } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
-const Button = styled.div`
+interface CommonStylesProps {
+  width?: number;
+  height?: number;
+}
+
+const commonStyles = (props: CommonStylesProps) => css`
+  width: ${props.width ? `${props.width}rem` : '100%'};
+  height: ${props.height ? `${props.height}rem` : '4rem'};
+  border-radius: 25rem;
+`;
+
+const NormalButton = styled.button<{
+  isMobile: boolean;
+  width?: number;
+  height?: number;
+}>`
+  ${commonStyles}
+  background-color: ${(props) => props.theme.colors.white};
   font-size: ${(props) => props.theme.fontSizes.base};
   font-weight: 400;
   border: 1px solid ${(props) => props.theme.colors.border.base};
-  margin-top: 1.2rem;
-  margin-bottom: 1.2rem;
-  border-radius: 25rem;
-  height: 4rem;
-  cursor: pointer;
-  background-color: ${(props) => props.theme.colors.white};
 
-  ${mediaQueryTablet} {
-    :hover {
-      background-color: ${(props) => props.theme.colors.button.hoverGreen};
+  ${(props) => {
+    if (props.isMobile) {
+      return css`
+        &:active {
+          background-color: ${props.theme.colors.button.lightGreen};
+        }
+      `;
     }
-  }
 
-  :active {
-    background-color: ${(props) => props.theme.colors.button.hoverGreen};
+    if (!props.isMobile) {
+      return css`
+        &:hover {
+          background-color: ${props.theme.colors.button.lightGreen};
+        }
+
+        &:active {
+          background-color: ${props.theme.colors.button.lightGreen};
+        }
+      `;
+    }
+  }}
+`;
+
+const SubmitButton = styled.button<{
+  isMobile: boolean;
+  width?: number;
+  height?: number;
+}>`
+  ${commonStyles}
+  background-color: ${(props) => props.theme.colors.theme};
+  font-size: ${(props) => props.theme.fontSizes.base};
+  font-weight: 600;
+  border: none;
+
+  &:active {
+    background-color: ${(props) => props.theme.colors.button.darkGreen};
   }
 `;
 
-const Text = styled.div<{ color?: 'black' | 'gray' | 'white' }>`
+const DisabledButton = styled.button<{
+  isMobile: boolean;
+  width?: number;
+  height?: number;
+}>`
+  ${commonStyles}
+  background-color: ${(props) => props.theme.colors.theme};
+  font-size: ${(props) => props.theme.fontSizes.base};
+  font-weight: 600;
+  border: none;
+
+  background-color: ${(props) => props.theme.colors.button.disabled};
+  cursor: not-allowed;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+`;
+
+const Text = styled.span<{ color?: 'black' | 'gray' | 'white' }>`
   font-size: 1.5rem;
   letter-spacing: 0.025rem;
 
@@ -45,12 +107,4 @@ const Text = styled.div<{ color?: 'black' | 'gray' | 'white' }>`
   }};
 `;
 
-const ContentContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-`;
-
-export { Button, Text, ContentContainer };
+export { NormalButton, SubmitButton, DisabledButton, Text, ContentContainer };

@@ -6,7 +6,7 @@ interface BackBtnProps {
   onClick?: () => void;
 }
 
-const BackBtn = ({ onClick }: BackBtnProps) => {
+const BackButton = ({ onClick }: BackBtnProps) => {
   return (
     <Button onClick={onClick}>
       <ArrowBackIcon />
@@ -14,4 +14,4 @@ const BackBtn = ({ onClick }: BackBtnProps) => {
   );
 };
 
-export default BackBtn;
+export default BackButton;

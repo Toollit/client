@@ -1,8 +1,7 @@
-import BottomBtn from './bottom';
-import CloseBtn from './close';
-import DisabledBtn from './disabled';
-import NormalBtn from './normal';
-import SubmitBtn from './submit';
-import BackBtn from './back';
+import Button from './normal';
+import BottomButton from './bottom';
+import CloseButton from './close';
+import BackButton from './back';
+import EditButton from './edit';
 
-export { BottomBtn, CloseBtn, DisabledBtn, NormalBtn, SubmitBtn, BackBtn };
+export { Button, BottomButton, CloseButton, BackButton, EditButton };
