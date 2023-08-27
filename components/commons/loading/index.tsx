@@ -9,7 +9,7 @@ export default function LoadingCircularProgress(props: CircularProgressProps) {
   return (
     <Box
       sx={{
-        position: 'absolute',
+        position: 'fixed',
         left: '0',
         right: '0',
         top: '0',
