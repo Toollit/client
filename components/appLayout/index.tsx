@@ -5,7 +5,6 @@ import { Container, Content } from './styles';
 
 interface AppLayoutProps extends NavProps {
   children: React.ReactNode;
-  hasBottomButton?: boolean;
 }
 
 const AppLayout = ({
@@ -14,7 +13,7 @@ const AppLayout = ({
   title,
   menu,
   boundary,
-  hasBottomButton,
+  fullSize,
   onClick,
 }: AppLayoutProps) => {
   return (
@@ -24,11 +23,10 @@ const AppLayout = ({
         title={title}
         menu={menu}
         boundary={boundary}
+        fullSize={fullSize}
         onClick={onClick}
       />
-      <Content type={type} hasBottomButton={hasBottomButton}>
-        {children}
-      </Content>
+      <Content type={type}>{children}</Content>
       <Alert />
     </Container>
   );
