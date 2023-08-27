@@ -1,10 +1,12 @@
 import React from 'react';
 import AppLayout from '@/components/appLayout';
 import { GoogleIcon, GithubIcon } from '@/assets/icons';
-import { NormalBtn, SubmitBtn } from '@/components/commons/button';
+import { Button } from '@/components/commons/button';
 import Title from '@/components/commons/title';
 import Divider from '@/components/commons/divider';
 import Input from '@/components/commons/input';
+import Link from 'next/link';
+import Block from '@/components/commons/block';
 import {
   Form,
   InputContainer,
@@ -12,7 +14,6 @@ import {
   SignInInduce,
   StyledLink,
 } from './styles';
-import Link from 'next/link';
 
 export interface LoginViewProps {
   handleClose: () => void;
@@ -25,7 +26,7 @@ export interface LoginViewProps {
   showPasswordInput: boolean;
   fillFormComplete: boolean;
   handlePwInquiryRouting: () => void;
-  handleSocialLogin: (event: React.MouseEvent<HTMLDivElement>) => void;
+  handleSocialLogin: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const LoginView = ({
@@ -42,55 +43,114 @@ const LoginView = ({
   handleSocialLogin,
 }: LoginViewProps) => {
   return (
-    <AppLayout type='close' onClick={handleClose} boundary={false}>
+    <AppLayout
+      type='close'
+      onClick={handleClose}
+      boundary={false}
+      fullSize={true}
+    >
       <Form onSubmit={handleSubmit}>
-        <Title text='Getit 로그인' />
+        <Block paddingLeft={1.5} paddingRight={1.5}>
+          <Title text='Getit 로그인' />
+        </Block>
 
-        <NormalBtn
-          text='Google 계정으로 로그인'
-          icon={<GoogleIcon />}
-          name='google'
-          onClick={handleSocialLogin}
-        />
-        <NormalBtn
-          text='Github 계정으로 로그인'
-          icon={<GithubIcon />}
-          name='github'
-          onClick={handleSocialLogin}
-        />
-        <Divider type='text' text='또는' />
-        <InputContainer show={showPasswordInput}>
-          <Input
-            type='text'
-            placeholder={'이메일 주소를 입력해주세요.'}
-            onChange={handleEmail}
-            value={email}
-            focus={true}
+        <Block
+          paddingLeft={1.5}
+          paddingRight={1.5}
+          paddingTop={0.5}
+          paddingBottom={0.5}
+        >
+          <Button
+            type='normal'
+            text='Google 계정으로 로그인'
+            icon={<GoogleIcon width={40} height={40} />}
+            name='google'
+            onClick={handleSocialLogin}
           />
-          {showPasswordInput && (
-            <PasswordInput
-              type='password'
-              placeholder='비밀번호를 입력해주세요.'
-              onChange={handlePassword}
-              value={password}
-              ref={passwordInputRef}
+        </Block>
+
+        <Block
+          paddingLeft={1.5}
+          paddingRight={1.5}
+          paddingTop={0.5}
+          paddingBottom={0.5}
+        >
+          <Button
+            type='normal'
+            text='Github 계정으로 로그인'
+            icon={<GithubIcon width={40} height={40} />}
+            name='github'
+            onClick={handleSocialLogin}
+          />
+        </Block>
+
+        <Block paddingLeft={1.5} paddingRight={1.5}>
+          <Divider type='text' text='또는' />
+        </Block>
+
+        <Block
+          paddingLeft={1.5}
+          paddingRight={1.5}
+          paddingTop={0.5}
+          paddingBottom={0.5}
+        >
+          <InputContainer show={showPasswordInput}>
+            <Input
+              type='text'
+              placeholder={'이메일 주소를 입력해주세요.'}
+              onChange={handleEmail}
+              value={email}
+              focus={true}
             />
+            {showPasswordInput && (
+              <PasswordInput
+                type='password'
+                placeholder='비밀번호를 입력해주세요.'
+                onChange={handlePassword}
+                value={password}
+                ref={passwordInputRef}
+              />
+            )}
+          </InputContainer>
+        </Block>
+
+        <Block
+          paddingLeft={1.5}
+          paddingRight={1.5}
+          paddingTop={1}
+          paddingBottom={0.5}
+        >
+          {fillFormComplete ? (
+            <Button type='submit' text='확인' />
+          ) : (
+            <Button type='submit' text='다음' />
           )}
-        </InputContainer>
+        </Block>
 
-        <SubmitBtn text={fillFormComplete ? '확인' : '다음'} />
+        <Block
+          paddingLeft={1.5}
+          paddingRight={1.5}
+          paddingTop={0.5}
+          paddingBottom={1}
+        >
+          <Button
+            type='normal'
+            text='비밀번호를 잊으셨나요?'
+            onClick={handlePwInquiryRouting}
+          />
+        </Block>
 
-        <NormalBtn
-          text='비밀번호를 잊으셨나요?'
-          onClick={handlePwInquiryRouting}
-        />
-
-        <div>
+        <Block
+          paddingLeft={1.5}
+          paddingRight={1.5}
+          paddingTop={1.5}
+          paddingBottom={1.5}
+        >
           <SignInInduce>계정이 없으신가요?</SignInInduce>
           <Link href={'/signUp'}>
             <StyledLink>가입하기</StyledLink>
           </Link>
-        </div>
+        </Block>
       </Form>
     </AppLayout>
   );

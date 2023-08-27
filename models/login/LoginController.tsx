@@ -65,11 +65,10 @@ const LoginController = () => {
   );
 
   const handleSocialLogin = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
+    (event: React.MouseEvent<HTMLButtonElement>) => {
       if (!event) return;
 
-      const target = event.currentTarget;
-      const loginType = target.getAttribute('data-name') as 'google' | 'github';
+      const loginType = event.currentTarget.name as 'google' | 'github';
 
       const baseURL = process.env.NEXT_PUBLIC_SERVER_API_HOST;
 

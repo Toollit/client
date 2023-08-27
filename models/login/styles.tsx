@@ -5,11 +5,11 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: ${(props) => `calc(100vh - ${props.theme.layout.navHeight})`};
-  height: 100%;
-  margin: 0 auto;
-  max-width: 32rem;
+  max-width: 34rem;
   width: 100%;
+  min-height: 100%;
+  height: fit-content;
+  margin: 0 auto;
 
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -38,8 +38,6 @@ const PasswordInput = styled.input`
   border-radius: ${(props) => props.theme.borderRadius.sharp};
   padding: 0 1rem;
   font-size: 1.6rem;
-  margin-top: 1.2rem;
-  margin-bottom: 1.2rem;
 
   position: absolute;
   width: 100%;
@@ -59,7 +57,7 @@ const PasswordInput = styled.input`
       top: 0;
     }
     100% {
-      top: 7rem;
+      top: 6rem;
     }
   }
 `;
