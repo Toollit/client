@@ -30,8 +30,12 @@ const TuiEditor = ({ titleRef, editorRef, content }: TuiEditorProps) => {
   useEffect(() => {
     if (editorRef.current) {
       editorRef.current.getRootElement().classList.add('Tui-editor-root');
+      // initial value settings
+      editorRef.current
+        .getInstance()
+        .setMarkdown(content?.content.contentMarkdown || '');
     }
-  }, [editorRef]);
+  }, [editorRef, content]);
 
   const handleFilteringFile = useCallback((blob: Blob | File) => {
     if (
