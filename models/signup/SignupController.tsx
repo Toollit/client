@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import SignUpView, { SignUpViewProps } from './SignUpView';
-import useNoSpaceInput from 'hooks/useNoSpaceInput';
+import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { useDispatch } from 'react-redux';
 import { emailAuth } from '@/features/signUp';
 import { emailAuthAPI } from '@/apis/emailAuth';

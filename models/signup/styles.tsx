@@ -1,10 +1,14 @@
 import styled from '@emotion/styled';
 
-const Container = styled.div`
-  position: relative;
-  min-height: 100vh;
+const Form = styled.form`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  max-width: 34rem;
+  width: 100%;
+  min-height: 100%;
+  height: fit-content;
+  margin: 0 auto;
 
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -12,15 +16,6 @@ const Container = styled.div`
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin: auto auto;
-  min-width: 36.4rem;
-  max-width: 36.4rem;
-  padding: 0 3.2rem 4.8rem 3.2rem;
 `;
 
 const InputContainer = styled.div`
@@ -38,4 +33,4 @@ const PolicyNotice = styled.div`
   }
 `;
 
-export { Container, Form, InputContainer, PolicyNotice };
+export { Form, InputContainer, PolicyNotice };

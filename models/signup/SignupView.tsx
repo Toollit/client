@@ -1,12 +1,13 @@
 import React from 'react';
 import AppLayout from 'components/appLayout';
-import { DisabledBtn, SubmitBtn } from '@/components/commons/button';
+import { Button } from '@/components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
 import InputError from '@/components/commons/error/InputError';
 import LoadingCircularProgress from '@/components/commons/loading';
 import Link from 'next/link';
-import { Container, Form, InputContainer, PolicyNotice } from './styles';
+import Block from '@/components/commons/block';
+import { Form, InputContainer, PolicyNotice } from './styles';
 
 export interface SignUpViewProps {
   handleClose: () => void;
@@ -40,11 +41,18 @@ const SignUpView = ({
   requestPending,
 }: SignUpViewProps) => {
   return (
-    <AppLayout type='close' onClick={handleClose} boundary={false}>
-      <Container>
-        <Form onSubmit={handleSubmit}>
+    <AppLayout
+      type='close'
+      onClick={handleClose}
+      boundary={false}
+      fullSize={true}
+    >
+      <Form onSubmit={handleSubmit}>
+        <Block paddingLeft={1.5} paddingRight={1.5}>
           <Title text='Getit 계정을 생성하세요' />
+        </Block>
 
+        <Block paddingLeft={1.5} paddingRight={1.5}>
           <InputContainer>
             <Input
               placeholder='이메일'
@@ -56,6 +64,9 @@ const SignUpView = ({
               <InputError text='올바른 이메일을 입력해 주세요.' />
             )}
           </InputContainer>
+        </Block>
+
+        <Block paddingLeft={1.5} paddingRight={1.5}>
           <InputContainer>
             <Input
               type='password'
@@ -68,6 +79,9 @@ const SignUpView = ({
               <InputError text='영문자, 숫자, 특수문자 조합 8 ~ 20자리' />
             )}
           </InputContainer>
+        </Block>
+
+        <Block paddingLeft={1.5} paddingRight={1.5}>
           <InputContainer>
             <Input
               type='password'
@@ -80,15 +94,27 @@ const SignUpView = ({
               <InputError text='비밀번호가 일치하지 않습니다.' />
             )}
           </InputContainer>
+        </Block>
 
-          <br />
-
+        <Block
+          paddingLeft={1.5}
+          paddingRight={1.5}
+          paddingTop={1}
+          paddingBottom={2}
+        >
           {fillFormComplete ? (
-            <SubmitBtn text='다음' />
+            <Button type='submit' text='다음' />
           ) : (
-            <DisabledBtn text='다음' />
+            <Button type='submit' text='다음' />
           )}
+        </Block>
 
+        <Block
+          paddingLeft={1.5}
+          paddingRight={1.5}
+          paddingTop={1}
+          paddingBottom={1}
+        >
           <PolicyNotice>
             가입하면 쿠키 사용을 포함해{' '}
             <Link href={'/policy/terms-of-service'}>
@@ -105,8 +131,9 @@ const SignUpView = ({
               <a>자세히 알아보기.</a>
             </Link>
           </PolicyNotice>
-        </Form>
-      </Container>
+        </Block>
+      </Form>
+
       {requestPending && <LoadingCircularProgress />}
     </AppLayout>
   );
