@@ -8,7 +8,7 @@ export interface TermsOfServiceViewProps {
 
 const TermsOfServiceView = ({ handleClose }: TermsOfServiceViewProps) => {
   return (
-    <AppLayout type='close' boundary={false} onClick={handleClose}>
+    <AppLayout type='close' onClick={handleClose} boundary={true}>
       <Container>
         <h3>
           <strong>제1장. 약관 및 계약</strong>
