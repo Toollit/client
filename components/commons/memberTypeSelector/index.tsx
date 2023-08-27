@@ -1,24 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  Container,
-  MemberTypeLabel,
-  MemberTypeContainer,
-  Type,
-} from './styles';
+import { Container, MemberTypeContainer, Type } from './styles';
 
 interface MemberTypeProps {
   memberTypeRef: React.MutableRefObject<
     ('developer' | 'designer' | 'pm' | 'anyone')[]
   >;
   memberTypes?: ('developer' | 'designer' | 'pm' | 'anyone')[];
-  label: string;
 }
 
 /**
  * @props memberTypeRef - memberType 값들을 가져오기 위한 ref
  * @props memberTypes - 기존에 저장된 memberType 값들
  */
-const MemberType = ({ memberTypeRef, memberTypes, label }: MemberTypeProps) => {
+const MemberType = ({ memberTypeRef, memberTypes }: MemberTypeProps) => {
   const [checked, setChecked] = useState({
     developer: false,
     designer: false,
@@ -58,7 +52,6 @@ const MemberType = ({ memberTypeRef, memberTypes, label }: MemberTypeProps) => {
 
   return (
     <Container>
-      <MemberTypeLabel>{label}</MemberTypeLabel>
       <MemberTypeContainer>
         {(Object.keys(checked) as Array<keyof typeof checked>).map((type) => {
           return (
