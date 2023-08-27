@@ -6,12 +6,13 @@ import { TransitionProps } from '@mui/material/transitions';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { closeReport } from '@/features/report';
-import { BottomBtn } from '@/components/commons/button';
+import { BottomButton } from '@/components/commons/button';
 import AppLayout from '@/components/appLayout';
 import { reportAPI } from '@/apis/report';
 import { errorMessage } from '@/apis/errorMessage';
+import Block from '@/components/commons/block';
 import {
-  ListTitle,
+  ReportReason,
   ListGroup,
   TextArea,
   DefaultInfoContainer,
@@ -20,6 +21,7 @@ import {
   Content,
   TextCount,
   TextInputContainer,
+  Form,
 } from './styles';
 
 const Transition = forwardRef(function Transition(
@@ -135,99 +137,113 @@ const Report = () => {
       onClose={handleClose}
       TransitionComponent={Transition}
     >
-      <AppLayout
-        type='close'
-        title='신고하기'
-        onClick={handleClose}
-        hasBottomButton={true}
-      >
-        <form onSubmit={handleSubmit}>
-          <DefaultInfoContainer>
-            <Category>작성자</Category>
-            <Writer>{writer}</Writer>
-          </DefaultInfoContainer>
+      <AppLayout type='close' title='신고하기' onClick={handleClose}>
+        <Form onSubmit={handleSubmit}>
+          <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
+            <DefaultInfoContainer>
+              <Category>작성자</Category>
+              <Writer>{writer}</Writer>
+            </DefaultInfoContainer>
+          </Block>
 
-          <DefaultInfoContainer>
-            <Category>게시글</Category>
-            <Content>{title}</Content>
-          </DefaultInfoContainer>
-          <ListTitle>사유선택*</ListTitle>
-          <ListGroup>
-            <li>
-              <label>
-                <input
-                  type='radio'
-                  name='reason'
-                  value={'욕설, 비방, 명예훼손 관련 게시글입니다.'}
-                  onClick={handleSelect}
-                />
-                <span>욕설, 비방, 명예훼손 관련 게시글입니다.</span>
-              </label>
-            </li>
+          <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
+            <DefaultInfoContainer>
+              <Category>게시글</Category>
+              <Content>{title}</Content>
+            </DefaultInfoContainer>
+          </Block>
 
-            <li>
-              <label>
-                <input
-                  type='radio'
-                  name='reason'
-                  value={'개인정보 노출 게시글입니다.'}
-                  onClick={handleSelect}
-                />
-                <span>개인정보 노출 게시글입니다.</span>
-              </label>
-            </li>
+          <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={6}>
+            <ReportReason>*사유선택</ReportReason>
+          </Block>
 
-            <li>
-              <label>
-                <input
-                  type='radio'
-                  name='reason'
-                  value={'반복문자 / 도배글 입니다.'}
-                  onClick={handleSelect}
-                />
-                <span>반복문자 / 도배글 입니다.</span>
-              </label>
-            </li>
+          <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={1}>
+            <ListGroup>
+              <li>
+                <label>
+                  <input
+                    type='radio'
+                    name='reason'
+                    value={'욕설, 비방, 명예훼손 관련 게시글입니다.'}
+                    onClick={handleSelect}
+                  />
+                  <span>욕설, 비방, 명예훼손 관련 게시글입니다.</span>
+                </label>
+              </li>
 
-            <li>
-              <label>
-                <input
-                  type='radio'
-                  name='reason'
-                  value={'음란물 입니다.'}
-                  onClick={handleSelect}
-                />
-                <span>음란물 입니다.</span>
-              </label>
-            </li>
+              <li>
+                <label>
+                  <input
+                    type='radio'
+                    name='reason'
+                    value={'개인정보 노출 게시글입니다.'}
+                    onClick={handleSelect}
+                  />
+                  <span>개인정보 노출 게시글입니다.</span>
+                </label>
+              </li>
 
-            <li>
-              <label>
-                <input
-                  type='radio'
-                  name='reason'
-                  value={'직접입력'}
-                  onClick={handleSelect}
+              <li>
+                <label>
+                  <input
+                    type='radio'
+                    name='reason'
+                    value={'반복문자 / 도배글 입니다.'}
+                    onClick={handleSelect}
+                  />
+                  <span>반복문자 / 도배글 입니다.</span>
+                </label>
+              </li>
+
+              <li>
+                <label>
+                  <input
+                    type='radio'
+                    name='reason'
+                    value={'음란물 입니다.'}
+                    onClick={handleSelect}
+                  />
+                  <span>음란물 입니다.</span>
+                </label>
+              </li>
+
+              <li>
+                <label>
+                  <input
+                    type='radio'
+                    name='reason'
+                    value={'직접입력'}
+                    onClick={handleSelect}
+                  />
+                  <span>직접입력</span>
+                </label>
+              </li>
+            </ListGroup>
+          </Block>
+
+          <Block
+            paddingLeft={1.5}
+            paddingRight={1.5}
+            paddingTop={0.5}
+            paddingBottom={0.5}
+          >
+            {showTextarea && (
+              <TextInputContainer>
+                <TextArea
+                  name='reasonDetail'
+                  cols={30}
+                  rows={10}
+                  placeholder='신고 내용을 입력해 주세요. 최소 10자 이상 입력 해주세요.'
+                  onChange={handleTextarea}
+                  maxLength={1000}
                 />
-                <span>직접입력</span>
-              </label>
-            </li>
-          </ListGroup>
-          {showTextarea && (
-            <TextInputContainer>
-              <TextArea
-                name='reasonDetail'
-                cols={30}
-                rows={10}
-                placeholder='신고 내용을 입력해 주세요. 최소 10자 이상 입력 해주세요.'
-                onChange={handleTextarea}
-                maxLength={1000}
-              />
-              <TextCount>{textCount} / 1000</TextCount>
-            </TextInputContainer>
-          )}
-          <BottomBtn text='제출' />
-        </form>
+                <TextCount>{textCount} / 1000</TextCount>
+              </TextInputContainer>
+            )}
+          </Block>
+
+          <BottomButton text='제출' />
+        </Form>
       </AppLayout>
     </Dialog>
   );

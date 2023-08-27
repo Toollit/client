@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
 
+const Form = styled.form`
+  padding-bottom: 9rem;
+`;
+
 const DefaultInfoContainer = styled.div`
-  margin-top: 2rem;
   display: flex;
   align-items: center;
 `;
@@ -23,14 +26,12 @@ const Content = styled.p`
   overflow: hidden;
 `;
 
-const ListTitle = styled.div`
+const ReportReason = styled.div`
   font-size: 1.6rem;
   font-weight: 500;
-  margin-top: 4rem;
 `;
 
 const ListGroup = styled.ul`
-  margin-top: 1rem;
   list-style: none;
   outline: none;
   font-size: 1.4rem;
@@ -84,7 +85,8 @@ const TextCount = styled.div`
 `;
 
 export {
-  ListTitle,
+  Form,
+  ReportReason,
   ListGroup,
   TextArea,
   DefaultInfoContainer,
