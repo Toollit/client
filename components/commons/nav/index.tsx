@@ -5,9 +5,10 @@ import GetitLogo from '@/assets/images/GetitLogo';
 import { closeDrawer, openDrawer } from '@/features/drawer';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { CloseBtn, BackBtn } from '@/components/commons/button';
+import { BackButton, CloseButton } from '@/components/commons/button';
 import { RootState } from '@/store';
 import useAuth from '@/hooks/useAuth';
+import useCheckUserAgent from '@/hooks/useCheckUserAgent';
 import {
   Container,
   ColumnContainer,
@@ -19,19 +20,35 @@ import {
   StyledLink,
 } from './styles';
 
-// optional value only use with close type and back type
 export interface NavProps {
   type: 'default' | 'close' | 'back' | 'none';
   title?: string;
-  menu?: React.ReactNode[]; // right side menu
-  boundary?: boolean; // border bottom line
+  menu?: React.ReactNode[];
+  boundary?: boolean;
+  fullSize?: boolean;
   onClick?: () => void;
 }
 
-const Nav = ({ type, title, menu, boundary = true, onClick }: NavProps) => {
+/**
+ * @props type - 'default' | 'close' | 'back' | 'none';
+ * @props title - nav center text
+ * @props menu - nav right side icons
+ * @props boundary - nav bottom border show
+ * @props fullSize - use only when type back or close and boundary false
+ * @props onClick - nav left side default icons click handler
+ */
+const Nav = ({
+  type,
+  title,
+  menu,
+  boundary = true,
+  fullSize = false,
+  onClick,
+}: NavProps) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { nickname } = useAuth();
+  const { isMobile } = useCheckUserAgent();
   const searchDrawerOpenState = useSelector(
     (state: RootState) => state.drawer.search,
   );
@@ -69,7 +86,7 @@ const Nav = ({ type, title, menu, boundary = true, onClick }: NavProps) => {
       return (
         <Container boundary={boundary}>
           <ColumnContainer>
-            <ColumnLeftContainer>
+            <ColumnLeftContainer isMobile={isMobile}>
               <li>
                 <Link href='/'>
                   <StyledLogoLink onClick={handleLogoRoute}>
@@ -80,7 +97,7 @@ const Nav = ({ type, title, menu, boundary = true, onClick }: NavProps) => {
               </li>
             </ColumnLeftContainer>
 
-            <ColumnRightContainer>
+            <ColumnRightContainer isMobile={isMobile}>
               <li onClick={handleSearchDrawer}>
                 <SearchIcon width={28} height={28} />
               </li>
@@ -105,26 +122,30 @@ const Nav = ({ type, title, menu, boundary = true, onClick }: NavProps) => {
 
     case 'back':
       return (
-        <Container boundary={boundary}>
+        <Container boundary={boundary} fullSize={fullSize}>
           <ColumnContainer>
             <Title>{title}</Title>
-            <ColumnLeftContainer>
-              <BackBtn onClick={onClick} />
+            <ColumnLeftContainer isMobile={isMobile}>
+              <li onClick={onClick}>
+                <BackButton />
+              </li>
             </ColumnLeftContainer>
-            <ColumnRightContainer></ColumnRightContainer>
+            <ColumnRightContainer isMobile={isMobile}></ColumnRightContainer>
           </ColumnContainer>
         </Container>
       );
 
     case 'close':
       return (
-        <Container boundary={boundary}>
+        <Container boundary={boundary} fullSize={fullSize}>
           <ColumnContainer>
             <Title>{title}</Title>
-            <ColumnLeftContainer>
-              <CloseBtn onClick={onClick} />
+            <ColumnLeftContainer isMobile={isMobile}>
+              <li onClick={onClick}>
+                <CloseButton />
+              </li>
             </ColumnLeftContainer>
-            <ColumnRightContainer></ColumnRightContainer>
+            <ColumnRightContainer isMobile={isMobile}></ColumnRightContainer>
           </ColumnContainer>
         </Container>
       );
