@@ -1,21 +1,17 @@
-import { updateUserAgent } from 'features/user';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 const useCheckUserAgent = () => {
-  const dispatch = useDispatch();
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
       const userAgent = window.navigator.userAgent;
+      // navigator.userAgent.match(/Android|iPhone|iPad|iPod/i);
       setIsMobile(userAgent.indexOf('Mobi') > -1);
     }
+  }, [isMobile]);
 
-    dispatch(updateUserAgent({ isMobile }));
-  }, [dispatch, isMobile]);
-
-  return null;
+  return { isMobile };
 };
 
 export default useCheckUserAgent;
