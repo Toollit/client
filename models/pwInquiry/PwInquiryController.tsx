@@ -64,10 +64,6 @@ const PwInquiryController = () => {
     [email, router, checkEmailFormatValidate, dispatch],
   );
 
-  const handleSignUp = useCallback(() => {
-    router.push('/signUp');
-  }, [router]);
-
   // remove error message when input value is changed
   useEffect(() => {
     setEmailInvalidError(false);
@@ -79,7 +75,7 @@ const PwInquiryController = () => {
     onChangeEmail: isLoading ? noop : onChangeEmail,
     emailInvalidError,
     handleSubmit,
-    handleSignUp,
+
     isLoading,
   };
   return <PwInquiryView {...props} />;
