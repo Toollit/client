@@ -41,9 +41,8 @@ const ListGroup = styled.ul`
     border-radius: 0;
     width: 2.5rem;
     height: 2.5rem;
-    min-width: 2rem;
     margin-right: 0.8rem;
-    font-size: 1.4rem;
+    cursor: pointer;
 
     background: url('/static/icons/radio/radio_button_unchecked_FILL0.svg')
       no-repeat center;
@@ -51,13 +50,13 @@ const ListGroup = styled.ul`
     :checked {
       background: url('/static/icons/radio/radio_button_checked_FILL0_theme.svg')
         no-repeat center;
-      color: red;
     }
   }
 
   label {
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
 `;
 
