@@ -119,27 +119,11 @@ const BugImage = styled.div`
 const PostFilterWriteContainer = styled.div`
   display: flex;
   align-items: center;
-`;
-
-const PostFilterContainer = styled.div`
-  margin-left: auto;
-  margin-right: 2rem;
-`;
-
-const PostWriteButton = styled.button`
-  height: 4rem;
-  text-align: center;
-  border-radius: 25rem;
-  border-style: none;
-  background-color: #4dd290;
-  color: #fff;
-  font-weight: 700;
-  font-size: 1.3rem;
-  padding: 1rem 2rem;
+  justify-content: right;
+  column-gap: 2rem;
 `;
 
 // 게시글 목록 관련
-
 const StyledLink = styled.a`
   text-decoration: none;
   color: #000;
@@ -158,7 +142,5 @@ export {
   ThirdSlideText,
   BugImage,
   PostFilterWriteContainer,
-  PostFilterContainer,
-  PostWriteButton,
   StyledLink,
 };

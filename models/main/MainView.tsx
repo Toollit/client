@@ -13,6 +13,7 @@ import SwipeableCircularViews from '@/components/commons/swipeableView/swipeable
 import Pagination from '@/components/commons/pagination';
 import SearchDrawer from '@/components/commons/drawer/search';
 import Block from '@/components/commons/block';
+import { Button } from '@/components/commons/button';
 import {
   Banner,
   FirstSlideText,
@@ -26,8 +27,6 @@ import {
   ThirdSlideNotice,
   BugImage,
   PostFilterWriteContainer,
-  PostFilterContainer,
-  PostWriteButton,
   StyledLink,
 } from './styles';
 
@@ -102,12 +101,13 @@ const MainView = ({
 
       <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={1.5}>
         <PostFilterWriteContainer>
-          <PostFilterContainer>
-            <Filter />
-          </PostFilterContainer>
-          <PostWriteButton onClick={createProject}>
-            프로젝트 생성
-          </PostWriteButton>
+          <Filter />
+          <Button
+            type='submit'
+            text='프로젝트 생성'
+            width={13}
+            onClick={createProject}
+          />
         </PostFilterWriteContainer>
       </Block>
 
