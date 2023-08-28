@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { DeleteIcon, EditSquareIcon, MoreIcon } from '@/assets/icons';
-import { Button, MoreMenu, Item, ItemContainer } from './styles';
+import { Button, TooltipBox, Item, Content } from './styles';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { deletePostAPI } from '@/apis/deletePost';
@@ -8,17 +8,20 @@ import { errorMessage } from '@/apis/errorMessage';
 import { openReport } from '@/features/report';
 import useAuth from '@/hooks/useAuth';
 
-interface MoreProps {
-  isMine: boolean;
+interface Props {
+  writer?: string;
+  title?: string;
 }
 
 /**
- * @props isMine - 게시글 작성자와 로그인한 사용자의 일치여부 확인
+ * Tooltip for managing posts (reporting, modifying, deleting)
+ * @props writer - 게시글 작성자
+ * @props title - 제목
  */
-const More = ({ isMine }: MoreProps) => {
+const Tooltip = ({ writer, title }: Props) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const postId = router.query.id;
+  const postId = router.query.id as string;
 
   // Current Access User Self Information
   const { nickname: accessUser, authMutate } = useAuth();
@@ -39,10 +42,11 @@ const More = ({ isMine }: MoreProps) => {
   }, []);
 
   const handleModify = useCallback(() => {
-    window.open(`/modify/${postType}/${postId}`);
+    // window.open(`/modify/${postType}/${postId}`);
+    router.push(`/modify/${postType}/${postId}`);
 
     setAnchorEl(null);
-  }, [postType, postId]);
+  }, [router, postType, postId]);
 
   const handleDelete = useCallback(async () => {
     setAnchorEl(null);
@@ -75,8 +79,15 @@ const More = ({ isMine }: MoreProps) => {
     }
 
     setAnchorEl(null);
-    dispatch(openReport());
-  }, [dispatch, router, authMutate]);
+    dispatch(
+      openReport({
+        postType: postType ?? '',
+        postId: Number(postId),
+        writer: writer ?? '',
+        title: title ?? '',
+      }),
+    );
+  }, [dispatch, router, authMutate, postType, postId, writer, title]);
 
   useEffect(() => {
     router.asPath.split('/').find((type) => {
@@ -99,24 +110,20 @@ const More = ({ isMine }: MoreProps) => {
       <Button onClick={handleClick}>
         <MoreIcon width={40} height={30} />
       </Button>
-      <MoreMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {isMine ? (
+      <TooltipBox anchorEl={anchorEl} open={open} onClose={handleClose}>
+        {writer === accessUser ? (
           <div>
             <Item onClick={handleModify}>
-              <ItemContainer>
-                <div>
-                  <EditSquareIcon />
-                </div>
-                <div>수정</div>
-              </ItemContainer>
+              <Content>
+                <EditSquareIcon />
+                <span>수정</span>
+              </Content>
             </Item>
             <Item onClick={handleDelete}>
-              <ItemContainer>
-                <div>
-                  <DeleteIcon />
-                </div>
-                <div>삭제</div>
-              </ItemContainer>
+              <Content>
+                <DeleteIcon />
+                <span>삭제</span>
+              </Content>
             </Item>
           </div>
         ) : (
@@ -124,9 +131,9 @@ const More = ({ isMine }: MoreProps) => {
             <Item onClick={handleReport}>신고</Item>
           </div>
         )}
-      </MoreMenu>
+      </TooltipBox>
     </div>
   );
 };
 
-export default More;
+export default Tooltip;

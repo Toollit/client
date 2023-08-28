@@ -8,13 +8,13 @@ const Button = styled.button`
   padding: 0rem 0.5rem;
 `;
 
-const MoreMenu = styled(Menu)`
+const TooltipBox = styled(Menu)`
   .MuiList-padding {
     padding: 0;
   }
 `;
 
-const ItemContainer = styled.div`
+const Content = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -24,4 +24,4 @@ const Item = styled(MenuItem)`
   padding: 0.5rem 2rem;
 `;
 
-export { Button, MoreMenu, ItemContainer, Item };
+export { Button, TooltipBox, Content, Item };
