@@ -13,9 +13,7 @@ const Filter = () => {
   const router = useRouter();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [displayOrderText, setDisplayOrderText] = useState<'최신순' | '인기순'>(
-    '최신순',
-  );
+  const [postOrder, setPostOrder] = useState<'최신순' | '인기순'>('최신순');
 
   const open = Boolean(anchorEl);
 
@@ -50,8 +48,8 @@ const Filter = () => {
   useEffect(() => {
     const order = router.query['order'];
 
-    if (Array.isArray(order) || order === undefined) {
-      return;
+    if (order === undefined) {
+      return setPostOrder('최신순');
     }
 
     if (order !== 'new' && order !== 'popularity') {
@@ -59,11 +57,11 @@ const Filter = () => {
     }
 
     if (order === 'new') {
-      setDisplayOrderText('최신순');
+      return setPostOrder('최신순');
     }
 
     if (order === 'popularity') {
-      setDisplayOrderText('인기순');
+      return setPostOrder('인기순');
     }
   }, [router]);
 
@@ -73,7 +71,7 @@ const Filter = () => {
         <IconContainer>
           <FilterIcon width={20} height={20} />
         </IconContainer>
-        <Text>{displayOrderText}</Text>
+        <Text>{postOrder}</Text>
       </Button>
       <FilterMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <FilterCondition onClick={handleClose} data-value='new'>
