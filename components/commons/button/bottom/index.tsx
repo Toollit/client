@@ -7,7 +7,7 @@ interface Props {
   onClick?: (event: React.MouseEvent) => void;
 }
 
-const BottomBtn = ({ text, disabled = false, onClick }: Props) => {
+const BottomButton = ({ text, disabled = false, onClick }: Props) => {
   return (
     <Container>
       <Button onClick={onClick} disabled={disabled}>
@@ -17,4 +17,4 @@ const BottomBtn = ({ text, disabled = false, onClick }: Props) => {
   );
 };
 
-export default BottomBtn;
+export default BottomButton;

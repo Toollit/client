@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditButton } from './styles';
+import { Button } from './styles';
 
 interface EditBtnProps {
   text: string;
@@ -14,8 +14,8 @@ interface EditBtnProps {
  * @props onClick - edit button handler
  */
 
-const EditBtn = ({ text, category, onClick }: EditBtnProps) => {
-  return <EditButton onClick={() => onClick(category)}>{text}</EditButton>;
+const EditButton = ({ text, category, onClick }: EditBtnProps) => {
+  return <Button onClick={() => onClick(category)}>{text}</Button>;
 };
 
-export default EditBtn;
+export default EditButton;
