@@ -1,28 +1,25 @@
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import GetitLogo from '@/assets/images/GetitLogo';
+import Block from '@/components/commons/block';
 
 const Container = styled.div`
   width: 100%;
   max-width: 56rem;
-  margin: 3.6rem auto 0 auto;
+  margin: 0 auto;
 `;
 
-const LogoContainer = styled.div`
+const StyledLink = styled.a`
   display: flex;
-  margin-left: 2.5rem;
-  width: fit-content;
+  color: #000;
   cursor: pointer;
 `;
 
 const LogoText = styled.h1`
   font-size: 2.8rem;
-  margin-left: 1rem;
+  padding-left: 1rem;
 `;
 
-const ContentContainer = styled.div`
-  margin: 3rem 3rem 0 3rem;
-`;
 const Title = styled.h2`
   font-size: 1.4rem;
   color: #444444;
@@ -31,7 +28,7 @@ const Title = styled.h2`
 const Description = styled.p`
   font-size: 1.2rem;
   color: #444444;
-  margin-top: 1rem;
+  padding-top: 1rem;
 `;
 
 const EmphasizeText = styled.span`
@@ -40,8 +37,9 @@ const EmphasizeText = styled.span`
 
 const SubDescription = styled.p`
   font-size: 1.2rem;
-  margin-top: 2rem;
   font-weight: 500;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
 `;
 
 const Return = styled.a`
@@ -51,13 +49,16 @@ const Return = styled.a`
 export default function NotFound() {
   return (
     <Container>
-      <Link href='/'>
-        <LogoContainer>
-          <GetitLogo width={40} height={40} />
-          <LogoText>Getit</LogoText>
-        </LogoContainer>
-      </Link>
-      <ContentContainer>
+      <Block paddingLeft={3} paddingRight={3} paddingTop={3}>
+        <Link href='/' passHref>
+          <StyledLink>
+            <GetitLogo width={40} height={40} />
+            <LogoText>Getit</LogoText>
+          </StyledLink>
+        </Link>
+      </Block>
+
+      <Block paddingLeft={3} paddingRight={3} paddingTop={3}>
         <Title>
           죄송합니다.
           <br />
@@ -87,7 +88,7 @@ export default function NotFound() {
           </Link>
           <span> 👈</span>
         </SubDescription>
-      </ContentContainer>
+      </Block>
     </Container>
   );
 }
