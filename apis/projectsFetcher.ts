@@ -10,7 +10,7 @@ export interface Project {
   memberNumber: number;
   recruitNumber: number;
 }
-export interface GetProjectsAPIRes {
+export interface ProjectsAPIRes {
   success: boolean;
   message: string | null;
   data: {
@@ -19,7 +19,7 @@ export interface GetProjectsAPIRes {
   };
 }
 
-export const getProjectsFetcher = async (url: string) => {
-  const response = await serverInstance.get<GetProjectsAPIRes>(url);
+export const projectsFetcher = async (url: string) => {
+  const response = await serverInstance.get<ProjectsAPIRes>(url);
   return response.data;
 };

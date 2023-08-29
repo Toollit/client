@@ -2,11 +2,11 @@
 export const authUserKey = '/api/auth/user';
 
 // main page
-export const getProjectsKey = (page: number, order: 'new' | 'popularity') => {
+export const projectsKey = (page: number, order: 'new' | 'popularity') => {
   return `/api/post/projects?page=${page}&order=${order ?? 'new'}`;
 };
 
-export const getProjectsBookmarkCheckKey = () => {
+export const projectsBookmarksStatusKey = () => {
   return `/api/post/projects/checkBookmark`;
 };
 
