@@ -1,20 +1,20 @@
 import type { NextPage, GetServerSideProps } from 'next';
 import { SWRConfig } from 'swr';
-import { getProjectsFetcher, Project } from '@/apis/getProjectsFetcher';
+import { projectsFetcher, Project } from '@/apis/projectsFetcher';
 import MainController from 'models/main/MainController';
-import { getProjectsKey } from '@/apis/keys';
+import { projectsKey } from '@/apis/keys';
 interface PageProps {
   fallback: {
     [key: string]: Project[];
   };
   pageNumber: number;
-  orderValue: 'new' | 'popularity';
+  postOrder: 'new' | 'popularity';
 }
 
-const Home: NextPage<PageProps> = ({ fallback, pageNumber, orderValue }) => {
+const Home: NextPage<PageProps> = ({ fallback, pageNumber, postOrder }) => {
   return (
     <SWRConfig value={{ fallback }}>
-      <MainController pageNumber={pageNumber} orderValue={orderValue} />
+      <MainController pageNumber={pageNumber} postOrder={postOrder} />
     </SWRConfig>
   );
 };
@@ -22,13 +22,14 @@ const Home: NextPage<PageProps> = ({ fallback, pageNumber, orderValue }) => {
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // If no queries exist. Basic request when entering the homepage
   if (Object.keys(query).length === 0) {
-    const apiEndpoint = getProjectsKey(1, 'new');
-    const projects = await getProjectsFetcher(apiEndpoint);
+    const apiEndpoint = projectsKey(1, 'new');
+    const key = JSON.stringify([apiEndpoint, 'projects']);
+    const projects = await projectsFetcher(apiEndpoint);
 
     return {
       props: {
         fallback: {
-          [apiEndpoint]: projects,
+          [key]: projects,
         },
       },
     };
@@ -59,10 +60,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
 
   const pageNumber = Number(query[Object.keys(query)[hasPageQuery]]);
-  const orderValue = query[Object.keys(query)[hasOrderQuery]];
+  const postOrder = query[Object.keys(query)[hasOrderQuery]];
 
   const isPageValueNaN = isNaN(pageNumber);
-  const isOrderValue = orderValue === 'new' || orderValue === 'popularity';
+  const isOrderValue = postOrder === 'new' || postOrder === 'popularity';
 
   // Check query value is normal
   if (isPageValueNaN || !isOrderValue) {
@@ -71,17 +72,17 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
   }
 
-  const apiEndpoint = getProjectsKey(pageNumber, orderValue);
-
-  const projects = await getProjectsFetcher(apiEndpoint);
+  const apiEndpoint = projectsKey(pageNumber, postOrder);
+  const key = JSON.stringify([apiEndpoint, 'projects']);
+  const projects = await projectsFetcher(apiEndpoint);
 
   return {
     props: {
       fallback: {
-        [apiEndpoint]: projects,
+        [key]: projects,
       },
       pageNumber,
-      orderValue,
+      postOrder,
     },
   };
 };

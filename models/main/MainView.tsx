@@ -123,10 +123,7 @@ const MainView = ({
                 tablet={4}
                 laptop={4}
               >
-                <Link
-                  href={`/project/${project.id}?from=/&page=${page}&order=${order}`}
-                  passHref
-                >
+                <Link href={`/project/${project.id}`} passHref>
                   <StyledLink>
                     <BlockPost content={project} />
                   </StyledLink>
