@@ -23,8 +23,11 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // If no queries exist. Basic request when entering the homepage
   if (Object.keys(query).length === 0) {
     const apiEndpoint = projectsKey(1, 'new');
-    const key = JSON.stringify([apiEndpoint, 'projects']);
-    const projects = await projectsFetcher(apiEndpoint);
+    const key = JSON.stringify({
+      url: apiEndpoint,
+      args: { page: '/', tag: 'projects' },
+    });
+    const projects = await projectsFetcher({ url: apiEndpoint });
 
     return {
       props: {
@@ -73,8 +76,11 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
 
   const apiEndpoint = projectsKey(pageNumber, postOrder);
-  const key = JSON.stringify([apiEndpoint, 'projects']);
-  const projects = await projectsFetcher(apiEndpoint);
+  const key = JSON.stringify({
+    url: apiEndpoint,
+    args: { page: '/', tag: 'projects' },
+  });
+  const projects = await projectsFetcher({ url: apiEndpoint });
 
   return {
     props: {

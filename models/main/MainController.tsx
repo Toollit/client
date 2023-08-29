@@ -27,7 +27,10 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
   const [order, setOrder] = useState<'new' | 'popularity'>(postOrder);
 
   const { data: projectsRes } = useSWR(
-    [projectsKey(page, order), 'projects'],
+    {
+      url: projectsKey(page, order),
+      args: { page: '/', tag: 'projects' },
+    },
     projectsFetcher,
     {
       dedupingInterval: 60 * 10 * 1000,
@@ -41,7 +44,10 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
   );
 
   const { data: bookmarksRes } = useSWR(
-    [projectsBookmarksStatusKey(), 'projectsBookmarksStatus'],
+    {
+      url: projectsBookmarksStatusKey(),
+      args: { page: '/', tag: 'projectsBookmarksStatus' },
+    },
     projectsBookmarksStatusFetcher,
     {
       dedupingInterval: 60 * 10 * 1000,

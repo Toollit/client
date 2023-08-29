@@ -8,7 +8,17 @@ export interface ProjectsBookmarkStatusAPIRes {
   };
 }
 
-export const projectsBookmarksStatusFetcher = async (url: string) => {
+interface FetcherParams {
+  url: string;
+  args?: {
+    page: string;
+    tag: string;
+  };
+}
+
+export const projectsBookmarksStatusFetcher = async ({
+  url,
+}: FetcherParams) => {
   const response = await serverInstance.get<ProjectsBookmarkStatusAPIRes>(url);
   return response.data;
 };

@@ -19,7 +19,15 @@ export interface ProjectsAPIRes {
   };
 }
 
-export const projectsFetcher = async (url: string) => {
+interface FetcherParams {
+  url: string;
+  args?: {
+    page: string;
+    tag: string;
+  };
+}
+
+export const projectsFetcher = async ({ url }: FetcherParams) => {
   const response = await serverInstance.get<ProjectsAPIRes>(url);
   return response.data;
 };
