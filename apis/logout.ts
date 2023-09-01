@@ -4,7 +4,7 @@ export interface LogoutAPIReq {}
 
 export interface LogoutAPIRes {
   success: boolean;
-  message: string;
+  message: string | null;
 }
 
 export const logoutAPI = async (): Promise<LogoutAPIRes | undefined> => {

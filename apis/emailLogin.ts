@@ -10,10 +10,13 @@ export interface EmailLoginAPIRes {
   message: string | null;
 }
 
-export const emailLoginAPI = async ({ email, password }: EmailLoginAPIReq) => {
-  const response = await serverInstance.post<EmailLoginAPIRes>(
-    '/api/user/login',
-    { email, password },
-  );
+export const emailLoginAPI = async ({
+  email,
+  password,
+}: EmailLoginAPIReq): Promise<EmailLoginAPIRes | undefined> => {
+  const response = await serverInstance.post('/api/user/login', {
+    email,
+    password,
+  });
   return response.data;
 };

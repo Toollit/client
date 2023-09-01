@@ -1,19 +1,19 @@
 import { serverInstance } from 'apis/axios';
 
-export interface SignUpData {
+export interface SignUpAPIReq {
   email: string;
   password: string;
   signUpType: 'google' | 'github' | 'email';
 }
 
-export interface SignUpApiRes {
+export interface SignUpAPIRes {
   success: boolean;
-  message: string;
+  message: string | null;
 }
 
 export const signUpAPI = async (
-  data: SignUpData,
-): Promise<SignUpApiRes | undefined> => {
+  data: SignUpAPIReq,
+): Promise<SignUpAPIRes | undefined> => {
   const response = await serverInstance.post('/api/user/signUp', data);
   return response.data;
 };

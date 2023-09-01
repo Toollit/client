@@ -1,12 +1,12 @@
 import { serverInstance } from 'apis/axios';
 
-interface EmailAuthAPIReq {
+export interface EmailAuthAPIReq {
   email: string;
 }
 
 export interface EmailAuthAPIRes {
   success: boolean;
-  message: string;
+  message: string | null;
 }
 
 export const emailAuthAPI = async (

@@ -11,7 +11,7 @@ export interface ReportAPIReq {
 
 export interface ReportAPIRes {
   success: boolean;
-  message: null | string;
+  message: string | null;
 }
 
 export const reportAPI = async (

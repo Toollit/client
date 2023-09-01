@@ -13,10 +13,10 @@ export interface EmailVerifyAPIRes {
 export const emailVerifyAPI = async ({
   email,
   authCode,
-}: EmailVerifyAPIReq) => {
-  const response = await serverInstance.post<EmailVerifyAPIRes>(
-    '/api/auth/verify',
-    { email, authCode },
-  );
+}: EmailVerifyAPIReq): Promise<EmailVerifyAPIRes | undefined> => {
+  const response = await serverInstance.post('/api/auth/verify', {
+    email,
+    authCode,
+  });
   return response.data;
 };

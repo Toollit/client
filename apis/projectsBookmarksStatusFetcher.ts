@@ -1,4 +1,7 @@
 import { serverInstance } from './axios';
+import { FetcherParams } from './types';
+
+export interface ProjectsBookmarkStatusAPIReq {}
 
 export interface ProjectsBookmarkStatusAPIRes {
   success: boolean;
@@ -8,17 +11,9 @@ export interface ProjectsBookmarkStatusAPIRes {
   };
 }
 
-interface FetcherParams {
-  url: string;
-  args?: {
-    page: string;
-    tag: string;
-  };
-}
-
 export const projectsBookmarksStatusFetcher = async ({
   url,
-}: FetcherParams) => {
-  const response = await serverInstance.get<ProjectsBookmarkStatusAPIRes>(url);
+}: FetcherParams): Promise<ProjectsBookmarkStatusAPIRes | undefined> => {
+  const response = await serverInstance.get(url);
   return response.data;
 };

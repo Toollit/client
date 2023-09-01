@@ -1,4 +1,5 @@
 import { serverInstance } from 'apis/axios';
+import { FetcherParams } from './types';
 
 export interface Project {
   id: number;
@@ -14,15 +15,17 @@ export interface ProfileProjectsAPIReq {}
 
 export interface ProfileProjectsAPIRes {
   success: boolean;
-  message: null | string;
+  message: string | null;
   data?: {
     projects: Project[] | [];
     total: number;
   };
 }
 
-export const profileProjectsFetcher = async (url: string) => {
-  const response = await serverInstance.get<ProfileProjectsAPIRes>(url);
+export const profileProjectsFetcher = async ({
+  url,
+}: FetcherParams): Promise<ProfileProjectsAPIRes | undefined> => {
+  const response = await serverInstance.get(url);
 
   return response.data;
 };

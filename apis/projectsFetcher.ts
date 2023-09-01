@@ -1,4 +1,5 @@
 import { serverInstance } from './axios';
+import { FetcherParams } from './types';
 
 export interface Project {
   id: number;
@@ -10,6 +11,9 @@ export interface Project {
   memberNumber: number;
   recruitNumber: number;
 }
+
+export interface ProjectsAPIReq {}
+
 export interface ProjectsAPIRes {
   success: boolean;
   message: string | null;
@@ -19,15 +23,9 @@ export interface ProjectsAPIRes {
   };
 }
 
-interface FetcherParams {
-  url: string;
-  args?: {
-    page: string;
-    tag: string;
-  };
-}
-
-export const projectsFetcher = async ({ url }: FetcherParams) => {
-  const response = await serverInstance.get<ProjectsAPIRes>(url);
+export const projectsFetcher = async ({
+  url,
+}: FetcherParams): Promise<ProjectsAPIRes | undefined> => {
+  const response = await serverInstance.get(url);
   return response.data;
 };

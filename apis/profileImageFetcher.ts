@@ -1,18 +1,21 @@
 import { serverInstance } from 'apis/axios';
+import { FetcherParams } from './types';
 
 export interface ProfileImage {
   profileImage: string | null;
 }
 
-export interface profileImageAPIReq {}
+export interface ProfileImageAPIReq {}
 
-export interface profileImageAPIRes {
+export interface ProfileImageAPIRes {
   success: boolean;
-  message: null | string;
+  message: string | null;
   data?: ProfileImage;
 }
 
-export const profileImageFetcher = async (url: string) => {
-  const response = await serverInstance.get<profileImageAPIRes>(url);
+export const profileImageFetcher = async ({
+  url,
+}: FetcherParams): Promise<ProfileImageAPIRes | undefined> => {
+  const response = await serverInstance.get(url);
   return response.data;
 };
