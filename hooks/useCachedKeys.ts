@@ -23,39 +23,34 @@ const useCachedKeys = () => {
     }
   }, [cache]);
 
-  const revalidateCache = useCallback(
-    ({ page, tag }: { page?: string; tag?: string }) => {
-      const keysValueObj = cachedKeysRefs.current;
+  const revalidatePageCache = useCallback(
+    ({ page }: { page: string }) => {
+      const filtered = cachedKeysRefs.current.filter(
+        (v) => v.args?.page === page,
+      );
 
-      if (page) {
-        const filtered = keysValueObj.filter((v) => v.args?.page === page);
+      filtered.forEach((v) => {
+        mutate(v.key, undefined, true);
+      });
+    },
+    [mutate],
+  );
 
-        filtered.forEach((v) => {
-          mutate(v.key, undefined, true);
-        });
-      }
+  const revalidateTagCache = useCallback(
+    ({ tag }: { tag: string }) => {
+      const filtered = cachedKeysRefs.current.filter(
+        (v) => v.args?.tag === tag,
+      );
 
-      if (tag) {
-        const filtered = keysValueObj.filter((v) => v.args?.tag === tag);
-
-        filtered.forEach((v) => {
-          mutate(v.key, undefined, true);
-        });
-      }
+      filtered.forEach((v) => {
+        mutate(v.key, undefined, true);
+      });
     },
     [mutate],
   );
 
   useEffect(() => {
     const cachedKeys = cache.keys();
-    // console.log('cachedKeysRefs.current ===>', cachedKeys);
-    // for (let key of cachedKeys) {
-    //   cachedKeysRefs.current = [...cachedKeysRefs.current, key];
-    // }
-
-    // for (let key of cachedKeys) {
-    //   console.log(JSON.parse(key));
-    // }
 
     const keys = Array.from(cachedKeys);
 
@@ -65,14 +60,13 @@ const useCachedKeys = () => {
         { key: keys[i], ...JSON.parse(keys[i]) },
       ];
     }
-
-    // console.log('cachedKeysRefs.current ===>', cachedKeys);
   }, [cache]);
 
   return {
     cachedKeys: cachedKeysRefs.current,
     clearCache,
-    revalidateCache,
+    revalidatePageCache,
+    revalidateTagCache,
   };
 };
 
