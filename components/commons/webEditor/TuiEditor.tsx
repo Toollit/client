@@ -34,6 +34,14 @@ const TuiEditor = ({ titleRef, editorRef, content }: TuiEditorProps) => {
       editorRef.current
         .getInstance()
         .setMarkdown(content?.content.contentMarkdown || '');
+
+      const timeoutBlur = setTimeout(() => {
+        editorRef.current?.getInstance().blur();
+      }, 0);
+
+      return () => {
+        clearTimeout(timeoutBlur);
+      };
     }
   }, [editorRef, content]);
 
