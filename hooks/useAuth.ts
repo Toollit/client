@@ -2,6 +2,7 @@ import React from 'react';
 import useSWRImmutable from 'swr/immutable';
 import { authUserKey } from '@/apis/keys';
 import { authFetcher } from '@/apis/authFetcher';
+import { serialize } from '@/middleware/swr/serialize';
 
 /**
  * check user authentication hooks.
@@ -11,7 +12,13 @@ const useAuth = () => {
     data,
     isLoading,
     mutate: authMutate,
-  } = useSWRImmutable(authUserKey, authFetcher);
+  } = useSWRImmutable(
+    { url: authUserKey, args: { page: '*', tag: 'auth' } },
+    authFetcher,
+    {
+      use: [serialize],
+    },
+  );
 
   const authUserNickname = data?.data.nickname;
   const isAuthenticated = authUserNickname ? true : false;
