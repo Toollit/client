@@ -7,6 +7,10 @@ interface CachedKeysRefs {
   args: { page: string; tag: string };
 }
 
+interface MutateProps {
+  [key: string]: string;
+}
+
 /**
  * swr cache keys handle hooks
  */
@@ -22,6 +26,32 @@ const useCachedKeys = () => {
       cache.delete(key);
     }
   }, [cache]);
+
+  const mutateCachedKeysWithTag = useCallback(
+    ({ tag }: MutateProps) => {
+      const found = cachedKeysRefs.current.filter(
+        (key) => key.args.tag === tag,
+      );
+
+      found.forEach((v) => {
+        return mutate(v.key);
+      });
+    },
+    [mutate],
+  );
+
+  const mutateCachedKeysWithPage = useCallback(
+    ({ page }: MutateProps) => {
+      const found = cachedKeysRefs.current.filter(
+        (key) => key.args.page === page,
+      );
+
+      found.forEach((v) => {
+        return mutate(v.key);
+      });
+    },
+    [mutate],
+  );
 
   const revalidatePageCache = useCallback(
     ({ page }: { page: string }) => {
@@ -65,6 +95,8 @@ const useCachedKeys = () => {
   return {
     cachedKeys: cachedKeysRefs.current,
     clearCache,
+    mutateCachedKeysWithTag,
+    mutateCachedKeysWithPage,
     revalidatePageCache,
     revalidateTagCache,
   };
