@@ -2,15 +2,6 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import { mediaQueryMobile, mediaQueryTablet } from '@/styles/mediaQuery';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 102.4rem;
-  margin: 0 auto;
-  height: 100%;
-  padding: 0rem 0.5rem;
-`;
-
 const ColumnContainer = styled.div`
   display: flex;
   flex-direction: column-reverse;
@@ -214,20 +205,6 @@ const StyledImage = styled(Image)`
   border-radius: 25rem;
 `;
 
-const WriterLastLoginAtContainer = styled.div`
-  width: 100%;
-
-  ${mediaQueryMobile} {
-    display: flex;
-    align-items: center;
-  }
-
-  ${mediaQueryTablet} {
-    display: flex;
-    flex-direction: column;
-  }
-`;
-
 const Writer = styled.div`
   display: flex;
   font-size: 1.4rem;
@@ -258,7 +235,8 @@ const LastLoginAt = styled.div`
   }
 
   ${mediaQueryTablet} {
-    padding-right: initial;
+    width: fit-content;
+    margin: 0 auto;
   }
 `;
 
@@ -277,7 +255,6 @@ const ProjectMemberContainerMobile = styled.div`
 `;
 
 export {
-  Container,
   ColumnContainer,
   ColumnLeftContainer,
   ColumnRightContainer,
@@ -295,7 +272,6 @@ export {
   ButtonContainer,
   BookmarkButton,
   ShareButton,
-  WriterLastLoginAtContainer,
   ProfileImageContainer,
   WriterInfoContainer,
   Writer,
