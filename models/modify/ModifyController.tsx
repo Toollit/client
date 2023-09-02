@@ -3,11 +3,12 @@ import ModifyView, { ModifyViewProps } from './ModifyView';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/errorMessage';
-import { getProjectDetailKey } from '@/apis/keys';
+import { projectDetailKey } from '@/apis/keys';
 import { projectDetailFetcher } from '@/apis/projectDetailFetcher';
 import useEditorContent from '@/hooks/useEditorContent';
 import { updatePostAPI } from '@/apis/updatePost';
 import PrivateRoute from '@/components/PrivateRoute';
+import { serialize } from '@/middleware/swr/serialize';
 
 interface ModifyControllerProps {
   postId: string;
@@ -18,23 +19,26 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
 
   // TODO free, question swr 작성하기
   // 상세페이지와 수정시 사용하는 api가 동일하여 수정시에는 조회수 증가를 제한하기위해 config 옵션으로 수정하기 위해서 호출했는지 여부를 서버로 전달한다.
-  const { data: projectDetail, mutate: projectDetailRevalidation } = useSWR(
-    [
-      postId ? getProjectDetailKey(postId) : null,
-      {
-        headers: {
-          modify: true,
-        },
-      },
-    ],
-
-    ([url, config]) => (url ? projectDetailFetcher(url, config) : null),
+  const { data: projectDetail, mutate: projectDetailMutate } = useSWR(
+    postId
+      ? {
+          url: projectDetailKey(postId),
+          args: { page: `/project/${postId}`, tag: `project/${postId}` },
+          config: {
+            headers: {
+              modify: true,
+            },
+          },
+        }
+      : null,
+    projectDetailFetcher,
     {
       revalidateOnFocus: false,
       errorRetryCount: 0,
       onError(err, key, config) {
         errorMessage(err);
       },
+      use: [serialize],
     },
   );
 
@@ -103,7 +107,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
 
         router.push(`/${postType}/${postId}`);
 
-        projectDetailRevalidation();
+        projectDetailMutate();
       } catch (error) {
         errorMessage(error);
       }
@@ -116,7 +120,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
       hashtagRef,
       postType,
       postId,
-      projectDetailRevalidation,
+      projectDetailMutate,
     ],
   );
 

@@ -9,8 +9,8 @@ import { ProjectDetail } from '@/apis/projectDetailFetcher';
 import Block from '@/components/commons/block';
 import { Button } from '@/components/commons/button';
 import Label from '@/components/commons/label';
-import { ButtonContainer, RecruitNumberInput } from './styles';
 import LoadingCircularProgress from '@/components/commons/loading';
+import { ButtonContainer, RecruitNumberInput } from './styles';
 
 const DynamicTuiEditor = dynamic(
   () => import('../../components/commons/webEditor/TuiEditor'),
