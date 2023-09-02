@@ -7,11 +7,11 @@ import {
   ProjectDetail,
 } from '@/apis/projectDetailFetcher';
 import ProjectDetailController from '@/models/project/ProjectDetailController';
-import { getProjectDetailKey } from '@/apis/keys';
+import { projectDetailKey } from '@/apis/keys';
 
 interface PageProps {
   fallback: {
-    [getProjectDetailKey: string]: ProjectDetail;
+    [key: string]: ProjectDetail;
   };
 }
 
@@ -30,14 +30,18 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const postId = params?.id;
 
   if (!Array.isArray(postId) && postId !== undefined) {
-    const projectDetail = await projectDetailFetcher(
-      getProjectDetailKey(postId),
-    );
+    const apiEndpoint = projectDetailKey(postId);
+    const key = JSON.stringify({
+      url: apiEndpoint,
+      args: { page: `/project/${postId}`, tag: `project/${postId}` },
+    });
+
+    const projectDetail = await projectDetailFetcher({ url: apiEndpoint });
 
     return {
       props: {
         fallback: {
-          [getProjectDetailKey(postId)]: projectDetail,
+          [key]: projectDetail,
         },
       },
     };

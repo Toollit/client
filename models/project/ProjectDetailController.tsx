@@ -35,7 +35,7 @@ const ProjectDetailController = () => {
     postId
       ? {
           url: projectDetailKey(postId),
-          args: { page: `/project/${postId}`, tag: 'projectDetail' },
+          args: { page: `/project/${postId}`, tag: `project/${postId}` },
         }
       : null,
     projectDetailFetcher,
