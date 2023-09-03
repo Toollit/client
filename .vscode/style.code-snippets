@@ -1,0 +1,12 @@
+{
+  "styles.ts template": {
+    "prefix": "style",
+    "body": [
+      "import styled from '@emotion/styled';",
+      "import { css } from '@emotion/react';",
+      "",
+      "export {}"
+    ],
+    "description": "styles.ts template"
+  }
+}
