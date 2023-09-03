@@ -30,11 +30,11 @@ const useCachedKeys = () => {
   const mutateCachedKeysWithTag = useCallback(
     ({ tag }: MutateProps) => {
       const found = cachedKeysRefs.current.filter(
-        (key) => key.args.tag === tag,
+        (key) => key.args?.tag === tag,
       );
 
       found.forEach((v) => {
-        return mutate(v.key);
+        return mutate(v.key, undefined, true);
       });
     },
     [mutate],
@@ -43,41 +43,21 @@ const useCachedKeys = () => {
   const mutateCachedKeysWithPage = useCallback(
     ({ page }: MutateProps) => {
       const found = cachedKeysRefs.current.filter(
-        (key) => key.args.page === page,
+        (key) => key.args?.page === page,
       );
 
       found.forEach((v) => {
-        return mutate(v.key);
+        return mutate(v.key, undefined, true);
       });
     },
     [mutate],
   );
 
-  const revalidatePageCache = useCallback(
-    ({ page }: { page: string }) => {
-      const filtered = cachedKeysRefs.current.filter(
-        (v) => v.args?.page === page,
-      );
+  const getCachedKeyWithTag = useCallback(({ tag }: MutateProps) => {
+    const found = cachedKeysRefs.current.find((key) => key.args?.tag === tag);
 
-      filtered.forEach((v) => {
-        mutate(v.key, undefined, true);
-      });
-    },
-    [mutate],
-  );
-
-  const revalidateTagCache = useCallback(
-    ({ tag }: { tag: string }) => {
-      const filtered = cachedKeysRefs.current.filter(
-        (v) => v.args?.tag === tag,
-      );
-
-      filtered.forEach((v) => {
-        mutate(v.key, undefined, true);
-      });
-    },
-    [mutate],
-  );
+    return found;
+  }, []);
 
   useEffect(() => {
     const cachedKeys = cache.keys();
@@ -97,8 +77,7 @@ const useCachedKeys = () => {
     clearCache,
     mutateCachedKeysWithTag,
     mutateCachedKeysWithPage,
-    revalidatePageCache,
-    revalidateTagCache,
+    getCachedKeyWithTag,
   };
 };
 
