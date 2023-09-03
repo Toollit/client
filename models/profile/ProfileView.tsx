@@ -14,6 +14,7 @@ import ProfileProjectBox, {
   ProfileProjectsData,
 } from './profileViewSection/ProfileProjectBox';
 import ProfileFooterLink from './profileViewSection/ProfileFooterLink';
+import Block from '@/components/commons/block';
 import {
   Container,
   ColumnLeftContainer,
@@ -37,8 +38,6 @@ import {
   ImageEditBtn,
   MobileProfileContainer,
   ProfileImageSkeletonContainer,
-  ViewContainer,
-  // SwipeableViewContainer,
 } from './styles';
 
 export interface ProfileViewProps {
@@ -87,7 +86,7 @@ const ProfileView = ({
       <Container>
         <ColumnLeftContainer role=''>
           <GNBArea>
-            <Link href={'/'} passHref>
+            <Link href={'/'}>
               <a>
                 <GetitLogo width={32} height={32} />
               </a>
@@ -294,7 +293,7 @@ const ProfileView = ({
         {!isLaptop && (
           <MobileProfileContainer>
             <SwipeableTabView tabs={tabs}>
-              <ViewContainer>
+              <Block paddingLeft={1.5} paddingRight={1.5}>
                 {profileInfoData ? (
                   <>
                     <ProfileInfoBox
@@ -315,8 +314,8 @@ const ProfileView = ({
                     <Skeleton height={200} top={3} />
                   </>
                 )}
-              </ViewContainer>
-              <ViewContainer>
+              </Block>
+              <Block paddingLeft={1.5} paddingRight={1.5}>
                 {profileProjectData ? (
                   <>
                     <ProfileProjectBox
@@ -336,8 +335,8 @@ const ProfileView = ({
                     <Skeleton height={200} top={3} />
                   </>
                 )}
-              </ViewContainer>
-              <ViewContainer>
+              </Block>
+              <Block paddingLeft={1.5} paddingRight={1.5}>
                 {currentTab === 'viewBookmarks' ? (
                   true ? (
                     <div>
@@ -355,7 +354,7 @@ const ProfileView = ({
                     <Skeleton />
                   )
                 ) : null}
-              </ViewContainer>
+              </Block>
             </SwipeableTabView>
           </MobileProfileContainer>
         )}

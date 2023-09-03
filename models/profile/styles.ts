@@ -248,10 +248,6 @@ const MobileProfileContainer = styled.div`
   }
 `;
 
-const ViewContainer = styled.div`
-  padding: 0 2rem;
-`;
-
 export {
   Container,
   ColumnLeftContainer,
@@ -275,7 +271,4 @@ export {
   ImageEditBtn,
   MobileProfileContainer,
   ProfileImageSkeletonContainer,
-  ViewContainer,
-
-  // SwipeableViewContainer,
 };

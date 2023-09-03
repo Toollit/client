@@ -8,9 +8,9 @@ import React, {
 import ProfileView, { ProfileViewProps } from './ProfileView';
 import useSWR, { useSWRConfig, Cache } from 'swr';
 import {
-  getProfileImageKey,
-  getProfileInfoKey,
-  getProfileProjectsKey,
+  profileImageKey,
+  profileInfoKey,
+  profileProjectsKey,
 } from '@/apis/keys';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/errorMessage';
@@ -20,19 +20,20 @@ import { updateProfileAPI } from '@/apis/updateProfile';
 import { changeDateFormat } from '@/utils/changeDateFormat';
 import { open as openDialog, close as closeDialog } from '@/features/dialog';
 import useWindowSize from '@/hooks/useWindowSize';
-import { profileImageFetcher, ProfileImage } from '@/apis/profileImageFetcher';
+import { profileImageFetcher } from '@/apis/profileImageFetcher';
 import {
   ProfileInfoAPIRes,
   profileInfoFetcher,
 } from '@/apis/profileInfoFetcher';
 import {
-  Project,
   ProfileProjectsAPIRes,
   profileProjectsFetcher,
 } from '@/apis/profileProjectsFetcher';
-import { ScopedMutator } from 'swr/_internal';
+import type { ScopedMutator } from 'swr/_internal';
 import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
+import { serialize } from '@/middleware/swr/serialize';
+import useCachedKeys from '@/hooks/useCachedKeys';
 
 interface CachedData<T> {
   cache: Cache<T | undefined>;
@@ -59,9 +60,11 @@ type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 const ProfileController = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { cache, mutate } = useSWRConfig();
+  const { cache } = useSWRConfig();
   const { isLaptop } = useWindowSize();
   const { logOut } = useLogout();
+  const { nickname: accessUser, authMutate } = useAuth();
+  const { getCachedKeyWithTag, getCachedDataWithKey } = useCachedKeys();
 
   const updatePage = useSelector((state: RootState) => state.dialog.page);
   const updateCategory = useSelector(
@@ -101,6 +104,8 @@ const ProfileController = () => {
 
   const profileImgRef = useRef<HTMLInputElement>(null);
 
+  // The query gnb=profile is written to solve authentication-related problems that occur when a user erases a cookie. It's designed to re-authenticate on the profile page when nav is moved to my profile.
+  const queryGNB = router.query.gnb as string | undefined;
   const nickname = router.query.nickname as string | undefined;
   const currentTab = router.query.tab as
     | 'viewProfile'
@@ -108,12 +113,17 @@ const ProfileController = () => {
     | 'viewBookmarks'
     | undefined;
 
-  // Current Access User Self Information
-  const { nickname: accessUser, mutate: authMutate } = useAuth();
-
   // Profile image fetcher
   const { data: profileImageData, mutate: profileImageMutate } = useSWR(
-    nickname ? getProfileImageKey(nickname) : null,
+    nickname
+      ? {
+          url: profileImageKey(nickname),
+          args: {
+            page: '/profile',
+            tag: 'profileImage',
+          },
+        }
+      : null,
     profileImageFetcher,
     {
       dedupingInterval: 1000 * 60 * 10,
@@ -123,13 +133,20 @@ const ProfileController = () => {
         router.replace('/');
         errorMessage(err);
       },
+      use: [serialize],
     },
   );
 
   // Profile info fetcher
   const { data: profileInfoData, mutate: profileInfoDataMutate } = useSWR(
-    profileImageData?.success && nickname && currentTab === 'viewProfile'
-      ? getProfileInfoKey(nickname)
+    nickname && currentTab === 'viewProfile'
+      ? {
+          url: profileInfoKey(nickname),
+          args: {
+            page: '/profile',
+            tag: 'profileInfo',
+          },
+        }
       : null,
     profileInfoFetcher,
     {
@@ -146,19 +163,26 @@ const ProfileController = () => {
             ...prev,
             profileInfo: {
               isLoaded: true,
-              data: res.data,
+              data: res?.data,
             },
           };
         });
       },
+      use: [serialize],
     },
   );
 
-  // Profile projects fetcher
+  // Profile projects npm run
   const { data: profileProjectsData, mutate: profileProjectsDataMutate } =
     useSWR(
       nickname && currentTab === 'viewProjects'
-        ? getProfileProjectsKey(nickname, projectPostCount)
+        ? {
+            url: profileProjectsKey(nickname, projectPostCount),
+            args: {
+              page: '/profile',
+              tag: `profileProjects?count=${projectPostCount}`,
+            },
+          }
         : null,
       profileProjectsFetcher,
       {
@@ -177,7 +201,7 @@ const ProfileController = () => {
                 projects: {
                   isLoaded: true,
                   data:
-                    prev.projects.data && res.data
+                    prev.projects.data && res?.data
                       ? {
                           projects: [
                             ...prev.projects.data?.projects,
@@ -198,24 +222,25 @@ const ProfileController = () => {
                 ...prev,
                 projects: {
                   isLoaded: true,
-                  data: res.data,
+                  data: res?.data,
                 },
               };
             });
           }
         },
+        use: [serialize],
       },
     );
 
-  const handleLogInOut = useCallback(async () => {
+  const handleLogInOut = useCallback(() => {
     const isLoggedIn = accessUser;
 
     if (isLoggedIn) {
-      logOut({ push: '/' });
+      return logOut({ push: '/' });
     }
 
     if (!isLoggedIn) {
-      router.push('/login');
+      return router.push('/login');
     }
   }, [router, accessUser, logOut]);
 
@@ -230,6 +255,8 @@ const ProfileController = () => {
 
       if (value === 'update') {
         profileImgRef.current?.click();
+        // edit selector close
+        return setAnchorEl(null);
       }
 
       if (value === 'delete') {
@@ -243,10 +270,9 @@ const ProfileController = () => {
         } catch (error) {
           errorMessage(error);
         }
+        // edit selector close
+        return setAnchorEl(null);
       }
-
-      // edit selector close
-      setAnchorEl(null);
     },
     [profileImageMutate],
   );
@@ -567,14 +593,21 @@ const ProfileController = () => {
     if (!nickname) {
       return;
     }
+
     setProjectPostCount((prev) => prev + 10);
 
-    // Update project list with cached data. However, if there is no cached data, request it to the server
-    const postCount = projectPostCount + 10;
+    // The code written under that comment only works if there is cached data. Logic for leveraging cached data without additional data load.
+    const key = getCachedKeyWithTag({
+      tag: `profileProjects?count=${projectPostCount + 10}`,
+    });
 
-    const profileProjectsCachedData = cache.get(
-      getProfileProjectsKey(nickname, postCount),
-    )?.data?.data as ProfileProjectsAPIRes['data'];
+    if (!key) {
+      return;
+    }
+
+    const profileProjectsCachedData = getCachedDataWithKey({
+      key,
+    }) as ProfileProjectsAPIRes['data'];
 
     if (profileProjectsCachedData !== undefined) {
       setData((prev) => {
@@ -597,7 +630,7 @@ const ProfileController = () => {
         };
       });
     }
-  }, [cache, nickname, projectPostCount]);
+  }, [nickname, projectPostCount, getCachedKeyWithTag, getCachedDataWithKey]);
 
   useEffect(() => {
     if (updatePage !== 'profile') {
@@ -615,14 +648,23 @@ const ProfileController = () => {
       return;
     }
 
-    const profileInfoCachedData = cache.get(getProfileInfoKey(nickname))?.data
-      ?.data as ProfileInfoAPIRes['data'];
+    const profileInfoKey = getCachedKeyWithTag({ tag: 'profileInfo' });
+    const profileProjectsKey = getCachedKeyWithTag({
+      tag: `profileProjects?count=${projectPostCount}`,
+    });
 
-    const profileProjectsCachedData = cache.get(
-      getProfileProjectsKey(nickname, projectPostCount),
-    )?.data?.data as ProfileProjectsAPIRes['data'];
+    const profileInfoCachedData = profileInfoKey
+      ? (getCachedDataWithKey({
+          key: profileInfoKey,
+        }) as ProfileInfoAPIRes['data'])
+      : null;
+    const profileProjectsCachedData = profileProjectsKey
+      ? (getCachedDataWithKey({
+          key: profileProjectsKey,
+        }) as ProfileProjectsAPIRes['data'])
+      : null;
 
-    if (!data.profileInfo.data && profileInfoCachedData) {
+    if (!data.profileInfo.isLoaded && profileInfoCachedData) {
       setData((prev) => {
         return {
           ...prev,
@@ -634,7 +676,7 @@ const ProfileController = () => {
       });
     }
 
-    if (!data.projects.data && profileProjectsCachedData) {
+    if (!data.projects.isLoaded && profileProjectsCachedData) {
       setData((prev) => {
         return {
           ...prev,
@@ -652,18 +694,32 @@ const ProfileController = () => {
     cache,
     nickname,
     projectPostCount,
+    getCachedKeyWithTag,
+    getCachedDataWithKey,
   ]);
 
   // 페이지 첫 로드시 query 조건이 없는 경우 tab 설정을 하기 위한 useEffect
   useEffect(() => {
     // default tab settings
     if (nickname && currentTab === undefined) {
-      router.replace({
-        pathname: `/profile/${nickname}`,
-        query: { tab: 'viewProfile' },
-      });
+      if (queryGNB === 'profile') {
+        (async () => {
+          const response = await authMutate();
+
+          if (response?.success) {
+            return router.replace({
+              pathname: `/profile/${nickname}`,
+              query: { tab: 'viewProfile' },
+            });
+          }
+
+          if (!response?.success) {
+            return router.replace('/login');
+          }
+        })();
+      }
     }
-  }, [currentTab, nickname, router]);
+  }, [currentTab, nickname, router, queryGNB, authMutate]);
 
   // 새로고침시 탭 이동시 nickname이 undefined되는 문제 해결을 위한 useEffect
   useEffect(() => {
