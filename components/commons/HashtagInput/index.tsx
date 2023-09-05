@@ -97,7 +97,7 @@ const HashtagInput = ({
               id={`${pathname}/${hashtag}`}
               onClick={onDeleteHashtag}
             >
-              <CloseIcon width={20} height={20} />
+              <CloseIcon width={2} height={2} />
             </DeleteButton>
           </Hashtag>
         ))}

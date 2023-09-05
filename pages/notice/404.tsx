@@ -52,7 +52,7 @@ export default function NotFound() {
       <Block paddingLeft={3} paddingRight={3} paddingTop={3}>
         <Link href='/' passHref>
           <StyledLink>
-            <GetitLogo width={40} height={40} />
+            <GetitLogo width={4} height={4} />
             <LogoText>Getit</LogoText>
           </StyledLink>
         </Link>

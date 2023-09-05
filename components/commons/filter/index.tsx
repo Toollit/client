@@ -69,7 +69,7 @@ const Filter = () => {
     <div>
       <Button onClick={handleOpenOrderSelector}>
         <IconContainer>
-          <FilterIcon width={20} height={20} />
+          <FilterIcon width={2} height={2} />
         </IconContainer>
         <Text>{postOrder}</Text>
       </Button>

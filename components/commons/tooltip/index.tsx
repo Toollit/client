@@ -108,7 +108,7 @@ const Tooltip = ({ writer, title }: Props) => {
   return (
     <div>
       <Button onClick={handleClick}>
-        <MoreIcon width={40} height={30} />
+        <MoreIcon width={4} height={3} />
       </Button>
       <TooltipBox anchorEl={anchorEl} open={open} onClose={handleClose}>
         {writer === accessUser ? (

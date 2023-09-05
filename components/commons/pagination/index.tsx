@@ -169,9 +169,9 @@ const Pagination = ({ buttons = 5, totalPage = 1 }: PaginationProps) => {
         {startPoint.length < 2 ||
         startPoint[1] === undefined ||
         page < startPoint[1] ? (
-          <ArrowBackIcon width={20} height={20} color='#00000014' />
+          <ArrowBackIcon width={2} height={2} color='#00000014' />
         ) : (
-          <ArrowBackIcon width={20} height={20} />
+          <ArrowBackIcon width={2} height={2} />
         )}
       </PageControlButton>
       <div>
@@ -191,9 +191,9 @@ const Pagination = ({ buttons = 5, totalPage = 1 }: PaginationProps) => {
       </div>
       <PageControlButton onClick={handleNextPageBlock}>
         {page >= lastStartPoint && page <= totalPage ? (
-          <ArrowForwardIcon width={20} height={20} color='#00000014' />
+          <ArrowForwardIcon width={2} height={2} color='#00000014' />
         ) : (
-          <ArrowForwardIcon width={20} height={20} />
+          <ArrowForwardIcon width={2} height={2} />
         )}
       </PageControlButton>
     </Container>

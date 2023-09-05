@@ -63,7 +63,7 @@ const ErrorNotice = ({ statusCode }: ErrorPageProps) => {
     <Container>
       <Link href='/'>
         <LogoContainer>
-          <GetitLogo width={40} height={40} />
+          <GetitLogo width={4} height={4} />
           <LogoText>Getit</LogoText>
         </LogoContainer>
       </Link>
