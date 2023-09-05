@@ -5,8 +5,8 @@ import PersonFill0 from 'public/static/icons/person/person_FILL0.svg';
 
 const PersonIcon = ({
   fill = false,
-  width = 24,
-  height = 24,
+  width = 2.4,
+  height = 2.4,
   color,
 }: IconProps) => {
   return (

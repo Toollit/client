@@ -5,8 +5,8 @@ import ArrowForward from 'public/static/icons/arrow/arrow_forward_ios.svg';
 
 const ArrowForwardIcon = ({
   fill = false,
-  width = 24,
-  height = 24,
+  width = 2.4,
+  height = 2.4,
   color,
 }: IconProps) => {
   return (

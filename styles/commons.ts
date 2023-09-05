@@ -7,8 +7,8 @@ interface SVGContainerProps {
 
 const SVGContainer = styled.span<SVGContainerProps>`
   display: inline-block;
-  width: ${(props) => `${props.width * 0.1}rem`};
-  height: ${(props) => `${props.height * 0.1}rem`};
+  width: ${(props) => `${props.width}rem`};
+  height: ${(props) => `${props.height}rem`};
 `;
 
 export { SVGContainer };

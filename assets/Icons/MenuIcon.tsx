@@ -5,8 +5,8 @@ import DensityMediumFill0 from 'public/static/icons/menu/density_medium_FILL0.sv
 
 const MenuIcon = ({
   fill = false,
-  width = 24,
-  height = 24,
+  width = 2.4,
+  height = 2.4,
   color,
 }: IconProps) => {
   return (

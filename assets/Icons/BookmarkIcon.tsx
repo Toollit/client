@@ -6,8 +6,8 @@ import BookmarkFILL1 from 'public/static/icons/bookmark/bookmark_FILL1.svg';
 
 const BookmarkIcon = ({
   fill = false,
-  width = 24,
-  height = 24,
+  width = 2.4,
+  height = 2.4,
   color,
 }: IconProps) => {
   if (!fill) {

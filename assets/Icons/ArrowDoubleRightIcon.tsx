@@ -5,8 +5,8 @@ import ArrowDoubleRight from 'public/static/icons/arrow/keyboard_double_arrow_ri
 
 const ArrowDoubleRightIcon = ({
   fill = false,
-  width = 24,
-  height = 24,
+  width = 2.4,
+  height = 2.4,
   color,
 }: IconProps) => {
   return (

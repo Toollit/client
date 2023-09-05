@@ -5,8 +5,8 @@ import DeleteFILL0 from 'public/static/icons/delete/delete_FILL0.svg';
 
 const DeleteIcon = ({
   fill = false,
-  width = 24,
-  height = 24,
+  width = 2.4,
+  height = 2.4,
   color,
 }: IconProps) => {
   return (

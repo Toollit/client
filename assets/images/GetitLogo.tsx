@@ -7,7 +7,7 @@ interface Props {
   height?: number;
 }
 
-const GetitLogo = ({ width = 25, height = 25 }: Props) => {
+const GetitLogo = ({ width = 2.4, height = 2.4 }: Props) => {
   return (
     <SVGContainer width={width} height={height}>
       <LogoImg width={'100%'} height={'100%'} />

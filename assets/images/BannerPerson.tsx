@@ -4,7 +4,7 @@ import { SVGContainer } from '@/styles/commons';
 
 const BannerPerson = () => {
   return (
-    <SVGContainer width={250} height={150}>
+    <SVGContainer width={25} height={15}>
       <BannerPersonImg width={'100%'} height={'100%'} />
     </SVGContainer>
   );

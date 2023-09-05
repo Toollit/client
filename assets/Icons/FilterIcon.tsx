@@ -5,8 +5,8 @@ import AccountCircleFill0 from 'public/static/icons/filter/filter_list_FILL0.svg
 
 const FilterIcon = ({
   fill = false,
-  width = 24,
-  height = 24,
+  width = 2.4,
+  height = 2.4,
   color,
 }: IconProps) => {
   if (!fill) {

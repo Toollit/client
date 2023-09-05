@@ -5,8 +5,8 @@ import ArrowBack from 'public/static/icons/arrow/arrow_back_ios_new.svg';
 
 const ArrowBackIcon = ({
   fill = false,
-  width = 24,
-  height = 24,
+  width = 2.4,
+  height = 2.4,
   color,
 }: IconProps) => {
   return (

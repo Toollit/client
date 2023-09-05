@@ -1,9 +1,9 @@
 import React from 'react';
 import { IconProps } from './types';
 import { SVGContainer } from '@/styles/commons';
-import SearchFill0 from 'public/static/icons/search/search_FILL0.svg';
+import AddIcon from 'public/static/icons/plus/add.svg';
 
-const SearchIcon = ({
+const PlusIcon = ({
   fill = false,
   width = 2.4,
   height = 2.4,
@@ -11,11 +11,9 @@ const SearchIcon = ({
 }: IconProps) => {
   return (
     <SVGContainer width={width} height={height}>
-      <SearchFill0 width={'100%'} height={'100%'} fill={color} />
+      <AddIcon width={'100%'} height={'100%'} fill={color} />
     </SVGContainer>
   );
-
-  return null;
 };
 
-export default SearchIcon;
+export default PlusIcon;
