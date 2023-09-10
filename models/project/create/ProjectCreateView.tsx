@@ -8,8 +8,17 @@ import { Editor } from '@toast-ui/react-editor';
 import Label from '@/components/commons/label';
 import Block from '@/components/commons/block';
 import { Button } from '@/components/commons/button';
+import Image from 'next/image';
+import PlusIcon from '@/assets/icons/PlusIcon';
+import { CloseIcon } from '@/assets/icons';
 import LoadingCircularProgress from '@/components/commons/loading';
-import { RecruitNumberInput, ButtonContainer } from './styles';
+import {
+  RecruitNumberInput,
+  ButtonContainer,
+  AddImageBox,
+  ImageContainer,
+  ImageDeleteIcon,
+} from './styles';
 
 const DynamicTuiEditor = dynamic(
   () => import('../../../components/commons/webEditor/TuiEditor'),
@@ -21,24 +30,39 @@ const DynamicTuiEditor = dynamic(
 
 export interface ProjectCreateViewProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  titleRef: React.RefObject<HTMLInputElement>;
-  editorRef: React.RefObject<Editor>;
+  editor: {
+    titleRef: React.RefObject<HTMLInputElement>;
+    editorRef: React.RefObject<Editor>;
+    name: string;
+    contentImageUploadUrl: string;
+  };
   hashtagRef: React.MutableRefObject<string[]>;
   memberTypeRef: React.MutableRefObject<
     ('developer' | 'designer' | 'pm' | 'anyone')[]
   >;
   recruitCountRef: React.RefObject<HTMLInputElement>;
+  representativeImageRef: React.RefObject<HTMLInputElement>;
+  handleChangeRepresentativeImg: (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => void;
+  handleAddRepresentativeImg: () => void;
+  representativePreviewImage: string | null;
   handleKeydownSubmit: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  handleDeleteRepresentativePreviewImage: () => void;
 }
 
 const ProjectCreateView = ({
   handleSubmit,
-  titleRef,
-  editorRef,
+  editor,
   hashtagRef,
   memberTypeRef,
   recruitCountRef,
+  representativeImageRef,
+  handleChangeRepresentativeImg,
+  handleAddRepresentativeImg,
+  representativePreviewImage,
   handleKeydownSubmit,
+  handleDeleteRepresentativePreviewImage,
 }: ProjectCreateViewProps) => {
   return (
     <AppLayout type='default'>
@@ -48,7 +72,12 @@ const ProjectCreateView = ({
         </Block>
 
         <Block paddingLeft={1.5} paddingRight={1.5}>
-          <DynamicTuiEditor titleRef={titleRef} editorRef={editorRef} />
+          <DynamicTuiEditor
+            titleRef={editor.titleRef}
+            editorRef={editor.editorRef}
+            name={editor.name}
+            contentImageUploadUrl={editor.contentImageUploadUrl}
+          />
         </Block>
 
         <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
@@ -65,7 +94,7 @@ const ProjectCreateView = ({
         </Block>
 
         <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
-          <Label htmlFor='recruit' text='모집 인원' />
+          <Label text='모집 인원' />
           <RecruitNumberInput
             type='number'
             name='recruit'
@@ -75,6 +104,35 @@ const ProjectCreateView = ({
             ref={recruitCountRef}
             onKeyDown={handleKeydownSubmit}
             autoComplete='off'
+          />
+        </Block>
+
+        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
+          <Label text='대표 이미지' />
+
+          {representativePreviewImage ? (
+            <ImageContainer>
+              <Image
+                src={representativePreviewImage}
+                alt={'project representative image'}
+                layout='fill'
+              />
+              <ImageDeleteIcon onClick={handleDeleteRepresentativePreviewImage}>
+                <CloseIcon />
+              </ImageDeleteIcon>
+            </ImageContainer>
+          ) : (
+            <AddImageBox onClick={handleAddRepresentativeImg}>
+              <PlusIcon width={4} height={4} />
+            </AddImageBox>
+          )}
+
+          <input
+            hidden
+            type='file'
+            accept='image/jpg, image/jpeg, image/png'
+            ref={representativeImageRef}
+            onChange={handleChangeRepresentativeImg}
           />
         </Block>
 

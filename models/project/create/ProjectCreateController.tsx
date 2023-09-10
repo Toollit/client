@@ -1,18 +1,18 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import ProjectCreateView, { ProjectCreateViewProps } from './ProjectCreateView';
-import { createProjectAPI } from '@/apis/createProject';
+import { ProjectData, createProjectAPI } from '@/apis/createProject';
 import useEditorContent from '@/hooks/useEditorContent';
 import { errorMessage } from '@/apis/errorMessage';
-import { useSWRConfig } from 'swr';
-import { getProjectsKey } from '@/apis/keys';
 import PrivateRoute from '@/components/PrivateRoute';
+import useCachedKeys from '@/hooks/useCachedKeys';
+import { useDispatch } from 'react-redux';
+import { loading } from '@/features/loading';
 
 const ProjectCreateController = () => {
   const router = useRouter();
-
-  const { mutate } = useSWRConfig();
-
+  const dispatch = useDispatch();
+  const { mutateCachedKeysWithTag } = useCachedKeys();
   const { titleRef, editorRef, handleData } = useEditorContent();
 
   const hashtagRef = useRef<string[]>([]);
@@ -20,6 +20,12 @@ const ProjectCreateController = () => {
     [],
   );
   const recruitCountRef = useRef<HTMLInputElement>(null);
+  const representativeImageRef = useRef<HTMLInputElement>(null);
+
+  const [representativePreviewImage, setRepresentativePreviewImage] =
+    useState('');
+  const [representativeImageFile, setRepresentativeImageFile] =
+    useState<File | null>(null);
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -48,7 +54,11 @@ const ProjectCreateController = () => {
         return alert('모집 인원은 숫자 1~100까지 가능합니다.');
       }
 
-      const projectData = {
+      if (!representativeImageFile) {
+        return alert('대표 이미지를 설정해 주세요.');
+      }
+
+      const projectData: ProjectData = {
         title: data?.title,
         contentHTML: data?.contentHTML,
         contentMarkdown: data?.contentMarkdown,
@@ -58,19 +68,40 @@ const ProjectCreateController = () => {
         recruitNumber: recruitCount,
       };
 
+      const stringifyJsonData = JSON.stringify(projectData);
+
+      const formData = new FormData();
+      formData.append('projectRepresentativeImage', representativeImageFile);
+      formData.append('data', stringifyJsonData);
+
+      dispatch(loading({ status: true }));
+
       try {
-        const response = await createProjectAPI(projectData);
+        const response = await createProjectAPI(formData);
 
         if (response?.success) {
-          mutate(getProjectsKey(1, 'new'), undefined, true);
+          dispatch(loading({ status: false }));
+
+          mutateCachedKeysWithTag({ tag: 'projects' });
           const projectId = response.data.projectId;
-          router.push(`/project/${projectId}`);
+          // Use replace instead of push because decided to back out so can't access that page again
+          router.replace(`/project/${projectId}`);
         }
       } catch (error) {
+        dispatch(loading({ status: false }));
         errorMessage(error);
       }
     },
-    [router, editorRef, titleRef, handleData, hashtagRef, mutate],
+    [
+      router,
+      dispatch,
+      editorRef,
+      titleRef,
+      handleData,
+      hashtagRef,
+      mutateCachedKeysWithTag,
+      representativeImageFile,
+    ],
   );
 
   const handleKeydownSubmit = useCallback(
@@ -82,14 +113,59 @@ const ProjectCreateController = () => {
     [],
   );
 
+  const handleChangeRepresentativeImg = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (!event.target.files) {
+        return;
+      }
+
+      const file = event.target.files[0];
+
+      if (!file) {
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.readAsDataURL(file);
+      reader.onload = (evt) => {
+        if (typeof evt.target?.result === 'string') {
+          setRepresentativePreviewImage(evt.target?.result);
+          setRepresentativeImageFile(file);
+        }
+      };
+    },
+    [],
+  );
+
+  const handleAddRepresentativeImg = useCallback(() => {
+    representativeImageRef.current?.click();
+  }, []);
+
+  const handleDeleteRepresentativePreviewImage = useCallback(() => {
+    setRepresentativePreviewImage('');
+    setRepresentativeImageFile(null);
+  }, []);
+
   const props: ProjectCreateViewProps = {
     handleSubmit,
-    titleRef,
-    editorRef,
+    editor: {
+      titleRef,
+      editorRef,
+      name: 'projectContentImage',
+      contentImageUploadUrl: '/api/post/project/content/uploadImage',
+    },
     hashtagRef,
     memberTypeRef,
     recruitCountRef,
+    representativeImageRef,
+    handleChangeRepresentativeImg,
+    handleAddRepresentativeImg,
+    representativePreviewImage: representativePreviewImage
+      ? representativePreviewImage
+      : null,
     handleKeydownSubmit,
+    handleDeleteRepresentativePreviewImage,
   };
   return (
     <PrivateRoute accessibleUser='authorized'>
