@@ -173,6 +173,12 @@ const ShareButton = styled.button`
   }
 `;
 
+const ModifyButton = styled.button`
+  border-style: none;
+  background-color: transparent;
+  padding: 0rem 0.5rem;
+`;
+
 const WriterInfoContainer = styled.div`
   display: flex;
   border: 1px solid ${(props) => props.theme.colors.border.container};
@@ -272,6 +278,7 @@ export {
   ButtonContainer,
   BookmarkButton,
   ShareButton,
+  ModifyButton,
   ProfileImageContainer,
   WriterInfoContainer,
   Writer,

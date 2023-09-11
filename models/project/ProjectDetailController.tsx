@@ -16,6 +16,9 @@ import { bookmarkAPI } from '@/apis/bookmark';
 import { projectDetailBookmarkStatusFetcher } from '@/apis/projectDetailBookmarkStatusFetcher';
 import { serialize } from '@/middleware/swr/serialize';
 import useCachedKeys from '@/hooks/useCachedKeys';
+import { deletePostAPI } from '@/apis/deletePost';
+import { openReport } from '@/features/report';
+import { DeleteIcon, EditSquareIcon } from '@/assets/icons';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
@@ -30,6 +33,10 @@ const ProjectDetailController = () => {
   const { nickname: accessUser, authMutate } = useAuth();
 
   const [isClientRendering, setIsClientRendering] = useState(false);
+  const [tooltipAnchorEl, setTooltipAnchorEl] = useState<HTMLElement | null>(
+    null,
+  );
+  const tooltipOpen = Boolean(tooltipAnchorEl);
 
   const { data: projectDetail } = useSWR(
     postId
@@ -85,49 +92,54 @@ const ProjectDetailController = () => {
   );
 
   const handleBookmark = useCallback(async () => {
-    const isMyProject = projectDetail?.data.writer.nickname === accessUser;
-
-    const auth = await authMutate();
-
-    if (!auth?.success) {
-      alert('로그인 후 이용 가능합니다.');
-      return router.push('/login');
-    }
-
-    if (isMyProject) {
-      return alert('내가 작성한 게시글 입니다.');
-    }
-
     try {
-      const response = await bookmarkAPI({ postId: Number(postId) });
+      const auth = await authMutate();
 
-      bookmarkMutate();
-      mutateCachedKeysWithTag({ tag: 'projectsBookmarksStatus' });
-      mutateCachedKeysWithTag({ tag: 'projects' });
+      if (!auth?.success) {
+        const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
 
-      if (response?.message === 'save') {
-        dispatch(showAlert({ type: 'success', text: '북마크 했습니다.' }));
-
-        setTimeout(() => {
-          dispatch(hideAlert());
-        }, 2000);
+        if (wantsToLogin) {
+          return router.push('/login');
+        }
       }
 
-      if (response?.message === 'cancel') {
-        dispatch(
-          showAlert({ type: 'success', text: '북마크를 취소했습니다.' }),
-        );
+      if (auth?.success) {
+        const isMyProject =
+          projectDetail?.data.writer.nickname === auth.data.nickname;
 
-        setTimeout(() => {
-          dispatch(hideAlert());
-        }, 2000);
+        if (isMyProject) {
+          return alert('내가 작성한 게시글 입니다.');
+        }
+
+        const response = await bookmarkAPI({ postId: Number(postId) });
+
+        bookmarkMutate();
+        mutateCachedKeysWithTag({ tag: 'projectsBookmarksStatus' });
+        mutateCachedKeysWithTag({ tag: 'projects' });
+
+        if (response?.message === 'save') {
+          dispatch(showAlert({ type: 'success', text: '북마크 했습니다.' }));
+
+          setTimeout(() => {
+            dispatch(hideAlert());
+          }, 2000);
+        }
+
+        if (response?.message === 'cancel') {
+          dispatch(
+            showAlert({ type: 'success', text: '북마크를 취소했습니다.' }),
+          );
+
+          setTimeout(() => {
+            dispatch(hideAlert());
+          }, 2000);
+        }
       }
     } catch (error) {
       errorMessage(error);
     }
   }, [
     projectDetail,
-    accessUser,
     dispatch,
     postId,
     router,
@@ -147,6 +159,99 @@ const ProjectDetailController = () => {
       dispatch(hideAlert());
     }, 2000);
   }, [dispatch, router]);
+
+  const handleTooltipOpen = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      setTooltipAnchorEl(event.currentTarget);
+    },
+    [],
+  );
+
+  const handleTooltipModify = useCallback(async () => {
+    setTooltipAnchorEl(null);
+
+    try {
+      const auth = await authMutate();
+
+      if (!auth?.success) {
+        const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
+
+        if (wantsToLogin) {
+          return router.push('/login');
+        }
+      }
+
+      if (auth?.success) {
+        return router.push(`/modify/project/${postId}`);
+      }
+    } catch (error) {
+      errorMessage(error);
+    }
+  }, [router, postId, authMutate]);
+
+  const handleTooltipDelete = useCallback(async () => {
+    setTooltipAnchorEl(null);
+
+    try {
+      const auth = await authMutate();
+
+      if (!auth?.success) {
+        const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
+
+        if (wantsToLogin) {
+          return router.push('/login');
+        }
+      }
+
+      if (auth?.success) {
+        const isDeletedOk = confirm('정말로 삭제하시겠습니까?');
+
+        if (isDeletedOk) {
+          try {
+            await deletePostAPI({ postType: 'project', postId });
+
+            router.replace('/');
+          } catch (error) {
+            errorMessage(error);
+          }
+        }
+      }
+    } catch (error) {
+      errorMessage(error);
+    }
+  }, [postId, router, authMutate]);
+
+  const handleTooltipClose = useCallback(() => {
+    setTooltipAnchorEl(null);
+  }, []);
+
+  const handleTooltipReport = useCallback(async () => {
+    try {
+      const auth = await authMutate();
+
+      if (!auth?.success) {
+        const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
+
+        if (wantsToLogin) {
+          return router.push('/login');
+        }
+      }
+
+      if (auth?.success) {
+        setTooltipAnchorEl(null);
+        dispatch(
+          openReport({
+            postType: 'project',
+            postId: Number(postId),
+            writer: projectDetail?.data.writer.nickname ?? '',
+            title: projectDetail?.data.content.title ?? '',
+          }),
+        );
+      }
+    } catch (error) {
+      errorMessage(error);
+    }
+  }, [dispatch, router, authMutate, postId, projectDetail]);
 
   useEffect(() => {
     setIsClientRendering(true);
@@ -187,12 +292,31 @@ const ProjectDetailController = () => {
       : projectDetail,
 
     bookmark: bookmark?.data.bookmark,
-    tooltip: {
-      writer: projectDetail?.data.writer.nickname,
-      title: projectDetail?.data.content.title,
-    },
+
     handleBookmark,
     handleShare,
+    handleTooltipOpen,
+    tooltip: {
+      items:
+        projectDetail?.data.writer.nickname === accessUser
+          ? [
+              {
+                text: '수정',
+                icon: <EditSquareIcon />,
+                handler: handleTooltipModify,
+              },
+              {
+                text: '삭제',
+                icon: <DeleteIcon />,
+                handler: handleTooltipDelete,
+              },
+            ]
+          : [{ text: '신고', handler: handleTooltipReport }],
+
+      anchorEl: tooltipAnchorEl,
+      open: tooltipOpen,
+      onClose: handleTooltipClose,
+    },
 
     //TODO comment 추가하기
     //TODO trending post 추가하기

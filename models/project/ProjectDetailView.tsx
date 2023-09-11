@@ -2,13 +2,18 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import Title from 'components/commons/title';
 import AppLayout from '@/components/appLayout';
-import { AccountCircleIcon } from '@/assets/icons';
-import { ShareIcon, BookmarkIcon } from '@/assets/icons';
-import Tooltip from '@/components/commons/tooltip';
+import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
 import Hashtag from '@/components/commons/hashtag';
 import { ProjectDetail } from '@/apis/projectDetailFetcher';
 import Skeleton from '@/components/commons/skeleton';
 import Report from '@/components/commons/report';
+import {
+  AccountCircleIcon,
+  ShareIcon,
+  BookmarkIcon,
+  MoreIcon,
+} from '@/assets/icons';
+
 import {
   ColumnContainer,
   ColumnLeftContainer,
@@ -27,6 +32,7 @@ import {
   ButtonContainer,
   BookmarkButton,
   ShareButton,
+  ModifyButton,
   WriterInfoContainer,
   ProfileImageContainer,
   Writer,
@@ -55,23 +61,22 @@ export interface ProjectDetailViewProps {
   writer?: ProjectDetail['writer'];
   content?: ProjectDetailContent;
   bookmark?: boolean;
-  tooltip: {
-    writer?: string;
-    title?: string;
-  };
   handleBookmark: () => void;
   handleShare: () => void;
+  handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  tooltip: TooltipProps;
 }
 
 const ProjectDetailView = ({
   isClientRendering,
   postId,
-  content,
   writer,
+  content,
   bookmark,
-  tooltip,
   handleBookmark,
   handleShare,
+  handleTooltipOpen,
+  tooltip,
 }: ProjectDetailViewProps) => {
   return (
     <AppLayout type='default'>
@@ -131,7 +136,10 @@ const ProjectDetailView = ({
                     <ShareIcon />
                     <span>공유</span>
                   </ShareButton>
-                  <Tooltip writer={tooltip.writer} title={tooltip.title} />
+                  <ModifyButton onClick={handleTooltipOpen}>
+                    <MoreIcon width={4} height={3} />
+                  </ModifyButton>
+                  <Tooltip {...tooltip} />
                 </ButtonContainer>
               </ProjectContentBottomContainer>
             </ProjectContentContainer>
@@ -153,7 +161,7 @@ const ProjectDetailView = ({
                     priority
                   />
                 ) : (
-                  <AccountCircleIcon fill={false} width={80} height={80} />
+                  <AccountCircleIcon fill={false} width={8} height={8} />
                 )}
               </ProfileImageContainer>
               <div>
