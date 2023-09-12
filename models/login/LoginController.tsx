@@ -5,10 +5,16 @@ import { emailLoginAPI } from '@/apis/emailLogin';
 import { errorMessage } from '@/apis/errorMessage';
 import PrivateRoute from '@/components/PrivateRoute';
 import useCachedKeys from '@/hooks/useCachedKeys';
+import { useDispatch, useSelector } from 'react-redux';
+import { loading } from '@/features/loading';
+import { RootState } from '@/store';
 
 const LoginController = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { clearCache } = useCachedKeys();
+
+  const isLoading = useSelector((state: RootState) => state.isLoading.status);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -37,31 +43,36 @@ const LoginController = () => {
       if (!password) {
         return setTimeout(() => {
           passwordInputRef.current?.focus();
-        }, 100);
+        }, 1);
       }
 
       if (email && password) {
         const data = { email, password };
         try {
+          passwordInputRef.current?.blur();
+
+          dispatch(loading({ status: true }));
+
           const response = await emailLoginAPI(data);
 
-          if (response?.success) {
-            // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
-            clearCache();
+          dispatch(loading({ status: false }));
 
-            if (response.message === 'needResetPassword') {
-              return router.replace('/resetPassword');
-            } else {
-              return router.replace('/');
-            }
+          // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
+          clearCache();
+
+          if (response?.message === 'needResetPassword') {
+            return router.replace('/resetPassword');
+          } else {
+            return router.replace('/');
           }
         } catch (error) {
+          dispatch(loading({ status: false }));
           errorMessage(error);
         }
       }
     },
 
-    [email, password, router, clearCache],
+    [email, password, router, clearCache, dispatch],
   );
 
   const handleSocialLogin = useCallback(
@@ -156,6 +167,7 @@ const LoginController = () => {
     fillFormComplete,
     handlePwInquiryRouting,
     handleSocialLogin,
+    isLoading,
   };
 
   return (

@@ -7,6 +7,7 @@ import Divider from '@/components/commons/divider';
 import Input from '@/components/commons/input';
 import Link from 'next/link';
 import Block from '@/components/commons/block';
+import LoadingCircularProgress from '@/components/commons/loading';
 import {
   Form,
   InputContainer,
@@ -27,6 +28,7 @@ export interface LoginViewProps {
   fillFormComplete: boolean;
   handlePwInquiryRouting: () => void;
   handleSocialLogin: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  isLoading: boolean;
 }
 
 const LoginView = ({
@@ -41,6 +43,7 @@ const LoginView = ({
   fillFormComplete,
   handlePwInquiryRouting,
   handleSocialLogin,
+  isLoading,
 }: LoginViewProps) => {
   return (
     <AppLayout
@@ -63,7 +66,7 @@ const LoginView = ({
           <Button
             type='normal'
             text='Google 계정으로 로그인'
-            icon={<GoogleIcon width={40} height={40} />}
+            icon={<GoogleIcon width={4} height={4} />}
             name='google'
             onClick={handleSocialLogin}
           />
@@ -78,7 +81,7 @@ const LoginView = ({
           <Button
             type='normal'
             text='Github 계정으로 로그인'
-            icon={<GithubIcon width={40} height={40} />}
+            icon={<GithubIcon width={4} height={4} />}
             name='github'
             onClick={handleSocialLogin}
           />
@@ -147,11 +150,13 @@ const LoginView = ({
           paddingBottom={1.5}
         >
           <SignInInduce>계정이 없으신가요?</SignInInduce>
-          <Link href={'/signUp'}>
+          <Link href={'/signUp'} passHref>
             <StyledLink>가입하기</StyledLink>
           </Link>
         </Block>
       </Form>
+
+      {isLoading && <LoadingCircularProgress />}
     </AppLayout>
   );
 };
