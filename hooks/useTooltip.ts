@@ -15,6 +15,7 @@ const useTooltip = () => {
   // Apply to button that make the tooltip visible
   const handleTooltipOpen = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
       setTooltipAnchorEl(event.currentTarget);
     },
     [],
