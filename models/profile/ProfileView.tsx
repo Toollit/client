@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import GetitLogo from '@/assets/images/GetitLogo';
 import { AccountCircleIcon, EditCircleIcon } from '@/assets/icons';
@@ -15,6 +15,7 @@ import ProfileProjectBox, {
 } from './profileViewSection/ProfileProjectBox';
 import ProfileFooterLink from './profileViewSection/ProfileFooterLink';
 import Block from '@/components/commons/block';
+import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
 import {
   Container,
   ColumnLeftContainer,
@@ -52,13 +53,11 @@ export interface ProfileViewProps {
   handleLogInOut: () => void;
   handleProfileInfoEditBtn: (category: string) => void;
   profileImgRef: React.RefObject<HTMLInputElement>;
-  handleChangeProfileImg: (event: ChangeEvent<HTMLInputElement>) => void;
-  anchorEl: null | HTMLElement;
-  handleOpenEditSelector: (event: React.MouseEvent<HTMLDivElement>) => void;
-  handleEditSelector: (event: React.MouseEvent<HTMLLIElement>) => void;
-  open: boolean;
+  handleChangeProfileImg: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleProjectLoadMore: () => void;
   isLaptop: boolean;
+  handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  tooltip: TooltipProps;
 }
 
 const ProfileView = ({
@@ -74,12 +73,10 @@ const ProfileView = ({
   handleProfileInfoEditBtn,
   profileImgRef,
   handleChangeProfileImg,
-  anchorEl,
-  handleOpenEditSelector,
-  handleEditSelector,
-  open,
   handleProjectLoadMore,
   isLaptop,
+  handleTooltipOpen,
+  tooltip,
 }: ProfileViewProps) => {
   return (
     <>
@@ -88,7 +85,7 @@ const ProfileView = ({
           <GNBArea>
             <Link href={'/'}>
               <a>
-                <GetitLogo width={32} height={32} />
+                <GetitLogo width={3.2} height={3.2} />
               </a>
             </Link>
 
@@ -119,8 +116,8 @@ const ProfileView = ({
                     <NoImage>
                       <AccountCircleIcon
                         fill={true}
-                        width={150}
-                        height={150}
+                        width={15}
+                        height={15}
                         color='#767678'
                       />
                     </NoImage>
@@ -128,33 +125,15 @@ const ProfileView = ({
                 )}
                 {me && (
                   <>
-                    <ImageEditBtn onClick={handleOpenEditSelector}>
+                    <ImageEditBtn onClick={handleTooltipOpen}>
                       <EditCircleIcon
                         fill={true}
-                        width={35}
-                        height={35}
+                        width={3.5}
+                        height={3.5}
                         color='#4dd290'
                       />
                     </ImageEditBtn>
-
-                    <EditMenu
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleEditSelector}
-                    >
-                      <EditCondition
-                        onClick={handleEditSelector}
-                        data-value='update'
-                      >
-                        수정
-                      </EditCondition>
-                      <EditCondition
-                        onClick={handleEditSelector}
-                        data-value='delete'
-                      >
-                        삭제
-                      </EditCondition>
-                    </EditMenu>
+                    <Tooltip {...tooltip} />
                   </>
                 )}
               </>

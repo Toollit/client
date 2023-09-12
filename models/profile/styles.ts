@@ -82,7 +82,7 @@ const NoImage = styled.div`
   justify-content: center;
 `;
 
-const ImageEditBtn = styled.div`
+const ImageEditBtn = styled.button`
   border: 1px solid #fff;
   border-radius: 50rem;
   background-color: #fff;

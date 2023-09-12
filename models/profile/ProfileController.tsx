@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ProfileView, { ProfileViewProps } from './ProfileView';
 import useSWR, { useSWRConfig, Cache } from 'swr';
 import {
@@ -34,6 +28,7 @@ import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
 import { serialize } from '@/middleware/swr/serialize';
 import useCachedKeys from '@/hooks/useCachedKeys';
+import useTooltip from '@/hooks/useTooltip';
 
 interface CachedData<T> {
   cache: Cache<T | undefined>;
@@ -65,6 +60,13 @@ const ProfileController = () => {
   const { logOut } = useLogout();
   const { nickname: accessUser, authMutate } = useAuth();
   const { getCachedKeyWithTag, getCachedDataWithKey } = useCachedKeys();
+  const {
+    tooltipAnchorEl,
+    setTooltipAnchorEl,
+    tooltipOpen,
+    handleTooltipOpen,
+    handleTooltipClose,
+  } = useTooltip();
 
   const updatePage = useSelector((state: RootState) => state.dialog.page);
   const updateCategory = useSelector(
@@ -73,10 +75,6 @@ const ProfileController = () => {
   const updateNewValue = useSelector(
     (state: RootState) => state.dialog.update?.newValue,
   );
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const open = Boolean(anchorEl);
 
   const [data, setData] = useState<ProfilePageData>({
     profileInfo: {
@@ -92,7 +90,6 @@ const ProfileController = () => {
       data: null,
     },
   });
-
   const [profileNickname, setProfileNickname] = useState('');
   const [projectPostCount, setProjectPostCount] = useState(10); // Load by 10
 
@@ -244,38 +241,26 @@ const ProfileController = () => {
     }
   }, [router, accessUser, logOut]);
 
-  const handleOpenEditSelector = (event: React.MouseEvent<HTMLDivElement>) => {
-    // open selector
-    setAnchorEl(event.currentTarget);
-  };
+  const handleTooltipModify = useCallback(() => {
+    setTooltipAnchorEl(null);
 
-  const handleEditSelector = useCallback(
-    async (event: React.MouseEvent<HTMLLIElement>) => {
-      const { value } = event.currentTarget.dataset;
+    profileImgRef.current?.click();
+  }, [setTooltipAnchorEl]);
 
-      if (value === 'update') {
-        profileImgRef.current?.click();
-        // edit selector close
-        return setAnchorEl(null);
-      }
+  const handleTooltipDelete = useCallback(async () => {
+    setTooltipAnchorEl(null);
 
-      if (value === 'delete') {
-        try {
-          await updateProfileAPI({
-            category: 'profileImage',
-            data: 'delete',
-          });
+    try {
+      await updateProfileAPI({
+        category: 'profileImage',
+        data: 'delete',
+      });
 
-          profileImageMutate();
-        } catch (error) {
-          errorMessage(error);
-        }
-        // edit selector close
-        return setAnchorEl(null);
-      }
-    },
-    [profileImageMutate],
-  );
+      profileImageMutate();
+    } catch (error) {
+      errorMessage(error);
+    }
+  }, [profileImageMutate, setTooltipAnchorEl]);
 
   const uploadProfileImage = useCallback(
     async (File: File) => {
@@ -302,7 +287,7 @@ const ProfileController = () => {
   );
 
   const handleChangeProfileImg = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
+    (event: React.ChangeEvent<HTMLInputElement>) => {
       if (!event.target.files) {
         return;
       }
@@ -741,12 +726,24 @@ const ProfileController = () => {
     handleProfileInfoEditBtn,
     profileImgRef,
     handleChangeProfileImg,
-    anchorEl,
-    handleOpenEditSelector,
-    handleEditSelector,
-    open,
     handleProjectLoadMore,
     isLaptop,
+    handleTooltipOpen,
+    tooltip: {
+      items: [
+        {
+          text: '수정',
+          handler: handleTooltipModify,
+        },
+        {
+          text: '삭제',
+          handler: handleTooltipDelete,
+        },
+      ],
+      anchorEl: tooltipAnchorEl,
+      open: tooltipOpen,
+      onClose: handleTooltipClose,
+    },
   };
 
   return <ProfileView {...props} />;
