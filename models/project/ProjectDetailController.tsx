@@ -19,24 +19,26 @@ import useCachedKeys from '@/hooks/useCachedKeys';
 import { deletePostAPI } from '@/apis/deletePost';
 import { openReport } from '@/features/report';
 import { DeleteIcon, EditSquareIcon } from '@/assets/icons';
+import useTooltip from '@/hooks/useTooltip';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
 const ProjectDetailController = () => {
   const dispatch = useDispatch();
-  const { mutateCachedKeysWithTag } = useCachedKeys();
-
   const router = useRouter();
+  const { nickname: accessUser, authMutate } = useAuth();
+  const { mutateCachedKeysWithTag } = useCachedKeys();
+  const {
+    tooltipAnchorEl,
+    setTooltipAnchorEl,
+    tooltipOpen,
+    handleTooltipOpen,
+    handleTooltipClose,
+  } = useTooltip();
+
   const postId = router.query.id as string;
 
-  // Current Access User Self Information
-  const { nickname: accessUser, authMutate } = useAuth();
-
   const [isClientRendering, setIsClientRendering] = useState(false);
-  const [tooltipAnchorEl, setTooltipAnchorEl] = useState<HTMLElement | null>(
-    null,
-  );
-  const tooltipOpen = Boolean(tooltipAnchorEl);
 
   const { data: projectDetail } = useSWR(
     postId
@@ -160,13 +162,6 @@ const ProjectDetailController = () => {
     }, 2000);
   }, [dispatch, router]);
 
-  const handleTooltipOpen = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      setTooltipAnchorEl(event.currentTarget);
-    },
-    [],
-  );
-
   const handleTooltipModify = useCallback(async () => {
     setTooltipAnchorEl(null);
 
@@ -187,7 +182,7 @@ const ProjectDetailController = () => {
     } catch (error) {
       errorMessage(error);
     }
-  }, [router, postId, authMutate]);
+  }, [router, postId, authMutate, setTooltipAnchorEl]);
 
   const handleTooltipDelete = useCallback(async () => {
     setTooltipAnchorEl(null);
@@ -219,11 +214,7 @@ const ProjectDetailController = () => {
     } catch (error) {
       errorMessage(error);
     }
-  }, [postId, router, authMutate]);
-
-  const handleTooltipClose = useCallback(() => {
-    setTooltipAnchorEl(null);
-  }, []);
+  }, [postId, router, authMutate, setTooltipAnchorEl]);
 
   const handleTooltipReport = useCallback(async () => {
     try {
@@ -251,7 +242,7 @@ const ProjectDetailController = () => {
     } catch (error) {
       errorMessage(error);
     }
-  }, [dispatch, router, authMutate, postId, projectDetail]);
+  }, [dispatch, router, authMutate, postId, projectDetail, setTooltipAnchorEl]);
 
   useEffect(() => {
     setIsClientRendering(true);
