@@ -1,6 +1,6 @@
 import { serverInstance } from 'apis/axios';
 
-export interface CreateProjectAPIReq {
+export interface ProjectData {
   title: string;
   contentHTML: string;
   contentMarkdown: string;
@@ -9,6 +9,8 @@ export interface CreateProjectAPIReq {
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
   recruitNumber: number;
 }
+
+export type CreateProjectAPIReq = FormData;
 
 export interface CreateProjectAPIRes {
   success: boolean;
@@ -21,6 +23,10 @@ export interface CreateProjectAPIRes {
 export const createProjectAPI = async (
   data: CreateProjectAPIReq,
 ): Promise<CreateProjectAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/post/project/create', data);
+  const response = await serverInstance.post('/api/post/project/create', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data;
 };
