@@ -12,6 +12,8 @@ import Image from 'next/image';
 import PlusIcon from '@/assets/icons/PlusIcon';
 import { CloseIcon } from '@/assets/icons';
 import LoadingCircularProgress from '@/components/commons/loading';
+import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
+import { StaticImageData } from 'next/image';
 import {
   RecruitNumberInput,
   ButtonContainer,
@@ -45,10 +47,11 @@ export interface ProjectCreateViewProps {
   handleChangeRepresentativeImg: (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => void;
-  handleAddRepresentativeImg: () => void;
-  representativePreviewImage: string | null;
+  representativePreviewImage: StaticImageData | string | null;
   handleKeydownSubmit: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   handleDeleteRepresentativePreviewImage: () => void;
+  handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  tooltip: TooltipProps;
 }
 
 const ProjectCreateView = ({
@@ -59,10 +62,11 @@ const ProjectCreateView = ({
   recruitCountRef,
   representativeImageRef,
   handleChangeRepresentativeImg,
-  handleAddRepresentativeImg,
   representativePreviewImage,
   handleKeydownSubmit,
   handleDeleteRepresentativePreviewImage,
+  handleTooltipOpen,
+  tooltip,
 }: ProjectCreateViewProps) => {
   return (
     <AppLayout type='default'>
@@ -122,9 +126,12 @@ const ProjectCreateView = ({
               </ImageDeleteIcon>
             </ImageContainer>
           ) : (
-            <AddImageBox onClick={handleAddRepresentativeImg}>
-              <PlusIcon width={4} height={4} />
-            </AddImageBox>
+            <>
+              <AddImageBox onClick={handleTooltipOpen}>
+                <PlusIcon width={4} height={4} />
+              </AddImageBox>
+              <Tooltip {...tooltip} />
+            </>
           )}
 
           <input

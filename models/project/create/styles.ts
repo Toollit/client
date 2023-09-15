@@ -26,7 +26,8 @@ const ButtonContainer = styled.div`
   justify-content: right;
 `;
 
-const AddImageBox = styled.div`
+const AddImageBox = styled.button`
+  border: transparent;
   width: 15rem;
   height: 15rem;
   background-color: ${(props) => props.theme.colors.lightGray};

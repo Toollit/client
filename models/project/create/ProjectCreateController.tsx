@@ -8,12 +8,22 @@ import PrivateRoute from '@/components/PrivateRoute';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { useDispatch } from 'react-redux';
 import { loading } from '@/features/loading';
+import useTooltip from '@/hooks/useTooltip';
+import projectDefaultImage from 'public/static/images/project.jpg';
+import { StaticImageData } from 'next/image';
 
 const ProjectCreateController = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { mutateCachedKeysWithTag } = useCachedKeys();
   const { titleRef, editorRef, handleData } = useEditorContent();
+  const {
+    tooltipAnchorEl,
+    setTooltipAnchorEl,
+    tooltipOpen,
+    handleTooltipOpen,
+    handleTooltipClose,
+  } = useTooltip();
 
   const hashtagRef = useRef<string[]>([]);
   const memberTypeRef = useRef<('developer' | 'designer' | 'pm' | 'anyone')[]>(
@@ -22,10 +32,12 @@ const ProjectCreateController = () => {
   const recruitCountRef = useRef<HTMLInputElement>(null);
   const representativeImageRef = useRef<HTMLInputElement>(null);
 
-  const [representativePreviewImage, setRepresentativePreviewImage] =
-    useState('');
-  const [representativeImageFile, setRepresentativeImageFile] =
-    useState<File | null>(null);
+  const [representativePreviewImage, setRepresentativePreviewImage] = useState<
+    StaticImageData | string | null
+  >(null);
+  const [representativeImageFile, setRepresentativeImageFile] = useState<
+    File | 'default' | null
+  >(null);
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -71,21 +83,28 @@ const ProjectCreateController = () => {
       const stringifyJsonData = JSON.stringify(projectData);
 
       const formData = new FormData();
-      formData.append('projectRepresentativeImage', representativeImageFile);
-      formData.append('data', stringifyJsonData);
 
-      dispatch(loading({ status: true }));
+      formData.append('data', stringifyJsonData);
+      formData.append(
+        'projectRepresentativeImage',
+        representativeImageFile === 'default'
+          ? 'defaultImage'
+          : representativeImageFile,
+      );
 
       try {
+        dispatch(loading({ status: true }));
+
         const response = await createProjectAPI(formData);
 
         if (response?.success) {
-          dispatch(loading({ status: false }));
-
           mutateCachedKeysWithTag({ tag: 'projects' });
+
           const projectId = response.data.projectId;
           // Use replace instead of push because decided to back out so can't access that page again
           router.replace(`/project/${projectId}`);
+
+          dispatch(loading({ status: false }));
         }
       } catch (error) {
         dispatch(loading({ status: false }));
@@ -139,8 +158,15 @@ const ProjectCreateController = () => {
   );
 
   const handleAddRepresentativeImg = useCallback(() => {
+    setTooltipAnchorEl(null);
     representativeImageRef.current?.click();
-  }, []);
+  }, [setTooltipAnchorEl]);
+
+  const handleAddDefaultRepresentativeImg = useCallback(() => {
+    setTooltipAnchorEl(null);
+    setRepresentativeImageFile('default');
+    setRepresentativePreviewImage(projectDefaultImage);
+  }, [setTooltipAnchorEl]);
 
   const handleDeleteRepresentativePreviewImage = useCallback(() => {
     setRepresentativePreviewImage('');
@@ -160,12 +186,27 @@ const ProjectCreateController = () => {
     recruitCountRef,
     representativeImageRef,
     handleChangeRepresentativeImg,
-    handleAddRepresentativeImg,
     representativePreviewImage: representativePreviewImage
       ? representativePreviewImage
       : null,
     handleKeydownSubmit,
     handleDeleteRepresentativePreviewImage,
+    handleTooltipOpen,
+    tooltip: {
+      items: [
+        {
+          text: '앨범에서 선택',
+          handler: handleAddRepresentativeImg,
+        },
+        {
+          text: '기본 이미지',
+          handler: handleAddDefaultRepresentativeImg,
+        },
+      ],
+      anchorEl: tooltipAnchorEl,
+      open: tooltipOpen,
+      onClose: handleTooltipClose,
+    },
   };
   return (
     <PrivateRoute accessibleUser='authorized'>
