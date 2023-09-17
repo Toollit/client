@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import ResetPasswordView, { ResetPasswordViewProps } from './ResetPasswordView';
 import { resetPasswordAPI } from '@/apis/resetPassword';
@@ -10,7 +10,6 @@ import useLogout from '@/hooks/useLogout';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { loading } from '@/features/loading';
-import { noop } from '@/utils/noop';
 
 const ResetPasswordController = () => {
   const dispatch = useDispatch();
@@ -26,6 +25,9 @@ const ResetPasswordController = () => {
     useNoSpaceInput('');
   const [doubleCheckPasswordError, setDoubleCheckPasswordError] =
     useState(false);
+
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const doubleCheckPasswordRef = useRef<HTMLInputElement>(null);
 
   const checkPasswordValidate = useCallback(() => {
     // password 영문자, 숫자, 특수문자 조합 8 ~ 20자리 형식 확인 정규식
@@ -51,28 +53,39 @@ const ResetPasswordController = () => {
       const isPasswordMatch = checkPasswordMatch();
 
       if (!isValidationPassword) {
+        passwordRef.current?.focus();
         return setNewPasswordInvalidError(true);
       }
 
       if (!isPasswordMatch) {
+        doubleCheckPasswordRef.current?.focus();
         return setDoubleCheckPasswordError(true);
       }
 
-      if (newPassword && doubleCheckPassword) {
-        try {
-          dispatch(loading({ status: true }));
+      if (isLoading) {
+        return;
+      }
 
-          const response = await resetPasswordAPI({ password: newPassword });
+      if (!newPassword || !doubleCheckPassword) {
+        return;
+      }
 
-          dispatch(loading({ status: false }));
+      try {
+        passwordRef.current?.blur();
+        doubleCheckPasswordRef.current?.blur();
 
-          logOut({ push: '/login' });
+        dispatch(loading({ status: true }));
 
-          alert(response?.message);
-        } catch (error) {
-          dispatch(loading({ status: false }));
-          errorMessage(error);
-        }
+        const response = await resetPasswordAPI({ password: newPassword });
+
+        dispatch(loading({ status: false }));
+
+        logOut({ push: '/login' });
+
+        alert(response?.message);
+      } catch (error) {
+        dispatch(loading({ status: false }));
+        errorMessage(error);
       }
     },
     [
@@ -82,6 +95,7 @@ const ResetPasswordController = () => {
       doubleCheckPassword,
       logOut,
       dispatch,
+      isLoading,
     ],
   );
 
@@ -105,14 +119,15 @@ const ResetPasswordController = () => {
 
   const props: ResetPasswordViewProps = {
     newPassword: newPassword ?? '',
-    onChangeNewPassword: isLoading ? noop : onChangeNewPassword,
+    onChangeNewPassword,
     newPasswordInvalidError,
     doubleCheckPassword: doubleCheckPassword ?? '',
-    onChangeDoubleCheckPassword: isLoading ? noop : onChangeDoubleCheckPassword,
+    onChangeDoubleCheckPassword,
     doubleCheckPasswordError,
     handleSubmit,
     handleLogout,
-    isLoading,
+    passwordRef,
+    doubleCheckPasswordRef,
   };
 
   return (
