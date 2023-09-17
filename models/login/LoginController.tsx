@@ -46,33 +46,43 @@ const LoginController = () => {
         }, 1);
       }
 
-      if (email && password) {
+      if (isLoading) {
+        return;
+      }
+
+      if (!email || !password) {
+        return;
+      }
+
+      try {
+        passwordInputRef.current?.blur();
+
+        dispatch(loading({ status: true }));
+
         const data = { email, password };
-        try {
-          passwordInputRef.current?.blur();
 
-          dispatch(loading({ status: true }));
+        const response = await emailLoginAPI(data);
 
-          const response = await emailLoginAPI(data);
+        dispatch(loading({ status: false }));
 
-          dispatch(loading({ status: false }));
+        // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
+        clearCache();
 
-          // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
-          clearCache();
-
-          if (response?.message === 'needResetPassword') {
-            return router.replace('/resetPassword');
-          } else {
-            return router.replace('/');
-          }
-        } catch (error) {
-          dispatch(loading({ status: false }));
-          errorMessage(error);
+        if (response?.message === 'needResetPassword') {
+          return router.replace('/resetPassword');
+        } else {
+          return router.replace('/');
         }
+      } catch (error) {
+        dispatch(loading({ status: false }));
+
+        errorMessage(error);
+
+        passwordInputRef.current?.focus();
       }
     },
 
-    [email, password, router, clearCache, dispatch],
+    [email, password, router, clearCache, dispatch, isLoading],
   );
 
   const handleSocialLogin = useCallback(
@@ -167,7 +177,6 @@ const LoginController = () => {
     fillFormComplete,
     handlePwInquiryRouting,
     handleSocialLogin,
-    isLoading,
   };
 
   return (

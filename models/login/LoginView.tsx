@@ -7,11 +7,10 @@ import Divider from '@/components/commons/divider';
 import Input from '@/components/commons/input';
 import Link from 'next/link';
 import Block from '@/components/commons/block';
-import LoadingCircularProgress from '@/components/commons/loading';
 import {
   Form,
   InputContainer,
-  PasswordInput,
+  PasswordInputContainer,
   SignInInduce,
   StyledLink,
 } from './styles';
@@ -23,12 +22,11 @@ export interface LoginViewProps {
   handleEmail: (event: React.ChangeEvent<HTMLInputElement>) => void;
   password: string;
   handlePassword: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  passwordInputRef: React.RefObject<HTMLInputElement>;
+  passwordInputRef: React.ForwardedRef<HTMLInputElement>;
   showPasswordInput: boolean;
   fillFormComplete: boolean;
   handlePwInquiryRouting: () => void;
   handleSocialLogin: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  isLoading: boolean;
 }
 
 const LoginView = ({
@@ -43,7 +41,6 @@ const LoginView = ({
   fillFormComplete,
   handlePwInquiryRouting,
   handleSocialLogin,
-  isLoading,
 }: LoginViewProps) => {
   return (
     <AppLayout
@@ -106,13 +103,16 @@ const LoginView = ({
               focus={true}
             />
             {showPasswordInput && (
-              <PasswordInput
-                type='password'
-                placeholder='비밀번호를 입력해주세요.'
-                onChange={handlePassword}
-                value={password}
-                ref={passwordInputRef}
-              />
+              <PasswordInputContainer>
+                <Input
+                  type='password'
+                  placeholder='비밀번호를 입력해주세요.'
+                  onChange={handlePassword}
+                  value={password}
+                  ref={passwordInputRef}
+                  focus={true}
+                />
+              </PasswordInputContainer>
             )}
           </InputContainer>
         </Block>
@@ -155,8 +155,6 @@ const LoginView = ({
           </Link>
         </Block>
       </Form>
-
-      {isLoading && <LoadingCircularProgress />}
     </AppLayout>
   );
 };

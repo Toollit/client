@@ -32,22 +32,10 @@ const InputContainer = styled.div<{ show: boolean }>`
     `}
 `;
 
-const PasswordInput = styled.input`
-  border: 1px solid ${(props) => props.theme.colors.border.base};
-  height: 5rem;
-  border-radius: ${(props) => props.theme.borderRadius.sharp};
-  padding: 0 1rem;
-  font-size: 1.6rem;
-
+const PasswordInputContainer = styled.div`
   position: absolute;
   width: 100%;
   z-index: 9;
-
-  &:focus {
-    border-style: solid;
-    border-color: ${(props) => props.theme.colors.theme};
-    outline-style: none;
-  }
 
   animation-name: passwordInput;
   animation-duration: 1.5s;
@@ -75,4 +63,10 @@ const StyledLink = styled.a`
   cursor: pointer;
 `;
 
-export { Form, InputContainer, PasswordInput, SignInInduce, StyledLink };
+export {
+  Form,
+  InputContainer,
+  PasswordInputContainer,
+  SignInInduce,
+  StyledLink,
+};
