@@ -5,7 +5,6 @@ import { Button } from '@/components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
 import InputError from '@/components/commons/error/InputError';
-import LoadingCircularProgress from '@/components/commons/loading';
 import Block from '@/components/commons/block';
 import { Form, InputContainer, SignInInduce, StyledLink } from './styles';
 
@@ -15,7 +14,7 @@ export interface PwInquiryViewProps {
   onChangeEmail: (event: React.ChangeEvent<HTMLInputElement>) => void;
   emailInvalidError: boolean;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  isLoading: boolean;
+  inputRef: React.ForwardedRef<HTMLInputElement>;
 }
 
 const PwInquiryView = ({
@@ -24,10 +23,15 @@ const PwInquiryView = ({
   onChangeEmail,
   emailInvalidError,
   handleSubmit,
-  isLoading,
+  inputRef,
 }: PwInquiryViewProps) => {
   return (
-    <AppLayout type='close' onClick={handleClose} boundary={false}>
+    <AppLayout
+      type='close'
+      onClick={handleClose}
+      boundary={false}
+      fullSize={true}
+    >
       <Form onSubmit={handleSubmit}>
         <Block paddingLeft={1.5} paddingRight={1.5}>
           <Title text='Getit 계정 찾기' />
@@ -40,6 +44,7 @@ const PwInquiryView = ({
               onChange={onChangeEmail}
               value={email as string}
               focus={true}
+              ref={inputRef}
             />
             {emailInvalidError && (
               <InputError text='올바른 이메일을 입력해 주세요.' />
@@ -63,13 +68,11 @@ const PwInquiryView = ({
           paddingBottom={1.5}
         >
           <SignInInduce>계정이 없으신가요?</SignInInduce>
-          <Link href={'/signUp'}>
+          <Link href={'/signUp'} passHref>
             <StyledLink>가입하기</StyledLink>
           </Link>
         </Block>
       </Form>
-
-      {isLoading && <LoadingCircularProgress />}
     </AppLayout>
   );
 };

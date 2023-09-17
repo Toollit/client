@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { pwInquiryAPI } from '@/apis/pwInquiry';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { useRouter } from 'next/router';
@@ -7,7 +7,6 @@ import { errorMessage } from '@/apis/errorMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
 import { RootState } from '@/store';
-import { noop } from '@/utils/noop';
 
 const PwInquiryController = () => {
   const dispatch = useDispatch();
@@ -17,6 +16,8 @@ const PwInquiryController = () => {
 
   const [email, onChangeEmail] = useNoSpaceInput('');
   const [emailInvalidError, setEmailInvalidError] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleClose = useCallback(() => {
     router.back();
@@ -46,22 +47,33 @@ const PwInquiryController = () => {
         return setEmailInvalidError(true);
       }
 
+      if (isLoading) {
+        return;
+      }
+
       try {
+        inputRef.current?.blur();
+
         dispatch(loading({ status: true }));
 
         const response = await pwInquiryAPI({ email });
 
-        alert(response?.message);
+        if (response?.message) {
+          alert(response.message);
+        }
 
         dispatch(loading({ status: false }));
 
         router.push('/login');
       } catch (error) {
         dispatch(loading({ status: false }));
+
         errorMessage(error);
+
+        inputRef.current?.focus();
       }
     },
-    [email, router, checkEmailFormatValidate, dispatch],
+    [email, router, checkEmailFormatValidate, dispatch, isLoading],
   );
 
   // remove error message when input value is changed
@@ -72,11 +84,10 @@ const PwInquiryController = () => {
   const props: PwInquiryViewProps = {
     handleClose,
     email,
-    onChangeEmail: isLoading ? noop : onChangeEmail,
+    onChangeEmail,
     emailInvalidError,
     handleSubmit,
-
-    isLoading,
+    inputRef,
   };
   return <PwInquiryView {...props} />;
 };
