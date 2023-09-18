@@ -227,7 +227,14 @@ const HeaderLeftLink = styled.div`
   }
 `;
 
-const LogInOut = styled.div`
+const LogInOut = styled.a`
+  font-size: 1.4rem;
+  color: ${(props) => props.theme.colors.gray};
+
+  cursor: pointer;
+`;
+
+const MyProfile = styled.a`
   font-size: 1.4rem;
   color: ${(props) => props.theme.colors.gray};
 
@@ -266,6 +273,7 @@ export {
   HeaderLeftLink,
   DividerContainer,
   LogInOut,
+  MyProfile,
   Logo,
   NoImage,
   ImageEditBtn,

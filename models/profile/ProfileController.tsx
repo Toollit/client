@@ -5,6 +5,7 @@ import {
   profileImageKey,
   profileInfoKey,
   profileProjectsKey,
+  userExistCheckKey,
 } from '@/apis/keys';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/errorMessage';
@@ -29,6 +30,7 @@ import useLogout from '@/hooks/useLogout';
 import { serialize } from '@/middleware/swr/serialize';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import useTooltip from '@/hooks/useTooltip';
+import { userExistCheckFetcher } from '@/apis/userExistCheckFetcher';
 
 interface CachedData<T> {
   cache: Cache<T | undefined>;
@@ -90,29 +92,45 @@ const ProfileController = () => {
       data: null,
     },
   });
-  const [profileNickname, setProfileNickname] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [currentTab, setCurrentTab] = useState<
+    'viewProfile' | 'viewProjects' | 'viewBookmarks' | undefined
+  >();
   const [projectPostCount, setProjectPostCount] = useState(10); // Load by 10
 
   const tabs = useRef([
-    { name: '내프로필', query: 'viewProfile' },
+    { name: '프로필', query: 'viewProfile' },
     { name: '프로젝트', query: 'viewProjects' },
     { name: '북마크', query: 'viewBookmarks' },
   ]);
 
   const profileImgRef = useRef<HTMLInputElement>(null);
 
-  // The query gnb=profile is written to solve authentication-related problems that occur when a user erases a cookie. It's designed to re-authenticate on the profile page when nav is moved to my profile.
-  const queryGNB = router.query.gnb as string | undefined;
-  const nickname = router.query.nickname as string | undefined;
-  const currentTab = router.query.tab as
-    | 'viewProfile'
-    | 'viewProjects'
-    | 'viewBookmarks'
-    | undefined;
+  // user exist check fetcher
+  const { data: userExistCheckData } = useSWR(
+    nickname && {
+      url: userExistCheckKey(nickname),
+      args: {
+        page: '/profile',
+        tag: 'userExistCheck',
+      },
+    },
+    userExistCheckFetcher,
+    {
+      dedupingInterval: 1000 * 60 * 10,
+      revalidateOnFocus: false,
+      shouldRetryOnError: false,
+      onError(err, key, config) {
+        router.replace('/');
+        errorMessage(err);
+      },
+      use: [serialize],
+    },
+  );
 
   // Profile image fetcher
   const { data: profileImageData, mutate: profileImageMutate } = useSWR(
-    nickname
+    userExistCheckData?.data.existUser && nickname && currentTab
       ? {
           url: profileImageKey(nickname),
           args: {
@@ -136,7 +154,9 @@ const ProfileController = () => {
 
   // Profile info fetcher
   const { data: profileInfoData, mutate: profileInfoDataMutate } = useSWR(
-    nickname && currentTab === 'viewProfile'
+    userExistCheckData?.data.existUser &&
+      nickname &&
+      currentTab === 'viewProfile'
       ? {
           url: profileInfoKey(nickname),
           args: {
@@ -169,10 +189,12 @@ const ProfileController = () => {
     },
   );
 
-  // Profile projects npm run
+  // Profile projects
   const { data: profileProjectsData, mutate: profileProjectsDataMutate } =
     useSWR(
-      nickname && currentTab === 'viewProjects'
+      userExistCheckData?.data.existUser &&
+        nickname &&
+        currentTab === 'viewProjects'
         ? {
             url: profileProjectsKey(nickname, projectPostCount),
             args: {
@@ -683,37 +705,54 @@ const ProfileController = () => {
     getCachedDataWithKey,
   ]);
 
-  // 페이지 첫 로드시 query 조건이 없는 경우 tab 설정을 하기 위한 useEffect
+  // Create to resolve cases where the currentTab is not set or is set strangely when loading a page
   useEffect(() => {
-    // default tab settings
+    const nickname = router.query.nickname as string | undefined;
+    const currentTab = router.query.tab as
+      | 'viewProfile'
+      | 'viewProjects'
+      | 'viewBookmarks'
+      | undefined;
+
     if (nickname && currentTab === undefined) {
-      if (queryGNB === 'profile') {
-        (async () => {
-          const response = await authMutate();
-
-          if (response?.success) {
-            return router.replace({
-              pathname: `/profile/${nickname}`,
-              query: { tab: 'viewProfile' },
-            });
-          }
-
-          if (!response?.success) {
-            return router.replace('/login');
-          }
-        })();
-      }
+      (async () => {
+        return router.replace({
+          pathname: `/profile/${nickname}`,
+          query: { tab: 'viewProfile' },
+        });
+      })();
     }
-  }, [currentTab, nickname, router, queryGNB, authMutate]);
 
-  // 새로고침시 탭 이동시 nickname이 undefined되는 문제 해결을 위한 useEffect
+    if (
+      nickname &&
+      !(
+        currentTab === 'viewProfile' ||
+        currentTab === 'viewProjects' ||
+        currentTab === 'viewBookmarks'
+      )
+    ) {
+      (async () => {
+        return router.replace({
+          pathname: `/profile/${nickname}`,
+          query: { tab: 'viewProfile' },
+        });
+      })();
+    } else {
+      setCurrentTab(currentTab);
+    }
+  }, [router, authMutate]);
+
+  // useEffect for troubleshooting nickname undefined upon reload or tab movement
   useEffect(() => {
+    const nickname = router.query.nickname as string | undefined;
+
     if (nickname !== undefined && typeof nickname === 'string') {
-      setProfileNickname(nickname);
+      setNickname(nickname);
     }
-  }, [nickname]);
+  }, [router]);
 
   const props: ProfileViewProps = {
+    accessUser,
     me: nickname === accessUser,
     loginState: accessUser,
     tabs: tabs.current,
@@ -721,7 +760,7 @@ const ProfileController = () => {
     profileImageData: profileImageData?.data?.profileImage ?? null,
     profileInfoData: handleProfileInfoDataResponse(data.profileInfo.data),
     profileProjectData: handleProfileProjectDataResponse(data.projects.data),
-    profileNickname,
+    nickname,
     handleLogInOut,
     handleProfileInfoEditBtn,
     profileImgRef,

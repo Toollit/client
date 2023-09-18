@@ -39,9 +39,11 @@ import {
   ImageEditBtn,
   MobileProfileContainer,
   ProfileImageSkeletonContainer,
+  MyProfile,
 } from './styles';
 
 export interface ProfileViewProps {
+  accessUser: string | null;
   me: boolean;
   loginState?: string | null;
   tabs: { name: string; query: string }[];
@@ -49,7 +51,7 @@ export interface ProfileViewProps {
   profileImageData: string | null;
   profileInfoData: ProfileInfoData | null;
   profileProjectData: ProfileProjectsData | null;
-  profileNickname: string;
+  nickname: string;
   handleLogInOut: () => void;
   handleProfileInfoEditBtn: (category: string) => void;
   profileImgRef: React.RefObject<HTMLInputElement>;
@@ -61,6 +63,7 @@ export interface ProfileViewProps {
 }
 
 const ProfileView = ({
+  accessUser,
   me,
   loginState,
   tabs,
@@ -68,7 +71,7 @@ const ProfileView = ({
   profileImageData,
   profileInfoData,
   profileProjectData,
-  profileNickname,
+  nickname,
   handleLogInOut,
   handleProfileInfoEditBtn,
   profileImgRef,
@@ -151,7 +154,7 @@ const ProfileView = ({
               onChange={handleChangeProfileImg}
             />
 
-            <UserNickname>{profileNickname}</UserNickname>
+            <UserNickname>{nickname}</UserNickname>
           </ProfileArea>
 
           <HeaderLeft>
@@ -161,7 +164,7 @@ const ProfileView = ({
                   <li key={tab.name}>
                     <Link
                       href={{
-                        pathname: `/profile/${profileNickname}`,
+                        pathname: `/profile/${nickname}`,
                         query: {
                           tab: tab.query,
                         },
@@ -181,9 +184,18 @@ const ProfileView = ({
             <HeaderLeftLink>
               <ul>
                 <li>
-                  <LogInOut onClick={handleLogInOut}>
-                    {loginState ? '로그아웃' : '로그인'}
-                  </LogInOut>
+                  {me ? (
+                    <LogInOut onClick={handleLogInOut}>
+                      {loginState ? '로그아웃' : '로그인'}
+                    </LogInOut>
+                  ) : (
+                    <Link
+                      href={accessUser ? `/profile/${accessUser}` : '/login'}
+                      passHref
+                    >
+                      <MyProfile>내프로필</MyProfile>
+                    </Link>
+                  )}
                 </li>
                 <li>
                   <Link href='/'>
@@ -281,6 +293,8 @@ const ProfileView = ({
                       editBtnHandler={handleProfileInfoEditBtn}
                     />
                     <ProfileFooterLink
+                      me={me}
+                      accessUser={accessUser}
                       loginState={loginState}
                       handleLogInOut={handleLogInOut}
                     />
@@ -302,6 +316,8 @@ const ProfileView = ({
                       loadMore={handleProjectLoadMore}
                     />
                     <ProfileFooterLink
+                      me={me}
+                      accessUser={accessUser}
                       loginState={loginState}
                       handleLogInOut={handleLogInOut}
                     />
