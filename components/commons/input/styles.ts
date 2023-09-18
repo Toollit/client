@@ -8,7 +8,7 @@ const CommonStyles = (theme: Theme) => css`
   border-radius: ${theme.borderRadius.sharp};
   padding: 0 1rem;
   font-size: 1.6rem;
-  margin-bottom: 2.2rem;
+  margin-bottom: 2.2rem; // margin-bottom required because of showing error message
   z-index: 10;
 `;
 
@@ -22,10 +22,11 @@ const FocusInput = styled.input`
   }
 `;
 
-const NormalInput = styled.input`
+const NormalInput = styled.input<{ focus: boolean }>`
   ${(props) => CommonStyles(props.theme)}
 
   &:focus {
+    border-color: ${(props) => props.theme.colors.theme};
     outline-style: none;
   }
 `;
