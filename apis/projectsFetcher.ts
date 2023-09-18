@@ -10,6 +10,7 @@ export interface Project {
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
   memberNumber: number;
   recruitNumber: number;
+  representativeImage: string;
 }
 
 export interface ProjectsAPIReq {}
