@@ -24,6 +24,10 @@ export const projectDetailBookmarkStatusKey = (postId: string) => {
 // profile page
 const PROFILE_API_ENDPOINT = '/api/user/profile';
 
+export const userExistCheckKey = (nickname: string) => {
+  return `${PROFILE_API_ENDPOINT}/${nickname}/existCheck`;
+};
+
 export const profileImageKey = (nickname: string) => {
   return `${PROFILE_API_ENDPOINT}/${nickname}`;
 };
