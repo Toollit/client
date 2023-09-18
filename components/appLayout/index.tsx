@@ -1,6 +1,7 @@
 import React from 'react';
 import Nav, { NavProps } from '@/components/commons/nav';
 import Alert from '@/components/commons/alert';
+import LoadingCircularProgress from '@/components/commons/loading';
 import { Container, Content } from './styles';
 
 interface AppLayoutProps extends NavProps {
@@ -28,6 +29,7 @@ const AppLayout = ({
       />
       <Content type={type}>{children}</Content>
       <Alert />
+      <LoadingCircularProgress />
     </Container>
   );
 };
