@@ -101,6 +101,7 @@ const LoginView = ({
               onChange={handleEmail}
               value={email}
               focus={true}
+              enterSubmit={true}
             />
             {showPasswordInput && (
               <PasswordInputContainer>
@@ -111,6 +112,7 @@ const LoginView = ({
                   value={password}
                   ref={passwordInputRef}
                   focus={true}
+                  enterSubmit={true}
                 />
               </PasswordInputContainer>
             )}
