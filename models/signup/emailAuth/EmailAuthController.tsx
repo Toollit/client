@@ -1,19 +1,21 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { RootState } from 'store';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import EmailAuthView, { EmailAuthViewProps } from './EmailAuthView';
 import { emailAuth } from '@/features/signUp';
-import { signUpAPI, SignUpData } from '@/apis/signUp';
+import { signUpAPI, SignUpAPIReq } from '@/apis/signUp';
 import useTimer from '@/hooks/useTimer';
 import { errorMessage } from '@/apis/errorMessage';
 import { emailVerifyAPI } from '@/apis/emailVerify';
+import { loading } from '@/features/loading';
 
 const EmailAuthController = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const isLoading = useSelector((state: RootState) => state.isLoading.status);
   const email = useSelector((state: RootState) => state.signUp.email);
   const password = useSelector((state: RootState) => state.signUp.password);
 
@@ -24,7 +26,7 @@ const EmailAuthController = () => {
     seconds: 0,
   });
 
-  const [requestPending, setRequestPending] = useState(false);
+  const authCodeInputRef = useRef<HTMLInputElement>(null);
 
   const handleClose = useCallback(() => {
     router.back();
@@ -44,34 +46,47 @@ const EmailAuthController = () => {
         return alert('인증시간이 만료되었습니다.');
       }
 
-      if (authCode === '') {
+      if (!authCode) {
         return alert('인증번호를 입력해주세요.');
       }
 
-      if (authCode) {
-        try {
-          await emailVerifyAPI({ email, authCode });
+      if (isLoading) {
+        return;
+      }
 
-          setRequestPending(true);
-          const data: SignUpData = { email, password, signUpType: 'email' };
+      try {
+        authCodeInputRef.current?.blur();
 
-          const response = await signUpAPI(data);
+        dispatch(loading({ status: true }));
 
-          if (response?.success) {
-            setRequestPending(false);
+        await emailVerifyAPI({ email, authCode });
 
-            alert('회원가입 완료. 환영합니다 🎉');
+        const data: SignUpAPIReq = { email, password, signUpType: 'email' };
 
-            return router.replace('/');
-          }
-        } catch (error) {
-          setRequestPending(false);
-          errorMessage(error);
-        }
+        await signUpAPI(data);
+
+        dispatch(loading({ status: false }));
+
+        alert('회원가입 완료. 환영합니다 🎉');
+
+        return router.replace('/');
+      } catch (error) {
+        dispatch(loading({ status: false }));
+        errorMessage(error);
+        authCodeInputRef.current?.focus();
       }
     },
 
-    [authCode, email, password, router, leftMinutes, leftSeconds],
+    [
+      authCode,
+      email,
+      password,
+      router,
+      leftMinutes,
+      leftSeconds,
+      dispatch,
+      isLoading,
+    ],
   );
 
   // Initialize input information when going back
@@ -106,7 +121,7 @@ const EmailAuthController = () => {
 
       alert('비정상적인 접근입니다.');
 
-      router.replace('/');
+      router.back();
     }
   }, [email, password, dispatch, router]);
 
@@ -117,7 +132,7 @@ const EmailAuthController = () => {
     handleSubmit,
     timer: email && password ? timer : '00:00',
     isTimerLeft: checkTimerLeftTime(),
-    requestPending,
+    authCodeInputRef,
   };
   return <EmailAuthView {...props} />;
 };

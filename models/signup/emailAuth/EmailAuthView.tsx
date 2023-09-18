@@ -3,9 +3,8 @@ import AppLayout from '@/components/appLayout';
 import { Button } from '@/components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
-import LoadingCircularProgress from '@/components/commons/loading';
-import { Form, InputContainer, NoticeForSpam, Timer } from './styles';
 import Block from '@/components/commons/block';
+import { Form, InputContainer, NoticeForSpam, Timer } from './styles';
 
 export interface EmailAuthViewProps {
   handleClose: () => void;
@@ -14,7 +13,7 @@ export interface EmailAuthViewProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   timer: string;
   isTimerLeft: boolean;
-  requestPending: boolean;
+  authCodeInputRef: React.ForwardedRef<HTMLInputElement>;
 }
 
 const EmailAuthView = ({
@@ -24,7 +23,7 @@ const EmailAuthView = ({
   handleSubmit,
   timer,
   isTimerLeft,
-  requestPending,
+  authCodeInputRef,
 }: EmailAuthViewProps) => {
   return (
     <AppLayout
@@ -46,6 +45,7 @@ const EmailAuthView = ({
               onChange={handleChangeAuthCode}
               value={authCode as string}
               focus={true}
+              ref={authCodeInputRef}
             />
             <Timer>인증기한 {timer}</Timer>
           </InputContainer>
@@ -65,8 +65,6 @@ const EmailAuthView = ({
           )}
         </Block>
       </Form>
-
-      {requestPending && <LoadingCircularProgress />}
     </AppLayout>
   );
 };
