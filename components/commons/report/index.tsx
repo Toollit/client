@@ -1,4 +1,4 @@
-import React, { forwardRef, Ref, useState, useCallback } from 'react';
+import React, { forwardRef, Ref, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Dialog from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
@@ -11,6 +11,7 @@ import AppLayout from '@/components/appLayout';
 import { reportAPI } from '@/apis/report';
 import { errorMessage } from '@/apis/errorMessage';
 import Block from '@/components/commons/block';
+import { loading } from '@/features/loading';
 import {
   ReportReason,
   ListGroup,
@@ -37,6 +38,7 @@ const Report = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const isLoading = useSelector((state: RootState) => state.isLoading.status);
   const open = useSelector((state: RootState) => state.report.open);
   const postType = useSelector((state: RootState) => state.report.postType);
   const postId = useSelector((state: RootState) => state.report.postId);
@@ -45,6 +47,19 @@ const Report = () => {
 
   const [showTextarea, setShowTextarea] = useState(false);
   const [textCount, setTextCount] = useState(0);
+  const selectReasonList = useRef([
+    {
+      value: '욕설, 비방, 명예훼손 관련 게시글입니다.',
+    },
+    {
+      value: '개인정보 노출 게시글입니다.',
+    },
+    {
+      value: '반복문자 / 도배글 입니다.',
+    },
+    { value: '음란물 입니다.' },
+    { value: '직접입력' },
+  ]);
 
   const handleClose = useCallback(() => {
     setShowTextarea(false);
@@ -106,6 +121,10 @@ const Report = () => {
         return;
       }
 
+      if (isLoading) {
+        return;
+      }
+
       const data = {
         postId: Number(postId),
         postType,
@@ -116,18 +135,21 @@ const Report = () => {
       };
 
       try {
+        dispatch(loading({ status: true }));
+
         const response = await reportAPI(data);
 
-        if (response?.success) {
-          alert(response.message);
+        dispatch(loading({ status: false }));
 
-          return handleClose();
-        }
+        alert(response?.message);
+
+        return handleClose();
       } catch (error) {
+        dispatch(loading({ status: false }));
         errorMessage(error);
       }
     },
-    [router, writer, title, postId, postType, handleClose],
+    [router, writer, title, postId, postType, handleClose, isLoading, dispatch],
   );
 
   return (
@@ -159,65 +181,21 @@ const Report = () => {
 
           <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={1}>
             <ListGroup>
-              <li>
-                <label>
-                  <input
-                    type='radio'
-                    name='reason'
-                    value={'욕설, 비방, 명예훼손 관련 게시글입니다.'}
-                    onClick={handleSelect}
-                  />
-                  <span>욕설, 비방, 명예훼손 관련 게시글입니다.</span>
-                </label>
-              </li>
-
-              <li>
-                <label>
-                  <input
-                    type='radio'
-                    name='reason'
-                    value={'개인정보 노출 게시글입니다.'}
-                    onClick={handleSelect}
-                  />
-                  <span>개인정보 노출 게시글입니다.</span>
-                </label>
-              </li>
-
-              <li>
-                <label>
-                  <input
-                    type='radio'
-                    name='reason'
-                    value={'반복문자 / 도배글 입니다.'}
-                    onClick={handleSelect}
-                  />
-                  <span>반복문자 / 도배글 입니다.</span>
-                </label>
-              </li>
-
-              <li>
-                <label>
-                  <input
-                    type='radio'
-                    name='reason'
-                    value={'음란물 입니다.'}
-                    onClick={handleSelect}
-                  />
-                  <span>음란물 입니다.</span>
-                </label>
-              </li>
-
-              <li>
-                <label>
-                  <input
-                    type='radio'
-                    name='reason'
-                    value={'직접입력'}
-                    onClick={handleSelect}
-                  />
-                  <span>직접입력</span>
-                </label>
-              </li>
+              {selectReasonList.current.map((reason) => {
+                return (
+                  <li key={`/report/${reason.value}`}>
+                    <label>
+                      <input
+                        type='radio'
+                        name='reason'
+                        value={reason.value}
+                        onClick={handleSelect}
+                      />
+                      <span>{reason.value}</span>
+                    </label>
+                  </li>
+                );
+              })}
             </ListGroup>
           </Block>
 
