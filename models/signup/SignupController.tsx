@@ -1,15 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import SignUpView, { SignUpViewProps } from './SignUpView';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { emailAuth } from '@/features/signUp';
 import { emailAuthAPI } from '@/apis/emailAuth';
 import { errorMessage } from '@/apis/errorMessage';
+import { RootState } from '@/store';
+import { loading } from '@/features/loading';
 
 const SignUpController = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+
+  const isLoading = useSelector((state: RootState) => state.isLoading.status);
 
   const [email, onChangeEmail] = useNoSpaceInput('');
   const [emailInvalidError, setEmailInvalidError] = useState(false);
@@ -19,7 +23,10 @@ const SignUpController = () => {
   const [passwordCheck, onChangePasswordCheck] = useNoSpaceInput('');
   const [passwordMismatchError, setPasswordMismatchError] = useState(false);
   const [fillFormComplete, setFillFormComplete] = useState(false);
-  const [requestPending, setRequestPending] = useState(false);
+
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+  const passwordCheckInputRef = useRef<HTMLInputElement>(null);
 
   const handleClose = useCallback(() => {
     router.push('/login');
@@ -56,41 +63,55 @@ const SignUpController = () => {
       event.preventDefault();
 
       const isValidEmail = checkEmailFormatValidate();
-      const isPasswordMatch = checkPasswordMatch();
       const isCorrectPassword = checkPasswordValidate();
+      const isPasswordMatch = checkPasswordMatch();
 
       if (!isValidEmail) {
+        emailInputRef.current?.focus();
         return setEmailInvalidError(true);
       }
 
       if (!isCorrectPassword) {
+        passwordInputRef.current?.focus();
         return setPasswordRestrictionError(true);
       }
 
       if (!isPasswordMatch) {
+        passwordCheckInputRef.current?.focus();
         return setPasswordMismatchError(true);
       }
 
-      if (fillFormComplete && isPasswordMatch) {
-        if (email === null || password === null) {
-          return;
-        }
+      if (!fillFormComplete || !isPasswordMatch) {
+        return;
+      }
 
-        setRequestPending(true);
+      if (email === null || password === null) {
+        return;
+      }
 
-        const data = { email, password };
-        dispatch(emailAuth(data));
+      if (isLoading) {
+        return;
+      }
 
-        try {
-          await emailAuthAPI({ email });
+      const data = { email, password };
 
-          setRequestPending(false);
+      dispatch(emailAuth(data));
 
-          router.push('/signUp/emailAuth');
-        } catch (error) {
-          setRequestPending(false);
-          errorMessage(error);
-        }
+      try {
+        emailInputRef.current?.blur();
+        passwordInputRef.current?.blur();
+        passwordCheckInputRef.current?.blur();
+
+        dispatch(loading({ status: true }));
+
+        await emailAuthAPI({ email });
+
+        dispatch(loading({ status: false }));
+
+        router.push('/signUp/emailAuth');
+      } catch (error) {
+        dispatch(loading({ status: false }));
+        errorMessage(error);
       }
     },
     [
@@ -102,6 +123,7 @@ const SignUpController = () => {
       checkPasswordValidate,
       checkPasswordMatch,
       fillFormComplete,
+      isLoading,
     ],
   );
 
@@ -137,7 +159,9 @@ const SignUpController = () => {
     passwordMismatchError,
     fillFormComplete,
     handleSubmit,
-    requestPending,
+    emailInputRef,
+    passwordInputRef,
+    passwordCheckInputRef,
   };
   return <SignUpView {...props} />;
 };

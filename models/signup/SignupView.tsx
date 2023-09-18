@@ -4,7 +4,6 @@ import { Button } from '@/components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
 import InputError from '@/components/commons/error/InputError';
-import LoadingCircularProgress from '@/components/commons/loading';
 import Link from 'next/link';
 import Block from '@/components/commons/block';
 import { Form, InputContainer, PolicyNotice } from './styles';
@@ -22,7 +21,9 @@ export interface SignUpViewProps {
   passwordMismatchError: boolean;
   fillFormComplete: boolean;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  requestPending: boolean;
+  emailInputRef: React.ForwardedRef<HTMLInputElement>;
+  passwordInputRef: React.ForwardedRef<HTMLInputElement>;
+  passwordCheckInputRef: React.ForwardedRef<HTMLInputElement>;
 }
 
 const SignUpView = ({
@@ -38,7 +39,9 @@ const SignUpView = ({
   passwordMismatchError,
   fillFormComplete,
   handleSubmit,
-  requestPending,
+  emailInputRef,
+  passwordInputRef,
+  passwordCheckInputRef,
 }: SignUpViewProps) => {
   return (
     <AppLayout
@@ -59,6 +62,7 @@ const SignUpView = ({
               onChange={onChangeEmail}
               value={email as string}
               focus={true}
+              ref={emailInputRef}
             />
             {emailInvalidError && (
               <InputError text='올바른 이메일을 입력해 주세요.' />
@@ -74,6 +78,7 @@ const SignUpView = ({
               onChange={onChangePassword}
               value={password as string}
               focus={true}
+              ref={passwordInputRef}
             />
             {passwordRestrictionError && (
               <InputError text='영문자, 숫자, 특수문자 조합 8 ~ 20자리' />
@@ -89,6 +94,7 @@ const SignUpView = ({
               onChange={onChangePasswordCheck}
               value={passwordCheck as string}
               focus={true}
+              ref={passwordCheckInputRef}
             />
             {passwordMismatchError && (
               <InputError text='비밀번호가 일치하지 않습니다.' />
@@ -105,7 +111,7 @@ const SignUpView = ({
           {fillFormComplete ? (
             <Button type='submit' text='다음' />
           ) : (
-            <Button type='submit' text='다음' />
+            <Button type='disabled' text='다음' />
           )}
         </Block>
 
@@ -133,8 +139,6 @@ const SignUpView = ({
           </PolicyNotice>
         </Block>
       </Form>
-
-      {requestPending && <LoadingCircularProgress />}
     </AppLayout>
   );
 };
