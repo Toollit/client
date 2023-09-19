@@ -19,14 +19,6 @@ const ColumnContainer = styled.div`
   justify-content: space-between;
   position: relative;
   margin: auto -0.8rem;
-
-  li {
-    padding: 0 0.8rem;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
 `;
 
 const ColumnLeftContainer = styled.ul<{ isMobile: boolean }>`
@@ -58,12 +50,33 @@ const ColumnLeftContainer = styled.ul<{ isMobile: boolean }>`
       `;
     }
   }}
+
+  li {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  a {
+    padding: 0 0.8rem;
+    height: 100%;
+  }
 `;
 
 const ColumnRightContainer = styled.ul<{ isMobile: boolean }>`
   display: flex;
   height: 100%;
   align-items: center;
+
+  li {
+    height: 100%;
+  }
+
+  a {
+    padding: 0 0.8rem;
+    height: 100%;
+  }
 `;
 
 const StyledLogoLink = styled.a`

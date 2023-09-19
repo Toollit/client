@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Link from 'next/link';
-import { AccountCircleIcon, MenuIcons, SearchIcon } from '@/assets/icons';
+import { AccountCircleIcon, MenuIcon, SearchIcon } from '@/assets/icons';
 import GetitLogo from '@/assets/images/GetitLogo';
 import { closeDrawer, openDrawer } from '@/features/drawer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import { BackButton, CloseButton } from '@/components/commons/button';
 import { RootState } from '@/store';
 import useAuth from '@/hooks/useAuth';
 import useCheckUserAgent from '@/hooks/useCheckUserAgent';
+import useCachedKeys from '@/hooks/useCachedKeys';
 import {
   Container,
   ColumnContainer,
@@ -47,8 +48,10 @@ const Nav = ({
 }: NavProps) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { nickname } = useAuth();
+  const { authMutate } = useAuth();
   const { isMobile } = useCheckUserAgent();
+  const { mutateCachedKeysWithPage } = useCachedKeys();
+
   const searchDrawerOpenState = useSelector(
     (state: RootState) => state.drawer.search,
   );
@@ -81,6 +84,22 @@ const Nav = ({
     }
   }, [dispatch, searchDrawerOpenState]);
 
+  const handleProfileRoute = useCallback(async () => {
+    const response = await authMutate();
+
+    const nickname = response?.data.nickname;
+
+    if (response?.success === false) {
+      router.push('/login');
+    } else {
+      router.push(`/profile/${nickname}`);
+    }
+  }, [authMutate, router]);
+
+  useEffect(() => {
+    mutateCachedKeysWithPage({ page: '/' });
+  }, [mutateCachedKeysWithPage]);
+
   switch (type) {
     case 'default':
       return (
@@ -88,7 +107,7 @@ const Nav = ({
           <ColumnContainer>
             <ColumnLeftContainer isMobile={isMobile}>
               <li>
-                <Link href='/'>
+                <Link href='/' passHref>
                   <StyledLogoLink onClick={handleLogoRoute}>
                     <GetitLogo />
                     <LogoText>Getit</LogoText>
@@ -99,19 +118,19 @@ const Nav = ({
 
             <ColumnRightContainer isMobile={isMobile}>
               <li onClick={handleSearchDrawer}>
-                <SearchIcon width={28} height={28} />
+                <StyledLink>
+                  <SearchIcon width={2.8} height={2.8} />
+                </StyledLink>
               </li>
               <li>
-                <Link href={nickname ? `/profile/${nickname}` : '/login'}>
-                  <StyledLink>
-                    <AccountCircleIcon width={28} height={28} />
-                  </StyledLink>
-                </Link>
+                <StyledLink onClick={handleProfileRoute}>
+                  <AccountCircleIcon width={2.8} height={2.8} />
+                </StyledLink>
               </li>
               <li>
-                <Link href={'/menu'}>
+                <Link href={'/menu'} passHref>
                   <StyledLink>
-                    <MenuIcons width={28} height={28} />
+                    <MenuIcon width={2.8} height={2.8} />
                   </StyledLink>
                 </Link>
               </li>
