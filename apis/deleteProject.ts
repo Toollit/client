@@ -10,9 +10,9 @@ export interface DeleteProjectAPIRes {
   message: string | null;
 }
 
-export const deletePostAPI = async (
+export const deleteProjectAPI = async (
   data: DeleteProjectAPIReq,
 ): Promise<DeleteProjectAPIRes | undefined> => {
-  const response = await serverInstance.post(`/api/post/delete`, data);
+  const response = await serverInstance.post(`/api/post/project/delete`, data);
   return response.data;
 };

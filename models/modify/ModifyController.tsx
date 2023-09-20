@@ -6,7 +6,7 @@ import { errorMessage } from '@/apis/errorMessage';
 import { projectDetailKey } from '@/apis/keys';
 import { projectDetailFetcher } from '@/apis/projectDetailFetcher';
 import useEditorContent from '@/hooks/useEditorContent';
-import { updatePostAPI } from '@/apis/updatePost';
+import { updateProjectAPI } from '@/apis/updateProject';
 import PrivateRoute from '@/components/PrivateRoute';
 import { serialize } from '@/middleware/swr/serialize';
 
@@ -101,7 +101,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
       };
 
       try {
-        const response = await updatePostAPI(postData);
+        const response = await updateProjectAPI(postData);
 
         const postId = response?.data.postId;
 

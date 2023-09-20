@@ -9,13 +9,13 @@ export interface Project {
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
   recruitNumber: number;
 }
-export interface UpdatePostAPIReq {
+export interface UpdateProjectAPIReq {
   postType: 'project' | 'free' | 'question';
   postId: string;
   data: Project;
 }
 
-export interface UpdatePostAPIRes {
+export interface UpdateProjectAPIRes {
   success: boolean;
   message: string | null;
   data: {
@@ -23,9 +23,9 @@ export interface UpdatePostAPIRes {
   };
 }
 
-export const updatePostAPI = async (
-  data: UpdatePostAPIReq,
-): Promise<UpdatePostAPIRes | undefined> => {
-  const response = await serverInstance.post(`/api/post/modify`, data);
+export const updateProjectAPI = async (
+  data: UpdateProjectAPIReq,
+): Promise<UpdateProjectAPIRes | undefined> => {
+  const response = await serverInstance.post(`/api/post/project/update`, data);
   return response.data;
 };

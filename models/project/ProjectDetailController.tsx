@@ -16,7 +16,7 @@ import { bookmarkAPI } from '@/apis/bookmark';
 import { projectDetailBookmarkStatusFetcher } from '@/apis/projectDetailBookmarkStatusFetcher';
 import { serialize } from '@/middleware/swr/serialize';
 import useCachedKeys from '@/hooks/useCachedKeys';
-import { deletePostAPI } from '@/apis/deletePost';
+import { deleteProjectAPI } from '@/apis/deleteProject';
 import { openReport } from '@/features/report';
 import { DeleteIcon, EditSquareIcon } from '@/assets/icons';
 import useTooltip from '@/hooks/useTooltip';
@@ -203,7 +203,7 @@ const ProjectDetailController = () => {
 
         if (isDeletedOk) {
           try {
-            await deletePostAPI({ postType: 'project', postId });
+            await deleteProjectAPI({ postType: 'project', postId });
 
             router.replace('/');
           } catch (error) {
