@@ -63,7 +63,7 @@ const LoginView = ({
           <Button
             type='normal'
             text='Google 계정으로 로그인'
-            icon={<GoogleIcon width={4} height={4} />}
+            icon={<GoogleIcon width={3.5} height={3.5} />}
             name='google'
             onClick={handleSocialLogin}
           />
@@ -78,7 +78,7 @@ const LoginView = ({
           <Button
             type='normal'
             text='Github 계정으로 로그인'
-            icon={<GithubIcon width={4} height={4} />}
+            icon={<GithubIcon width={3.5} height={3.5} />}
             name='github'
             onClick={handleSocialLogin}
           />
