@@ -4,7 +4,7 @@ import SignUpView, { SignUpViewProps } from './SignUpView';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { emailAuth } from '@/features/signUp';
-import { emailAuthAPI } from '@/apis/emailAuth';
+import { emailIssueAuthCodeAPI } from '@/apis/emailIssueAuthCode';
 import { errorMessage } from '@/apis/errorMessage';
 import { RootState } from '@/store';
 import { loading } from '@/features/loading';
@@ -104,11 +104,13 @@ const SignUpController = () => {
 
         dispatch(loading({ status: true }));
 
-        await emailAuthAPI({ email });
-
-        dispatch(loading({ status: false }));
+        await emailIssueAuthCodeAPI({ email });
 
         router.push('/signUp/emailAuth');
+
+        router.events.on('routeChangeComplete', () => {
+          dispatch(loading({ status: false }));
+        });
       } catch (error) {
         dispatch(loading({ status: false }));
         errorMessage(error);
