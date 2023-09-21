@@ -65,11 +65,13 @@ const EmailAuthController = () => {
 
         await signUpAPI(data);
 
-        dispatch(loading({ status: false }));
-
         alert('회원가입 완료. 환영합니다 🎉');
 
-        return router.replace('/');
+        router.replace('/');
+
+        router.events.on('routeChangeComplete', () => {
+          dispatch(loading({ status: false }));
+        });
       } catch (error) {
         dispatch(loading({ status: false }));
         errorMessage(error);

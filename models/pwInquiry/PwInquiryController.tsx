@@ -62,14 +62,14 @@ const PwInquiryController = () => {
           alert(response.message);
         }
 
-        dispatch(loading({ status: false }));
-
         router.push('/login');
+
+        router.events.on('routeChangeComplete', () => {
+          dispatch(loading({ status: false }));
+        });
       } catch (error) {
         dispatch(loading({ status: false }));
-
         errorMessage(error);
-
         inputRef.current?.focus();
       }
     },

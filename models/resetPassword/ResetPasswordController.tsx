@@ -78,11 +78,15 @@ const ResetPasswordController = () => {
 
         const response = await resetPasswordAPI({ password: newPassword });
 
-        dispatch(loading({ status: false }));
+        if (response?.message) {
+          alert(response.message);
+        }
 
         logOut({ push: '/login' });
 
-        alert(response?.message);
+        router.events.on('routeChangeComplete', () => {
+          dispatch(loading({ status: false }));
+        });
       } catch (error) {
         dispatch(loading({ status: false }));
         errorMessage(error);
@@ -96,6 +100,7 @@ const ResetPasswordController = () => {
       logOut,
       dispatch,
       isLoading,
+      router,
     ],
   );
 
