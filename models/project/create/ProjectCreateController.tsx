@@ -6,11 +6,12 @@ import useEditorContent from '@/hooks/useEditorContent';
 import { errorMessage } from '@/apis/errorMessage';
 import PrivateRoute from '@/components/PrivateRoute';
 import useCachedKeys from '@/hooks/useCachedKeys';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
 import useTooltip from '@/hooks/useTooltip';
 import projectDefaultImage from 'public/static/images/project.jpg';
 import { StaticImageData } from 'next/image';
+import { RootState } from '@/store';
 
 const ProjectCreateController = () => {
   const router = useRouter();
@@ -24,6 +25,8 @@ const ProjectCreateController = () => {
     handleTooltipOpen,
     handleTooltipClose,
   } = useTooltip();
+
+  const isLoading = useSelector((state: RootState) => state.isLoading.status);
 
   const hashtagRef = useRef<string[]>([]);
   const memberTypeRef = useRef<('developer' | 'designer' | 'pm' | 'anyone')[]>(
@@ -92,20 +95,24 @@ const ProjectCreateController = () => {
           : representativeImageFile,
       );
 
+      if (isLoading) {
+        return;
+      }
+
       try {
         dispatch(loading({ status: true }));
 
         const response = await createProjectAPI(formData);
 
-        if (response?.success) {
-          mutateCachedKeysWithTag({ tag: 'projects' });
+        mutateCachedKeysWithTag({ tag: 'projects' });
 
-          const projectId = response.data.projectId;
-          // Use replace instead of push because decided to back out so can't access that page again
-          router.replace(`/project/${projectId}`);
+        const projectId = response?.data.projectId;
+        // Use replace instead of push because decided to back out so can't access that page again
+        router.replace(`/project/${projectId}`);
 
+        router.events.on('routeChangeComplete', () => {
           dispatch(loading({ status: false }));
-        }
+        });
       } catch (error) {
         dispatch(loading({ status: false }));
         errorMessage(error);
@@ -120,6 +127,7 @@ const ProjectCreateController = () => {
       hashtagRef,
       mutateCachedKeysWithTag,
       representativeImageFile,
+      isLoading,
     ],
   );
 
@@ -208,6 +216,7 @@ const ProjectCreateController = () => {
       onClose: handleTooltipClose,
     },
   };
+
   return (
     <PrivateRoute accessibleUser='authorized'>
       <ProjectCreateView {...props} />
