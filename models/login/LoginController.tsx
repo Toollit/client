@@ -63,21 +63,21 @@ const LoginController = () => {
 
         const response = await emailLoginAPI(data);
 
-        dispatch(loading({ status: false }));
-
         // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
         clearCache();
 
         if (response?.message === 'needResetPassword') {
-          return router.replace('/resetPassword');
+          router.replace('/resetPassword');
         } else {
-          return router.replace('/');
+          router.replace('/');
         }
+
+        router.events.on('routeChangeComplete', () => {
+          dispatch(loading({ status: false }));
+        });
       } catch (error) {
         dispatch(loading({ status: false }));
-
         errorMessage(error);
-
         passwordInputRef.current?.focus();
       }
     },
