@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import ModifyView, { ModifyViewProps } from './ModifyView';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
@@ -6,9 +6,15 @@ import { errorMessage } from '@/apis/errorMessage';
 import { projectDetailKey } from '@/apis/keys';
 import { projectDetailFetcher } from '@/apis/projectDetailFetcher';
 import useEditorContent from '@/hooks/useEditorContent';
-import { updateProjectAPI } from '@/apis/updateProject';
+import { ProjectData, updateProjectAPI } from '@/apis/updateProject';
 import PrivateRoute from '@/components/PrivateRoute';
 import { serialize } from '@/middleware/swr/serialize';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { loading } from '@/features/loading';
+import useTooltip from '@/hooks/useTooltip';
+import { StaticImageData } from 'next/image';
+import projectDefaultImage from 'public/static/images/project.jpg';
 
 interface ModifyControllerProps {
   postId: string;
@@ -16,8 +22,32 @@ interface ModifyControllerProps {
 
 const ModifyController = ({ postId }: ModifyControllerProps) => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { titleRef, editorRef, handleData } = useEditorContent();
+  const {
+    tooltipAnchorEl,
+    setTooltipAnchorEl,
+    tooltipOpen,
+    handleTooltipOpen,
+    handleTooltipClose,
+  } = useTooltip();
 
-  // TODO free, question swr 작성하기
+  const isLoading = useSelector((state: RootState) => state.isLoading.status);
+
+  const [representativePreviewImage, setRepresentativePreviewImage] = useState<
+    StaticImageData | string | null
+  >(null);
+  const [representativeImageFile, setRepresentativeImageFile] = useState<
+    File | string | 'defaultImage' | null
+  >(null);
+
+  const hashtagRef = useRef<string[]>([]);
+  const memberTypeRef = useRef<('developer' | 'designer' | 'pm' | 'anyone')[]>(
+    [],
+  );
+  const recruitCountRef = useRef<HTMLInputElement>(null);
+  const representativeImageRef = useRef<HTMLInputElement>(null);
+
   // 상세페이지와 수정시 사용하는 api가 동일하여 수정시에는 조회수 증가를 제한하기위해 config 옵션으로 수정하기 위해서 호출했는지 여부를 서버로 전달한다.
   const { data: projectDetail, mutate: projectDetailMutate } = useSWR(
     postId
@@ -38,19 +68,22 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
       onError(err, key, config) {
         errorMessage(err);
       },
+      onSuccess(data, key, config) {
+        const imageData = data?.data.content.representativeImage;
+
+        if (imageData === 'defaultImage') {
+          setRepresentativePreviewImage(projectDefaultImage);
+          setRepresentativeImageFile('defaultImage');
+        }
+
+        if (imageData !== undefined && imageData !== 'defaultImage') {
+          setRepresentativePreviewImage(imageData);
+          setRepresentativeImageFile(imageData);
+        }
+      },
       use: [serialize],
     },
   );
-
-  const { titleRef, editorRef, handleData } = useEditorContent();
-
-  const hashtagRef = useRef<string[]>([]);
-  const memberTypeRef = useRef<('developer' | 'designer' | 'pm' | 'anyone')[]>(
-    [],
-  );
-  const recruitCountRef = useRef<HTMLInputElement>(null);
-
-  const [postType, setPostType] = useState<'project' | 'free' | 'question'>();
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -59,7 +92,9 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
       const data = handleData(titleRef, editorRef);
       if (!data) return;
 
-      if (!(hashtagRef.current && memberTypeRef.current)) return;
+      if (!(hashtagRef.current && memberTypeRef.current)) {
+        return;
+      }
 
       if (hashtagRef.current.length < 1) {
         return alert('해시태그를 하나 이상 입력하세요.');
@@ -79,36 +114,52 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
         return alert('모집 인원은 숫자 1~100까지 가능합니다.');
       }
 
-      if (
-        postType === undefined &&
-        (postType !== 'project' || 'free' || 'question')
-      ) {
+      if (!representativeImageFile) {
+        return alert('대표 이미지를 설정해 주세요.');
+      }
+
+      if (isLoading) {
         return;
       }
 
-      const postData = {
-        postType,
-        postId,
-        data: {
-          title: data?.title,
-          contentHTML: data?.contentHTML,
-          contentMarkdown: data?.contentMarkdown,
-          imageUrls: data?.imageUrls,
-          hashtags: hashtagRef.current,
-          memberTypes: memberTypeRef.current,
-          recruitNumber: recruitCount,
-        },
+      const projectData: ProjectData = {
+        title: data?.title,
+        contentHTML: data?.contentHTML,
+        contentMarkdown: data?.contentMarkdown,
+        imageUrls: data?.imageUrls,
+        hashtags: hashtagRef.current,
+        memberTypes: memberTypeRef.current,
+        recruitNumber: recruitCount,
       };
 
+      const stringifyJsonData = JSON.stringify(projectData);
+
+      const formData = new FormData();
+
+      formData.append('data', stringifyJsonData);
+      formData.append(
+        'projectRepresentativeImage',
+        representativeImageFile === 'defaultImage'
+          ? 'defaultImage'
+          : representativeImageFile,
+      );
+
       try {
-        const response = await updateProjectAPI(postData);
+        dispatch(loading({ status: true }));
 
-        const postId = response?.data.postId;
-
-        router.push(`/${postType}/${postId}`);
+        const response = await updateProjectAPI(formData);
 
         projectDetailMutate();
+
+        const projectId = response?.data.projectId;
+        // Use replace instead of push because decided to back out so can't access that page again
+        router.replace(`/project/${projectId}`);
+
+        router.events.on('routeChangeComplete', () => {
+          dispatch(loading({ status: false }));
+        });
       } catch (error) {
+        dispatch(loading({ status: false }));
         errorMessage(error);
       }
     },
@@ -118,13 +169,14 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
       titleRef,
       handleData,
       hashtagRef,
-      postType,
-      postId,
       projectDetailMutate,
+      isLoading,
+      dispatch,
+      representativeImageFile,
     ],
   );
 
-  // hashtag 입력 폼에서 enter를 사용하여 값을 입력할 때 폼이 제출되는 문제로 인해 이벤트 오류를 막기 위해서 작성되었다.
+  // Prevent the problem of submitting when entering in input
   const handleKeydownSubmit = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter') {
@@ -134,32 +186,82 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
     [],
   );
 
-  useEffect(() => {
-    router.asPath.split('/').find((type) => {
-      if (type === 'project') {
-        return setPostType('project');
+  const handleChangeRepresentativeImg = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (!event.target.files) {
+        return;
       }
 
-      if (type === 'free') {
-        return setPostType('free');
+      const file = event.target.files[0];
+
+      if (!file) {
+        return;
       }
 
-      if (type === 'question') {
-        return setPostType('question');
-      }
-    });
-  }, [router]);
+      const reader = new FileReader();
+
+      reader.readAsDataURL(file);
+      reader.onload = (evt) => {
+        if (typeof evt.target?.result === 'string') {
+          setRepresentativePreviewImage(evt.target?.result);
+          setRepresentativeImageFile(file);
+        }
+      };
+    },
+    [],
+  );
+
+  const handleAddRepresentativeImg = useCallback(() => {
+    setTooltipAnchorEl(null);
+    representativeImageRef.current?.click();
+  }, [setTooltipAnchorEl]);
+
+  const handleAddDefaultRepresentativeImg = useCallback(() => {
+    setTooltipAnchorEl(null);
+    setRepresentativeImageFile('defaultImage');
+    setRepresentativePreviewImage(projectDefaultImage);
+  }, [setTooltipAnchorEl]);
+
+  const handleDeleteRepresentativePreviewImage = useCallback(() => {
+    setRepresentativePreviewImage('');
+    setRepresentativeImageFile(null);
+  }, []);
 
   const props: ModifyViewProps = {
     handleSubmit,
-    titleRef,
-    editorRef,
+    editor: {
+      titleRef,
+      editorRef,
+      name: 'projectContentImage',
+      contentImageUploadUrl: '/api/post/project/content/uploadImage',
+      content: projectDetail?.data,
+    },
     hashtagRef,
     memberTypeRef,
     recruitCountRef,
+    representativeImageRef,
+    handleChangeRepresentativeImg,
+    representativePreviewImage: representativePreviewImage
+      ? representativePreviewImage
+      : null,
     handleKeydownSubmit,
-    // TODO free, question 게시판 분기처리하기
-    content: projectDetail?.data,
+    handleDeleteRepresentativePreviewImage,
+    handleTooltipOpen,
+    tooltip: {
+      items: [
+        {
+          text: '앨범에서 선택',
+          handler: handleAddRepresentativeImg,
+        },
+        {
+          text: '기본 이미지',
+          handler: handleAddDefaultRepresentativeImg,
+        },
+      ],
+      anchorEl: tooltipAnchorEl,
+      open: tooltipOpen,
+      onClose: handleTooltipClose,
+    },
     hashtags: projectDetail?.data.content.hashtags,
     memberTypes: projectDetail?.data.content.memberTypes,
     recruitNumber: projectDetail?.data.content.recruitNumber,

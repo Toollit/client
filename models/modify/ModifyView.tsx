@@ -10,7 +10,16 @@ import Block from '@/components/commons/block';
 import { Button } from '@/components/commons/button';
 import Label from '@/components/commons/label';
 import LoadingCircularProgress from '@/components/commons/loading';
-import { ButtonContainer, RecruitNumberInput } from './styles';
+import Image, { StaticImageData } from 'next/image';
+import { CloseIcon, PlusIcon } from '@/assets/icons';
+import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
+import {
+  AddImageBox,
+  ButtonContainer,
+  ImageContainer,
+  ImageDeleteIcon,
+  RecruitNumberInput,
+} from './styles';
 
 const DynamicTuiEditor = dynamic(
   () => import('../../components/commons/webEditor/TuiEditor'),
@@ -22,15 +31,27 @@ const DynamicTuiEditor = dynamic(
 
 export interface ModifyViewProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  titleRef: React.RefObject<HTMLInputElement>;
-  editorRef: React.RefObject<Editor>;
+  editor: {
+    titleRef: React.RefObject<HTMLInputElement>;
+    editorRef: React.RefObject<Editor>;
+    name: string;
+    contentImageUploadUrl: string;
+    content?: ProjectDetail | null;
+  };
   hashtagRef: React.MutableRefObject<string[]>;
   memberTypeRef: React.MutableRefObject<
     ('developer' | 'designer' | 'pm' | 'anyone')[]
   >;
   recruitCountRef: React.RefObject<HTMLInputElement>;
+  representativeImageRef: React.RefObject<HTMLInputElement>;
+  handleChangeRepresentativeImg: (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => void;
+  representativePreviewImage: StaticImageData | string | null;
   handleKeydownSubmit: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-  content?: ProjectDetail | null;
+  handleDeleteRepresentativePreviewImage: () => void;
+  handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  tooltip: TooltipProps;
   hashtags?: string[];
   memberTypes?: ('developer' | 'designer' | 'pm' | 'anyone')[];
   recruitNumber?: number;
@@ -38,16 +59,20 @@ export interface ModifyViewProps {
 
 const ModifyView = ({
   handleSubmit,
-  titleRef,
-  editorRef,
+  editor,
   hashtagRef,
   memberTypeRef,
   recruitCountRef,
+  representativeImageRef,
+  handleChangeRepresentativeImg,
+  representativePreviewImage,
   handleKeydownSubmit,
-  content,
+  handleDeleteRepresentativePreviewImage,
+  handleTooltipOpen,
   hashtags,
   memberTypes,
   recruitNumber,
+  tooltip,
 }: ModifyViewProps) => {
   return (
     <AppLayout type='default'>
@@ -58,9 +83,11 @@ const ModifyView = ({
 
         <Block paddingLeft={1.5} paddingRight={1.5}>
           <DynamicTuiEditor
-            titleRef={titleRef}
-            editorRef={editorRef}
-            content={content}
+            titleRef={editor.titleRef}
+            editorRef={editor.editorRef}
+            content={editor.content}
+            name={editor.name}
+            contentImageUploadUrl={editor.contentImageUploadUrl}
           />
         </Block>
 
@@ -93,6 +120,38 @@ const ModifyView = ({
             onKeyDown={handleKeydownSubmit}
             autoComplete='off'
             defaultValue={recruitNumber}
+          />
+        </Block>
+
+        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
+          <Label text='대표 이미지' />
+
+          {representativePreviewImage ? (
+            <ImageContainer>
+              <Image
+                src={representativePreviewImage}
+                alt={'project representative image'}
+                layout='fill'
+              />
+              <ImageDeleteIcon onClick={handleDeleteRepresentativePreviewImage}>
+                <CloseIcon />
+              </ImageDeleteIcon>
+            </ImageContainer>
+          ) : (
+            <>
+              <AddImageBox onClick={handleTooltipOpen}>
+                <PlusIcon width={4} height={4} />
+              </AddImageBox>
+              <Tooltip {...tooltip} />
+            </>
+          )}
+
+          <input
+            hidden
+            type='file'
+            accept='image/jpg, image/jpeg, image/png'
+            ref={representativeImageRef}
+            onChange={handleChangeRepresentativeImg}
           />
         </Block>
 
