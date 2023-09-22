@@ -13,6 +13,7 @@ export interface ProjectDetail {
     hashtags: string[];
     memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
     recruitNumber: number;
+    representativeImage: string | null;
   };
   // comments: {}[];
 }
