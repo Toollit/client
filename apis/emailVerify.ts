@@ -14,7 +14,7 @@ export const emailVerifyAPI = async ({
   email,
   authCode,
 }: EmailVerifyAPIReq): Promise<EmailVerifyAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/auth/verify', {
+  const response = await serverInstance.post('/api/auth/email/verify', {
     email,
     authCode,
   });

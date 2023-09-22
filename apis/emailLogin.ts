@@ -14,7 +14,7 @@ export const emailLoginAPI = async ({
   email,
   password,
 }: EmailLoginAPIReq): Promise<EmailLoginAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/user/login', {
+  const response = await serverInstance.post('/api/user/login/email', {
     email,
     password,
   });
