@@ -39,7 +39,7 @@ const ProjectCreateController = () => {
     StaticImageData | string | null
   >(null);
   const [representativeImageFile, setRepresentativeImageFile] = useState<
-    File | 'default' | null
+    File | 'defaultImage' | null
   >(null);
 
   const handleSubmit = useCallback(
@@ -49,7 +49,9 @@ const ProjectCreateController = () => {
       const data = handleData(titleRef, editorRef);
       if (!data) return;
 
-      if (!(hashtagRef.current && memberTypeRef.current)) return;
+      if (!(hashtagRef.current && memberTypeRef.current)) {
+        return;
+      }
 
       if (hashtagRef.current.length < 1) {
         return alert('해시태그를 하나 이상 입력하세요.');
@@ -73,6 +75,10 @@ const ProjectCreateController = () => {
         return alert('대표 이미지를 설정해 주세요.');
       }
 
+      if (isLoading) {
+        return;
+      }
+
       const projectData: ProjectData = {
         title: data?.title,
         contentHTML: data?.contentHTML,
@@ -90,14 +96,10 @@ const ProjectCreateController = () => {
       formData.append('data', stringifyJsonData);
       formData.append(
         'projectRepresentativeImage',
-        representativeImageFile === 'default'
+        representativeImageFile === 'defaultImage'
           ? 'defaultImage'
           : representativeImageFile,
       );
-
-      if (isLoading) {
-        return;
-      }
 
       try {
         dispatch(loading({ status: true }));
@@ -131,6 +133,7 @@ const ProjectCreateController = () => {
     ],
   );
 
+  // Prevent the problem of submitting when entering in input
   const handleKeydownSubmit = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter') {
@@ -172,7 +175,7 @@ const ProjectCreateController = () => {
 
   const handleAddDefaultRepresentativeImg = useCallback(() => {
     setTooltipAnchorEl(null);
-    setRepresentativeImageFile('default');
+    setRepresentativeImageFile('defaultImage');
     setRepresentativePreviewImage(projectDefaultImage);
   }, [setTooltipAnchorEl]);
 
