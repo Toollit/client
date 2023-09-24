@@ -4,10 +4,10 @@ import Skeleton from '@mui/material/Skeleton';
 interface SkeletonProps {
   width?: number | string;
   height?: number | string;
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
 }
 
 const StyledSkeleton = styled(Skeleton)<SkeletonProps>`
@@ -19,10 +19,10 @@ const StyledSkeleton = styled(Skeleton)<SkeletonProps>`
   min-height: ${(props) =>
     typeof props.height === 'number' ? `${props.height}rem` : props.height};
 
-  margin-top: ${(props) => `${props.marginTop}rem`};
-  margin-right: ${(props) => `${props.marginRight}rem`};
-  margin-bottom: ${(props) => `${props.marginBottom}rem`};
-  margin-left: ${(props) => `${props.marginLeft}rem}`};
+  margin-top: ${(props) => `${props.top}rem`};
+  margin-right: ${(props) => `${props.right}rem`};
+  margin-bottom: ${(props) => `${props.bottom}rem`};
+  margin-left: ${(props) => `${props.left}rem}`};
 `;
 
 export { StyledSkeleton };

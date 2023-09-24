@@ -6,10 +6,10 @@ interface SkeletonProps {
   height?: number | string;
   shape?: 'circular' | 'rectangular' | 'rounded' | 'text';
   animation?: 'pulse' | 'wave';
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
 }
 
 /**
@@ -17,20 +17,20 @@ interface SkeletonProps {
  * @prop height - Skeleton height. default height is 2rem(20px);
  * @prop shape - Skeleton shape
  * @prop animation - Skeleton animation
- * @prop marginTop - Skeleton margin top
- * @prop marginRight - Skeleton margin right
- * @prop marginBottom - Skeleton margin bottom
- * @prop marginLeft - Skeleton margin left
+ * @prop top - Skeleton margin top
+ * @prop right - Skeleton margin right
+ * @prop bottom - Skeleton margin bottom
+ * @prop left - Skeleton margin left
  */
 const Skeleton = ({
   width,
   height = 2,
   shape = 'rounded',
   animation = 'wave',
-  marginTop,
-  marginRight,
-  marginBottom,
-  marginLeft,
+  top,
+  right,
+  bottom,
+  left,
 }: SkeletonProps) => {
   return (
     <StyledSkeleton
@@ -38,10 +38,10 @@ const Skeleton = ({
       variant={shape}
       width={width}
       height={height}
-      marginTop={marginTop}
-      marginRight={marginRight}
-      marginBottom={marginBottom}
-      marginLeft={marginLeft}
+      top={top}
+      right={right}
+      bottom={bottom}
+      left={left}
     />
   );
 };
