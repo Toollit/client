@@ -2,25 +2,35 @@ import React from 'react';
 import { StyledSkeleton } from './styles';
 
 interface SkeletonProps {
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   shape?: 'circular' | 'rectangular' | 'rounded' | 'text';
   animation?: 'pulse' | 'wave';
-  top?: number;
-  right?: number;
-  bottom?: number;
-  left?: number;
+  marginTop?: number;
+  marginRight?: number;
+  marginBottom?: number;
+  marginLeft?: number;
 }
 
+/**
+ * @prop width - Skeleton width. default width is 100%;
+ * @prop height - Skeleton height. default height is 2rem(20px);
+ * @prop shape - Skeleton shape
+ * @prop animation - Skeleton animation
+ * @prop marginTop - Skeleton margin top
+ * @prop marginRight - Skeleton margin right
+ * @prop marginBottom - Skeleton margin bottom
+ * @prop marginLeft - Skeleton margin left
+ */
 const Skeleton = ({
   width,
-  height = 20,
+  height = 2,
   shape = 'rounded',
   animation = 'wave',
-  top,
-  right,
-  bottom,
-  left,
+  marginTop,
+  marginRight,
+  marginBottom,
+  marginLeft,
 }: SkeletonProps) => {
   return (
     <StyledSkeleton
@@ -28,10 +38,10 @@ const Skeleton = ({
       variant={shape}
       width={width}
       height={height}
-      top={top}
-      right={right}
-      bottom={bottom}
-      left={left}
+      marginTop={marginTop}
+      marginRight={marginRight}
+      marginBottom={marginBottom}
+      marginLeft={marginLeft}
     />
   );
 };
