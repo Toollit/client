@@ -1,7 +1,7 @@
 import { serverInstance } from 'apis/axios';
 
-export interface ProjectData {
-  projectId: string;
+export interface UpdateProjectData {
+  postId: string;
   title: string;
   contentHTML: string;
   contentMarkdown: string;
@@ -16,7 +16,7 @@ export interface UpdateProjectAPIRes {
   success: boolean;
   message: string | null;
   data: {
-    projectId: number;
+    postId: number;
   };
 }
 

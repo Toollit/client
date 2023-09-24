@@ -6,7 +6,7 @@ import { errorMessage } from '@/apis/errorMessage';
 import { projectDetailKey } from '@/apis/keys';
 import { projectDetailFetcher } from '@/apis/projectDetailFetcher';
 import useEditorContent from '@/hooks/useEditorContent';
-import { ProjectData, updateProjectAPI } from '@/apis/updateProject';
+import { UpdateProjectData, updateProjectAPI } from '@/apis/updateProject';
 import PrivateRoute from '@/components/PrivateRoute';
 import { serialize } from '@/middleware/swr/serialize';
 import { useDispatch, useSelector } from 'react-redux';
@@ -122,7 +122,8 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
         return;
       }
 
-      const projectData: ProjectData = {
+      const projectData: UpdateProjectData = {
+        postId,
         title: data?.title,
         contentHTML: data?.contentHTML,
         contentMarkdown: data?.contentMarkdown,
@@ -151,9 +152,9 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
 
         projectDetailMutate();
 
-        const projectId = response?.data.projectId;
+        const postId = response?.data.postId;
         // Use replace instead of push because decided to back out so can't access that page again
-        router.replace(`/project/${projectId}`);
+        router.replace(`/project/${postId}`);
 
         router.events.on('routeChangeComplete', () => {
           dispatch(loading({ status: false }));
@@ -173,6 +174,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
       isLoading,
       dispatch,
       representativeImageFile,
+      postId,
     ],
   );
 
@@ -222,7 +224,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
     setRepresentativePreviewImage(projectDefaultImage);
   }, [setTooltipAnchorEl]);
 
-  const handleDeleteRepresentativePreviewImage = useCallback(() => {
+  const handleDeleteRepresentativePreviewImg = useCallback(() => {
     setRepresentativePreviewImage('');
     setRepresentativeImageFile(null);
   }, []);
@@ -245,7 +247,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
       ? representativePreviewImage
       : null,
     handleKeydownSubmit,
-    handleDeleteRepresentativePreviewImage,
+    handleDeleteRepresentativePreviewImg,
     handleTooltipOpen,
     tooltip: {
       items: [

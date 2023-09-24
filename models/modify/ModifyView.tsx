@@ -9,10 +9,10 @@ import { ProjectDetail } from '@/apis/projectDetailFetcher';
 import Block from '@/components/commons/block';
 import { Button } from '@/components/commons/button';
 import Label from '@/components/commons/label';
-import LoadingCircularProgress from '@/components/commons/loading';
 import Image, { StaticImageData } from 'next/image';
 import { CloseIcon, PlusIcon } from '@/assets/icons';
 import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
+import Skeleton from '@/components/commons/skeleton';
 import {
   AddImageBox,
   ButtonContainer,
@@ -24,7 +24,14 @@ import {
 const DynamicTuiEditor = dynamic(
   () => import('../../components/commons/webEditor/TuiEditor'),
   {
-    loading: () => <LoadingCircularProgress />,
+    loading: () => (
+      <>
+        <Skeleton height={2} bottom={1} width={'20%'} />
+        <Skeleton height={3} bottom={2} />
+        <Skeleton height={2} bottom={1} width={'20%'} />
+        <Skeleton height={40} bottom={1} />
+      </>
+    ),
     ssr: false,
   },
 );
@@ -49,7 +56,7 @@ export interface ModifyViewProps {
   ) => void;
   representativePreviewImage: StaticImageData | string | null;
   handleKeydownSubmit: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-  handleDeleteRepresentativePreviewImage: () => void;
+  handleDeleteRepresentativePreviewImg: () => void;
   handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
   tooltip: TooltipProps;
   hashtags?: string[];
@@ -67,7 +74,7 @@ const ModifyView = ({
   handleChangeRepresentativeImg,
   representativePreviewImage,
   handleKeydownSubmit,
-  handleDeleteRepresentativePreviewImage,
+  handleDeleteRepresentativePreviewImg,
   handleTooltipOpen,
   hashtags,
   memberTypes,
@@ -133,7 +140,7 @@ const ModifyView = ({
                 alt={'project representative image'}
                 layout='fill'
               />
-              <ImageDeleteIcon onClick={handleDeleteRepresentativePreviewImage}>
+              <ImageDeleteIcon onClick={handleDeleteRepresentativePreviewImg}>
                 <CloseIcon />
               </ImageDeleteIcon>
             </ImageContainer>
