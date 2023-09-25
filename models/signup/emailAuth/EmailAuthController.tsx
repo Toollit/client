@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { RootState } from 'store';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import EmailAuthView, { EmailAuthViewProps } from './EmailAuthView';
 import { emailAuth } from '@/features/signUp';
-import { signUpAPI, SignUpAPIReq } from '@/apis/signUp';
 import useTimer from '@/hooks/useTimer';
 import { errorMessage } from '@/apis/errorMessage';
 import { emailVerifyAPI } from '@/apis/emailVerify';
@@ -61,13 +60,9 @@ const EmailAuthController = () => {
 
         await emailVerifyAPI({ email, authCode });
 
-        const data: SignUpAPIReq = { email, password, signUpType: 'email' };
+        alert('인증에 성공했습니다.');
 
-        await signUpAPI(data);
-
-        alert('회원가입 완료. 환영합니다 🎉');
-
-        router.replace('/');
+        router.replace('/signUp/settings/nickname');
 
         router.events.on('routeChangeComplete', () => {
           dispatch(loading({ status: false }));
@@ -91,13 +86,14 @@ const EmailAuthController = () => {
     ],
   );
 
+  // ****** Do not remove!! Nickname duplicate check logic was added, causing the below logic to cause problems. However, do not delete it because it may be used in the future ******
   // Initialize input information when going back
-  useEffect(() => {
-    return () => {
-      const data = { email: '', password: '' };
-      dispatch(emailAuth(data));
-    };
-  }, [dispatch, email, password]);
+  // useEffect(() => {
+  //   return () => {
+  //     const data = { email: '', password: '' };
+  //     dispatch(emailAuth(data));
+  //   };
+  // }, [dispatch, email, password]);
 
   // Function for allow and disallow submit button
   const checkTimerLeftTime = useCallback(() => {
@@ -114,11 +110,10 @@ const EmailAuthController = () => {
     }
   }, [email, password, leftMinutes, leftSeconds]);
 
-  // If the page is accessed in a way other than moving from the signUp page to the current page
+  // If the page is accessed in a way other than moving from the signUp page to the current page or refresh page
   useEffect(() => {
     if (!email || !password) {
       const data = { email: '', password: '' };
-
       dispatch(emailAuth(data));
 
       alert('비정상적인 접근입니다.');
