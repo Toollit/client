@@ -1,0 +1,19 @@
+{
+  "view template": {
+    "prefix": "view",
+    "body": [
+      "import React  from 'react';",
+      "import {} from './styles';",
+      "",
+      "export interface ${1:${TM_FILENAME_BASE}}Props {}",
+      "",
+      "const ${2:${TM_FILENAME_BASE}} = ({}:${3:${TM_FILENAME_BASE}}Props) => {",
+      "",
+      "  return <div>${4:${TM_FILENAME_BASE}}</div>",
+      "}",
+      "",
+      "export default ${5:${TM_FILENAME_BASE}};"
+    ],
+    "description": "view template"
+  }
+}
