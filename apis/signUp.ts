@@ -4,6 +4,7 @@ export interface SignUpAPIReq {
   email: string;
   password: string;
   signUpType: 'google' | 'github' | 'email';
+  nickname: string;
 }
 
 export interface SignUpAPIRes {
