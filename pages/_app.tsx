@@ -15,7 +15,7 @@ import usePathHistory from '@/hooks/usePathHistory';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const { message } = useAuth();
+  const { message, nickname, isAuthenticated } = useAuth();
   usePathHistory({ saveAction: true });
 
   useEffect(() => {
@@ -23,14 +23,24 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   useEffect(() => {
-    //temporary password login user check
+    // Check who logged in with a temporary password
     if (message === 'needResetPassword') {
-      // prevent infinite routing loop
+      // Prevent infinite routing loop
       if (router.pathname !== '/resetPassword') {
         router.replace('/resetPassword');
       }
     }
   }, [router, message]);
+
+  useEffect(() => {
+    // Check whether nickname is set or not
+    if (isAuthenticated && nickname === null) {
+      // Prevent infinite routing loop
+      if (router.pathname !== '/signUp/settings/nickname') {
+        router.replace('/signUp/settings/nickname');
+      }
+    }
+  }, [router, nickname, isAuthenticated]);
 
   return (
     <>
