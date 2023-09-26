@@ -1,7 +1,6 @@
 import { serverInstance } from 'apis/axios';
 
 export interface DeleteProjectAPIReq {
-  postType: 'project' | 'free' | 'question';
   postId: string;
 }
 

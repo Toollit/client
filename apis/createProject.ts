@@ -1,6 +1,6 @@
 import { serverInstance } from 'apis/axios';
 
-export interface ProjectData {
+export interface CreateProjectData {
   title: string;
   contentHTML: string;
   contentMarkdown: string;
@@ -16,7 +16,7 @@ export interface CreateProjectAPIRes {
   success: boolean;
   message: string | null;
   data: {
-    projectId: number;
+    postId: number;
   };
 }
 
