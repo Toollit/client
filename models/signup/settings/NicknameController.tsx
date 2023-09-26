@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
 import { errorMessage } from '@/apis/errorMessage';
 import { RootState } from '@/store';
-import { emailAuth } from '@/features/signUp';
-import { SignUpAPIReq, signUpAPI } from '@/apis/signUp';
 import { DuplicateCheckNicknameAPI } from '@/apis/duplicateCheckNickname';
 import { updateSocialLoginNicknameAPI } from '@/apis/updateSocialLoginNickname';
 import useAuth from '@/hooks/useAuth';
@@ -21,8 +19,6 @@ const NicknameController = ({}: NicknameControllerProps) => {
   const { logOut } = useLogout();
 
   const isLoading = useSelector((state: RootState) => state.isLoading.status);
-  const email = useSelector((state: RootState) => state.signUp.email);
-  const password = useSelector((state: RootState) => state.signUp.password);
 
   const [nickname, setNickname] = useState('');
 
@@ -53,11 +49,8 @@ const NicknameController = ({}: NicknameControllerProps) => {
       event.preventDefault();
 
       if (isAuthenticated === false) {
-        if (!email || !password) {
-          alert('비정상적인 접근입니다.');
-
-          return router.replace('login');
-        }
+        alert('비정상적인 접근입니다.');
+        return router.replace('login');
       }
 
       const onlyEnglishNumber = /^[a-zA-Z0-9]+$/;
@@ -83,34 +76,11 @@ const NicknameController = ({}: NicknameControllerProps) => {
 
         await DuplicateCheckNicknameAPI({ nickname });
 
-        // email signUp
-        if (isAuthenticated === false) {
-          const data: SignUpAPIReq = {
-            email,
-            password,
-            signUpType: 'email',
-            nickname,
-          };
+        await updateSocialLoginNicknameAPI({ nickname });
+        // revalidate user info for update nickname
+        await authMutate();
 
-          try {
-            await signUpAPI(data);
-          } catch (error) {
-            errorMessage(error);
-          }
-        }
-
-        // social(google, github) signUp
-        if (isAuthenticated === true) {
-          try {
-            await updateSocialLoginNicknameAPI({ nickname });
-            // revalidate user info
-            await authMutate();
-          } catch (error) {
-            errorMessage(error);
-          }
-        }
-
-        alert('회원가입 완료. 환영합니다 🎉');
+        alert(`닉네임 설정 완료. ${nickname}님 환영합니다 🎉`);
 
         router.replace('/');
 
@@ -123,16 +93,7 @@ const NicknameController = ({}: NicknameControllerProps) => {
         nicknameInputRef.current?.focus();
       }
     },
-    [
-      dispatch,
-      router,
-      email,
-      password,
-      nickname,
-      isLoading,
-      isAuthenticated,
-      authMutate,
-    ],
+    [dispatch, router, nickname, isLoading, isAuthenticated, authMutate],
   );
 
   const handleNickname = useCallback(
@@ -144,24 +105,14 @@ const NicknameController = ({}: NicknameControllerProps) => {
     [],
   );
 
-  // Initialize input information when close nickname settings page
-  useEffect(() => {
-    return () => {
-      const data = { email: '', password: '' };
-      dispatch(emailAuth(data));
-    };
-  }, [dispatch, email, password]);
-
   // Check sign up process access when accessing and reloading the current page
   useEffect(() => {
     if (isAuthenticated === false) {
-      if (!email || !password) {
-        alert('비정상적인 접근입니다.');
+      alert('비정상적인 접근입니다.');
 
-        router.replace('/login');
-      }
+      router.replace('/login');
     }
-  }, [email, password, dispatch, router, isAuthenticated]);
+  }, [dispatch, router, isAuthenticated]);
 
   const props: NicknameViewProps = {
     handleClose,

@@ -9,10 +9,13 @@ import useTimer from '@/hooks/useTimer';
 import { errorMessage } from '@/apis/errorMessage';
 import { emailVerifyAPI } from '@/apis/emailVerify';
 import { loading } from '@/features/loading';
+import { SignUpAPIReq, signUpAPI } from '@/apis/signUp';
+import useAuth from '@/hooks/useAuth';
 
 const EmailAuthController = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { authMutate } = useAuth();
 
   const isLoading = useSelector((state: RootState) => state.isLoading.status);
   const email = useSelector((state: RootState) => state.signUp.email);
@@ -60,6 +63,15 @@ const EmailAuthController = () => {
 
         await emailVerifyAPI({ email, authCode });
 
+        const data: SignUpAPIReq = {
+          email,
+          password,
+          signUpType: 'email',
+        };
+        // automatic login when sign up success
+        await signUpAPI(data);
+        await authMutate();
+
         alert('인증에 성공했습니다.');
 
         router.replace('/signUp/settings/nickname');
@@ -83,6 +95,7 @@ const EmailAuthController = () => {
       leftSeconds,
       dispatch,
       isLoading,
+      authMutate,
     ],
   );
 
@@ -100,6 +113,14 @@ const EmailAuthController = () => {
       return false;
     }
   }, [email, password, leftMinutes, leftSeconds]);
+
+  // Initialize input information when close nickname settings page
+  useEffect(() => {
+    return () => {
+      const data = { email: '', password: '' };
+      dispatch(emailAuth(data));
+    };
+  }, [dispatch, email, password]);
 
   // Check sign up process access when accessing and reloading the current page
   useEffect(() => {

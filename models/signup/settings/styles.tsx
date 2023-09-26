@@ -20,9 +20,8 @@ const Form = styled.form`
 `;
 
 const Notice = styled.div`
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: #000;
-  text-align: center;
 `;
 
 export { Form, Notice };

@@ -46,8 +46,12 @@ const NicknameView = ({
 
         <Block paddingLeft={1.5} paddingRight={1.5}>
           <Notice>
-            {'\u273B'}&nbsp;최대 20자, 영어, 숫자 조합만 가능합니다.
+            <b>회원가입이 완료되었습니다.</b>
           </Notice>
+        </Block>
+
+        <Block paddingLeft={1.5} paddingRight={1.5}>
+          <Notice>닉네임 설정을 완료해야 서비스 이용이 가능합니다.</Notice>
         </Block>
 
         <Block
@@ -57,7 +61,7 @@ const NicknameView = ({
           paddingBottom={2}
         >
           <Notice>
-            {'\u273B'}&nbsp;닉네임 설정을 완료해야 회원가입이 완료됩니다.
+            {'\u273B'}&nbsp;최대 20자, 영어, 숫자 조합만 가능합니다.
           </Notice>
         </Block>
 
