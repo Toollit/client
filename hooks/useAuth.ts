@@ -21,7 +21,7 @@ const useAuth = () => {
   );
 
   const authUserNickname = data?.data.nickname;
-  const isAuthenticated = authUserNickname ? true : false;
+  const isAuthenticated = data?.success;
   const nickname = authUserNickname ? authUserNickname : null;
   const message = data?.message ? data.message : null;
 
