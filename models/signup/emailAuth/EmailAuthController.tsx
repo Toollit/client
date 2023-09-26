@@ -28,7 +28,7 @@ const EmailAuthController = () => {
   const authCodeInputRef = useRef<HTMLInputElement>(null);
 
   const handleClose = useCallback(() => {
-    router.back();
+    router.replace('/signUp');
   }, [router]);
 
   const handleSubmit = useCallback(
@@ -86,15 +86,6 @@ const EmailAuthController = () => {
     ],
   );
 
-  // ****** Do not remove!! Nickname duplicate check logic was added, causing the below logic to cause problems. However, do not delete it because it may be used in the future ******
-  // Initialize input information when going back
-  // useEffect(() => {
-  //   return () => {
-  //     const data = { email: '', password: '' };
-  //     dispatch(emailAuth(data));
-  //   };
-  // }, [dispatch, email, password]);
-
   // Function for allow and disallow submit button
   const checkTimerLeftTime = useCallback(() => {
     if (email && password) {
@@ -110,15 +101,12 @@ const EmailAuthController = () => {
     }
   }, [email, password, leftMinutes, leftSeconds]);
 
-  // If the page is accessed in a way other than moving from the signUp page to the current page or refresh page
+  // Check sign up process access when accessing and reloading the current page
   useEffect(() => {
     if (!email || !password) {
-      const data = { email: '', password: '' };
-      dispatch(emailAuth(data));
-
       alert('비정상적인 접근입니다.');
 
-      router.back();
+      router.replace('/login');
     }
   }, [email, password, dispatch, router]);
 

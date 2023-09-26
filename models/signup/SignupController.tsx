@@ -148,7 +148,7 @@ const SignUpController = () => {
     setFillFormComplete(isFormComplete);
   }, [email, password, passwordCheck]);
 
-  // Initialize email, password data when it comes to the current page from the email authentication page
+  // Initialize email, password data when it comes to the current page from other pages
   useEffect(() => {
     const data = { email: '', password: '' };
     dispatch(emailAuth(data));

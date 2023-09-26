@@ -8,12 +8,17 @@ import { RootState } from '@/store';
 import { emailAuth } from '@/features/signUp';
 import { SignUpAPIReq, signUpAPI } from '@/apis/signUp';
 import { DuplicateCheckNicknameAPI } from '@/apis/duplicateCheckNickname';
+import { updateSocialLoginNicknameAPI } from '@/apis/updateSocialLoginNickname';
+import useAuth from '@/hooks/useAuth';
+import useLogout from '@/hooks/useLogout';
 
 export interface NicknameControllerProps {}
 
 const NicknameController = ({}: NicknameControllerProps) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { isAuthenticated, authMutate } = useAuth();
+  const { logOut } = useLogout();
 
   const isLoading = useSelector((state: RootState) => state.isLoading.status);
   const email = useSelector((state: RootState) => state.signUp.email);
@@ -23,16 +28,36 @@ const NicknameController = ({}: NicknameControllerProps) => {
 
   const nicknameInputRef = useRef<HTMLInputElement>(null);
 
-  const handleClose = useCallback(() => {
-    router.replace('/login');
-  }, [router]);
+  const handleClose = useCallback(async () => {
+    const result = confirm(
+      '닉네임 설정을 완료해야 회원가입이 완료됩니다. 정말로 나가시겠습니까?',
+    );
+
+    if (!result) {
+      return;
+    }
+
+    if (isAuthenticated) {
+      try {
+        await logOut({ replace: '/login' });
+      } catch (error) {
+        errorMessage(error);
+      }
+    } else {
+      router.replace('/signUp');
+    }
+  }, [router, isAuthenticated, logOut]);
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      if (!email || !password) {
-        return;
+      if (isAuthenticated === false) {
+        if (!email || !password) {
+          alert('비정상적인 접근입니다.');
+
+          return router.replace('login');
+        }
       }
 
       const onlyEnglishNumber = /^[a-zA-Z0-9]+$/;
@@ -56,9 +81,10 @@ const NicknameController = ({}: NicknameControllerProps) => {
 
         dispatch(loading({ status: true }));
 
-        const response = await DuplicateCheckNicknameAPI({ nickname });
+        await DuplicateCheckNicknameAPI({ nickname });
 
-        if (response?.success) {
+        // email signUp
+        if (isAuthenticated === false) {
           const data: SignUpAPIReq = {
             email,
             password,
@@ -66,23 +92,47 @@ const NicknameController = ({}: NicknameControllerProps) => {
             nickname,
           };
 
-          await signUpAPI(data);
-
-          alert('회원가입 완료. 환영합니다 🎉');
-
-          router.replace('/');
-
-          router.events.on('routeChangeComplete', () => {
-            dispatch(loading({ status: false }));
-          });
+          try {
+            await signUpAPI(data);
+          } catch (error) {
+            errorMessage(error);
+          }
         }
+
+        // social(google, github) signUp
+        if (isAuthenticated === true) {
+          try {
+            await updateSocialLoginNicknameAPI({ nickname });
+            // revalidate user info
+            await authMutate();
+          } catch (error) {
+            errorMessage(error);
+          }
+        }
+
+        alert('회원가입 완료. 환영합니다 🎉');
+
+        router.replace('/');
+
+        router.events.on('routeChangeComplete', () => {
+          dispatch(loading({ status: false }));
+        });
       } catch (error) {
         dispatch(loading({ status: false }));
         errorMessage(error);
         nicknameInputRef.current?.focus();
       }
     },
-    [dispatch, router, email, password, nickname, isLoading],
+    [
+      dispatch,
+      router,
+      email,
+      password,
+      nickname,
+      isLoading,
+      isAuthenticated,
+      authMutate,
+    ],
   );
 
   const handleNickname = useCallback(
@@ -102,17 +152,16 @@ const NicknameController = ({}: NicknameControllerProps) => {
     };
   }, [dispatch, email, password]);
 
-  // If the page is accessed in a way other than moving from the email auth page to the current page or refresh page
+  // Check sign up process access when accessing and reloading the current page
   useEffect(() => {
-    if (!email || !password) {
-      const data = { email: '', password: '' };
-      dispatch(emailAuth(data));
+    if (isAuthenticated === false) {
+      if (!email || !password) {
+        alert('비정상적인 접근입니다.');
 
-      alert('비정상적인 접근입니다.');
-
-      router.back();
+        router.replace('/login');
+      }
     }
-  }, [email, password, dispatch, router]);
+  }, [email, password, dispatch, router, isAuthenticated]);
 
   const props: NicknameViewProps = {
     handleClose,
