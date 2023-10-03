@@ -23,7 +23,7 @@ export default function LoadingCircularProgress(props: CircularProgressProps) {
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: 'rgba(15, 20, 25, 0.1)',
-          zIndex: 100,
+          zIndex: 10000,
         }}
       >
         <CircularProgress
