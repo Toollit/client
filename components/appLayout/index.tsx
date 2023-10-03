@@ -1,5 +1,6 @@
 import React from 'react';
-import Nav, { NavProps } from '@/components/commons/nav';
+import Nav, { NavProps } from '@/components/appLayout/nav';
+import Footer from '@/components/appLayout/footer';
 import Alert from '@/components/commons/alert';
 import LoadingCircularProgress from '@/components/commons/loading';
 import { Container, Content } from './styles';
@@ -14,7 +15,6 @@ const AppLayout = ({
   title,
   menu,
   boundary,
-  fullSize,
   onClick,
 }: AppLayoutProps) => {
   return (
@@ -24,10 +24,10 @@ const AppLayout = ({
         title={title}
         menu={menu}
         boundary={boundary}
-        fullSize={fullSize}
         onClick={onClick}
       />
       <Content type={type}>{children}</Content>
+      {type === 'default' && <Footer />}
       <Alert />
       <LoadingCircularProgress />
     </Container>

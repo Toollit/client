@@ -1,14 +1,25 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 
-const Container = styled.nav<{ boundary: boolean; fullSize?: boolean }>`
+const Container = styled.nav<{ boundary: boolean }>`
   border-bottom: ${(props) => (props.boundary ? '1px solid #eee' : 'none')};
-  max-width: ${(props) => (props.fullSize ? '100%' : '102.4rem')};
   width: 100%;
   margin: 0 auto;
   padding: 0 1.5rem;
   min-height: 6rem;
   height: 6rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background-color: #ffffff;
+`;
+
+const CenterContainer = styled.div`
+  max-width: 102.4rem;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 const ColumnContainer = styled.div`
@@ -111,6 +122,7 @@ const StyledLink = styled.a`
 
 export {
   Container,
+  CenterContainer,
   ColumnContainer,
   ColumnLeftContainer,
   ColumnRightContainer,

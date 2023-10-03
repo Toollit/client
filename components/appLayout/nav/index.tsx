@@ -19,6 +19,7 @@ import {
   LogoText,
   Title,
   StyledLink,
+  CenterContainer,
 } from './styles';
 
 export interface NavProps {
@@ -26,7 +27,6 @@ export interface NavProps {
   title?: string;
   menu?: React.ReactNode[];
   boundary?: boolean;
-  fullSize?: boolean;
   onClick?: () => void;
 }
 
@@ -35,17 +35,9 @@ export interface NavProps {
  * @props title - nav center text
  * @props menu - nav right side icons
  * @props boundary - nav bottom border show
- * @props fullSize - use only when type back or close and boundary false
  * @props onClick - nav left side default icons click handler
  */
-const Nav = ({
-  type,
-  title,
-  menu,
-  boundary = true,
-  fullSize = false,
-  onClick,
-}: NavProps) => {
+const Nav = ({ type, title, menu, boundary = true, onClick }: NavProps) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { authMutate } = useAuth();
@@ -104,44 +96,46 @@ const Nav = ({
     case 'default':
       return (
         <Container boundary={boundary}>
-          <ColumnContainer>
-            <ColumnLeftContainer isMobile={isMobile}>
-              <li>
-                <Link href='/' passHref>
-                  <StyledLogoLink onClick={handleLogoRoute}>
-                    <GetitLogo />
-                    <LogoText>Getit</LogoText>
-                  </StyledLogoLink>
-                </Link>
-              </li>
-            </ColumnLeftContainer>
+          <CenterContainer>
+            <ColumnContainer>
+              <ColumnLeftContainer isMobile={isMobile}>
+                <li>
+                  <Link href='/' passHref>
+                    <StyledLogoLink onClick={handleLogoRoute}>
+                      <GetitLogo />
+                      <LogoText>Getit</LogoText>
+                    </StyledLogoLink>
+                  </Link>
+                </li>
+              </ColumnLeftContainer>
 
-            <ColumnRightContainer isMobile={isMobile}>
-              <li onClick={handleSearchDrawer}>
-                <StyledLink>
-                  <SearchIcon width={2.8} height={2.8} />
-                </StyledLink>
-              </li>
-              <li>
-                <StyledLink onClick={handleProfileRoute}>
-                  <AccountCircleIcon width={2.8} height={2.8} />
-                </StyledLink>
-              </li>
-              <li>
-                <Link href={'/menu'} passHref>
+              <ColumnRightContainer isMobile={isMobile}>
+                <li onClick={handleSearchDrawer}>
                   <StyledLink>
-                    <MenuIcon width={2.8} height={2.8} />
+                    <SearchIcon width={2.8} height={2.8} />
                   </StyledLink>
-                </Link>
-              </li>
-            </ColumnRightContainer>
-          </ColumnContainer>
+                </li>
+                <li>
+                  <StyledLink onClick={handleProfileRoute}>
+                    <AccountCircleIcon width={2.8} height={2.8} />
+                  </StyledLink>
+                </li>
+                <li>
+                  <Link href={'/menu'} passHref>
+                    <StyledLink>
+                      <MenuIcon width={2.8} height={2.8} />
+                    </StyledLink>
+                  </Link>
+                </li>
+              </ColumnRightContainer>
+            </ColumnContainer>
+          </CenterContainer>
         </Container>
       );
 
     case 'back':
       return (
-        <Container boundary={boundary} fullSize={fullSize}>
+        <Container boundary={boundary}>
           <ColumnContainer>
             <Title>{title}</Title>
             <ColumnLeftContainer isMobile={isMobile}>
@@ -156,7 +150,7 @@ const Nav = ({
 
     case 'close':
       return (
-        <Container boundary={boundary} fullSize={fullSize}>
+        <Container boundary={boundary}>
           <ColumnContainer>
             <Title>{title}</Title>
             <ColumnLeftContainer isMobile={isMobile}>

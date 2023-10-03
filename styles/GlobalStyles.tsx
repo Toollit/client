@@ -18,8 +18,7 @@ const styles = css`
   }
 
   body > div:first-of-type,
-  div#__next,
-  div#__next > div {
+  div#__next {
     height: 100%;
   }
 
