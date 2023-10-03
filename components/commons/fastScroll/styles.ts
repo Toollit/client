@@ -9,6 +9,7 @@ const commonStyles = (theme: Theme) => css`
   border-radius: 50%;
   margin: 0.5rem 0;
   backdrop-filter: blur(4px);
+  cursor: pointer;
 `;
 
 const Container = styled.div`
