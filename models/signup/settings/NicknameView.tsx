@@ -22,12 +22,7 @@ const NicknameView = ({
   nicknameInputRef,
 }: NicknameViewProps) => {
   return (
-    <AppLayout
-      type='close'
-      onClick={handleClose}
-      boundary={false}
-      fullSize={true}
-    >
+    <AppLayout type='close' onClick={handleClose} boundary={false}>
       <Form onSubmit={handleSubmit}>
         <Block paddingLeft={1.5} paddingRight={1.5}>
           <Title text={'닉네임 설정'} />

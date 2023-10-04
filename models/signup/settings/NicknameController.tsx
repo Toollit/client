@@ -26,7 +26,7 @@ const NicknameController = ({}: NicknameControllerProps) => {
 
   const handleClose = useCallback(async () => {
     const result = confirm(
-      '닉네임 설정을 완료해야 회원가입이 완료됩니다. 정말로 나가시겠습니까?',
+      '회원가입이 완료되었습니다.\n닉네임 설정을 완료해야 서비스 이용이 가능합니다.\n정말로 나가시겠습니까?',
     );
 
     if (!result) {
