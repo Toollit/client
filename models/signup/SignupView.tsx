@@ -44,12 +44,7 @@ const SignUpView = ({
   passwordCheckInputRef,
 }: SignUpViewProps) => {
   return (
-    <AppLayout
-      type='close'
-      onClick={handleClose}
-      boundary={false}
-      fullSize={true}
-    >
+    <AppLayout type='close' onClick={handleClose} boundary={false}>
       <Form onSubmit={handleSubmit}>
         <Block paddingLeft={1.5} paddingRight={1.5}>
           <Title text='Getit 계정을 생성하세요' />
@@ -119,7 +114,7 @@ const SignUpView = ({
           paddingLeft={1.5}
           paddingRight={1.5}
           paddingTop={1}
-          paddingBottom={1}
+          paddingBottom={3.5}
         >
           <PolicyNotice>
             가입하면 쿠키 사용을 포함해{' '}

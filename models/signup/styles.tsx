@@ -1,13 +1,12 @@
 import styled from '@emotion/styled';
 
 const Form = styled.form`
+  flex: 1 1 auto; // For content height 100%
   display: flex;
   flex-direction: column;
   justify-content: center;
   max-width: 34rem;
   width: 100%;
-  min-height: 100%;
-  height: fit-content;
   margin: 0 auto;
 
   -webkit-user-select: none;
