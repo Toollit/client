@@ -8,6 +8,7 @@ import useCachedKeys from '@/hooks/useCachedKeys';
 import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
 import { RootState } from '@/store';
+import { emailAuth } from '@/features/signUp';
 
 const LoginController = () => {
   const router = useRouter();
@@ -24,7 +25,7 @@ const LoginController = () => {
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
   const handleClose = useCallback(() => {
-    router.back();
+    router.push('/');
   }, [router]);
 
   const handleSubmit = useCallback(
@@ -158,12 +159,15 @@ const LoginController = () => {
     }
 
     if (firstTime === 'true') {
-      setTimeout(() => {
-        alert('회원가입 완료. 환영합니다 🎉');
-      }, 1000);
-      router.replace('/');
+      router.replace(`/signUp/settings/nickname`);
     }
   }, [router]);
+
+  // Initialize email, password data when it comes to the current page from other pages
+  useEffect(() => {
+    const data = { email: '', password: '' };
+    dispatch(emailAuth(data));
+  }, [dispatch]);
 
   const props: LoginViewProps = {
     handleClose,

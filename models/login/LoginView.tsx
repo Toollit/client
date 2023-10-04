@@ -43,12 +43,7 @@ const LoginView = ({
   handleSocialLogin,
 }: LoginViewProps) => {
   return (
-    <AppLayout
-      type='close'
-      onClick={handleClose}
-      boundary={false}
-      fullSize={true}
-    >
+    <AppLayout type='close' onClick={handleClose} boundary={false}>
       <Form onSubmit={handleSubmit}>
         <Block paddingLeft={1.5} paddingRight={1.5}>
           <Title text='Getit 로그인' />
@@ -149,7 +144,7 @@ const LoginView = ({
           paddingLeft={1.5}
           paddingRight={1.5}
           paddingTop={1.5}
-          paddingBottom={1.5}
+          paddingBottom={3.5}
         >
           <SignInInduce>계정이 없으신가요?</SignInInduce>
           <Link href={'/signUp'} passHref>
