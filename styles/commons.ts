@@ -11,4 +11,24 @@ const SVGContainer = styled.span<SVGContainerProps>`
   height: ${(props) => `${props.height}rem`};
 `;
 
-export { SVGContainer };
+interface ImageWrapperProps {
+  width: number;
+  height: number;
+}
+
+const ImageWrapper = styled.div<ImageWrapperProps>`
+  position: relative;
+  min-width: ${(props) => `${props.width}rem`};
+  min-height: ${(props) => `${props.height}rem`};
+  width: ${(props) => `${props.width}rem`};
+  height: ${(props) => `${props.height}rem`};
+`;
+
+const CenterLayoutContainer = styled.div`
+  position: relative;
+  margin: 0 auto;
+  max-width: 102.4rem;
+  width: 100%;
+`;
+
+export { SVGContainer, ImageWrapper, CenterLayoutContainer };
