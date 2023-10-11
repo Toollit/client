@@ -12,6 +12,7 @@ import { reportAPI } from '@/apis/report';
 import { errorMessage } from '@/apis/errorMessage';
 import Block from '@/components/commons/block';
 import { loading } from '@/features/loading';
+import { CenterLayoutContainer } from '@/styles/commons';
 import {
   ReportReason,
   ListGroup,
@@ -137,11 +138,13 @@ const Report = () => {
       try {
         dispatch(loading({ status: true }));
 
-        const response = await reportAPI(data);
+        await reportAPI(data);
 
         dispatch(loading({ status: false }));
 
-        alert(response?.message);
+        alert(
+          '신고해 주셔서 감사합니다. 최대한 빠른 시간 내에 검토 후 조치하도록 하겠습니다.',
+        );
 
         return handleClose();
       } catch (error) {
@@ -159,69 +162,76 @@ const Report = () => {
       onClose={handleClose}
       TransitionComponent={Transition}
     >
-      <AppLayout type='close' title='신고하기' onClick={handleClose}>
-        <Form onSubmit={handleSubmit}>
-          <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
-            <DefaultInfoContainer>
-              <Category>작성자</Category>
-              <Writer>{writer}</Writer>
-            </DefaultInfoContainer>
-          </Block>
+      <AppLayout
+        type='close'
+        title='신고하기'
+        onClick={handleClose}
+        fullSize={false}
+      >
+        <CenterLayoutContainer>
+          <Form onSubmit={handleSubmit}>
+            <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
+              <DefaultInfoContainer>
+                <Category>작성자</Category>
+                <Writer>{writer}</Writer>
+              </DefaultInfoContainer>
+            </Block>
 
-          <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
-            <DefaultInfoContainer>
-              <Category>게시글</Category>
-              <Content>{title}</Content>
-            </DefaultInfoContainer>
-          </Block>
+            <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
+              <DefaultInfoContainer>
+                <Category>게시글</Category>
+                <Content>{title}</Content>
+              </DefaultInfoContainer>
+            </Block>
 
-          <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={6}>
-            <ReportReason>*사유선택</ReportReason>
-          </Block>
+            <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={6}>
+              <ReportReason>*사유선택</ReportReason>
+            </Block>
 
-          <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={1}>
-            <ListGroup>
-              {selectReasonList.current.map((reason) => {
-                return (
-                  <li key={`/report/${reason.value}`}>
-                    <label>
-                      <input
-                        type='radio'
-                        name='reason'
-                        value={reason.value}
-                        onClick={handleSelect}
-                      />
-                      <span>{reason.value}</span>
-                    </label>
-                  </li>
-                );
-              })}
-            </ListGroup>
-          </Block>
+            <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={1}>
+              <ListGroup>
+                {selectReasonList.current.map((reason) => {
+                  return (
+                    <li key={`/report/${reason.value}`}>
+                      <label>
+                        <input
+                          type='radio'
+                          name='reason'
+                          value={reason.value}
+                          onClick={handleSelect}
+                        />
+                        <span>{reason.value}</span>
+                      </label>
+                    </li>
+                  );
+                })}
+              </ListGroup>
+            </Block>
 
-          <Block
-            paddingLeft={1.5}
-            paddingRight={1.5}
-            paddingTop={0.5}
-            paddingBottom={0.5}
-          >
-            {showTextarea && (
-              <TextInputContainer>
-                <TextArea
-                  name='reasonDetail'
-                  cols={30}
-                  rows={10}
-                  placeholder='신고 내용을 입력해 주세요. 최소 10자 이상 입력 해주세요.'
-                  onChange={handleTextarea}
-                  maxLength={1000}
-                />
-                <TextCount>{textCount} / 1000</TextCount>
-              </TextInputContainer>
-            )}
-          </Block>
+            <Block
+              paddingLeft={1.5}
+              paddingRight={1.5}
+              paddingTop={0.5}
+              paddingBottom={0.5}
+            >
+              {showTextarea && (
+                <TextInputContainer>
+                  <TextArea
+                    name='reasonDetail'
+                    cols={30}
+                    rows={10}
+                    placeholder='신고 내용을 입력해 주세요. 최소 10자 이상 입력 해주세요.'
+                    onChange={handleTextarea}
+                    maxLength={1000}
+                  />
+                  <TextCount>{textCount} / 1000</TextCount>
+                </TextInputContainer>
+              )}
+            </Block>
 
-          <BottomButton text='제출' />
-        </Form>
+            <BottomButton text='제출' />
+          </Form>
+        </CenterLayoutContainer>
       </AppLayout>
     </Dialog>
   );
