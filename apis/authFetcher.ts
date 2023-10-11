@@ -8,6 +8,7 @@ export interface AuthAPIRes {
   message: string | null;
   data: {
     nickname: string | null;
+    needResetPassword: boolean;
   };
 }
 

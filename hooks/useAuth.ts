@@ -9,7 +9,7 @@ import { serialize } from '@/middleware/swr/serialize';
  */
 const useAuth = () => {
   const {
-    data,
+    data: response,
     isLoading,
     mutate: authMutate,
   } = useSWRImmutable(
@@ -20,12 +20,12 @@ const useAuth = () => {
     },
   );
 
-  const authUserNickname = data?.data.nickname;
-  const isAuthenticated = data?.success;
+  const authUserNickname = response?.data.nickname;
+  const isAuthenticated = response?.success;
   const nickname = authUserNickname ? authUserNickname : null;
-  const message = data?.message ? data.message : null;
+  const data = response?.data ? response.data : null;
 
-  return { isLoading, isAuthenticated, nickname, message, authMutate };
+  return { isLoading, isAuthenticated, nickname, data, authMutate };
 };
 
 export default useAuth;
