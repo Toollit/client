@@ -8,6 +8,10 @@ export interface EmailLoginAPIReq {
 export interface EmailLoginAPIRes {
   success: boolean;
   message: string | null;
+  data: {
+    nickname: string | null;
+    needResetPassword: boolean;
+  };
 }
 
 export const emailLoginAPI = async ({

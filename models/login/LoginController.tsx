@@ -67,7 +67,7 @@ const LoginController = () => {
         // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
         clearCache();
 
-        if (response?.message === 'needResetPassword') {
+        if (response?.data.needResetPassword === true) {
           router.replace('/resetPassword');
         } else {
           router.replace('/');
