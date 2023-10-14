@@ -4,13 +4,14 @@ import { changeDateFormat, dateFromNow } from '@/utils/changeDateFormat';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import {
-  ProjectDetailAPIRes,
-  projectDetailFetcher,
-} from '@/apis/projectDetailFetcher';
+  ProjectAPIRes,
+  ProjectMember,
+  projectFetcher,
+} from '@/apis/projectFetcher';
 import { projectDetailBookmarkStatusKey, projectDetailKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
 import useAuth from '@/hooks/useAuth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showAlert, hideAlert } from '@/features/alert';
 import { bookmarkAPI } from '@/apis/bookmark';
 import { projectDetailBookmarkStatusFetcher } from '@/apis/projectDetailBookmarkStatusFetcher';
@@ -20,6 +21,10 @@ import { deleteProjectAPI } from '@/apis/deleteProject';
 import { openReport } from '@/features/report';
 import { DeleteIcon, EditSquareIcon } from '@/assets/icons';
 import useTooltip from '@/hooks/useTooltip';
+import { RootState } from '@/store';
+import { loading } from '@/features/loading';
+import BlankProfile from '@/public/static/images/blank-profile-1280.png';
+import { joinProjectAPI } from '@/apis/joinProject';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
@@ -38,6 +43,8 @@ const ProjectDetailController = () => {
 
   const postId = router.query.id as string;
 
+  const isLoading = useSelector((state: RootState) => state.isLoading.status);
+
   const [isClientRendering, setIsClientRendering] = useState(false);
 
   const { data: projectDetail } = useSWR(
@@ -47,7 +54,7 @@ const ProjectDetailController = () => {
           args: { page: `/project/${postId}`, tag: `project/${postId}` },
         }
       : null,
-    projectDetailFetcher,
+    projectFetcher,
     {
       dedupingInterval: 60 * 10 * 1000,
       revalidateOnMount: false,
@@ -81,7 +88,7 @@ const ProjectDetailController = () => {
   );
 
   const handleMemberTypes = useCallback(
-    (memberTypes: ProjectDetailAPIRes['data']['content']['memberTypes']) => {
+    (memberTypes: ProjectAPIRes['data']['content']['memberTypes']) => {
       const dataConverter = memberTypes.map((type) => {
         return type === 'pm'
           ? type.toUpperCase()
@@ -203,10 +210,17 @@ const ProjectDetailController = () => {
 
         if (isDeletedOk) {
           try {
-            await deleteProjectAPI({ postType: 'project', postId });
+            dispatch(loading({ status: true }));
+
+            await deleteProjectAPI({ postId });
 
             router.replace('/');
+
+            router.events.on('routeChangeComplete', () => {
+              dispatch(loading({ status: false }));
+            });
           } catch (error) {
+            dispatch(loading({ status: false }));
             errorMessage(error);
           }
         }
@@ -214,7 +228,7 @@ const ProjectDetailController = () => {
     } catch (error) {
       errorMessage(error);
     }
-  }, [postId, router, authMutate, setTooltipAnchorEl]);
+  }, [postId, router, authMutate, setTooltipAnchorEl, dispatch]);
 
   const handleTooltipReport = useCallback(async () => {
     try {
@@ -230,6 +244,7 @@ const ProjectDetailController = () => {
 
       if (auth?.success) {
         setTooltipAnchorEl(null);
+        //open report component
         dispatch(
           openReport({
             postType: 'project',
@@ -244,11 +259,53 @@ const ProjectDetailController = () => {
     }
   }, [dispatch, router, authMutate, postId, projectDetail, setTooltipAnchorEl]);
 
+  const handleMemberProfiles = useCallback((value: ProjectMember) => {
+    const checkImage = value.profiles.map((profile) => {
+      return {
+        nickname: profile.nickname,
+        profileImage: profile.profileImage
+          ? profile.profileImage
+          : BlankProfile,
+      };
+    });
+
+    return {
+      profiles: checkImage,
+      moreMemberCount:
+        value.profiles.length > 6 ? `+${value.profiles.length - 6}` : null,
+    };
+  }, []);
+
+  const handleJoinProject = useCallback(async () => {
+    try {
+      const response = await authMutate();
+
+      if (response?.success) {
+        return await joinProjectAPI({ postId });
+      }
+
+      if (!response?.success) {
+        const result = confirm('로그인 후 이용 가능합니다.');
+
+        if (result) {
+          return router.push('/login');
+        }
+
+        if (!result) {
+          return;
+        }
+      }
+    } catch (error) {
+      errorMessage(error);
+    }
+  }, [authMutate, router, postId]);
+
   useEffect(() => {
     setIsClientRendering(true);
   }, []);
 
   const props: ProjectDetailViewProps = {
+    me: projectDetail?.data.writer.nickname === accessUser,
     isClientRendering,
     postId,
     writer: projectDetail
@@ -257,9 +314,11 @@ const ProjectDetailController = () => {
           lastLoginAt: dateFromNow({
             date: projectDetail.data.writer.lastLoginAt,
           }),
-          profileImage: projectDetail.data.writer.profileImage,
+          profileImage: projectDetail.data.writer.profileImage
+            ? projectDetail.data.writer.profileImage
+            : BlankProfile,
         }
-      : projectDetail,
+      : undefined,
     content: projectDetail
       ? {
           title: projectDetail.data.content.title,
@@ -279,11 +338,13 @@ const ProjectDetailController = () => {
             projectDetail.data.content.memberTypes,
           ),
           recruitNumber: projectDetail.data.content.recruitNumber,
+          representativeImage: projectDetail.data.content.representativeImage,
         }
-      : projectDetail,
-
+      : undefined,
+    member: projectDetail
+      ? handleMemberProfiles(projectDetail.data.member)
+      : undefined,
     bookmark: bookmark?.data.bookmark,
-
     handleBookmark,
     handleShare,
     handleTooltipOpen,
@@ -308,9 +369,7 @@ const ProjectDetailController = () => {
       open: tooltipOpen,
       onClose: handleTooltipClose,
     },
-
-    //TODO comment 추가하기
-    //TODO trending post 추가하기
+    handleJoinProject,
   };
 
   return <ProjectDetailView {...props} />;

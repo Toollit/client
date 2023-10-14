@@ -1,57 +1,64 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { mediaQueryMobile, mediaQueryTablet } from '@/styles/mediaQuery';
+import { mediaQueryLaptop, mediaQueryTablet } from '@/styles/mediaQuery';
 
-const ColumnContainer = styled.div`
+const Container = styled.div`
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
+  padding: 1rem 1rem 10rem 1rem;
 
-  ${mediaQueryTablet} {
+  ${mediaQueryLaptop} {
     flex-direction: row;
   }
 `;
 
 const ColumnLeftContainer = styled.div`
   width: 100%;
-  padding: 0.5rem 0.5rem;
-
-  ${mediaQueryTablet} {
-    width: 70%;
-    padding: 2rem 0.5rem;
-  }
 `;
 
 const ColumnRightContainer = styled.div`
   width: 100%;
-  padding: 1.5rem 0.5rem 0.5rem 0.5rem;
 
-  ${mediaQueryTablet} {
-    width: 30%;
-    padding: 2rem 0.5rem;
+  ${mediaQueryLaptop} {
+    max-width: 30rem;
+    width: 100%;
+    margin-left: 2rem;
   }
 `;
 
-const ProjectContentContainer = styled.div`
+const StickyContainer = styled.div`
+  ${mediaQueryLaptop} {
+    position: sticky;
+    top: 7rem;
+  }
+`;
+
+const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0rem 1rem;
-  border: 1px solid ${(props) => props.theme.colors.border.container};
-  box-shadow: ${(props) => props.theme.boxShadow.base};
-  border-radius: ${(props) => props.theme.borderRadius.sharp};
   min-height: 50rem;
+  border-bottom: 1px solid ${(props) => props.theme.colors.border.container};
+
+  ${mediaQueryLaptop} {
+    padding: 0rem 1rem;
+    border: 1px solid ${(props) => props.theme.colors.border.container};
+    box-shadow: ${(props) => props.theme.boxShadow.base};
+    border-radius: ${(props) => props.theme.borderRadius.sharp};
+  }
 `;
 
-const ProjectContentTopContainer = styled.div`
+const ContentHeader = styled.div`
   border-bottom: 1px solid ${(props) => props.theme.colors.border.divider};
   padding-bottom: 1rem;
+  background-color: #ffffff;
 `;
 
-const RecruitmentTypeContainer = styled.div`
+const RecruitMemberType = styled.div`
   display: flex;
   margin-top: 1.5rem;
 `;
 
-const RecruitmentType = styled.div<{
+const MemberType = styled.div<{
   type: 'Developer' | 'Designer' | 'PM' | 'Anyone';
 }>`
   width: fit-content;
@@ -92,10 +99,6 @@ const DateAndViewContainer = styled.div`
   padding-right: 0.5rem;
   font-size: 1.2rem;
   color: ${(props) => props.theme.colors.text.gray};
-
-  ${mediaQueryMobile} {
-    font-size: 1.4rem;
-  }
 `;
 
 const Date = styled.div`
@@ -150,10 +153,6 @@ const BookmarkButton = styled.button`
   color: #536471;
   font-size: 1.2rem;
   font-weight: 500;
-
-  ${mediaQueryMobile} {
-    font-size: 1.4rem;
-  }
 `;
 
 const ShareButton = styled.button`
@@ -167,10 +166,6 @@ const ShareButton = styled.button`
   color: #536471;
   font-size: 1.2rem;
   font-weight: 500;
-
-  ${mediaQueryMobile} {
-    font-size: 1.4rem;
-  }
 `;
 
 const ModifyButton = styled.button`
@@ -185,7 +180,8 @@ const WriterInfoContainer = styled.div`
   box-shadow: ${(props) => props.theme.boxShadow.base};
   border-radius: ${(props) => props.theme.borderRadius.sharp};
   align-items: center;
-  padding: 0.5rem 1.2rem;
+  padding: 1rem 1.5rem;
+  color: #000;
   cursor: pointer;
 
   ${mediaQueryTablet} {
@@ -194,21 +190,24 @@ const WriterInfoContainer = styled.div`
   }
 `;
 
-const ProfileImageContainer = styled.div`
+const WriterProfileImage = styled.div`
   position: relative;
   height: fit-content;
-  margin-right: 0.5rem;
-  padding: 0.5rem;
+  margin-right: 1rem;
+  padding: 1rem 0rem;
 
   ${mediaQueryTablet} {
-    height: fit-content;
-    padding: 0;
     margin: 0 auto;
   }
 `;
 
+const WriterInfo = styled.div`
+  /* flex: 1 1 auto; */
+`;
+
 const StyledImage = styled(Image)`
-  border-radius: 25rem;
+  border-radius: 50%;
+  border: 2px solid #0d1117 !important;
 `;
 
 const Writer = styled.div`
@@ -246,28 +245,50 @@ const LastLoginAt = styled.div`
   }
 `;
 
-const ProjectMemberContainerTablet = styled.div`
-  display: none;
-
-  ${mediaQueryTablet} {
-    display: initial;
-  }
+const ProjectMembersContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid ${(props) => props.theme.colors.border.container};
+  box-shadow: ${(props) => props.theme.boxShadow.base};
 `;
 
-const ProjectMemberContainerMobile = styled.div`
-  ${mediaQueryTablet} {
-    display: none;
-  }
+const MembersContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Members = styled.ul`
+  display: flex;
+  /* overflow: auto; */
+  align-items: center;
+  padding: 1.5rem 0;
+  min-width: 18rem;
+`;
+
+const Avatar = styled.li<{ index: number }>`
+  min-width: 0;
+  max-width: 2.8rem;
+  /* transform: translateX(${(props) => `${props.index * -30}`}%); */
+`;
+
+const RestMemberCount = styled.span`
+  width: 100%;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: ${(props) => props.theme.colors.theme};
+  padding: 0 0.8rem;
 `;
 
 export {
-  ColumnContainer,
+  Container,
   ColumnLeftContainer,
   ColumnRightContainer,
-  ProjectContentContainer,
-  ProjectContentTopContainer,
-  RecruitmentTypeContainer,
-  RecruitmentType,
+  StickyContainer,
+  ContentContainer,
+  ContentHeader,
+  RecruitMemberType,
+  MemberType,
   DateAndViewContainer,
   Date,
   Views,
@@ -279,11 +300,15 @@ export {
   BookmarkButton,
   ShareButton,
   ModifyButton,
-  ProfileImageContainer,
+  WriterProfileImage,
+  WriterInfo,
   WriterInfoContainer,
   Writer,
   LastLoginAt,
-  ProjectMemberContainerTablet,
-  ProjectMemberContainerMobile,
   StyledImage,
+  ProjectMembersContainer,
+  MembersContainer,
+  Members,
+  Avatar,
+  RestMemberCount,
 };
