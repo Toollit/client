@@ -16,7 +16,7 @@ export interface UpdateProjectAPIRes {
   success: boolean;
   message: string | null;
   data: {
-    postId: number;
+    postId: string;
   };
 }
 
