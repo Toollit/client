@@ -1,12 +1,15 @@
 import { serverInstance } from 'apis/axios';
 
 export interface BookmarkAPIReq {
-  postId: number;
+  postId: string;
 }
 
 export interface BookmarkAPIRes {
   success: boolean;
-  message: 'save' | 'cancel' | null;
+  message: string | null;
+  data: {
+    status: 'save' | 'cancel';
+  };
 }
 
 export const bookmarkAPI = async (

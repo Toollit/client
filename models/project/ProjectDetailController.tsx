@@ -46,6 +46,10 @@ const ProjectDetailController = () => {
   const isLoading = useSelector((state: RootState) => state.isLoading.status);
 
   const [isClientRendering, setIsClientRendering] = useState(false);
+  const [bookmarkAlertTimeoutId, setBookmarkAlertTimeoutId] =
+    useState<NodeJS.Timeout>();
+  const [shareAlertTimeoutId, setShareAlertTimeoutId] =
+    useState<NodeJS.Timeout>();
 
   const { data: projectDetail } = useSWR(
     postId
@@ -120,28 +124,35 @@ const ProjectDetailController = () => {
           return alert('내가 작성한 게시글 입니다.');
         }
 
-        const response = await bookmarkAPI({ postId: Number(postId) });
+        const response = await bookmarkAPI({ postId });
+        const status = response?.data.status;
 
         bookmarkMutate();
         mutateCachedKeysWithTag({ tag: 'projectsBookmarksStatus' });
         mutateCachedKeysWithTag({ tag: 'projects' });
 
-        if (response?.message === 'save') {
+        clearTimeout(bookmarkAlertTimeoutId);
+
+        if (status === 'save') {
           dispatch(showAlert({ type: 'success', text: '북마크 했습니다.' }));
 
-          setTimeout(() => {
+          const timeoutId = setTimeout(() => {
             dispatch(hideAlert());
           }, 2000);
+
+          setBookmarkAlertTimeoutId(timeoutId);
         }
 
-        if (response?.message === 'cancel') {
+        if (status === 'cancel') {
           dispatch(
             showAlert({ type: 'success', text: '북마크를 취소했습니다.' }),
           );
 
-          setTimeout(() => {
+          const timeoutId = setTimeout(() => {
             dispatch(hideAlert());
           }, 2000);
+
+          setBookmarkAlertTimeoutId(timeoutId);
         }
       }
     } catch (error) {
@@ -155,6 +166,7 @@ const ProjectDetailController = () => {
     authMutate,
     bookmarkMutate,
     mutateCachedKeysWithTag,
+    bookmarkAlertTimeoutId,
   ]);
 
   const handleShare = useCallback(() => {
@@ -162,12 +174,16 @@ const ProjectDetailController = () => {
 
     navigator.clipboard.writeText(fullUrl);
 
+    clearTimeout(shareAlertTimeoutId);
+
     dispatch(showAlert({ type: 'info', text: '주소가 복사되었습니다.' }));
 
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       dispatch(hideAlert());
     }, 2000);
-  }, [dispatch, router]);
+
+    setShareAlertTimeoutId(timeoutId);
+  }, [dispatch, router, shareAlertTimeoutId]);
 
   const handleTooltipModify = useCallback(async () => {
     setTooltipAnchorEl(null);
@@ -302,7 +318,12 @@ const ProjectDetailController = () => {
 
   useEffect(() => {
     setIsClientRendering(true);
-  }, []);
+
+    return () => {
+      clearTimeout(bookmarkAlertTimeoutId);
+      clearTimeout(shareAlertTimeoutId);
+    };
+  }, [bookmarkAlertTimeoutId, shareAlertTimeoutId]);
 
   const props: ProjectDetailViewProps = {
     me: projectDetail?.data.writer.nickname === accessUser,
