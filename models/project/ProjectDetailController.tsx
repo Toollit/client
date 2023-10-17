@@ -297,7 +297,10 @@ const ProjectDetailController = () => {
       const response = await authMutate();
 
       if (response?.success) {
-        return await joinProjectAPI({ postId });
+        await joinProjectAPI({ postId });
+        return alert(
+          '참가 신청을 했습니다. 프로젝트 장이 승인 후 프로젝트 멤버가 됩니다.',
+        );
       }
 
       if (!response?.success) {
@@ -320,8 +323,7 @@ const ProjectDetailController = () => {
     setIsClientRendering(true);
 
     return () => {
-      clearTimeout(bookmarkAlertTimeoutId);
-      clearTimeout(shareAlertTimeoutId);
+      hideAlert();
     };
   }, [bookmarkAlertTimeoutId, shareAlertTimeoutId]);
 

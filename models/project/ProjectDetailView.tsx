@@ -15,7 +15,6 @@ import { Button } from '@/components/commons/button';
 import Block from '@/components/commons/block';
 import { ShareIcon, BookmarkIcon, MoreIcon } from '@/assets/icons';
 import CategoryTitle from '@/components/commons/categoryTitle';
-import { NoImagePersonIcon } from '@/assets/icons/mui/PersonIcon';
 import { CenterLayoutContainer, ImageWrapper } from '@/styles/commons';
 import FastScroll from '@/components/commons/fastScroll';
 import Link from 'next/link';
