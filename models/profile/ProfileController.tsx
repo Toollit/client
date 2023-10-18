@@ -341,8 +341,8 @@ const ProfileController = () => {
         }
 
         // If revalidate immediately. It will make an api request with the previous nickname value, resulting in an error. It should be handled asynchronously.
-        setTimeout(() => {
-          authMutate();
+        setTimeout(async () => {
+          await authMutate();
           profileInfoDataMutate();
         }, 100);
 
@@ -757,7 +757,7 @@ const ProfileController = () => {
     loginState: accessUser,
     tabs: tabs.current,
     currentTab,
-    profileImageData: profileImageData?.data?.profileImage ?? null,
+    profileImageData: profileImageData?.data?.profileImage,
     profileInfoData: handleProfileInfoDataResponse(data.profileInfo.data),
     profileProjectData: handleProfileProjectDataResponse(data.projects.data),
     nickname,

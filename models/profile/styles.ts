@@ -1,15 +1,16 @@
 import { mediaQueryLaptop } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 import { Theme, css } from '@emotion/react';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import Image from 'next/image';
 
 const Container = styled.div`
-  display: table;
-  table-layout: fixed; // required!!!
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  height: auto;
 
   ${mediaQueryLaptop} {
+    flex-direction: row;
     max-width: 102.4rem;
     margin: 0 auto;
   }
@@ -30,12 +31,35 @@ const ColumnLeftContainer = styled.div`
 `;
 
 const ColumnRightContainer = styled.div`
-  display: none;
+  flex-grow: 1;
 
   ${mediaQueryLaptop} {
     display: table-cell;
     width: 65%;
     padding: 0 3rem 5rem 3rem;
+  }
+`;
+
+const LaptopViewContainer = styled.div`
+  display: none;
+
+  ${mediaQueryLaptop} {
+    /* display: table-cell; */
+    /* width: 100; */
+    /* padding: 0 3rem 5rem 3rem; */
+    display: initial;
+    width: 100%;
+  }
+`;
+
+const MobileViewContainer = styled.div`
+  width: 100vw;
+  height: fit-content;
+  padding-bottom: 5rem;
+  display: initial;
+
+  ${mediaQueryLaptop} {
+    display: none;
   }
 `;
 
@@ -45,7 +69,7 @@ const GNBArea = styled.div`
   display: flex;
 `;
 
-const StyledLink = styled.a`
+const GNBLink = styled.a`
   text-decoration: none;
   color: #000;
 `;
@@ -63,7 +87,7 @@ const ProfileArea = styled.div`
   position: relative;
 `;
 
-const ProfileNoImageContainer = styled.div`
+const BlankImageContainer = styled.div`
   position: relative;
   height: 15rem;
 `;
@@ -77,7 +101,11 @@ const ProfileImageContainer = styled.div`
   align-items: center;
 `;
 
-const NoImage = styled.div`
+const StyledProfileImage = styled(Image)`
+  border-radius: 25rem;
+`;
+
+const BlankImage = styled.div`
   display: flex;
   justify-content: center;
 `;
@@ -95,27 +123,17 @@ const ImageEditBtn = styled.button`
 `;
 
 const ProfileImageSkeletonContainer = styled.div`
-  display: flex;
-  justify-content: center;
+  position: relative;
   height: 15rem;
-`;
-
-const EditMenu = styled(Menu)`
-  .MuiList-padding {
-    padding: 0;
-  }
-`;
-
-const EditCondition = styled(MenuItem)`
-  font-size: 1.4rem;
-  padding: 0.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const UserNickname = styled.div`
   font-size: 1.4rem;
 `;
-
-const UserEmail = styled.div``;
 
 const HeaderLeft = styled.div`
   display: none;
@@ -245,9 +263,14 @@ const Logo = styled.a`
   font-weight: 900;
 `;
 
-const MobileProfileContainer = styled.div`
-  width: 100vw;
-  padding-bottom: 5rem;
+const ViewContainer = styled.div`
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  min-height: calc(100vh - 30.9rem); // 30.9 = title + profile image + tab
+  height: auto;
+`;
+
+const MobileContainer = styled.div`
   display: initial;
 
   ${mediaQueryLaptop} {
@@ -255,18 +278,25 @@ const MobileProfileContainer = styled.div`
   }
 `;
 
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 30.9rem);
+  height: auto;
+`;
+
 export {
   Container,
   ColumnLeftContainer,
   ColumnRightContainer,
+  LaptopViewContainer,
+  MobileViewContainer,
   GNBArea,
-  StyledLink,
+  GNBLink,
   GNBTitle,
   ProfileArea,
-  EditMenu,
-  EditCondition,
   UserNickname,
-  ProfileNoImageContainer,
+  BlankImageContainer,
   ProfileImageContainer,
   HeaderLeft,
   HeaderLeftMenu,
@@ -275,8 +305,11 @@ export {
   LogInOut,
   MyProfile,
   Logo,
-  NoImage,
+  StyledProfileImage,
+  BlankImage,
   ImageEditBtn,
-  MobileProfileContainer,
   ProfileImageSkeletonContainer,
+  ViewContainer,
+  MobileContainer,
+  Content,
 };

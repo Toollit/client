@@ -21,13 +21,11 @@ import {
   ColumnLeftContainer,
   ColumnRightContainer,
   GNBArea,
-  StyledLink,
+  GNBLink,
   GNBTitle,
   ProfileArea,
-  EditMenu,
-  EditCondition,
   UserNickname,
-  ProfileNoImageContainer,
+  BlankImageContainer,
   ProfileImageContainer,
   HeaderLeft,
   HeaderLeftMenu,
@@ -35,12 +33,17 @@ import {
   DividerContainer,
   LogInOut,
   Logo,
-  NoImage,
+  BlankImage,
   ImageEditBtn,
-  MobileProfileContainer,
   ProfileImageSkeletonContainer,
   MyProfile,
+  LaptopViewContainer,
+  MobileViewContainer,
+  ViewContainer,
+  Content,
+  StyledProfileImage,
 } from './styles';
+import { ImageWrapper } from '@/styles/commons';
 
 export interface ProfileViewProps {
   accessUser: string | null;
@@ -48,7 +51,7 @@ export interface ProfileViewProps {
   loginState?: string | null;
   tabs: { name: string; query: string }[];
   currentTab: 'viewProfile' | 'viewProjects' | 'viewBookmarks' | undefined;
-  profileImageData: string | null;
+  profileImageData?: string | null;
   profileInfoData: ProfileInfoData | null;
   profileProjectData: ProfileProjectsData | null;
   nickname: string;
@@ -82,148 +85,150 @@ const ProfileView = ({
   tooltip,
 }: ProfileViewProps) => {
   return (
-    <>
-      <Container>
-        <ColumnLeftContainer role=''>
-          <GNBArea>
-            <Link href={'/'}>
-              <a>
-                <GetitLogo width={3.2} height={3.2} />
-              </a>
-            </Link>
+    <Container>
+      <ColumnLeftContainer role=''>
+        <GNBArea>
+          <Link href={'/'}>
+            <a>
+              <GetitLogo width={3.2} height={3.2} />
+            </a>
+          </Link>
 
-            <Link href={'/'} passHref>
-              <StyledLink>
-                <GNBTitle>Getit 프로필</GNBTitle>
-              </StyledLink>
-            </Link>
-          </GNBArea>
+          <Link href={'/'} passHref>
+            <GNBLink>
+              <GNBTitle>Getit 프로필</GNBTitle>
+            </GNBLink>
+          </Link>
+        </GNBArea>
 
-          <ProfileArea>
-            {profileImageData !== undefined ? (
-              <>
-                {profileImageData ? (
-                  <ProfileImageContainer>
-                    <Image
-                      style={{ borderRadius: '25rem' }}
+        <ProfileArea>
+          {profileImageData !== undefined ? (
+            <>
+              {profileImageData !== null ? (
+                <ProfileImageContainer>
+                  <ImageWrapper width={12} height={12}>
+                    <StyledProfileImage
                       src={profileImageData}
                       alt={'profile image'}
-                      width={120}
-                      height={120}
                       draggable={false}
                       priority
+                      layout='fill'
                     />
-                  </ProfileImageContainer>
+                  </ImageWrapper>
+                </ProfileImageContainer>
+              ) : (
+                <BlankImageContainer>
+                  <BlankImage>
+                    <AccountCircleIcon
+                      fill={true}
+                      width={15}
+                      height={15}
+                      color='#767678'
+                    />
+                  </BlankImage>
+                </BlankImageContainer>
+              )}
+              {me && (
+                <>
+                  <ImageEditBtn onClick={handleTooltipOpen}>
+                    <EditCircleIcon
+                      fill={true}
+                      width={3.5}
+                      height={3.5}
+                      color='#4dd290'
+                    />
+                  </ImageEditBtn>
+                  <Tooltip {...tooltip} />
+                </>
+              )}
+            </>
+          ) : (
+            <ProfileImageSkeletonContainer>
+              <Skeleton shape='circular' width={12} height={12} />
+            </ProfileImageSkeletonContainer>
+          )}
+
+          <input
+            hidden
+            type='file'
+            accept='image/jpg, image/jpeg, image/png'
+            ref={profileImgRef}
+            onChange={handleChangeProfileImg}
+          />
+
+          <UserNickname>{nickname}</UserNickname>
+        </ProfileArea>
+
+        <HeaderLeft>
+          <HeaderLeftMenu currentTab={currentTab} role='menu'>
+            {tabs.map((tab, index) => {
+              return (
+                <li key={tab.name}>
+                  <Link
+                    href={{
+                      pathname: `/profile/${nickname}`,
+                      query: {
+                        tab: tab.query,
+                      },
+                    }}
+                  >
+                    <a>{tab.name}</a>
+                  </Link>
+                </li>
+              );
+            })}
+          </HeaderLeftMenu>
+
+          <DividerContainer>
+            <Divider type='thin' />
+          </DividerContainer>
+
+          <HeaderLeftLink>
+            <ul>
+              <li>
+                {me ? (
+                  <LogInOut onClick={handleLogInOut}>
+                    {loginState ? '로그아웃' : '로그인'}
+                  </LogInOut>
                 ) : (
-                  <ProfileNoImageContainer>
-                    <NoImage>
-                      <AccountCircleIcon
-                        fill={true}
-                        width={15}
-                        height={15}
-                        color='#767678'
-                      />
-                    </NoImage>
-                  </ProfileNoImageContainer>
+                  <Link
+                    href={accessUser ? `/profile/${accessUser}` : '/login'}
+                    passHref
+                  >
+                    <MyProfile>내프로필</MyProfile>
+                  </Link>
                 )}
-                {me && (
-                  <>
-                    <ImageEditBtn onClick={handleTooltipOpen}>
-                      <EditCircleIcon
-                        fill={true}
-                        width={3.5}
-                        height={3.5}
-                        color='#4dd290'
-                      />
-                    </ImageEditBtn>
-                    <Tooltip {...tooltip} />
-                  </>
-                )}
-              </>
-            ) : (
-              <ProfileImageSkeletonContainer>
-                <Skeleton shape='circular' width={120} height={120} top={3} />
-              </ProfileImageSkeletonContainer>
-            )}
+              </li>
+              <li>
+                <Link href='/'>
+                  <a>고객센터</a>
+                </Link>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <Link href='/' passHref>
+                  <Logo>Getit</Logo>
+                </Link>
+              </li>
+              <li>
+                <Link href=''>
+                  <a>개인정보처리방침</a>
+                </Link>
+              </li>
+              <li>
+                <Link href=''>
+                  <a>이용약관</a>
+                </Link>
+              </li>
+            </ul>
+          </HeaderLeftLink>
+        </HeaderLeft>
+      </ColumnLeftContainer>
 
-            <input
-              hidden
-              type='file'
-              accept='image/jpg, image/jpeg, image/png'
-              ref={profileImgRef}
-              onChange={handleChangeProfileImg}
-            />
-
-            <UserNickname>{nickname}</UserNickname>
-          </ProfileArea>
-
-          <HeaderLeft>
-            <HeaderLeftMenu currentTab={currentTab} role='menu'>
-              {tabs.map((tab, index) => {
-                return (
-                  <li key={tab.name}>
-                    <Link
-                      href={{
-                        pathname: `/profile/${nickname}`,
-                        query: {
-                          tab: tab.query,
-                        },
-                      }}
-                    >
-                      <a>{tab.name}</a>
-                    </Link>
-                  </li>
-                );
-              })}
-            </HeaderLeftMenu>
-
-            <DividerContainer>
-              <Divider type='thin' />
-            </DividerContainer>
-
-            <HeaderLeftLink>
-              <ul>
-                <li>
-                  {me ? (
-                    <LogInOut onClick={handleLogInOut}>
-                      {loginState ? '로그아웃' : '로그인'}
-                    </LogInOut>
-                  ) : (
-                    <Link
-                      href={accessUser ? `/profile/${accessUser}` : '/login'}
-                      passHref
-                    >
-                      <MyProfile>내프로필</MyProfile>
-                    </Link>
-                  )}
-                </li>
-                <li>
-                  <Link href='/'>
-                    <a>고객센터</a>
-                  </Link>
-                </li>
-              </ul>
-              <ul>
-                <li>
-                  <Link href='/' passHref>
-                    <Logo>Getit</Logo>
-                  </Link>
-                </li>
-                <li>
-                  <Link href=''>
-                    <a>개인정보처리방침</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href=''>
-                    <a>이용약관</a>
-                  </Link>
-                </li>
-              </ul>
-            </HeaderLeftLink>
-          </HeaderLeft>
-        </ColumnLeftContainer>
-        <ColumnRightContainer>
+      <ColumnRightContainer>
+        {/* Laptop view */}
+        <LaptopViewContainer>
           {currentTab === 'viewProfile' && (
             <>
               {profileInfoData ? (
@@ -278,85 +283,88 @@ const ProfileView = ({
               <Skeleton />
             )
           ) : null} */}
-        </ColumnRightContainer>
+        </LaptopViewContainer>
 
-        {/* mobile view */}
-        {!isLaptop && (
-          <MobileProfileContainer>
-            <SwipeableTabView tabs={tabs}>
-              <Block paddingLeft={1.5} paddingRight={1.5}>
-                {profileInfoData ? (
-                  <>
-                    <ProfileInfoBox
-                      me={me}
-                      data={profileInfoData}
-                      editBtnHandler={handleProfileInfoEditBtn}
-                    />
-                    <ProfileFooterLink
-                      me={me}
-                      accessUser={accessUser}
-                      loginState={loginState}
-                      handleLogInOut={handleLogInOut}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Skeleton height={200} top={3} />
-                    <Skeleton height={200} top={3} />
-                    <Skeleton height={200} top={3} />
-                    <Skeleton height={200} top={3} />
-                  </>
-                )}
-              </Block>
-              <Block paddingLeft={1.5} paddingRight={1.5}>
-                {profileProjectData ? (
-                  <>
-                    <ProfileProjectBox
-                      data={profileProjectData}
-                      loadMore={handleProjectLoadMore}
-                    />
-                    <ProfileFooterLink
-                      me={me}
-                      accessUser={accessUser}
-                      loginState={loginState}
-                      handleLogInOut={handleLogInOut}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Skeleton height={200} top={3} />
-                    <Skeleton height={200} top={3} />
-                    <Skeleton height={200} top={3} />
-                    <Skeleton height={200} top={3} />
-                  </>
-                )}
-              </Block>
-              <Block paddingLeft={1.5} paddingRight={1.5}>
-                {currentTab === 'viewBookmarks' ? (
-                  true ? (
-                    <div>
-                      <div>
-                        <div>12342134</div>
-                        <div>12342134</div>
-                        <div>핸드폰 번호 수정</div>
-                        <div>이메일 수정</div>
-                        <div>이메일 공개</div>
-                      </div>
-                      <div>간단한 자기소개</div>
-                      <div>사용 프로그램 또는 기술</div>
-                    </div>
-                  ) : (
-                    <Skeleton />
-                  )
-                ) : null}
-              </Block>
-            </SwipeableTabView>
-          </MobileProfileContainer>
-        )}
-      </Container>
+        {/* Mobile view */}
+        <MobileViewContainer>
+          <SwipeableTabView tabs={tabs}>
+            <ViewContainer>
+              {profileInfoData ? (
+                <Content>
+                  <ProfileInfoBox
+                    me={me}
+                    data={profileInfoData}
+                    editBtnHandler={handleProfileInfoEditBtn}
+                  />
+                  <ProfileFooterLink
+                    me={me}
+                    accessUser={accessUser}
+                    loginState={loginState}
+                    handleLogInOut={handleLogInOut}
+                  />
+                </Content>
+              ) : (
+                <>
+                  <Skeleton height={20} top={3} />
+                  <Skeleton height={20} top={3} />
+                  <Skeleton height={20} top={3} />
+                  <Skeleton height={20} top={3} />
+                </>
+              )}
+            </ViewContainer>
+
+            <ViewContainer>
+              {profileProjectData ? (
+                <Content>
+                  <ProfileProjectBox
+                    data={profileProjectData}
+                    loadMore={handleProjectLoadMore}
+                  />
+                  <ProfileFooterLink
+                    me={me}
+                    accessUser={accessUser}
+                    loginState={loginState}
+                    handleLogInOut={handleLogInOut}
+                  />
+                </Content>
+              ) : (
+                <>
+                  <Skeleton height={20} top={3} />
+                  <Skeleton height={20} top={3} />
+                  <Skeleton height={20} top={3} />
+                  <Skeleton height={20} top={3} />
+                </>
+              )}
+            </ViewContainer>
+
+            <ViewContainer>
+              {currentTab === 'viewBookmarks' ? (
+                <Content>
+                  <div>
+                    <div>12342134</div>
+                    <div>12342134</div>
+                    <div>핸드폰 번호 수정</div>
+                    <div>이메일 수정</div>
+                    <div>이메일 공개</div>
+                  </div>
+                  <div>간단한 자기소개</div>
+                  <div>사용 프로그램 또는 기술</div>
+                  <ProfileFooterLink
+                    me={me}
+                    accessUser={accessUser}
+                    loginState={loginState}
+                    handleLogInOut={handleLogInOut}
+                  />
+                </Content>
+              ) : null}
+            </ViewContainer>
+          </SwipeableTabView>
+        </MobileViewContainer>
+      </ColumnRightContainer>
       <Dialog />
-    </>
+    </Container>
   );
 };
-
+{
+}
 export default ProfileView;
