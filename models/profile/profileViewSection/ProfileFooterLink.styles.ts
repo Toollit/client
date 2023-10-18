@@ -7,8 +7,16 @@ const LogInOut = styled.div`
   cursor: pointer;
 `;
 
+const MyProfile = styled.a`
+  font-size: 1.4rem;
+  color: ${(props) => props.theme.colors.gray};
+
+  cursor: pointer;
+`;
+
 const Container = styled.div`
   padding: 4rem 3.9rem;
+  margin-top: auto; // Using marin-top is to place it at the bottom of the screen. Parent container must be a flex container to work
 
   ul {
     display: flex;
@@ -53,4 +61,4 @@ const Logo = styled.a`
   font-size: 2rem !important;
 `;
 
-export { LogInOut, Container, Logo };
+export { LogInOut, MyProfile, Container, Logo };

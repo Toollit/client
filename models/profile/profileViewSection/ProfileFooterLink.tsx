@@ -1,13 +1,22 @@
 import React from 'react';
-import { LogInOut, Container, Logo } from './ProfileFooterLink.styles';
 import Link from 'next/link';
+import {
+  LogInOut,
+  MyProfile,
+  Container,
+  Logo,
+} from './ProfileFooterLink.styles';
 
 interface ProfileFooterLink {
+  me: boolean;
+  accessUser: string | null;
   loginState?: string | null;
   handleLogInOut: () => void;
 }
 
 const ProfileFooterLink = ({
+  me,
+  accessUser,
   loginState,
   handleLogInOut,
 }: ProfileFooterLink) => {
@@ -15,9 +24,18 @@ const ProfileFooterLink = ({
     <Container>
       <ul>
         <li>
-          <LogInOut onClick={handleLogInOut}>
-            {loginState ? '로그아웃' : '로그인'}
-          </LogInOut>
+          {me ? (
+            <LogInOut onClick={handleLogInOut}>
+              {loginState ? '로그아웃' : '로그인'}
+            </LogInOut>
+          ) : (
+            <Link
+              href={accessUser ? `/profile/${accessUser}` : '/login'}
+              passHref
+            >
+              <MyProfile>내프로필</MyProfile>
+            </Link>
+          )}
         </li>
         <li>
           <Link href='/'>
