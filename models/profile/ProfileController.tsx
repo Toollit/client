@@ -96,7 +96,7 @@ const ProfileController = () => {
   const [currentTab, setCurrentTab] = useState<
     'viewProfile' | 'viewProjects' | 'viewBookmarks' | undefined
   >();
-  const [projectPostCount, setProjectPostCount] = useState(10); // Load by 10
+  const [projectPostCount, setProjectPostCount] = useState(5); // Load by 5
 
   const tabs = useRef([
     { name: '프로필', query: 'viewProfile' },
@@ -213,7 +213,7 @@ const ProfileController = () => {
           router.back();
         },
         onSuccess(res, key, config) {
-          if (projectPostCount > 10) {
+          if (projectPostCount > 5) {
             setData((prev) => {
               return {
                 ...prev,
@@ -235,7 +235,7 @@ const ProfileController = () => {
             });
           }
 
-          if (projectPostCount <= 10) {
+          if (projectPostCount <= 5) {
             setData((prev) => {
               return {
                 ...prev,
@@ -601,11 +601,11 @@ const ProfileController = () => {
       return;
     }
 
-    setProjectPostCount((prev) => prev + 10);
+    setProjectPostCount((prev) => prev + 5);
 
     // The code written under that comment only works if there is cached data. Logic for leveraging cached data without additional data load.
     const key = getCachedKeyWithTag({
-      tag: `profileProjects?count=${projectPostCount + 10}`,
+      tag: `profileProjects?count=${projectPostCount + 5}`,
     });
 
     if (!key) {
