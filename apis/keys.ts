@@ -29,7 +29,7 @@ export const userExistCheckKey = (nickname: string) => {
 };
 
 export const profileImageKey = (nickname: string) => {
-  return `${PROFILE_API_ENDPOINT}/${nickname}`;
+  return `${PROFILE_API_ENDPOINT}/${nickname}/profileImage`;
 };
 
 export const profileInfoKey = (nickname: string) => {
