@@ -3,10 +3,14 @@ import { Container } from './styles';
 
 export interface BlockProps {
   children: React.ReactNode;
-  paddingLeft?: number;
-  paddingTop?: number;
-  paddingRight?: number;
-  paddingBottom?: number;
+  paddingLeft?: number | string;
+  paddingTop?: number | string;
+  paddingRight?: number | string;
+  paddingBottom?: number | string;
+  marginLeft?: number | string;
+  marginTop?: number | string;
+  marginRight?: number | string;
+  marginBottom?: number | string;
 }
 
 const Block = ({
@@ -15,6 +19,10 @@ const Block = ({
   paddingTop,
   paddingRight,
   paddingBottom,
+  marginLeft,
+  marginTop,
+  marginRight,
+  marginBottom,
 }: BlockProps) => {
   return (
     <Container
@@ -22,6 +30,10 @@ const Block = ({
       paddingTop={paddingTop}
       paddingRight={paddingRight}
       paddingBottom={paddingBottom}
+      marginLeft={marginLeft}
+      marginTop={marginTop}
+      marginRight={marginRight}
+      marginBottom={marginBottom}
     >
       {children}
     </Container>
