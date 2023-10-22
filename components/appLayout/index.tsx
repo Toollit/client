@@ -15,6 +15,7 @@ const AppLayout = ({
   title,
   menu,
   boundary,
+  fullSize,
   onClick,
 }: AppLayoutProps) => {
   return (
@@ -24,6 +25,7 @@ const AppLayout = ({
         title={title}
         menu={menu}
         boundary={boundary}
+        fullSize={fullSize}
         onClick={onClick}
       />
       <Content type={type}>{children}</Content>

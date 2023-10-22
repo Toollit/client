@@ -24,9 +24,6 @@ interface ContentProps extends Pick<NavProps, 'type'> {}
 
 const Content = styled.div<ContentProps>`
   position: relative;
-  margin: 0 auto;
-  max-width: 102.4rem;
-  width: 100%;
   flex: 1 1 auto; // For full size content
   display: flex;
   flex-direction: column;
