@@ -39,3 +39,7 @@ export const profileInfoKey = (nickname: string) => {
 export const profileProjectsKey = (nickname: string, count: number) => {
   return `${PROFILE_API_ENDPOINT}/${nickname}?tab=viewProjects&count=${count}`;
 };
+
+export const profileBookmarksKey = (nickname: string, count: number) => {
+  return `${PROFILE_API_ENDPOINT}/${nickname}?tab=viewBookmarks&count=${count}`;
+};
