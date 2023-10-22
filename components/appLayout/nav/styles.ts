@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 
-const Container = styled.nav<{ boundary: boolean }>`
+const DefaultContainer = styled.nav<{ boundary: boolean }>`
   border-bottom: ${(props) => (props.boundary ? '1px solid #eee' : 'none')};
   width: 100%;
   margin: 0 auto;
-  padding: 0 1.5rem;
   min-height: 6rem;
   height: 6rem;
   position: fixed;
@@ -14,12 +13,25 @@ const Container = styled.nav<{ boundary: boolean }>`
   right: 0;
   z-index: 999;
   background-color: #ffffff;
+  /* backdrop-filter: blur(15px);
+  background-color: rgba(255, 255, 255, 0.3); */
 `;
 
-const CenterContainer = styled.div`
-  max-width: 102.4rem;
-  margin: 0 auto;
+const Container = styled.nav<{ boundary: boolean; fullSize?: boolean }>`
+  border-bottom: ${(props) => (props.boundary ? '1px solid #eee' : 'none')};
   width: 100%;
+  margin: 0 auto;
+  max-width: ${(props) => (props.fullSize ? '100%' : '102.4rem')};
+  min-height: 6rem;
+  height: 6rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background-color: #ffffff;
+  /* backdrop-filter: blur(15px);
+  background-color: rgba(255, 255, 255, 0.3); */
 `;
 
 const ColumnContainer = styled.div`
@@ -29,7 +41,7 @@ const ColumnContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   position: relative;
-  margin: auto -0.8rem;
+  padding: 0 0.8rem;
 `;
 
 const ColumnLeftContainer = styled.ul<{ isMobile: boolean }>`
@@ -70,7 +82,6 @@ const ColumnLeftContainer = styled.ul<{ isMobile: boolean }>`
   }
 
   a {
-    padding: 0 0.8rem;
     height: 100%;
   }
 `;
@@ -85,7 +96,7 @@ const ColumnRightContainer = styled.ul<{ isMobile: boolean }>`
   }
 
   a {
-    padding: 0 0.8rem;
+    padding-left: 1.2rem;
     height: 100%;
   }
 `;
@@ -121,8 +132,8 @@ const StyledLink = styled.a`
 `;
 
 export {
+  DefaultContainer,
   Container,
-  CenterContainer,
   ColumnContainer,
   ColumnLeftContainer,
   ColumnRightContainer,

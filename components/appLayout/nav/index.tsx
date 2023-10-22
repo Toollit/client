@@ -10,6 +10,7 @@ import { RootState } from '@/store';
 import useAuth from '@/hooks/useAuth';
 import useCheckUserAgent from '@/hooks/useCheckUserAgent';
 import useCachedKeys from '@/hooks/useCachedKeys';
+import { InnerContainer } from '@/styles/commons';
 import {
   Container,
   ColumnContainer,
@@ -19,7 +20,7 @@ import {
   LogoText,
   Title,
   StyledLink,
-  CenterContainer,
+  DefaultContainer,
 } from './styles';
 
 export interface NavProps {
@@ -27,6 +28,7 @@ export interface NavProps {
   title?: string;
   menu?: React.ReactNode[];
   boundary?: boolean;
+  fullSize?: boolean;
   onClick?: () => void;
 }
 
@@ -35,9 +37,17 @@ export interface NavProps {
  * @props title - nav center text
  * @props menu - nav right side icons
  * @props boundary - nav bottom border show
+ * @props fullSize - use only when type back or close and boundary false
  * @props onClick - nav left side default icons click handler
  */
-const Nav = ({ type, title, menu, boundary = true, onClick }: NavProps) => {
+const Nav = ({
+  type,
+  title,
+  menu,
+  boundary = true,
+  fullSize = true,
+  onClick,
+}: NavProps) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { authMutate } = useAuth();
@@ -95,8 +105,8 @@ const Nav = ({ type, title, menu, boundary = true, onClick }: NavProps) => {
   switch (type) {
     case 'default':
       return (
-        <Container boundary={boundary}>
-          <CenterContainer>
+        <DefaultContainer boundary={boundary}>
+          <InnerContainer>
             <ColumnContainer>
               <ColumnLeftContainer isMobile={isMobile}>
                 <li>
@@ -129,13 +139,13 @@ const Nav = ({ type, title, menu, boundary = true, onClick }: NavProps) => {
                 </li>
               </ColumnRightContainer>
             </ColumnContainer>
-          </CenterContainer>
-        </Container>
+          </InnerContainer>
+        </DefaultContainer>
       );
 
     case 'back':
       return (
-        <Container boundary={boundary}>
+        <Container boundary={boundary} fullSize={fullSize}>
           <ColumnContainer>
             <Title>{title}</Title>
             <ColumnLeftContainer isMobile={isMobile}>
@@ -150,7 +160,7 @@ const Nav = ({ type, title, menu, boundary = true, onClick }: NavProps) => {
 
     case 'close':
       return (
-        <Container boundary={boundary}>
+        <Container boundary={boundary} fullSize={fullSize}>
           <ColumnContainer>
             <Title>{title}</Title>
             <ColumnLeftContainer isMobile={isMobile}>
