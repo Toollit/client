@@ -5,7 +5,7 @@ export interface Project {
   id: number;
   title: string;
   views: number;
-  bookmarks: number;
+  bookmarkCount: number;
   hashtags: string[];
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
   memberCount: number;
