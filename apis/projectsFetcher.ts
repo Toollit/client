@@ -8,8 +8,8 @@ export interface Project {
   bookmarks: number;
   hashtags: string[];
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
-  memberNumber: number;
-  recruitNumber: number;
+  memberCount: number;
+  recruitCount: number;
   representativeImage: string;
 }
 

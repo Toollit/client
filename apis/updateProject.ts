@@ -8,7 +8,7 @@ export interface UpdateProjectData {
   imageUrls: string[];
   hashtags: string[];
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
-  recruitNumber: number;
+  recruitCount: number;
 }
 export type UpdateProjectAPIReq = FormData;
 

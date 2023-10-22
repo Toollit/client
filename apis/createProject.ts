@@ -7,7 +7,7 @@ export interface CreateProjectData {
   imageUrls: string[];
   hashtags: string[];
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
-  recruitNumber: number;
+  recruitCount: number;
 }
 
 export type CreateProjectAPIReq = FormData;

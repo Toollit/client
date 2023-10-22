@@ -16,7 +16,7 @@ export interface ProjectContent {
   updatedAt: string | null;
   hashtags: string[];
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
-  recruitNumber: number;
+  recruitCount: number;
   representativeImage: string | null;
 }
 

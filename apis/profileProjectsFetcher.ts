@@ -5,10 +5,11 @@ export interface Project {
   id: number;
   title: string;
   views: number;
+  bookmarks: number;
   hashtags: string[];
   memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
-  memberNumber: number;
-  recruitNumber: number;
+  memberCount: number;
+  recruitCount: number;
 }
 
 export interface ProfileProjectsAPIReq {}
