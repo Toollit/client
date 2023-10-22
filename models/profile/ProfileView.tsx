@@ -5,16 +5,11 @@ import { AccountCircleIcon, EditCircleIcon } from '@/assets/icons';
 import Divider from '@/components/commons/divider';
 import Skeleton from '@/components/commons/skeleton';
 import Dialog from '@/components/commons/dialog';
-import ProfileInfoBox, {
-  ProfileInfoData,
-} from './profileViewSection/ProfileInfoBox';
+import ProfileInfoView, { ProfileInfoData } from './section/ProfileInfoView';
 import SwipeableTabView from '@/components/commons/swipeableView/swipeableTabViews';
 import Image from 'next/image';
-import ProfileProjectBox, {
-  ProfileProjectsData,
-} from './profileViewSection/ProfileProjectBox';
-import ProfileFooterLink from './profileViewSection/ProfileFooterLink';
-import Block from '@/components/commons/block';
+import ProjectView, { ProjectViewData } from './section/ProjectView';
+import ProfileFooterLink from './section/Footer';
 import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
 import {
   Container,
@@ -28,8 +23,8 @@ import {
   BlankImageContainer,
   ProfileImageContainer,
   HeaderLeft,
-  HeaderLeftMenu,
-  HeaderLeftLink,
+  Menu,
+  FooterLink,
   DividerContainer,
   LogInOut,
   Logo,
@@ -44,23 +39,30 @@ import {
   StyledProfileImage,
 } from './styles';
 import { ImageWrapper } from '@/styles/commons';
+import BookmarkView, { BookmarkViewData } from './section/BookmarkView';
 
 export interface ProfileViewProps {
   accessUser: string | null;
   me: boolean;
   loginState?: string | null;
   tabs: { name: string; query: string }[];
-  currentTab: 'viewProfile' | 'viewProjects' | 'viewBookmarks' | undefined;
+  currentTab:
+    | 'viewProfile'
+    | 'viewProjects'
+    | 'viewBookmarks'
+    | 'viewAlarms'
+    | undefined;
   profileImageData?: string | null;
   profileInfoData: ProfileInfoData | null;
-  profileProjectData: ProfileProjectsData | null;
+  projectData: ProjectViewData | null;
+  bookmarkData: BookmarkViewData | null;
   nickname: string;
   handleLogInOut: () => void;
   handleProfileInfoEditBtn: (category: string) => void;
   profileImgRef: React.RefObject<HTMLInputElement>;
   handleChangeProfileImg: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleProjectLoadMore: () => void;
-  isLaptop: boolean;
+  handleBookmarkLoadMore: () => void;
   handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
   tooltip: TooltipProps;
 }
@@ -73,14 +75,15 @@ const ProfileView = ({
   currentTab,
   profileImageData,
   profileInfoData,
-  profileProjectData,
+  projectData,
+  bookmarkData,
   nickname,
   handleLogInOut,
   handleProfileInfoEditBtn,
   profileImgRef,
   handleChangeProfileImg,
   handleProjectLoadMore,
-  isLaptop,
+  handleBookmarkLoadMore,
   handleTooltipOpen,
   tooltip,
 }: ProfileViewProps) => {
@@ -88,79 +91,79 @@ const ProfileView = ({
     <Container>
       <ColumnLeftContainer role=''>
         <GNBArea>
-          <Link href={'/'}>
-            <a>
-              <GetitLogo width={3.2} height={3.2} />
-            </a>
-          </Link>
-
           <Link href={'/'} passHref>
             <GNBLink>
+              <GetitLogo width={3.2} height={3.2} />
               <GNBTitle>Getit 프로필</GNBTitle>
             </GNBLink>
           </Link>
         </GNBArea>
 
         <ProfileArea>
-          {profileImageData !== undefined ? (
-            <>
-              {profileImageData !== null ? (
-                <ProfileImageContainer>
-                  <ImageWrapper width={12} height={12}>
-                    <StyledProfileImage
-                      src={profileImageData}
-                      alt={'profile image'}
-                      draggable={false}
-                      priority
-                      layout='fill'
-                    />
-                  </ImageWrapper>
-                </ProfileImageContainer>
-              ) : (
-                <BlankImageContainer>
-                  <BlankImage>
-                    <AccountCircleIcon
-                      fill={true}
-                      width={15}
-                      height={15}
-                      color='#767678'
-                    />
-                  </BlankImage>
-                </BlankImageContainer>
-              )}
-              {me && (
-                <>
-                  <ImageEditBtn onClick={handleTooltipOpen}>
-                    <EditCircleIcon
-                      fill={true}
-                      width={3.5}
-                      height={3.5}
-                      color='#4dd290'
-                    />
-                  </ImageEditBtn>
-                  <Tooltip {...tooltip} />
-                </>
-              )}
-            </>
-          ) : (
+          {/* Loading profile image */}
+          {profileImageData === undefined && (
             <ProfileImageSkeletonContainer>
               <Skeleton shape='circular' width={12} height={12} />
             </ProfileImageSkeletonContainer>
           )}
 
-          <input
-            hidden
-            type='file'
-            accept='image/jpg, image/jpeg, image/png'
-            ref={profileImgRef}
-            onChange={handleChangeProfileImg}
-          />
+          {/* Default profile image */}
+          {profileImageData === null && (
+            <BlankImageContainer>
+              <BlankImage>
+                <AccountCircleIcon
+                  fill={true}
+                  width={15}
+                  height={15}
+                  color='#767678'
+                />
+              </BlankImage>
+            </BlankImageContainer>
+          )}
+
+          {/* User settings profile image */}
+          {profileImageData && (
+            <ProfileImageContainer>
+              <ImageWrapper width={12} height={12}>
+                <StyledProfileImage
+                  src={profileImageData}
+                  alt={'profile image'}
+                  draggable={false}
+                  priority
+                  layout='fill'
+                />
+              </ImageWrapper>
+            </ProfileImageContainer>
+          )}
+
+          {/* Change profile image button */}
+          {me && (
+            <>
+              <input
+                hidden
+                type='file'
+                accept='image/jpg, image/jpeg, image/png'
+                ref={profileImgRef}
+                onChange={handleChangeProfileImg}
+              />
+
+              <ImageEditBtn onClick={handleTooltipOpen}>
+                <EditCircleIcon
+                  fill={true}
+                  width={3.5}
+                  height={3.5}
+                  color='#4dd290'
+                />
+              </ImageEditBtn>
+              <Tooltip {...tooltip} />
+            </>
+          )}
 
           <UserNickname>{nickname}</UserNickname>
         </ProfileArea>
 
         <HeaderLeft>
-          <HeaderLeftMenu currentTab={currentTab} role='menu'>
+          <Menu currentTab={currentTab} role='menu'>
             {tabs.map((tab, index) => {
               return (
                 <li key={tab.name}>
@@ -177,13 +180,13 @@ const ProfileView = ({
                 </li>
               );
             })}
-          </HeaderLeftMenu>
+          </Menu>
 
           <DividerContainer>
             <Divider type='thin' />
           </DividerContainer>
 
-          <HeaderLeftLink>
+          <FooterLink>
             <ul>
               <li>
                 {me ? (
@@ -222,7 +225,7 @@ const ProfileView = ({
                 </Link>
               </li>
             </ul>
-          </HeaderLeftLink>
+          </FooterLink>
         </HeaderLeft>
       </ColumnLeftContainer>
 
@@ -231,18 +234,19 @@ const ProfileView = ({
         <LaptopViewContainer>
           {currentTab === 'viewProfile' && (
             <>
-              {profileInfoData ? (
-                <ProfileInfoBox
+              {profileInfoData && (
+                <ProfileInfoView
                   me={me}
                   data={profileInfoData}
                   editBtnHandler={handleProfileInfoEditBtn}
                 />
-              ) : (
+              )}
+              {!profileInfoData && (
                 <>
-                  <Skeleton height={200} top={3} />
-                  <Skeleton height={200} top={3} />
-                  <Skeleton height={200} top={3} />
-                  <Skeleton height={200} top={3} />
+                  <Skeleton height={25} top={3} />
+                  <Skeleton height={15} top={3} />
+                  <Skeleton height={25} top={3} />
+                  <Skeleton height={15} top={3} />
                 </>
               )}
             </>
@@ -250,39 +254,37 @@ const ProfileView = ({
 
           {currentTab === 'viewProjects' && (
             <>
-              {profileProjectData ? (
-                <ProfileProjectBox
-                  data={profileProjectData}
+              {projectData && (
+                <ProjectView
+                  data={projectData}
                   loadMore={handleProjectLoadMore}
                 />
-              ) : (
+              )}
+              {!projectData && (
                 <>
-                  <Skeleton height={200} top={3} />
-                  <Skeleton height={200} top={3} />
-                  <Skeleton height={200} top={3} />
-                  <Skeleton height={200} top={3} />
+                  <Skeleton height={30} top={3} />
+                  <Skeleton height={30} top={3} />
                 </>
               )}
             </>
           )}
 
-          {/* {currentTab === 'viewBookmarks' ? (
-            isLoadedData.viewBookmarks ? (
-              <div>
-                <div>
-                  <div>12342134</div>
-                  <div>12342134</div>
-                  <div>핸드폰 번호 수정</div>
-                  <div>이메일 수정</div>
-                  <div>이메일 공개</div>
-                </div>
-                <div>간단한 자기소개</div>
-                <div>사용 프로그램 또는 기술</div>
-              </div>
-            ) : (
-              <Skeleton />
-            )
-          ) : null} */}
+          {currentTab === 'viewBookmarks' && (
+            <>
+              {bookmarkData && (
+                <BookmarkView
+                  data={bookmarkData}
+                  loadMore={handleBookmarkLoadMore}
+                />
+              )}
+              {!bookmarkData && (
+                <>
+                  <Skeleton height={30} top={3} />
+                  <Skeleton height={30} top={3} />
+                </>
+              )}
+            </>
+          )}
         </LaptopViewContainer>
 
         {/* Mobile view */}
@@ -291,7 +293,7 @@ const ProfileView = ({
             <ViewContainer>
               {profileInfoData ? (
                 <Content>
-                  <ProfileInfoBox
+                  <ProfileInfoView
                     me={me}
                     data={profileInfoData}
                     editBtnHandler={handleProfileInfoEditBtn}
@@ -314,10 +316,10 @@ const ProfileView = ({
             </ViewContainer>
 
             <ViewContainer>
-              {profileProjectData ? (
+              {projectData ? (
                 <Content>
-                  <ProfileProjectBox
-                    data={profileProjectData}
+                  <ProjectView
+                    data={projectData}
                     loadMore={handleProjectLoadMore}
                   />
                   <ProfileFooterLink

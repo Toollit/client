@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ProfileView, { ProfileViewProps } from './ProfileView';
 import useSWR, { useSWRConfig, Cache } from 'swr';
 import {
+  profileBookmarksKey,
   profileImageKey,
   profileInfoKey,
   profileProjectsKey,
@@ -14,7 +15,6 @@ import { RootState } from '@/store';
 import { updateProfileAPI } from '@/apis/updateProfile';
 import { changeDateFormat } from '@/utils/changeDateFormat';
 import { open as openDialog, close as closeDialog } from '@/features/dialog';
-import useWindowSize from '@/hooks/useWindowSize';
 import { profileImageFetcher } from '@/apis/profileImageFetcher';
 import {
   ProfileInfoAPIRes,
@@ -31,6 +31,10 @@ import { serialize } from '@/middleware/swr/serialize';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import useTooltip from '@/hooks/useTooltip';
 import { userExistCheckFetcher } from '@/apis/userExistCheckFetcher';
+import {
+  ProfileBookmarksAPIRes,
+  profileBookmarksFetcher,
+} from '@/apis/profileBookmarksFetcher';
 
 interface CachedData<T> {
   cache: Cache<T | undefined>;
@@ -48,7 +52,7 @@ interface ProfilePageData {
   };
   bookmarks: {
     isLoaded: boolean;
-    data: null;
+    data: null | ProfileBookmarksAPIRes['data'];
   };
 }
 
@@ -58,7 +62,6 @@ const ProfileController = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { cache } = useSWRConfig();
-  const { isLaptop } = useWindowSize();
   const { logOut } = useLogout();
   const { nickname: accessUser, authMutate } = useAuth();
   const { getCachedKeyWithTag, getCachedDataWithKey } = useCachedKeys();
@@ -92,21 +95,24 @@ const ProfileController = () => {
       data: null,
     },
   });
+
   const [nickname, setNickname] = useState('');
   const [currentTab, setCurrentTab] = useState<
-    'viewProfile' | 'viewProjects' | 'viewBookmarks' | undefined
+    'viewProfile' | 'viewProjects' | 'viewBookmarks' | 'viewAlarms' | undefined
   >();
   const [projectPostCount, setProjectPostCount] = useState(5); // Load by 5
+  const [bookmarkPostCount, setBookmarkPostCount] = useState(5); // Load by 5
 
   const tabs = useRef([
     { name: '프로필', query: 'viewProfile' },
     { name: '프로젝트', query: 'viewProjects' },
     { name: '북마크', query: 'viewBookmarks' },
+    { name: '알림', query: 'viewAlarms' },
   ]);
 
   const profileImgRef = useRef<HTMLInputElement>(null);
 
-  // user exist check fetcher
+  // User exist check fetcher
   const { data: userExistCheckData } = useSWR(
     nickname && {
       url: userExistCheckKey(nickname),
@@ -189,7 +195,7 @@ const ProfileController = () => {
     },
   );
 
-  // Profile projects
+  // Project create and join list fetcher
   const { data: profileProjectsData, mutate: profileProjectsDataMutate } =
     useSWR(
       userExistCheckData?.data.existUser &&
@@ -250,6 +256,67 @@ const ProfileController = () => {
         use: [serialize],
       },
     );
+
+  // Profile User bookmarks fetcher
+  const { data: profileBookmarksData } = useSWR(
+    userExistCheckData?.data.existUser &&
+      nickname &&
+      currentTab === 'viewBookmarks'
+      ? {
+          url: profileBookmarksKey(nickname, bookmarkPostCount),
+          args: {
+            page: '/profile',
+            tag: `profileBookmarks?count=${bookmarkPostCount}`,
+          },
+        }
+      : null,
+    profileBookmarksFetcher,
+    {
+      dedupingInterval: 1000 * 60 * 10,
+      revalidateOnFocus: false,
+      shouldRetryOnError: false,
+      onError(err, key, config) {
+        errorMessage(err);
+        router.back();
+      },
+      onSuccess(res, key, config) {
+        if (bookmarkPostCount > 5) {
+          setData((prev) => {
+            return {
+              ...prev,
+              bookmarks: {
+                isLoaded: true,
+                data:
+                  prev.bookmarks.data && res?.data
+                    ? {
+                        bookmarks: [
+                          ...prev.bookmarks.data?.bookmarks,
+                          ...res.data?.bookmarks,
+                        ],
+
+                        total: res.data?.total,
+                      }
+                    : null,
+              },
+            };
+          });
+        }
+
+        if (bookmarkPostCount <= 5) {
+          setData((prev) => {
+            return {
+              ...prev,
+              bookmarks: {
+                isLoaded: true,
+                data: res?.data,
+              },
+            };
+          });
+        }
+      },
+      use: [serialize],
+    },
+  );
 
   const handleLogInOut = useCallback(() => {
     const isLoggedIn = accessUser;
@@ -562,8 +629,12 @@ const ProfileController = () => {
     [dispatch, profileInfoData],
   );
 
-  const handleProfileProjectDataResponse = useCallback(
+  const handleProjectDataResponse = useCallback(
     (data: ProfileProjectsAPIRes['data'] | null) => {
+      if (!data) {
+        return null;
+      }
+
       const convertedData = data?.projects.map((project) => {
         return {
           ...project,
@@ -574,10 +645,6 @@ const ProfileController = () => {
           }) as CustomMemberTypes,
         };
       });
-
-      if (!data) {
-        return null;
-      }
 
       if (data.projects.length < 1) {
         return {
@@ -591,6 +658,40 @@ const ProfileController = () => {
         projects: convertedData ?? [],
         total: data.total,
         showLoadMore: data.projects.length !== data.total,
+      };
+    },
+    [],
+  );
+
+  const handleBookmarkDataResponse = useCallback(
+    (data: ProfileBookmarksAPIRes['data'] | null) => {
+      if (!data) {
+        return null;
+      }
+
+      const convertedData = data?.bookmarks?.map((project) => {
+        return {
+          ...project,
+          memberTypes: project.memberTypes.map((type) => {
+            return type === 'pm'
+              ? type.toUpperCase()
+              : type.charAt(0).toUpperCase() + type.slice(1);
+          }) as CustomMemberTypes,
+        };
+      });
+
+      if (data.bookmarks?.length < 1) {
+        return {
+          bookmarks: [],
+          total: data.total,
+          showLoadMore: data.bookmarks.length !== data.total,
+        };
+      }
+
+      return {
+        bookmarks: convertedData ?? [],
+        total: data.total,
+        showLoadMore: data.bookmarks?.length !== data.total,
       };
     },
     [],
@@ -638,6 +739,49 @@ const ProfileController = () => {
       });
     }
   }, [nickname, projectPostCount, getCachedKeyWithTag, getCachedDataWithKey]);
+
+  const handleBookmarkLoadMore = useCallback(() => {
+    if (!nickname) {
+      return;
+    }
+
+    setBookmarkPostCount((prev) => prev + 5);
+
+    // The code written under that comment only works if there is cached data. Logic for leveraging cached data without additional data load.
+    const key = getCachedKeyWithTag({
+      tag: `profileBookmarks?count=${bookmarkPostCount + 5}`,
+    });
+
+    if (!key) {
+      return;
+    }
+
+    const profileBookmarksCachedData = getCachedDataWithKey({
+      key,
+    }) as ProfileBookmarksAPIRes['data'];
+
+    if (profileBookmarksCachedData !== undefined) {
+      setData((prev) => {
+        return {
+          ...prev,
+          bookmarks: {
+            isLoaded: true,
+            data:
+              prev.bookmarks.data && profileBookmarksCachedData
+                ? {
+                    bookmarks: [
+                      ...prev.bookmarks.data?.bookmarks,
+                      ...profileBookmarksCachedData.bookmarks,
+                    ],
+
+                    total: prev.bookmarks.data.total,
+                  }
+                : null,
+          },
+        };
+      });
+    }
+  }, [nickname, bookmarkPostCount, getCachedKeyWithTag, getCachedDataWithKey]);
 
   useEffect(() => {
     if (updatePage !== 'profile') {
@@ -698,6 +842,7 @@ const ProfileController = () => {
     data,
     profileInfoData,
     profileProjectsData,
+    profileBookmarksData,
     cache,
     nickname,
     projectPostCount,
@@ -712,6 +857,7 @@ const ProfileController = () => {
       | 'viewProfile'
       | 'viewProjects'
       | 'viewBookmarks'
+      | 'viewAlarms'
       | undefined;
 
     if (nickname && currentTab === undefined) {
@@ -728,7 +874,8 @@ const ProfileController = () => {
       !(
         currentTab === 'viewProfile' ||
         currentTab === 'viewProjects' ||
-        currentTab === 'viewBookmarks'
+        currentTab === 'viewBookmarks' ||
+        currentTab === 'viewAlarms'
       )
     ) {
       (async () => {
@@ -759,14 +906,15 @@ const ProfileController = () => {
     currentTab,
     profileImageData: profileImageData?.data?.profileImage,
     profileInfoData: handleProfileInfoDataResponse(data.profileInfo.data),
-    profileProjectData: handleProfileProjectDataResponse(data.projects.data),
+    projectData: handleProjectDataResponse(data.projects.data),
+    bookmarkData: handleBookmarkDataResponse(data.bookmarks.data),
     nickname,
     handleLogInOut,
     handleProfileInfoEditBtn,
     profileImgRef,
     handleChangeProfileImg,
     handleProjectLoadMore,
-    isLaptop,
+    handleBookmarkLoadMore,
     handleTooltipOpen,
     tooltip: {
       items: [

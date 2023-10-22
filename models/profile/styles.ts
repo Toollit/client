@@ -70,6 +70,7 @@ const GNBArea = styled.div`
 `;
 
 const GNBLink = styled.a`
+  display: flex;
   text-decoration: none;
   color: #000;
 `;
@@ -159,8 +160,13 @@ const TabHighlight = (theme: Theme) => css`
   }
 `;
 
-const HeaderLeftMenu = styled.ul<{
-  currentTab: 'viewProfile' | 'viewProjects' | 'viewBookmarks' | undefined;
+const Menu = styled.ul<{
+  currentTab:
+    | 'viewProfile'
+    | 'viewProjects'
+    | 'viewBookmarks'
+    | 'viewAlarms'
+    | undefined;
 }>`
   padding: 4rem 3.9rem;
 
@@ -197,6 +203,12 @@ const HeaderLeftMenu = styled.ul<{
             ${TabHighlight(props.theme)}
           }
         `;
+      case 'viewAlarms':
+        return css`
+          li:nth-of-type(4) a {
+            ${TabHighlight(props.theme)}
+          }
+        `;
     }
   }}
 `;
@@ -205,7 +217,7 @@ const DividerContainer = styled.div`
   padding: 0rem 3.9rem;
 `;
 
-const HeaderLeftLink = styled.div`
+const FooterLink = styled.div`
   padding: 4rem 3.9rem;
 
   ul {
@@ -299,8 +311,8 @@ export {
   BlankImageContainer,
   ProfileImageContainer,
   HeaderLeft,
-  HeaderLeftMenu,
-  HeaderLeftLink,
+  Menu,
+  FooterLink,
   DividerContainer,
   LogInOut,
   MyProfile,
