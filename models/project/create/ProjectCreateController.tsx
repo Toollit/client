@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import ProjectCreateView, { ProjectCreateViewProps } from './ProjectCreateView';
-import { ProjectData, createProjectAPI } from '@/apis/createProject';
+import { CreateProjectData, createProjectAPI } from '@/apis/createProject';
 import useEditorContent from '@/hooks/useEditorContent';
 import { errorMessage } from '@/apis/errorMessage';
 import PrivateRoute from '@/components/PrivateRoute';
@@ -79,14 +79,14 @@ const ProjectCreateController = () => {
         return;
       }
 
-      const projectData: ProjectData = {
+      const projectData: CreateProjectData = {
         title: data?.title,
         contentHTML: data?.contentHTML,
         contentMarkdown: data?.contentMarkdown,
         imageUrls: data?.imageUrls,
         hashtags: hashtagRef.current,
         memberTypes: memberTypeRef.current,
-        recruitNumber: recruitCount,
+        recruitCount: recruitCount,
       };
 
       const stringifyJsonData = JSON.stringify(projectData);
@@ -108,9 +108,9 @@ const ProjectCreateController = () => {
 
         mutateCachedKeysWithTag({ tag: 'projects' });
 
-        const projectId = response?.data.projectId;
+        const postId = response?.data.postId;
         // Use replace instead of push because decided to back out so can't access that page again
-        router.replace(`/project/${projectId}`);
+        router.replace(`/project/${postId}`);
 
         router.events.on('routeChangeComplete', () => {
           dispatch(loading({ status: false }));
@@ -143,7 +143,7 @@ const ProjectCreateController = () => {
     [],
   );
 
-  const handleChangeRepresentativeImg = useCallback(
+  const handleChangeRepresentativeImage = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       if (!event.target.files) {
         return;
@@ -168,12 +168,12 @@ const ProjectCreateController = () => {
     [],
   );
 
-  const handleAddRepresentativeImg = useCallback(() => {
+  const handleAddRepresentativeImage = useCallback(() => {
     setTooltipAnchorEl(null);
     representativeImageRef.current?.click();
   }, [setTooltipAnchorEl]);
 
-  const handleAddDefaultRepresentativeImg = useCallback(() => {
+  const handleAddDefaultRepresentativeImage = useCallback(() => {
     setTooltipAnchorEl(null);
     setRepresentativeImageFile('defaultImage');
     setRepresentativePreviewImage(projectDefaultImage);
@@ -196,7 +196,7 @@ const ProjectCreateController = () => {
     memberTypeRef,
     recruitCountRef,
     representativeImageRef,
-    handleChangeRepresentativeImg,
+    handleChangeRepresentativeImage,
     representativePreviewImage: representativePreviewImage
       ? representativePreviewImage
       : null,
@@ -207,11 +207,11 @@ const ProjectCreateController = () => {
       items: [
         {
           text: '앨범에서 선택',
-          handler: handleAddRepresentativeImg,
+          handler: handleAddRepresentativeImage,
         },
         {
           text: '기본 이미지',
-          handler: handleAddDefaultRepresentativeImg,
+          handler: handleAddDefaultRepresentativeImage,
         },
       ],
       anchorEl: tooltipAnchorEl,

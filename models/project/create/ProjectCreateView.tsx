@@ -6,7 +6,6 @@ import HashtagInput from '@/components/commons/hashtagInput';
 import MemberTypeSelector from '@/components/commons/memberTypeSelector';
 import { Editor } from '@toast-ui/react-editor';
 import Label from '@/components/commons/label';
-import Block from '@/components/commons/block';
 import { Button } from '@/components/commons/button';
 import Image from 'next/image';
 import PlusIcon from '@/assets/icons/PlusIcon';
@@ -14,9 +13,21 @@ import { CloseIcon } from '@/assets/icons';
 import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
 import { StaticImageData } from 'next/image';
 import Skeleton from '@/components/commons/skeleton';
+import { InnerContainer } from '@/styles/commons';
+import { BottomButton } from '@/components/commons/button';
+
 import {
-  RecruitNumberInput,
-  ButtonContainer,
+  Form,
+  TitleContainer,
+  EditorContainer,
+  HashtagContainer,
+  MemberTypeContainer,
+  RecruitContainer,
+  RepresentativeImageContainer,
+  RecruitCountInput,
+  SubmitContainer,
+  DesktopSubmitContainer,
+  MobileSubmitContainer,
   AddImageBox,
   ImageContainer,
   ImageDeleteIcon,
@@ -51,7 +62,7 @@ export interface ProjectCreateViewProps {
   >;
   recruitCountRef: React.RefObject<HTMLInputElement>;
   representativeImageRef: React.RefObject<HTMLInputElement>;
-  handleChangeRepresentativeImg: (
+  handleChangeRepresentativeImage: (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => void;
   representativePreviewImage: StaticImageData | string | null;
@@ -68,7 +79,7 @@ const ProjectCreateView = ({
   memberTypeRef,
   recruitCountRef,
   representativeImageRef,
-  handleChangeRepresentativeImg,
+  handleChangeRepresentativeImage,
   representativePreviewImage,
   handleKeydownSubmit,
   handleDeleteRepresentativePreviewImage,
@@ -76,91 +87,93 @@ const ProjectCreateView = ({
   tooltip,
 }: ProjectCreateViewProps) => {
   return (
-    <AppLayout type='default'>
-      <form onSubmit={handleSubmit}>
-        <Block paddingLeft={1.5} paddingRight={1.5}>
-          <Title text='프로젝트 생성' />
-        </Block>
+    <AppLayout type='default' footer={false}>
+      <InnerContainer>
+        <Form onSubmit={handleSubmit}>
+          <TitleContainer>
+            <Title text='프로젝트 생성' />
+          </TitleContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5}>
-          <DynamicTuiEditor
-            titleRef={editor.titleRef}
-            editorRef={editor.editorRef}
-            name={editor.name}
-            contentImageUploadUrl={editor.contentImageUploadUrl}
-          />
-        </Block>
+          <EditorContainer>
+            <DynamicTuiEditor
+              titleRef={editor.titleRef}
+              editorRef={editor.editorRef}
+              name={editor.name}
+              contentImageUploadUrl={editor.contentImageUploadUrl}
+            />
+          </EditorContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
-          <Label text='#해시태그' />
-          <HashtagInput
-            hashtagRef={hashtagRef}
-            placeholder='*Enter를 눌러 해시태그를 작성해 주세요.'
-          />
-        </Block>
+          <HashtagContainer>
+            <Label text='#해시태그' />
+            <HashtagInput
+              hashtagRef={hashtagRef}
+              placeholder='*Enter를 눌러 해시태그를 작성해 주세요.'
+            />
+          </HashtagContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
-          <Label text='모집 타입' />
-          <MemberTypeSelector memberTypeRef={memberTypeRef} />
-        </Block>
+          <MemberTypeContainer>
+            <Label text='모집 타입' />
+            <MemberTypeSelector memberTypeRef={memberTypeRef} />
+          </MemberTypeContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
-          <Label text='모집 인원' />
-          <RecruitNumberInput
-            type='number'
-            name='recruit'
-            pattern='[0-9]*'
-            min={1}
-            max={100}
-            ref={recruitCountRef}
-            onKeyDown={handleKeydownSubmit}
-            autoComplete='off'
-          />
-        </Block>
+          <RecruitContainer>
+            <Label text='모집 인원' />
+            <RecruitCountInput
+              type='number'
+              name='recruit'
+              pattern='[0-9]*'
+              min={1}
+              max={100}
+              ref={recruitCountRef}
+              onKeyDown={handleKeydownSubmit}
+              autoComplete='off'
+            />
+          </RecruitContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
-          <Label text='대표 이미지' />
+          <RepresentativeImageContainer>
+            <Label text='대표 이미지' />
+            {representativePreviewImage ? (
+              <ImageContainer>
+                <Image
+                  src={representativePreviewImage}
+                  alt={'project representative image'}
+                  layout='fill'
+                />
+                <ImageDeleteIcon
+                  onClick={handleDeleteRepresentativePreviewImage}
+                >
+                  <CloseIcon />
+                </ImageDeleteIcon>
+              </ImageContainer>
+            ) : (
+              <>
+                <AddImageBox onClick={handleTooltipOpen}>
+                  <PlusIcon width={4} height={4} />
+                </AddImageBox>
+                <Tooltip {...tooltip} />
+              </>
+            )}
 
-          {representativePreviewImage ? (
-            <ImageContainer>
-              <Image
-                src={representativePreviewImage}
-                alt={'project representative image'}
-                layout='fill'
-              />
-              <ImageDeleteIcon onClick={handleDeleteRepresentativePreviewImage}>
-                <CloseIcon />
-              </ImageDeleteIcon>
-            </ImageContainer>
-          ) : (
-            <>
-              <AddImageBox onClick={handleTooltipOpen}>
-                <PlusIcon width={4} height={4} />
-              </AddImageBox>
-              <Tooltip {...tooltip} />
-            </>
-          )}
+            <input
+              hidden
+              type='file'
+              accept='image/jpg, image/jpeg, image/png'
+              ref={representativeImageRef}
+              onChange={handleChangeRepresentativeImage}
+            />
+          </RepresentativeImageContainer>
 
-          <input
-            hidden
-            type='file'
-            accept='image/jpg, image/jpeg, image/png'
-            ref={representativeImageRef}
-            onChange={handleChangeRepresentativeImg}
-          />
-        </Block>
+          <SubmitContainer>
+            <DesktopSubmitContainer>
+              <Button type='submit' text='작성 완료' width={15} />
+            </DesktopSubmitContainer>
 
-        <Block
-          paddingLeft={1.5}
-          paddingRight={1.5}
-          paddingTop={4}
-          paddingBottom={8}
-        >
-          <ButtonContainer>
-            <Button type='submit' text='작성 완료' width={15} />
-          </ButtonContainer>
-        </Block>
-      </form>
+            <MobileSubmitContainer>
+              <BottomButton text='작성 완료' />
+            </MobileSubmitContainer>
+          </SubmitContainer>
+        </Form>
+      </InnerContainer>
     </AppLayout>
   );
 };
