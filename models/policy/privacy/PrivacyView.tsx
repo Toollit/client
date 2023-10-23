@@ -8,7 +8,12 @@ export interface PrivacyViewProps {
 
 const PrivacyView = ({ handleClose }: PrivacyViewProps) => {
   return (
-    <AppLayout type='close' onClick={handleClose} boundary={true}>
+    <AppLayout
+      type='close'
+      onClick={handleClose}
+      boundary={true}
+      footer={false}
+    >
       <Container>
         <div>
           <h2>
