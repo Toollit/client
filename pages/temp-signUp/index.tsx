@@ -1,5 +1,5 @@
 import React from 'react';
-import SignUpController from '@/models/signUp/SignUpController';
+import SignUpController from '@/models/temp-signUp/tempSignUpController';
 
 const SignUp = () => {
   return <SignUpController />;

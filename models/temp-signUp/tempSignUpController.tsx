@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import SignUpView, { SignUpViewProps } from './SignUpView';
+import SignUpView, { SignUpViewProps } from './tempSignUpView';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { emailAuth } from '@/features/signUp';
