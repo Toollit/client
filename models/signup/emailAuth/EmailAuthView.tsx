@@ -3,8 +3,14 @@ import AppLayout from '@/components/appLayout';
 import { Button } from '@/components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
-import Block from '@/components/commons/block';
-import { Form, InputContainer, NoticeForSpam, Timer } from './styles';
+import {
+  Form,
+  AuthCodeInputContainer,
+  Notice,
+  Timer,
+  TitleContainer,
+  SubmitButtonContainer,
+} from './styles';
 
 export interface EmailAuthViewProps {
   handleClose: () => void;
@@ -26,40 +32,39 @@ const EmailAuthView = ({
   authCodeInputRef,
 }: EmailAuthViewProps) => {
   return (
-    <AppLayout type='close' onClick={handleClose} boundary={false}>
+    <AppLayout
+      type='close'
+      onClick={handleClose}
+      boundary={false}
+      footer={false}
+    >
       <Form onSubmit={handleSubmit}>
-        <Block paddingLeft={1.5} paddingRight={1.5}>
+        <TitleContainer>
           <Title text='Getit 이메일 계정 인증' />
-        </Block>
+        </TitleContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5}>
-          <InputContainer>
-            <Input
-              type='text'
-              placeholder='인증번호'
-              onChange={handleChangeAuthCode}
-              value={authCode as string}
-              focus={true}
-              ref={authCodeInputRef}
-              inputMode='numeric'
-            />
-            <Timer>인증기한 {timer}</Timer>
-          </InputContainer>
-        </Block>
+        <AuthCodeInputContainer>
+          <Input
+            type='text'
+            placeholder='인증번호'
+            onChange={handleChangeAuthCode}
+            value={authCode as string}
+            focus={true}
+            ref={authCodeInputRef}
+            inputMode='numeric'
+          />
+          <Timer>인증기한 {timer}</Timer>
+        </AuthCodeInputContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
-          <NoticeForSpam>
-            메일이 전송되지 않았다면 스팸메일함을 확인해 주세요.
-          </NoticeForSpam>
-        </Block>
+        <Notice>메일이 전송되지 않았다면 스팸메일함을 확인해 주세요.</Notice>
 
-        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={4}>
+        <SubmitButtonContainer>
           {isTimerLeft ? (
             <Button type='submit' text='확인' />
           ) : (
             <Button type='disabled' text='확인' />
           )}
-        </Block>
+        </SubmitButtonContainer>
       </Form>
     </AppLayout>
   );

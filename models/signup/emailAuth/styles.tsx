@@ -17,23 +17,40 @@ const Form = styled.form`
   user-select: none;
 `;
 
-const InputContainer = styled.div`
+const TitleContainer = styled.div`
+  padding: 0 1.5rem;
+`;
+
+const AuthCodeInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-`;
-
-const NoticeForSpam = styled.div`
-  font-size: 1.2rem;
-  color: #000;
-  text-align: center;
+  padding: 0 1.5rem;
 `;
 
 const Timer = styled.div`
   font-size: 1.4rem;
   position: absolute;
-  right: 0;
+  right: 2rem;
   bottom: 0rem;
 `;
 
-export { Form, InputContainer, NoticeForSpam, Timer };
+const Notice = styled.div`
+  font-size: 1.2rem;
+  color: #000;
+  text-align: center;
+  padding: 2rem 1.5rem 0rem 1.5rem;
+`;
+
+const SubmitButtonContainer = styled.div`
+  padding: 4rem 1.5rem 0rem 1.5rem;
+`;
+
+export {
+  Form,
+  TitleContainer,
+  AuthCodeInputContainer,
+  Notice,
+  Timer,
+  SubmitButtonContainer,
+};
