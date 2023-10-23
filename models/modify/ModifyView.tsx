@@ -5,20 +5,30 @@ import Title from '@/components/commons/title';
 import HashtagInput from '@/components/commons/hashtagInput';
 import MemberTypeSelector from '@/components/commons/memberTypeSelector';
 import { Editor } from '@toast-ui/react-editor';
-import { ProjectDetail } from '@/apis/projectDetailFetcher';
-import Block from '@/components/commons/block';
+import { ProjectDetail } from '@/apis/projectFetcher';
 import { Button } from '@/components/commons/button';
 import Label from '@/components/commons/label';
 import Image, { StaticImageData } from 'next/image';
 import { CloseIcon, PlusIcon } from '@/assets/icons';
 import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
 import Skeleton from '@/components/commons/skeleton';
+import { BottomButton } from '@/components/commons/button';
+
 import {
   AddImageBox,
-  ButtonContainer,
+  SubmitContainer,
+  EditorContainer,
+  HashtagContainer,
   ImageContainer,
   ImageDeleteIcon,
-  RecruitNumberInput,
+  MemberTypeContainer,
+  RecruitContainer,
+  RecruitCountInput,
+  RepresentativeImageContainer,
+  TitleContainer,
+  Form,
+  DesktopSubmitContainer,
+  MobileSubmitContainer,
 } from './styles';
 
 const DynamicTuiEditor = dynamic(
@@ -61,7 +71,7 @@ export interface ModifyViewProps {
   tooltip: TooltipProps;
   hashtags?: string[];
   memberTypes?: ('developer' | 'designer' | 'pm' | 'anyone')[];
-  recruitNumber?: number;
+  recruitCount?: number;
 }
 
 const ModifyView = ({
@@ -78,17 +88,17 @@ const ModifyView = ({
   handleTooltipOpen,
   hashtags,
   memberTypes,
-  recruitNumber,
+  recruitCount,
   tooltip,
 }: ModifyViewProps) => {
   return (
-    <AppLayout type='default'>
-      <form onSubmit={handleSubmit}>
-        <Block paddingLeft={1.5} paddingRight={1.5}>
+    <AppLayout type='default' footer={false}>
+      <Form onSubmit={handleSubmit}>
+        <TitleContainer>
           <Title text='프로젝트 수정' />
-        </Block>
+        </TitleContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5}>
+        <EditorContainer>
           <DynamicTuiEditor
             titleRef={editor.titleRef}
             editorRef={editor.editorRef}
@@ -96,28 +106,28 @@ const ModifyView = ({
             name={editor.name}
             contentImageUploadUrl={editor.contentImageUploadUrl}
           />
-        </Block>
+        </EditorContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
+        <HashtagContainer>
           <Label text='#해시태그' />
           <HashtagInput
             hashtagRef={hashtagRef}
             hashtags={hashtags}
             placeholder='*Enter를 눌러 해시태그를 작성해 주세요.'
           />
-        </Block>
+        </HashtagContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
+        <MemberTypeContainer>
           <Label text='모집 타입' />
           <MemberTypeSelector
             memberTypeRef={memberTypeRef}
             memberTypes={memberTypes}
           />
-        </Block>
+        </MemberTypeContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
+        <RecruitContainer>
           <Label htmlFor='recruit' text='모집 인원' />
-          <RecruitNumberInput
+          <RecruitCountInput
             type='number'
             name='recruit'
             pattern='[0-9]*'
@@ -126,13 +136,13 @@ const ModifyView = ({
             ref={recruitCountRef}
             onKeyDown={handleKeydownSubmit}
             autoComplete='off'
-            defaultValue={recruitNumber}
+            defaultValue={recruitCount}
+            inputMode='numeric'
           />
-        </Block>
+        </RecruitContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
+        <RepresentativeImageContainer>
           <Label text='대표 이미지' />
-
           {representativePreviewImage ? (
             <ImageContainer>
               <Image
@@ -160,19 +170,18 @@ const ModifyView = ({
             ref={representativeImageRef}
             onChange={handleChangeRepresentativeImg}
           />
-        </Block>
+        </RepresentativeImageContainer>
 
-        <Block
-          paddingLeft={1.5}
-          paddingRight={1.5}
-          paddingTop={4}
-          paddingBottom={8}
-        >
-          <ButtonContainer>
+        <SubmitContainer>
+          <DesktopSubmitContainer>
             <Button type='submit' text='작성 완료' width={15} />
-          </ButtonContainer>
-        </Block>
-      </form>
+          </DesktopSubmitContainer>
+
+          <MobileSubmitContainer>
+            <BottomButton text='작성 완료' />
+          </MobileSubmitContainer>
+        </SubmitContainer>
+      </Form>
     </AppLayout>
   );
 };

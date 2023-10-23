@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/errorMessage';
 import { projectDetailKey } from '@/apis/keys';
-import { projectDetailFetcher } from '@/apis/projectDetailFetcher';
+import { projectFetcher } from '@/apis/projectFetcher';
 import useEditorContent from '@/hooks/useEditorContent';
 import { UpdateProjectData, updateProjectAPI } from '@/apis/updateProject';
 import PrivateRoute from '@/components/PrivateRoute';
@@ -61,7 +61,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
           },
         }
       : null,
-    projectDetailFetcher,
+    projectFetcher,
     {
       revalidateOnFocus: false,
       errorRetryCount: 0,
@@ -130,7 +130,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
         imageUrls: data?.imageUrls,
         hashtags: hashtagRef.current,
         memberTypes: memberTypeRef.current,
-        recruitNumber: recruitCount,
+        recruitCount: recruitCount,
       };
 
       const stringifyJsonData = JSON.stringify(projectData);
@@ -266,7 +266,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
     },
     hashtags: projectDetail?.data.content.hashtags,
     memberTypes: projectDetail?.data.content.memberTypes,
-    recruitNumber: projectDetail?.data.content.recruitNumber,
+    recruitCount: projectDetail?.data.content.recruitCount,
   };
 
   return (
