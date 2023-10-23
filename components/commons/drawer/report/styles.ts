@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const Form = styled.form`
-  padding-bottom: 9rem; // To scroll when covered by overlapping bottom button
+  padding-bottom: ${(props) => props.theme.layout.bottomButtonHeight};
 `;
 
 const DefaultInfoContainer = styled.div`

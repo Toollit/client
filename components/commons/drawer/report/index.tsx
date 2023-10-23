@@ -12,7 +12,7 @@ import { reportAPI } from '@/apis/report';
 import { errorMessage } from '@/apis/errorMessage';
 import Block from '@/components/commons/block';
 import { loading } from '@/features/loading';
-import { CenterLayoutContainer } from '@/styles/commons';
+import { InnerContainer } from '@/styles/commons';
 import {
   ReportReason,
   ListGroup,
@@ -167,8 +167,9 @@ const Report = () => {
         title='신고하기'
         onClick={handleClose}
         fullSize={false}
+        footer={false}
       >
-        <CenterLayoutContainer>
+        <InnerContainer>
           <Form onSubmit={handleSubmit}>
             <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
               <DefaultInfoContainer>
@@ -231,7 +232,7 @@ const Report = () => {
 
             <BottomButton text='제출' />
           </Form>
-        </CenterLayoutContainer>
+        </InnerContainer>
       </AppLayout>
     </Dialog>
   );
