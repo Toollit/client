@@ -2,10 +2,7 @@ import React from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { SWRConfig } from 'swr';
 import Head from 'next/head';
-import {
-  projectDetailFetcher,
-  ProjectDetail,
-} from '@/apis/projectDetailFetcher';
+import { projectFetcher, ProjectDetail } from '@/apis/projectFetcher';
 import ProjectDetailController from '@/models/project/ProjectDetailController';
 import { projectDetailKey } from '@/apis/keys';
 
@@ -36,7 +33,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       args: { page: `/project/${postId}`, tag: `project/${postId}` },
     });
 
-    const projectDetail = await projectDetailFetcher({ url: apiEndpoint });
+    const projectDetail = await projectFetcher({ url: apiEndpoint });
 
     return {
       props: {
