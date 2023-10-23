@@ -3,8 +3,13 @@ import AppLayout from '@/components/appLayout';
 import Input from '@/components/commons/input';
 import Title from '@/components/commons/title';
 import { Button } from '@/components/commons/button';
-import Block from '@/components/commons/block';
-import { Form, Notice } from './styles';
+import {
+  Form,
+  TitleContainer,
+  NicknameInputContainer,
+  NoticeContainer,
+  SubmitButtonContainer,
+} from './styles';
 
 export interface NicknameViewProps {
   handleClose: () => void;
@@ -22,13 +27,18 @@ const NicknameView = ({
   nicknameInputRef,
 }: NicknameViewProps) => {
   return (
-    <AppLayout type='close' onClick={handleClose} boundary={false}>
+    <AppLayout
+      type='close'
+      onClick={handleClose}
+      boundary={false}
+      footer={false}
+    >
       <Form onSubmit={handleSubmit}>
-        <Block paddingLeft={1.5} paddingRight={1.5}>
+        <TitleContainer>
           <Title text={'닉네임 설정'} />
-        </Block>
+        </TitleContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5}>
+        <NicknameInputContainer>
           <Input
             type={'text'}
             placeholder='닉네임'
@@ -37,32 +47,17 @@ const NicknameView = ({
             focus={true}
             ref={nicknameInputRef}
           />
-        </Block>
+        </NicknameInputContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5}>
-          <Notice>
-            <b>회원가입이 완료되었습니다.</b>
-          </Notice>
-        </Block>
+        <NoticeContainer>
+          <b>회원가입이 완료되었습니다.</b>
+          <p>닉네임 설정을 완료해야 서비스 이용이 가능합니다.</p>
+          <p>{'\u273B'}&nbsp;최대 20자, 영어, 숫자 조합만 가능합니다.</p>
+        </NoticeContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5}>
-          <Notice>닉네임 설정을 완료해야 서비스 이용이 가능합니다.</Notice>
-        </Block>
-
-        <Block
-          paddingLeft={1.5}
-          paddingRight={1.5}
-          paddingTop={1}
-          paddingBottom={2}
-        >
-          <Notice>
-            {'\u273B'}&nbsp;최대 20자, 영어, 숫자 조합만 가능합니다.
-          </Notice>
-        </Block>
-
-        <Block paddingLeft={1.5} paddingRight={1.5}>
+        <SubmitButtonContainer>
           <Button type='submit' text='확인' />
-        </Block>
+        </SubmitButtonContainer>
       </Form>
     </AppLayout>
   );

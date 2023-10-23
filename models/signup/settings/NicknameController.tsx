@@ -53,12 +53,13 @@ const NicknameController = ({}: NicknameControllerProps) => {
         return router.replace('login');
       }
 
-      const onlyEnglishNumber = /^[a-zA-Z0-9]+$/;
+      const onlyNoSpaceEnglishNumber = /^[a-zA-Z0-9]+$/;
 
-      const isOnlyEnglishNumber = onlyEnglishNumber.test(nickname);
+      const isOnlyNoSpaceEnglishNumber =
+        onlyNoSpaceEnglishNumber.test(nickname);
 
-      if (!isOnlyEnglishNumber) {
-        return alert('닉네임은 영어, 숫자 조합으로만 가능합니다.');
+      if (!isOnlyNoSpaceEnglishNumber) {
+        return alert('닉네임은 공백 없이 영어, 숫자 조합으로만 가능합니다.');
       }
 
       if (nickname.length < 2 || nickname.length > 20) {

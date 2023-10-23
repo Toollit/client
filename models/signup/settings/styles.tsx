@@ -17,9 +17,32 @@ const Form = styled.form`
   user-select: none;
 `;
 
-const Notice = styled.div`
-  font-size: 1.3rem;
-  color: #000;
+const TitleContainer = styled.div`
+  padding: 0 1.5rem;
 `;
 
-export { Form, Notice };
+const NicknameInputContainer = styled.div`
+  padding: 0 1.5rem;
+`;
+
+const NoticeContainer = styled.div`
+  font-size: 1.3rem;
+  color: #000;
+  padding: 1rem 1.5rem 2rem 1.5rem;
+
+  p:nth-last-of-type(1) {
+    padding-top: 1rem;
+  }
+`;
+
+const SubmitButtonContainer = styled.div`
+  padding: 0 1.5rem;
+`;
+
+export {
+  Form,
+  TitleContainer,
+  NicknameInputContainer,
+  NoticeContainer,
+  SubmitButtonContainer,
+};
