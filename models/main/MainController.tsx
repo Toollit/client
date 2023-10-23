@@ -26,7 +26,7 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
   const [page, setPage] = useState(pageNumber);
   const [order, setOrder] = useState<'new' | 'popularity'>(postOrder);
 
-  const { data: projectsRes } = useSWR(
+  const { data: projects } = useSWR(
     {
       url: projectsKey(page, order),
       args: { page: '/', tag: 'projects' },
@@ -43,7 +43,7 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
     },
   );
 
-  const { data: bookmarksRes } = useSWR(
+  const { data: bookmarks } = useSWR(
     {
       url: projectsBookmarksStatusKey(),
       args: { page: '/', tag: 'projectsBookmarksStatus' },
@@ -59,7 +59,7 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
     },
   );
 
-  const createProject = useCallback(async () => {
+  const handleCreateProject = useCallback(async () => {
     try {
       const auth = await authMutate();
 
@@ -68,9 +68,11 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
       }
 
       if (!auth?.success) {
-        alert('로그인 후 이용 가능합니다.');
+        const result = confirm('로그인 후 이용 가능합니다.');
 
-        return router.push('/login');
+        if (result) {
+          return router.push('/login');
+        }
       }
     } catch (error) {
       errorMessage(error);
@@ -95,7 +97,7 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
           : { ...project, bookmark: false };
       });
 
-      // memeber type convert. developer -> Developer, designer -> Designer, pm -> PM, anyone -> Anyone
+      // member type convert. developer -> Developer, designer -> Designer, pm -> PM, anyone -> Anyone
       const resultMemberTypeConverter = resultBookmarkStatusCheckProjects?.map(
         (project) => {
           return {
@@ -152,15 +154,13 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
 
   const props: MainViewProps = {
     projects: handleProcessData({
-      projectsData: projectsRes?.data,
-      bookmarksData: bookmarksRes?.data,
+      projectsData: projects?.data,
+      bookmarksData: bookmarks?.data,
     }),
-    createProject,
+    handleCreateProject,
     pagination: {
-      totalPage: projectsRes?.data?.totalPage ? projectsRes?.data.totalPage : 1,
+      totalPage: projects?.data?.totalPage ? projects?.data.totalPage : 1,
     },
-    page,
-    order,
   };
 
   return <MainView {...props} />;

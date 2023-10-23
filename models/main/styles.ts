@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import Grid from '@mui/material/Grid';
+
 import { mediaQueryTablet } from '@/styles/mediaQuery';
 
 const Banner = styled.div<{ order: 'first' | 'second' | 'third' }>`
@@ -121,6 +123,16 @@ const PostFilterWriteContainer = styled.div`
   align-items: center;
   justify-content: right;
   column-gap: 2rem;
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+`;
+
+const GridContainer = styled(Grid)`
+  padding: 0 1.5rem;
+`;
+
+const PaginationContainer = styled.div`
+  padding-top: 4rem;
+  padding-bottom: 8rem;
 `;
 
 // 게시글 목록 관련
@@ -142,5 +154,7 @@ export {
   ThirdSlideText,
   BugImage,
   PostFilterWriteContainer,
+  GridContainer,
+  PaginationContainer,
   StyledLink,
 };
