@@ -17,14 +17,27 @@ const Form = styled.form`
   user-select: none;
 `;
 
+const TitleContainer = styled.div`
+  padding: 0 1.5rem;
+`;
+
+const EmailPasswordInputContainer = styled.div`
+  padding: 0 1.5rem;
+`;
+
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
 `;
 
-const PolicyNotice = styled.div`
+const SubmitButtonContainer = styled.div`
+  padding: 1rem 1.5rem 2rem 1.5rem;
+`;
+
+const Notice = styled.div`
   font-size: 1.2rem;
+  padding: 1rem 1.5rem 3.5rem 1.5rem;
 
   a {
     text-decoration: none;
@@ -32,4 +45,11 @@ const PolicyNotice = styled.div`
   }
 `;
 
-export { Form, InputContainer, PolicyNotice };
+export {
+  Form,
+  TitleContainer,
+  EmailPasswordInputContainer,
+  InputContainer,
+  SubmitButtonContainer,
+  Notice,
+};
