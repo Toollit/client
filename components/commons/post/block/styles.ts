@@ -136,7 +136,7 @@ const RecruitmentType = styled.div<{
     } */
 `;
 
-const Title = styled.h2`
+const Title = styled.h1`
   font-size: 1.3rem;
   padding: 0rem 0.8rem;
   word-wrap: break-word;

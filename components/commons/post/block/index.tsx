@@ -1,8 +1,8 @@
 import React from 'react';
-import project3 from 'public/static/images/project3.jpg';
 import { BookmarkIcon, ViewIcon } from '@/assets/icons';
-import { Project } from '@/apis/getProjectsFetcher';
+import { Project } from '@/apis/projectsFetcher';
 import Hashtag from '@/components/commons/hashtag';
+import projectDefaultImage from 'public/static/images/project.jpg';
 import {
   Container,
   ImageContainer,
@@ -36,7 +36,11 @@ const BlockPost = ({ content }: BlockPostProps) => {
     <Container>
       <ImageContainer>
         <ProjectImage
-          src={project3}
+          src={
+            content.representativeImage === 'defaultImage'
+              ? projectDefaultImage
+              : content.representativeImage
+          }
           alt='default project image'
           layout='fill'
           priority
@@ -66,16 +70,16 @@ const BlockPost = ({ content }: BlockPostProps) => {
           <RecruitCompleteContent>
             모집완료{' '}
             <RecruitNumber>
-              {content.memberNumber} / {content.recruitNumber}
+              {content.memberCount} / {content.recruitCount}
             </RecruitNumber>
           </RecruitCompleteContent>
           <BookmarkViewContainer>
             <BookmarkContainer>
-              <BookmarkIcon width={20} height={20} fill={content.bookmark} />
-              <BookmarkIconText>{content.bookmarks}</BookmarkIconText>
+              <BookmarkIcon width={2} height={2} fill={content.bookmark} />
+              <BookmarkIconText>{content.bookmarkCount}</BookmarkIconText>
             </BookmarkContainer>
             <ViewIconContainer>
-              <ViewIcon width={20} height={20} />
+              <ViewIcon width={2} height={2} />
               <ViewIconText>{content.views}</ViewIconText>
             </ViewIconContainer>
           </BookmarkViewContainer>
