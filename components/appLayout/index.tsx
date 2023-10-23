@@ -3,10 +3,12 @@ import Nav, { NavProps } from '@/components/appLayout/nav';
 import Footer from '@/components/appLayout/footer';
 import Alert from '@/components/commons/alert';
 import LoadingCircularProgress from '@/components/commons/loading';
+import SearchDrawer from '@/components/commons/drawer/search';
 import { Container, Content } from './styles';
 
 interface AppLayoutProps extends NavProps {
   children: React.ReactNode;
+  footer?: boolean;
 }
 
 const AppLayout = ({
@@ -17,6 +19,7 @@ const AppLayout = ({
   boundary,
   fullSize,
   onClick,
+  footer = true,
 }: AppLayoutProps) => {
   return (
     <Container>
@@ -29,9 +32,14 @@ const AppLayout = ({
         onClick={onClick}
       />
       <Content type={type}>{children}</Content>
-      {type === 'default' && <Footer />}
+      {footer && <Footer />}
+
+      {/* Right bottom notification  */}
       <Alert />
+      {/* Loading bar waiting for a response to a request */}
       <LoadingCircularProgress />
+      {/* Drawer that appears when you click the Nav search icon  */}
+      <SearchDrawer />
     </Container>
   );
 };
