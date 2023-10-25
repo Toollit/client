@@ -16,6 +16,7 @@ const Container = styled.div`
   margin: 0 auto;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+  z-index: 999;
 `;
 
 const Button = styled.button<{ disabled: boolean }>`
