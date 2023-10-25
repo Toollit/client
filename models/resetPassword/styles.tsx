@@ -17,6 +17,14 @@ const Form = styled.form`
   user-select: none;
 `;
 
+const TitleContainer = styled.div`
+  padding: 0 1.5rem;
+`;
+
+const PasswordSettingsContainer = styled.div`
+  padding: 0 1.5rem;
+`;
+
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -26,11 +34,25 @@ const InputContainer = styled.div`
 
 const Notice = styled.div`
   font-size: 1.2rem;
-  margin: 2rem 0;
+  padding: 2rem 1.5rem;
 
   span {
     color: #26a063;
   }
 `;
 
-export { Form, InputContainer, Notice };
+const SubmitButtonContainer = styled.div`
+  padding: 1rem 1.5rem 1rem 1.5rem;
+  div {
+    padding: 0.5rem 0;
+  }
+`;
+
+export {
+  Form,
+  TitleContainer,
+  PasswordSettingsContainer,
+  InputContainer,
+  Notice,
+  SubmitButtonContainer,
+};

@@ -4,8 +4,14 @@ import { Button } from '@/components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
 import InputError from '@/components/commons/error/InputError';
-import Block from '@/components/commons/block';
-import { Form, InputContainer, Notice } from './styles';
+import {
+  Form,
+  TitleContainer,
+  PasswordSettingsContainer,
+  InputContainer,
+  Notice,
+  SubmitButtonContainer,
+} from './styles';
 
 export interface ResetPasswordViewProps {
   newPassword: string;
@@ -35,13 +41,13 @@ const ResetPasswordView = ({
   doubleCheckPasswordRef,
 }: ResetPasswordViewProps) => {
   return (
-    <AppLayout type='none'>
+    <AppLayout type='none' footer={false}>
       <Form onSubmit={handleSubmit}>
-        <Block paddingLeft={1.5} paddingRight={1.5}>
+        <TitleContainer>
           <Title text='Getit 비밀번호 재설정' />
-        </Block>
+        </TitleContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5}>
+        <PasswordSettingsContainer>
           <InputContainer>
             <Input
               type='password'
@@ -69,32 +75,21 @@ const ResetPasswordView = ({
               <InputError text='비밀번호가 일치하지 않습니다.' />
             )}
           </InputContainer>
-        </Block>
+        </PasswordSettingsContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5}>
-          <Notice>
-            <span>임시 비밀번호</span>로 로그인한 경우 비밀번호를{' '}
-            <span>재설정</span>하지 않으면 서비스 이용이 제한됩니다.
-          </Notice>
-        </Block>
+        <Notice>
+          <span>임시 비밀번호</span>로 로그인한 경우 비밀번호를{' '}
+          <span>재설정</span>하지 않으면 서비스 이용이 제한됩니다.
+        </Notice>
 
-        <Block
-          paddingLeft={1.5}
-          paddingRight={1.5}
-          paddingTop={1}
-          paddingBottom={1}
-        >
-          <Button type='submit' text='확인' />
-        </Block>
-
-        <Block
-          paddingLeft={1.5}
-          paddingRight={1.5}
-          paddingTop={1}
-          paddingBottom={1}
-        >
-          <Button type='normal' text='로그아웃' onClick={handleLogout} />
-        </Block>
+        <SubmitButtonContainer>
+          <div>
+            <Button type='submit' text='확인' />
+          </div>
+          <div>
+            <Button type='normal' text='로그아웃' onClick={handleLogout} />
+          </div>
+        </SubmitButtonContainer>
       </Form>
     </AppLayout>
   );

@@ -14,7 +14,7 @@ import { loading } from '@/features/loading';
 const ResetPasswordController = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { message } = useAuth();
+  const { data: userAuthInfo } = useAuth();
   const { logOut } = useLogout();
 
   const isLoading = useSelector((state: RootState) => state.isLoading.status);
@@ -76,11 +76,11 @@ const ResetPasswordController = () => {
 
         dispatch(loading({ status: true }));
 
-        const response = await resetPasswordAPI({ password: newPassword });
+        await resetPasswordAPI({ password: newPassword });
 
-        if (response?.message) {
-          alert(response.message);
-        }
+        alert(
+          '비밀번호 변경이 완료되었습니다. 새로운 비밀번호로 다시 로그인해주세요.',
+        );
 
         logOut({ push: '/login' });
 
@@ -117,10 +117,10 @@ const ResetPasswordController = () => {
   }, [doubleCheckPassword]);
 
   useEffect(() => {
-    if (message !== 'needResetPassword') {
+    if (userAuthInfo?.needResetPassword === false) {
       router.replace('/');
     }
-  }, [message, router]);
+  }, [userAuthInfo, router]);
 
   const props: ResetPasswordViewProps = {
     newPassword: newPassword ?? '',
