@@ -1,56 +1,77 @@
 import styled from '@emotion/styled';
+import Drawer from '@mui/material/Drawer';
 
-const SearchBoxContainer = styled.div`
-  background-color: #eff3fa;
-  height: 100%;
+const CustomDrawer = styled(Drawer)`
+  .MuiDrawer-paper {
+    background-color: rgba(232, 232, 237, 0.4);
+    background: transparent;
+    backdrop-filter: blur(0.2rem);
+  }
+
+  backdrop-filter: blur(0.2rem);
 `;
 
-const SearchBox = styled.div`
+const Container = styled.div`
+  background-color: rgba(22, 22, 23, 0.88);
   height: 45vh;
-  max-width: 102.4rem;
   width: 100%;
-  margin: 0 auto;
-  padding: 3.2rem 2.2rem 8rem 2.2rem;
 `;
 
-const SearchBoxIconInputPositionContainer = styled.div`
+const SearchInputContainer = styled.div`
   position: relative;
+  padding: 6rem 3rem 0rem 3rem;
 `;
 
 const SearchIconContainer = styled.div`
   position: absolute;
-  top: 1rem;
-  left: 0.5rem;
-  bottom: 0;
+  top: 6.5rem;
 `;
 
 const SearchInput = styled.input`
+  position: relative;
   height: 4.4rem;
   border: none;
-  font-size: 1.8rem;
-  color: #000;
+  font-size: 2.4rem;
+  color: #e8e8ed;
   width: 100%;
   padding: 0 3.4rem;
   font-weight: 600;
-  background-color: #eff3fa;
+  background-color: transparent;
 
   &:focus {
     outline: none;
-    border-bottom: 1px solid #e8e8ed;
+    caret-color: #e8e8ed;
   }
 `;
 
-const SearchRecommendation = styled.div`
-  margin-top: 4.9rem;
-  font-size: 1.7rem;
+const Description = styled.div`
+  font-size: 1.4rem;
+  color: #86868b;
+  padding: 4rem 3rem 0rem 3.5rem;
+`;
+
+const FastLinkContainer = styled.div`
+  padding: 1rem 3rem 0rem 3rem;
+`;
+
+const LinkContainer = styled.div`
+  display: flex;
+  padding: 0.5rem 0;
+`;
+
+const StyledLink = styled.a`
+  font-size: 1.4rem;
   color: #86868b;
 `;
 
 export {
-  SearchBoxContainer,
-  SearchBox,
-  SearchBoxIconInputPositionContainer,
+  CustomDrawer,
+  Container,
   SearchIconContainer,
+  SearchInputContainer,
   SearchInput,
-  SearchRecommendation,
+  Description,
+  FastLinkContainer,
+  LinkContainer,
+  StyledLink,
 };
