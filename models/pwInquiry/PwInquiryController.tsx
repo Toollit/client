@@ -7,6 +7,7 @@ import { errorMessage } from '@/apis/errorMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
 import { RootState } from '@/store';
+import PrivateRoute from '@/components/PrivateRoute';
 
 const PwInquiryController = () => {
   const dispatch = useDispatch();
@@ -56,11 +57,9 @@ const PwInquiryController = () => {
 
         dispatch(loading({ status: true }));
 
-        const response = await pwInquiryAPI({ email });
+        await pwInquiryAPI({ email });
 
-        if (response?.message) {
-          alert(response.message);
-        }
+        alert('해당 이메일로 임시 비밀번호를 발급했습니다.');
 
         router.push('/login');
 
@@ -89,7 +88,11 @@ const PwInquiryController = () => {
     handleSubmit,
     inputRef,
   };
-  return <PwInquiryView {...props} />;
+  return (
+    <PrivateRoute accessibleUser='unauthorized'>
+      <PwInquiryView {...props} />
+    </PrivateRoute>
+  );
 };
 
 export default PwInquiryController;

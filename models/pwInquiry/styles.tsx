@@ -1,4 +1,3 @@
-import { mediaQueryMobile } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 
 const Form = styled.form`
@@ -18,10 +17,26 @@ const Form = styled.form`
   user-select: none;
 `;
 
+const TitleContainer = styled.div`
+  padding: 0 1.5rem;
+`;
+
+const EmailInputContainer = styled.div`
+  padding: 0 1.5rem;
+`;
+
 const InputContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+`;
+
+const SubmitButtonContainer = styled.div`
+  padding: 1.5rem;
+`;
+
+const SignInInduceContainer = styled.div`
+  padding: 1.5rem 1.5rem 3.5rem 1.5rem;
 `;
 
 const SignInInduce = styled.span`
@@ -37,4 +52,13 @@ const StyledLink = styled.a`
   cursor: pointer;
 `;
 
-export { Form, InputContainer, SignInInduce, StyledLink };
+export {
+  Form,
+  TitleContainer,
+  EmailInputContainer,
+  InputContainer,
+  SubmitButtonContainer,
+  SignInInduceContainer,
+  SignInInduce,
+  StyledLink,
+};

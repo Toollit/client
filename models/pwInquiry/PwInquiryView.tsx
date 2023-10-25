@@ -5,8 +5,16 @@ import { Button } from '@/components/commons/button';
 import Title from '@/components/commons/title';
 import Input from '@/components/commons/input';
 import InputError from '@/components/commons/error/InputError';
-import Block from '@/components/commons/block';
-import { Form, InputContainer, SignInInduce, StyledLink } from './styles';
+import {
+  EmailInputContainer,
+  Form,
+  InputContainer,
+  SignInInduce,
+  SignInInduceContainer,
+  StyledLink,
+  SubmitButtonContainer,
+  TitleContainer,
+} from './styles';
 
 export interface PwInquiryViewProps {
   handleClose: () => void;
@@ -26,13 +34,18 @@ const PwInquiryView = ({
   inputRef,
 }: PwInquiryViewProps) => {
   return (
-    <AppLayout type='close' onClick={handleClose} boundary={false}>
+    <AppLayout
+      type='close'
+      onClick={handleClose}
+      boundary={false}
+      footer={false}
+    >
       <Form onSubmit={handleSubmit}>
-        <Block paddingLeft={1.5} paddingRight={1.5}>
+        <TitleContainer>
           <Title text='Getit 계정 찾기' />
-        </Block>
+        </TitleContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5}>
+        <EmailInputContainer>
           <InputContainer>
             <Input
               placeholder='이메일 주소를 입력해주세요.'
@@ -45,28 +58,18 @@ const PwInquiryView = ({
               <InputError text='올바른 이메일을 입력해 주세요.' />
             )}
           </InputContainer>
-        </Block>
+        </EmailInputContainer>
 
-        <Block
-          paddingLeft={1.5}
-          paddingRight={1.5}
-          paddingTop={1.5}
-          paddingBottom={1.5}
-        >
+        <SubmitButtonContainer>
           <Button type='submit' text='확인' />
-        </Block>
+        </SubmitButtonContainer>
 
-        <Block
-          paddingLeft={1.5}
-          paddingRight={1.5}
-          paddingTop={1.5}
-          paddingBottom={3.5}
-        >
+        <SignInInduceContainer>
           <SignInInduce>계정이 없으신가요?</SignInInduce>
           <Link href={'/signUp'} passHref>
             <StyledLink>가입하기</StyledLink>
           </Link>
-        </Block>
+        </SignInInduceContainer>
       </Form>
     </AppLayout>
   );
