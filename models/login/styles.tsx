@@ -18,6 +18,27 @@ const Form = styled.form`
   user-select: none;
 `;
 
+const TitleContainer = styled.div`
+  padding: 0 1.5rem;
+`;
+
+const SocialLoginButtonContainer = styled.div`
+  padding: 0.5rem 1.5rem;
+
+  button {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+`;
+
+const DividerContainer = styled.div`
+  padding: 0 1.5rem;
+`;
+
+const IdPasswordInputContainer = styled.div`
+  padding: 0.5rem 1.5rem;
+`;
+
 const InputContainer = styled.div<{ show: boolean }>`
   display: flex;
   flex-direction: column;
@@ -49,6 +70,18 @@ const PasswordInputContainer = styled.div`
   }
 `;
 
+const SubmitButtonContainer = styled.div`
+  padding: 1rem 1.5rem 0.5rem 1.5rem;
+`;
+
+const SearchPasswordButtonContainer = styled.div`
+  padding: 0.5rem 1.5rem 1rem 1.5rem;
+`;
+
+const SignInContainer = styled.div`
+  padding: 1.5rem 1.5rem 3.5rem 1.5rem;
+`;
+
 const SignInInduce = styled.span`
   color: ${(props) => props.theme.colors.text.gray};
   font-size: 1.5rem;
@@ -64,8 +97,15 @@ const StyledLink = styled.a`
 
 export {
   Form,
+  TitleContainer,
+  SocialLoginButtonContainer,
+  DividerContainer,
+  IdPasswordInputContainer,
   InputContainer,
   PasswordInputContainer,
+  SubmitButtonContainer,
+  SearchPasswordButtonContainer,
+  SignInContainer,
   SignInInduce,
   StyledLink,
 };

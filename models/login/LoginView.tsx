@@ -8,11 +8,18 @@ import Input from '@/components/commons/input';
 import Link from 'next/link';
 import Block from '@/components/commons/block';
 import {
+  DividerContainer,
   Form,
   InputContainer,
   PasswordInputContainer,
+  SubmitButtonContainer,
+  SearchPasswordButtonContainer,
+  SignInContainer,
   SignInInduce,
+  SocialLoginButtonContainer,
   StyledLink,
+  TitleContainer,
+  IdPasswordInputContainer,
 } from './styles';
 
 export interface LoginViewProps {
@@ -43,18 +50,18 @@ const LoginView = ({
   handleSocialLogin,
 }: LoginViewProps) => {
   return (
-    <AppLayout type='close' onClick={handleClose} boundary={false}>
+    <AppLayout
+      type='close'
+      onClick={handleClose}
+      boundary={false}
+      footer={false}
+    >
       <Form onSubmit={handleSubmit}>
-        <Block paddingLeft={1.5} paddingRight={1.5}>
+        <TitleContainer>
           <Title text='Getit 로그인' />
-        </Block>
+        </TitleContainer>
 
-        <Block
-          paddingLeft={1.5}
-          paddingRight={1.5}
-          paddingTop={0.5}
-          paddingBottom={0.5}
-        >
+        <SocialLoginButtonContainer>
           <Button
             type='normal'
             text='Google 계정으로 로그인'
@@ -62,14 +69,7 @@ const LoginView = ({
             name='google'
             onClick={handleSocialLogin}
           />
-        </Block>
 
-        <Block
-          paddingLeft={1.5}
-          paddingRight={1.5}
-          paddingTop={0.5}
-          paddingBottom={0.5}
-        >
           <Button
             type='normal'
             text='Github 계정으로 로그인'
@@ -77,18 +77,13 @@ const LoginView = ({
             name='github'
             onClick={handleSocialLogin}
           />
-        </Block>
+        </SocialLoginButtonContainer>
 
-        <Block paddingLeft={1.5} paddingRight={1.5}>
+        <DividerContainer>
           <Divider type='text' text='또는' />
-        </Block>
+        </DividerContainer>
 
-        <Block
-          paddingLeft={1.5}
-          paddingRight={1.5}
-          paddingTop={0.5}
-          paddingBottom={0.5}
-        >
+        <IdPasswordInputContainer>
           <InputContainer show={showPasswordInput}>
             <Input
               type='text'
@@ -112,45 +107,30 @@ const LoginView = ({
               </PasswordInputContainer>
             )}
           </InputContainer>
-        </Block>
+        </IdPasswordInputContainer>
 
-        <Block
-          paddingLeft={1.5}
-          paddingRight={1.5}
-          paddingTop={1}
-          paddingBottom={0.5}
-        >
+        <SubmitButtonContainer>
           {fillFormComplete ? (
             <Button type='submit' text='확인' />
           ) : (
             <Button type='submit' text='다음' />
           )}
-        </Block>
+        </SubmitButtonContainer>
 
-        <Block
-          paddingLeft={1.5}
-          paddingRight={1.5}
-          paddingTop={0.5}
-          paddingBottom={1}
-        >
+        <SearchPasswordButtonContainer>
           <Button
             type='normal'
             text='비밀번호를 잊으셨나요?'
             onClick={handlePwInquiryRouting}
           />
-        </Block>
+        </SearchPasswordButtonContainer>
 
-        <Block
-          paddingLeft={1.5}
-          paddingRight={1.5}
-          paddingTop={1.5}
-          paddingBottom={3.5}
-        >
+        <SignInContainer>
           <SignInInduce>계정이 없으신가요?</SignInInduce>
           <Link href={'/signUp'} passHref>
             <StyledLink>가입하기</StyledLink>
           </Link>
-        </Block>
+        </SignInContainer>
       </Form>
     </AppLayout>
   );
