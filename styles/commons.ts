@@ -24,11 +24,11 @@ const ImageWrapper = styled.div<ImageWrapperProps>`
   height: ${(props) => `${props.height}rem`};
 `;
 
-const CenterLayoutContainer = styled.div`
+const InnerContainer = styled.div`
   position: relative;
   margin: 0 auto;
   max-width: 102.4rem;
   width: 100%;
 `;
 
-export { SVGContainer, ImageWrapper, CenterLayoutContainer };
+export { SVGContainer, ImageWrapper, InnerContainer };
