@@ -1,9 +1,18 @@
 import React, { forwardRef } from 'react';
-import { FocusInput, NormalInput } from './styles';
+import { StyledInput } from './styles';
 
 interface InputProps {
   type?: string;
-  placeholder: string;
+  inputMode?:
+    | 'text'
+    | 'none'
+    | 'email'
+    | 'search'
+    | 'tel'
+    | 'url'
+    | 'numeric'
+    | 'decimal';
+  placeholder?: string;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   focus?: boolean;
@@ -14,6 +23,7 @@ type InputRef = React.ForwardedRef<HTMLInputElement>;
 
 /**
  * @prop {string} type - input type
+ * @prop {string} inputMode - input type
  * @prop {string} placeholder - input help text
  * @prop {string} value - input value
  * @prop {(event: React.ChangeEvent<HTMLInputElement>) => void} onChange - input handler
@@ -21,9 +31,10 @@ type InputRef = React.ForwardedRef<HTMLInputElement>;
  * @prop {boolean} enterSubmit - Controls the behavior of submitting to the input enter
  * */
 
-const InputComponent = (
+const CustomInput = (
   {
     type = 'text',
+    inputMode,
     placeholder,
     value,
     onChange,
@@ -33,7 +44,7 @@ const InputComponent = (
   ref: InputRef,
 ) => {
   return (
-    <NormalInput
+    <StyledInput
       type={type}
       value={value}
       placeholder={placeholder}
@@ -43,10 +54,11 @@ const InputComponent = (
         !enterSubmit && e.key === 'Enter' && e.preventDefault();
       }}
       focus={focus}
+      inputMode={inputMode}
     />
   );
 };
 
-const Input = forwardRef(InputComponent);
+const Input = forwardRef(CustomInput);
 
 export default Input;

@@ -22,7 +22,7 @@ const FocusInput = styled.input`
   }
 `;
 
-const NormalInput = styled.input<{ focus: boolean }>`
+const StyledInput = styled.input<{ focus: boolean }>`
   ${(props) => CommonStyles(props.theme)}
 
   &:focus {
@@ -31,4 +31,4 @@ const NormalInput = styled.input<{ focus: boolean }>`
   }
 `;
 
-export { FocusInput, NormalInput };
+export { FocusInput, StyledInput };
