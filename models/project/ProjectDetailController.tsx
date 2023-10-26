@@ -360,7 +360,7 @@ const ProjectDetailController = () => {
           memberTypes: handleMemberTypes(
             projectDetail.data.content.memberTypes,
           ),
-          recruitNumber: projectDetail.data.content.recruitNumber,
+          recruitCount: projectDetail.data.content.recruitCount,
           representativeImage: projectDetail.data.content.representativeImage,
         }
       : undefined,

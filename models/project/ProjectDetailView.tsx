@@ -12,10 +12,8 @@ import {
 import Skeleton from '@/components/commons/skeleton';
 import Report from '@/components/commons/drawer/report';
 import { Button } from '@/components/commons/button';
-import Block from '@/components/commons/block';
 import { ShareIcon, BookmarkIcon, MoreIcon } from '@/assets/icons';
-import CategoryTitle from '@/components/commons/categoryTitle';
-import { CenterLayoutContainer, ImageWrapper } from '@/styles/commons';
+import { InnerContainer, ImageWrapper } from '@/styles/commons';
 import FastScroll from '@/components/commons/fastScroll';
 import Link from 'next/link';
 import { StaticImageData } from 'next/image';
@@ -50,6 +48,8 @@ import {
   MembersContainer,
   StickyContainer,
   WriterInfo,
+  JoinButtonContainer,
+  MemberSkeletonContainer,
 } from './styles';
 
 const DynamicTuiViewer = dynamic(
@@ -115,7 +115,7 @@ const ProjectDetailView = ({
 }: ProjectDetailViewProps) => {
   return (
     <AppLayout type='default'>
-      <CenterLayoutContainer>
+      <InnerContainer>
         <Container>
           <ColumnLeftContainer>
             {content ? (
@@ -180,55 +180,52 @@ const ProjectDetailView = ({
                 </ProjectContentBottomContainer>
               </ContentContainer>
             ) : (
-              <Skeleton height={500} />
+              <Skeleton height={60} />
             )}
           </ColumnLeftContainer>
           <br />
           <ColumnRightContainer>
             <StickyContainer>
-              <Block marginBottom={1}>
-                {writer ? (
-                  <WriterInfoContainer>
-                    <WriterProfileImage>
-                      <ImageWrapper width={6} height={6}>
-                        <StyledImage
-                          src={writer.profileImage}
-                          alt={`${writer.nickname} profile`}
-                          draggable={false}
-                          priority
-                          layout='fill'
-                        />
-                      </ImageWrapper>
-                    </WriterProfileImage>
-                    <WriterInfo>
-                      <Writer>
-                        <div>작성자</div>
-                        <div>{writer.nickname}</div>
-                      </Writer>
-                      <LastLoginAt>
-                        <div>마지막 접속</div>
-                        <div>{writer.lastLoginAt}</div>
-                      </LastLoginAt>
-                    </WriterInfo>
-                  </WriterInfoContainer>
-                ) : (
-                  <Skeleton height={200} />
-                )}
-              </Block>
+              {writer ? (
+                <WriterInfoContainer>
+                  <WriterProfileImage>
+                    <ImageWrapper width={6} height={6}>
+                      <StyledImage
+                        src={writer.profileImage}
+                        alt={`${writer.nickname} profile`}
+                        draggable={false}
+                        priority
+                        layout='fill'
+                      />
+                    </ImageWrapper>
+                  </WriterProfileImage>
+                  <WriterInfo>
+                    <Writer>
+                      <div>작성자</div>
+                      <div>{writer.nickname}</div>
+                    </Writer>
+                    <LastLoginAt>
+                      <div>마지막 접속</div>
+                      <div>{writer.lastLoginAt}</div>
+                    </LastLoginAt>
+                  </WriterInfo>
+                </WriterInfoContainer>
+              ) : (
+                <Skeleton height={20} />
+              )}
 
-              <Block marginBottom={1}>
+              <JoinButtonContainer>
                 <Button
                   type='submit'
                   text='참가하기'
                   shape='square'
                   onClick={handleJoinProject}
                 />
-              </Block>
+              </JoinButtonContainer>
 
-              <Block marginBottom={1}>
-                <ProjectMembersContainer>
-                  <CategoryTitle text='프로젝트 멤버' />
-
+              <ProjectMembersContainer>
+                <h2>프로젝트 멤버</h2>
+                {member ? (
                   <MembersContainer>
                     <Members>
                       {member?.profiles.map((info, index) => {
@@ -251,14 +248,42 @@ const ProjectDetailView = ({
                         );
                       })}
                     </Members>
+
                     <RestMemberCount>{member?.moreMemberCount}</RestMemberCount>
                   </MembersContainer>
-                </ProjectMembersContainer>
-              </Block>
+                ) : (
+                  <MemberSkeletonContainer>
+                    <Skeleton
+                      width={3.5}
+                      height={3.5}
+                      shape='circular'
+                      right={-1.3}
+                    />
+                    <Skeleton
+                      width={3.5}
+                      height={3.5}
+                      shape='circular'
+                      right={-1.3}
+                    />
+                    <Skeleton
+                      width={3.5}
+                      height={3.5}
+                      shape='circular'
+                      right={-1.3}
+                    />
+                    <Skeleton
+                      width={3.5}
+                      height={3.5}
+                      shape='circular'
+                      right={-1.3}
+                    />
+                  </MemberSkeletonContainer>
+                )}
+              </ProjectMembersContainer>
             </StickyContainer>
           </ColumnRightContainer>
         </Container>
-      </CenterLayoutContainer>
+      </InnerContainer>
 
       <FastScroll scroll='both' />
       <Report />

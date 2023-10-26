@@ -13,15 +13,14 @@ const Container = styled.div`
 `;
 
 const ColumnLeftContainer = styled.div`
-  width: 100%;
+  ${mediaQueryLaptop} {
+    width: 70%;
+  }
 `;
 
 const ColumnRightContainer = styled.div`
-  width: 100%;
-
   ${mediaQueryLaptop} {
-    max-width: 30rem;
-    width: 100%;
+    width: 30%;
     margin-left: 2rem;
   }
 `;
@@ -251,6 +250,11 @@ const ProjectMembersContainer = styled.div`
   padding: 1rem;
   border: 1px solid ${(props) => props.theme.colors.border.container};
   box-shadow: ${(props) => props.theme.boxShadow.base};
+  margin-top: 1rem;
+
+  h2 {
+    font-size: 1.6rem;
+  }
 `;
 
 const MembersContainer = styled.div`
@@ -278,6 +282,15 @@ const RestMemberCount = styled.span`
   font-weight: 600;
   color: ${(props) => props.theme.colors.theme};
   padding: 0 0.8rem;
+`;
+
+const JoinButtonContainer = styled.div`
+  margin-top: 1rem;
+`;
+
+const MemberSkeletonContainer = styled.div`
+  display: flex;
+  padding: 1.5rem 0;
 `;
 
 export {
@@ -311,4 +324,6 @@ export {
   Members,
   Avatar,
   RestMemberCount,
+  JoinButtonContainer,
+  MemberSkeletonContainer,
 };
