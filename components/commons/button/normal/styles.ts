@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 
 interface CommonStylesProps {
+  shape?: 'round' | 'square';
   width?: number;
   height?: number;
 }
@@ -9,11 +10,12 @@ interface CommonStylesProps {
 const commonStyles = (props: CommonStylesProps) => css`
   width: ${props.width ? `${props.width}rem` : '100%'};
   height: ${props.height ? `${props.height}rem` : '4rem'};
-  border-radius: 25rem;
+  border-radius: ${props.shape === 'round' ? '25rem' : '0.3rem'};
 `;
 
 const NormalButton = styled.button<{
   isMobile: boolean;
+  shape?: 'round' | 'square';
   width?: number;
   height?: number;
 }>`
@@ -48,6 +50,7 @@ const NormalButton = styled.button<{
 
 const SubmitButton = styled.button<{
   isMobile: boolean;
+  shape?: 'round' | 'square';
   width?: number;
   height?: number;
 }>`
@@ -64,6 +67,7 @@ const SubmitButton = styled.button<{
 
 const DisabledButton = styled.button<{
   isMobile: boolean;
+  shape?: 'round' | 'square';
   width?: number;
   height?: number;
 }>`

@@ -10,15 +10,25 @@ import {
 
 interface Props {
   type: 'normal' | 'submit' | 'disabled';
+  shape?: 'round' | 'square';
   width?: number;
   height?: number;
   name?: string;
-  text?: string;
+  text: string;
   icon?: React.ReactNode;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const Button = ({ width, height, type, name, text, icon, onClick }: Props) => {
+const Button = ({
+  type,
+  shape = 'round',
+  width,
+  height,
+  name,
+  text,
+  icon,
+  onClick,
+}: Props) => {
   const { isMobile } = useCheckUserAgent();
 
   switch (type) {
@@ -28,6 +38,7 @@ const Button = ({ width, height, type, name, text, icon, onClick }: Props) => {
           type='button'
           name={name}
           isMobile={isMobile}
+          shape={shape}
           width={width}
           height={height}
           onClick={onClick}
@@ -44,6 +55,7 @@ const Button = ({ width, height, type, name, text, icon, onClick }: Props) => {
           type='submit'
           name={name}
           isMobile={isMobile}
+          shape={shape}
           width={width}
           height={height}
           onClick={onClick}
@@ -60,6 +72,7 @@ const Button = ({ width, height, type, name, text, icon, onClick }: Props) => {
           disabled
           name={name}
           isMobile={isMobile}
+          shape={shape}
           width={width}
           height={height}
           onClick={onClick}
