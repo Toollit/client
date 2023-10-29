@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import path from 'path';
 import Label from '@/components/commons/label';
-import { uploadImageAPI } from '@/apis/uploadImage';
-import { errorMessage } from '@/apis/errorMessage';
-import { ProjectDetail } from '@/apis/projectDetailFetcher';
+import { ProjectDetail } from '@/apis/projectFetcher';
 import { Editor } from '@toast-ui/react-editor';
 import { HookMap } from '@toast-ui/editor';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
@@ -13,37 +11,32 @@ import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import 'tui-editor-plugin-font-size/dist/tui-editor-plugin-font-size.css';
 import { TuiCustomGlobalStyles, TitleInput } from './TuiEditorStyles';
+import useUploadImage from '@/hooks/useUploadImage';
 
 type HookMapKey = keyof HookMap;
 
 interface TuiEditorProps {
   titleRef: React.RefObject<HTMLInputElement>;
   editorRef: React.RefObject<Editor>;
+  name: string;
+  contentImageUploadUrl: string;
   content?: ProjectDetail | null;
 }
 /**
- * @param titleRef - 제목 값을 받아오기 위한 ref
- * @param editorRef - Tui Editor 컨텐츠 값을 받아오기 위한 ref
- * @param content - 수정할 게시글 컨텐츠. modify 주소에서만 가져온다.
+ * @props titleRef - 제목 값을 받아오기 위한 ref
+ * @props editorRef - Tui Editor 콘텐츠 값을 받아오기 위한 ref
+ * @props name - Tui Editor 콘텐츠 image upload에 사용될 name
+ * @props contentImageUploadUrl - Tui Editor 콘텐츠 image upload에 사용될 url
+ * @props content - 수정할 게시글 콘텐츠. modify 주소에서만 가져온다.
  */
-const TuiEditor = ({ titleRef, editorRef, content }: TuiEditorProps) => {
-  useEffect(() => {
-    if (editorRef.current) {
-      editorRef.current.getRootElement().classList.add('Tui-editor-root');
-      // initial value settings
-      editorRef.current
-        .getInstance()
-        .setMarkdown(content?.content.contentMarkdown || '');
-
-      const timeoutBlur = setTimeout(() => {
-        editorRef.current?.getInstance().blur();
-      }, 0);
-
-      return () => {
-        clearTimeout(timeoutBlur);
-      };
-    }
-  }, [editorRef, content]);
+const TuiEditor = ({
+  titleRef,
+  editorRef,
+  name,
+  contentImageUploadUrl,
+  content,
+}: TuiEditorProps) => {
+  const { uploadSingleImage } = useUploadImage();
 
   const handleFilteringFile = useCallback((blob: Blob | File) => {
     if (
@@ -67,23 +60,6 @@ const TuiEditor = ({ titleRef, editorRef, content }: TuiEditorProps) => {
     }
 
     return true;
-  }, []);
-
-  const uploadImage = useCallback(async (blob: Blob | File) => {
-    const formData = new FormData();
-    formData.append('postImage', blob);
-
-    const endpoint = '/api/post/project/content/uploadImage';
-
-    try {
-      const response = await uploadImageAPI(endpoint, formData);
-
-      const imageUrl = response?.data.url;
-
-      return imageUrl;
-    } catch (error) {
-      errorMessage(error);
-    }
   }, []);
 
   const createAltText = useCallback((blob: Blob | File) => {
@@ -122,8 +98,11 @@ const TuiEditor = ({ titleRef, editorRef, content }: TuiEditorProps) => {
     if (!isAppropriateFile) {
       return;
     }
-
-    const imageUrl = await uploadImage(blob);
+    const imageUrl = await uploadSingleImage({
+      name,
+      endPoint: contentImageUploadUrl,
+      File: blob,
+    });
 
     const altText = handleAltText(blob);
 
@@ -139,6 +118,24 @@ const TuiEditor = ({ titleRef, editorRef, content }: TuiEditorProps) => {
       return event.preventDefault();
     }
   }, []);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.getRootElement().classList.add('Tui-editor-root');
+      // initial value settings
+      editorRef.current
+        .getInstance()
+        .setMarkdown(content?.content.contentMarkdown || '');
+
+      const timeoutBlur = setTimeout(() => {
+        editorRef.current?.getInstance().blur();
+      }, 0);
+
+      return () => {
+        clearTimeout(timeoutBlur);
+      };
+    }
+  }, [editorRef, content]);
 
   return (
     <>
