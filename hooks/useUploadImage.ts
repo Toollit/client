@@ -3,16 +3,16 @@ import { errorMessage } from '@/apis/errorMessage';
 import { uploadImageAPI } from '@/apis/uploadImage';
 
 interface Props {
-  fieldName: string;
+  name: string;
   endPoint: string;
   File: Blob | File;
 }
 
 const useUploadImage = () => {
   const uploadSingleImage = useCallback(
-    async ({ fieldName, endPoint, File }: Props) => {
+    async ({ name, endPoint, File }: Props) => {
       const formData = new FormData();
-      formData.append(fieldName, File);
+      formData.append(name, File);
 
       try {
         const response = await uploadImageAPI(endPoint, formData);
