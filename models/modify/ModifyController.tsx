@@ -15,6 +15,7 @@ import { loading } from '@/features/loading';
 import useTooltip from '@/hooks/useTooltip';
 import { StaticImageData } from 'next/image';
 import projectDefaultImage from 'public/static/images/project.jpg';
+import useWindowSize from '@/hooks/useWindowSize';
 
 interface ModifyControllerProps {
   postId: string;
@@ -31,6 +32,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
     handleTooltipOpen,
     handleTooltipClose,
   } = useTooltip();
+  const { isLaptop } = useWindowSize();
 
   const isLoading = useSelector((state: RootState) => state.isLoading.status);
 
@@ -230,6 +232,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
   }, []);
 
   const props: ModifyViewProps = {
+    isFooterVisible: isLaptop ? true : false,
     handleSubmit,
     editor: {
       titleRef,

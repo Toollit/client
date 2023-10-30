@@ -13,6 +13,7 @@ import { CloseIcon, PlusIcon } from '@/assets/icons';
 import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
 import Skeleton from '@/components/commons/skeleton';
 import { BottomButton } from '@/components/commons/button';
+import { InnerContainer } from '@/styles/commons';
 
 import {
   AddImageBox,
@@ -47,6 +48,7 @@ const DynamicTuiEditor = dynamic(
 );
 
 export interface ModifyViewProps {
+  isFooterVisible: boolean;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   editor: {
     titleRef: React.RefObject<HTMLInputElement>;
@@ -75,6 +77,7 @@ export interface ModifyViewProps {
 }
 
 const ModifyView = ({
+  isFooterVisible,
   handleSubmit,
   editor,
   hashtagRef,
@@ -92,96 +95,98 @@ const ModifyView = ({
   tooltip,
 }: ModifyViewProps) => {
   return (
-    <AppLayout type='default' footer={false}>
-      <Form onSubmit={handleSubmit}>
-        <TitleContainer>
-          <Title text='프로젝트 수정' />
-        </TitleContainer>
+    <AppLayout type='default' footer={isFooterVisible}>
+      <InnerContainer>
+        <Form onSubmit={handleSubmit}>
+          <TitleContainer>
+            <Title text='프로젝트 수정' />
+          </TitleContainer>
 
-        <EditorContainer>
-          <DynamicTuiEditor
-            titleRef={editor.titleRef}
-            editorRef={editor.editorRef}
-            content={editor.content}
-            name={editor.name}
-            contentImageUploadUrl={editor.contentImageUploadUrl}
-          />
-        </EditorContainer>
+          <EditorContainer>
+            <DynamicTuiEditor
+              titleRef={editor.titleRef}
+              editorRef={editor.editorRef}
+              content={editor.content}
+              name={editor.name}
+              contentImageUploadUrl={editor.contentImageUploadUrl}
+            />
+          </EditorContainer>
 
-        <HashtagContainer>
-          <Label text='#해시태그' />
-          <HashtagInput
-            hashtagRef={hashtagRef}
-            hashtags={hashtags}
-            placeholder='*Enter를 눌러 해시태그를 작성해 주세요.'
-          />
-        </HashtagContainer>
+          <HashtagContainer>
+            <Label text='#해시태그' />
+            <HashtagInput
+              hashtagRef={hashtagRef}
+              hashtags={hashtags}
+              placeholder='*Enter를 눌러 해시태그를 작성해 주세요.'
+            />
+          </HashtagContainer>
 
-        <MemberTypeContainer>
-          <Label text='모집 타입' />
-          <MemberTypeSelector
-            memberTypeRef={memberTypeRef}
-            memberTypes={memberTypes}
-          />
-        </MemberTypeContainer>
+          <MemberTypeContainer>
+            <Label text='모집 타입' />
+            <MemberTypeSelector
+              memberTypeRef={memberTypeRef}
+              memberTypes={memberTypes}
+            />
+          </MemberTypeContainer>
 
-        <RecruitContainer>
-          <Label htmlFor='recruit' text='모집 인원' />
-          <RecruitCountInput
-            type='number'
-            name='recruit'
-            pattern='[0-9]*'
-            min={1}
-            max={100}
-            ref={recruitCountRef}
-            onKeyDown={handleKeydownSubmit}
-            autoComplete='off'
-            defaultValue={recruitCount}
-            inputMode='numeric'
-          />
-        </RecruitContainer>
+          <RecruitContainer>
+            <Label htmlFor='recruit' text='모집 인원' />
+            <RecruitCountInput
+              type='number'
+              name='recruit'
+              pattern='[0-9]*'
+              min={1}
+              max={100}
+              ref={recruitCountRef}
+              onKeyDown={handleKeydownSubmit}
+              autoComplete='off'
+              defaultValue={recruitCount}
+              inputMode='numeric'
+            />
+          </RecruitContainer>
 
-        <RepresentativeImageContainer>
-          <Label text='대표 이미지' />
-          {representativePreviewImage ? (
-            <ImageContainer>
-              <Image
-                src={representativePreviewImage}
-                alt={'project representative image'}
-                layout='fill'
-              />
-              <ImageDeleteIcon onClick={handleDeleteRepresentativePreviewImg}>
-                <CloseIcon />
-              </ImageDeleteIcon>
-            </ImageContainer>
-          ) : (
-            <>
-              <AddImageBox onClick={handleTooltipOpen}>
-                <PlusIcon width={4} height={4} />
-              </AddImageBox>
-              <Tooltip {...tooltip} />
-            </>
-          )}
+          <RepresentativeImageContainer>
+            <Label text='대표 이미지' />
+            {representativePreviewImage ? (
+              <ImageContainer>
+                <Image
+                  src={representativePreviewImage}
+                  alt={'project representative image'}
+                  layout='fill'
+                />
+                <ImageDeleteIcon onClick={handleDeleteRepresentativePreviewImg}>
+                  <CloseIcon />
+                </ImageDeleteIcon>
+              </ImageContainer>
+            ) : (
+              <>
+                <AddImageBox onClick={handleTooltipOpen}>
+                  <PlusIcon width={4} height={4} />
+                </AddImageBox>
+                <Tooltip {...tooltip} />
+              </>
+            )}
 
-          <input
-            hidden
-            type='file'
-            accept='image/jpg, image/jpeg, image/png'
-            ref={representativeImageRef}
-            onChange={handleChangeRepresentativeImg}
-          />
-        </RepresentativeImageContainer>
+            <input
+              hidden
+              type='file'
+              accept='image/jpg, image/jpeg, image/png'
+              ref={representativeImageRef}
+              onChange={handleChangeRepresentativeImg}
+            />
+          </RepresentativeImageContainer>
 
-        <SubmitContainer>
-          <DesktopSubmitContainer>
-            <Button type='submit' text='작성 완료' width={15} />
-          </DesktopSubmitContainer>
+          <SubmitContainer>
+            <DesktopSubmitContainer>
+              <Button type='submit' text='작성 완료' width={15} />
+            </DesktopSubmitContainer>
 
-          <MobileSubmitContainer>
-            <BottomButton text='작성 완료' />
-          </MobileSubmitContainer>
-        </SubmitContainer>
-      </Form>
+            <MobileSubmitContainer>
+              <BottomButton text='작성 완료' />
+            </MobileSubmitContainer>
+          </SubmitContainer>
+        </Form>
+      </InnerContainer>
     </AppLayout>
   );
 };
