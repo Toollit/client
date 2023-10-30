@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 interface Props {
@@ -8,10 +8,27 @@ interface Props {
 /**
  * record the user's path history hooks
  */
+
 const usePathHistory = ({ saveAction = false }: Props) => {
   const router = useRouter();
 
-  const pathHistoryRef = useRef<string[]>();
+  const getPathHistory = useCallback(() => {
+    const storedPathHistory = localStorage.getItem('pathHistory');
+    if (!storedPathHistory) {
+      return null;
+    }
+    const existPathHistory: string[] = JSON.parse(storedPathHistory);
+    return existPathHistory;
+  }, []);
+
+  const getBeforePathHistory = useCallback(() => {
+    const storedPathHistory = localStorage.getItem('pathHistory');
+    if (!storedPathHistory) {
+      return null;
+    }
+    const existPathHistory: string[] = JSON.parse(storedPathHistory);
+    return existPathHistory[existPathHistory.length - 2];
+  }, []);
 
   useEffect(() => {
     const newPathHistory = router.asPath;
@@ -36,7 +53,6 @@ const usePathHistory = ({ saveAction = false }: Props) => {
         }
 
         // Up to 5 path history records are allowed
-
         if (existPathHistory.length < 5) {
           const history = [...existPathHistory, newPathHistory];
 
@@ -50,16 +66,9 @@ const usePathHistory = ({ saveAction = false }: Props) => {
         }
       }
     }
-
-    if (!saveAction) {
-      if (storedPathHistory) {
-        const existPathHistory: string[] = JSON.parse(storedPathHistory);
-        pathHistoryRef.current = existPathHistory;
-      }
-    }
   }, [router, saveAction]);
 
-  return { pathHistory: pathHistoryRef.current };
+  return { getPathHistory, getBeforePathHistory };
 };
 
 export default usePathHistory;
