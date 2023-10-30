@@ -9,10 +9,11 @@ import LottieAnimation from '@/components/commons/lottie';
 import BlockPost, { CustomProject } from '@/components/commons/post/block';
 import Grid from '@mui/material/Grid';
 import Filter from '@/components/commons/filter';
-import SwipeableCircularViews from '@/components/commons/swipeableView/swipeableCircularViews';
 import Pagination from '@/components/commons/pagination';
 import { Button } from '@/components/commons/button';
 import { InnerContainer } from '@/styles/commons';
+import Swiper from '@/components/commons/swiper/webComponent/container';
+import SwiperSlide from '@/components/commons/swiper/webComponent/slide';
 import {
   Banner,
   FirstSlideText,
@@ -47,51 +48,57 @@ const MainView = ({
   return (
     <AppLayout type='default'>
       {/* Banner */}
-      <SwipeableCircularViews autoPlay={true} interval={4000}>
-        <Banner order={'first'}>
-          <FirstSlideText>
-            <FirstSlideHeadline>
-              IT 프로젝트 모집
+      <Swiper>
+        <SwiperSlide>
+          <Banner order={'first'}>
+            <FirstSlideText>
+              <FirstSlideHeadline>
+                IT 프로젝트 모집
+                <br />
+                커뮤니티 플랫폼
+              </FirstSlideHeadline>
               <br />
-              커뮤니티 플랫폼
-            </FirstSlideHeadline>
-            <br />
-            <FirstSlideSubhead>
-              당신이 부러워하는 유니콘 스타트업도 <br />
-              작은 모임에서 시작됐다.
-            </FirstSlideSubhead>
-          </FirstSlideText>
+              <FirstSlideSubhead>
+                당신이 부러워하는 유니콘 스타트업도 <br />
+                작은 모임에서 시작됐다.
+              </FirstSlideSubhead>
+            </FirstSlideText>
 
-          <BannerPersonImg>
-            <BannerPerson />
-          </BannerPersonImg>
+            <BannerPersonImg>
+              <BannerPerson />
+            </BannerPersonImg>
 
-          <FirstSlideBackground>
-            <BannerBackground />
-          </FirstSlideBackground>
-        </Banner>
-
-        <Banner order={'second'}>
-          <SecondSlideText>
-            <div>전 세계에 있는 관심사가 비슷한 사람들과</div>
-            <div>프로젝트를 진행해 보세요.</div>
-          </SecondSlideText>
-          <NetworkImg>
-            <LottieAnimation lottieJson={NetworkLottieJson} />
-          </NetworkImg>
-        </Banner>
-
-        <Banner order={'third'}>
-          <ThirdSlideText>
-            <ThirdSlideNotice>Notice</ThirdSlideNotice>
-            <div>버그 리포트를 해주신 분 중</div>
-            <div>추첨을 통해 스타벅스 아메리카노 기프티콘을 보내드립니다.</div>
-          </ThirdSlideText>
-          <BugImage>
-            <Bug />
-          </BugImage>
-        </Banner>
-      </SwipeableCircularViews>
+            <FirstSlideBackground>
+              <BannerBackground />
+            </FirstSlideBackground>
+          </Banner>
+        </SwiperSlide>
+        <SwiperSlide>
+          <Banner order={'second'}>
+            <SecondSlideText>
+              <div>전 세계에 있는 관심사가 비슷한 사람들과</div>
+              <div>프로젝트를 진행해 보세요.</div>
+            </SecondSlideText>
+            <NetworkImg>
+              <LottieAnimation lottieJson={NetworkLottieJson} />
+            </NetworkImg>
+          </Banner>
+        </SwiperSlide>
+        <SwiperSlide>
+          <Banner order={'third'}>
+            <ThirdSlideText>
+              <ThirdSlideNotice>Notice</ThirdSlideNotice>
+              <div>버그 리포트를 해주신 분 중</div>
+              <div>
+                추첨을 통해 스타벅스 아메리카노 기프티콘을 보내드립니다.
+              </div>
+            </ThirdSlideText>
+            <BugImage>
+              <Bug />
+            </BugImage>
+          </Banner>
+        </SwiperSlide>
+      </Swiper>
 
       {/* Content */}
       <InnerContainer>
