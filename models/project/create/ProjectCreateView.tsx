@@ -49,6 +49,7 @@ const DynamicTuiEditor = dynamic(
 );
 
 export interface ProjectCreateViewProps {
+  isFooterVisible: boolean;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   editor: {
     titleRef: React.RefObject<HTMLInputElement>;
@@ -73,6 +74,7 @@ export interface ProjectCreateViewProps {
 }
 
 const ProjectCreateView = ({
+  isFooterVisible,
   handleSubmit,
   editor,
   hashtagRef,
@@ -87,7 +89,7 @@ const ProjectCreateView = ({
   tooltip,
 }: ProjectCreateViewProps) => {
   return (
-    <AppLayout type='default' footer={false}>
+    <AppLayout type='default' footer={isFooterVisible}>
       <InnerContainer>
         <Form onSubmit={handleSubmit}>
           <TitleContainer>

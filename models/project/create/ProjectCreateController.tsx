@@ -12,6 +12,7 @@ import useTooltip from '@/hooks/useTooltip';
 import projectDefaultImage from 'public/static/images/project.jpg';
 import { StaticImageData } from 'next/image';
 import { RootState } from '@/store';
+import useWindowSize from '@/hooks/useWindowSize';
 
 const ProjectCreateController = () => {
   const router = useRouter();
@@ -25,6 +26,7 @@ const ProjectCreateController = () => {
     handleTooltipOpen,
     handleTooltipClose,
   } = useTooltip();
+  const { isLaptop } = useWindowSize();
 
   const isLoading = useSelector((state: RootState) => state.isLoading.status);
 
@@ -185,6 +187,7 @@ const ProjectCreateController = () => {
   }, []);
 
   const props: ProjectCreateViewProps = {
+    isFooterVisible: isLaptop ? true : false,
     handleSubmit,
     editor: {
       titleRef,
