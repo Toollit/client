@@ -3,6 +3,7 @@ import { Project } from '@/apis/profileBookmarksFetcher';
 import Link from 'next/link';
 import Hashtag from '@/components/commons/hashtag';
 import { BookmarkIcon, PersonIcon, ViewIcon } from '@/assets/icons';
+import { BoxContainer, BoxTitle } from '@/styles/commons';
 import {
   BoxContent,
   Content,
@@ -15,8 +16,7 @@ import {
   LoadMoreContainer,
   LoadMoreButton,
   Notice,
-} from './BookmarkViewStyles';
-import { BoxContainer, BoxTitle } from './styles';
+} from './styles';
 
 interface CustomBookmark extends Omit<Project, 'memberTypes'> {
   memberTypes: ('Developer' | 'Designer' | 'PM' | 'Anyone')[];

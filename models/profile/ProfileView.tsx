@@ -5,14 +5,16 @@ import { AccountCircleIcon, EditCircleIcon } from '@/assets/icons';
 import Divider from '@/components/commons/divider';
 import Skeleton from '@/components/commons/skeleton';
 import Dialog from '@/components/commons/dialog';
-import ProfileInfoView, { ProfileInfoData } from './section/ProfileInfoView';
-import SwipeableTabView from '@/components/commons/swipeableView/swipeableTabViews';
-import ProjectView, { ProjectViewData } from './section/ProjectView';
-import ProfileFooterLink from './section/Footer';
 import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
 import { ImageWrapper } from '@/styles/commons';
-import BookmarkView, { BookmarkViewData } from './section/BookmarkView';
-import AlarmView, { AlarmViewData } from './section/AlarmView';
+import SwipeableTabView from '@/components/commons/swipeableView/swipeableTabViews';
+import ProfileInfoView, {
+  ProfileInfoData,
+} from './tab/profile/ProfileInfoView';
+import ProjectView, { ProjectViewData } from './tab/project/ProjectView';
+import BookmarkView, { BookmarkViewData } from './tab/bookmark/BookmarkView';
+import AlarmView, { AlarmViewData } from './tab/alarm/AlarmView';
+import ProfileFooterLink from './footer/Footer';
 import {
   Container,
   ColumnLeftContainer,

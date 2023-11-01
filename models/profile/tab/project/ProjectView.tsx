@@ -3,6 +3,7 @@ import Hashtag from '@/components/commons/hashtag';
 import { BookmarkIcon, PersonIcon, ViewIcon } from '@/assets/icons';
 import Link from 'next/link';
 import { Project } from '@/apis/profileProjectsFetcher';
+import { BoxContainer, BoxTitle } from '@/styles/commons';
 import {
   Content,
   BoxContent,
@@ -16,8 +17,7 @@ import {
   Notice,
   StyledLink,
   SubInfo,
-} from './ProjectViewStyles';
-import { BoxContainer, BoxTitle } from './styles';
+} from './styles';
 
 interface CustomProject extends Omit<Project, 'memberTypes'> {
   memberTypes: ('Developer' | 'Designer' | 'PM' | 'Anyone')[];

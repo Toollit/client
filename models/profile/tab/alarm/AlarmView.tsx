@@ -2,7 +2,7 @@ import React from 'react';
 import { Alarm } from '@/apis/profileAlarmsFetcher';
 import Link from 'next/link';
 import { Button } from '@/components/commons/button';
-import { BoxContainer, BoxTitle } from './styles';
+import { BoxContainer, BoxTitle } from '@/styles/commons';
 import {
   BoxContent,
   Content,
@@ -16,7 +16,7 @@ import {
   InfoContainer,
   ButtonContainer,
   Label,
-} from './AlarmViewStyles';
+} from './styles';
 
 export interface AlarmViewData {
   alarms: Alarm[] | null;

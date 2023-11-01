@@ -3,6 +3,7 @@ import { PersonIcon, MailIcon } from '@/assets/icons';
 import Hashtag from '@/components/commons/hashtag';
 import { EditButton } from '@/components/commons/button';
 import { MyProfile, UserProfile } from '@/apis/profileInfoFetcher';
+import { BoxContainer, BoxTitle } from '@/styles/commons';
 import {
   BoxContent,
   ContentContainer,
@@ -12,8 +13,7 @@ import {
   IntroduceContentContainer,
   ProgramSkillContainer,
   HashtagContainer,
-} from './ProfileInfoViewStyles';
-import { BoxContainer, BoxTitle } from './styles';
+} from './styles';
 
 interface CustomMyProfile extends Omit<MyProfile, 'skills'> {
   skills: string[];
