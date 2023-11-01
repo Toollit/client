@@ -294,6 +294,12 @@ const ProjectDetailController = () => {
 
   const handleJoinProject = useCallback(async () => {
     try {
+      const result = confirm('프로젝트에 참가하시겠습니까?');
+
+      if (!result) {
+        return;
+      }
+
       const response = await authMutate();
 
       if (response?.success) {
