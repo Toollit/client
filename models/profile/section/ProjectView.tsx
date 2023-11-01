@@ -74,11 +74,11 @@ const ProjectView = ({ data, loadMore }: ProjectViewProps) => {
                           </div>
                           <div>
                             <BookmarkIcon width={2.5} height={2.5} />
-                            <span>{project.bookmarks}</span>
+                            <span>{project.bookmarkCount}</span>
                           </div>
                           <div>
                             <PersonIcon width={2.5} height={2.5} />
-                            <span>{`${project.memberNumber} / ${project.recruitNumber}`}</span>
+                            <span>{`${project.memberCount} / ${project.recruitCount}`}</span>
                           </div>
                         </SubInfo>
                       </StyledContentLink>
@@ -141,11 +141,11 @@ const ProjectView = ({ data, loadMore }: ProjectViewProps) => {
                           </div>
                           <div>
                             <BookmarkIcon width={2.5} height={2.5} />
-                            <span>{project.bookmarks}</span>
+                            <span>{project.bookmarkCount}</span>
                           </div>
                           <div>
                             <PersonIcon width={2.5} height={2.5} />
-                            <span>{`${project.memberNumber} / ${project.recruitNumber}`}</span>
+                            <span>{`${project.memberCount} / ${project.recruitCount}`}</span>
                           </div>
                         </SubInfo>
                       </StyledContentLink>

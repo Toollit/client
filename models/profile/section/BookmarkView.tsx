@@ -1,8 +1,8 @@
 import React from 'react';
 import { Project } from '@/apis/profileBookmarksFetcher';
-import { BoxContainer, BoxTitle } from './styles';
 import Link from 'next/link';
 import Hashtag from '@/components/commons/hashtag';
+import { BookmarkIcon, PersonIcon, ViewIcon } from '@/assets/icons';
 import {
   BoxContent,
   Content,
@@ -16,7 +16,7 @@ import {
   LoadMoreButton,
   Notice,
 } from './BookmarkViewStyles';
-import { BookmarkIcon, PersonIcon, ViewIcon } from '@/assets/icons';
+import { BoxContainer, BoxTitle } from './styles';
 
 interface CustomBookmark extends Omit<Project, 'memberTypes'> {
   memberTypes: ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
@@ -72,11 +72,11 @@ const BookmarkView = ({ data, loadMore }: BookmarkViewProps) => {
                         </div>
                         <div>
                           <BookmarkIcon width={2.5} height={2.5} fill={true} />
-                          <span>{project.bookmarks}</span>
+                          <span>{project.bookmarkCount}</span>
                         </div>
                         <div>
                           <PersonIcon width={2.5} height={2.5} />
-                          <span>{`${project.memberNumber} / ${project.recruitNumber}`}</span>
+                          <span>{`${project.memberCount} / ${project.recruitCount}`}</span>
                         </div>
                       </SubInfo>
                     </StyledContentLink>
