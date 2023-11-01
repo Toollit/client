@@ -7,10 +7,12 @@ import Skeleton from '@/components/commons/skeleton';
 import Dialog from '@/components/commons/dialog';
 import ProfileInfoView, { ProfileInfoData } from './section/ProfileInfoView';
 import SwipeableTabView from '@/components/commons/swipeableView/swipeableTabViews';
-import Image from 'next/image';
 import ProjectView, { ProjectViewData } from './section/ProjectView';
 import ProfileFooterLink from './section/Footer';
 import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
+import { ImageWrapper } from '@/styles/commons';
+import BookmarkView, { BookmarkViewData } from './section/BookmarkView';
+import AlarmView, { AlarmViewData } from './section/AlarmView';
 import {
   Container,
   ColumnLeftContainer,
@@ -38,8 +40,6 @@ import {
   Content,
   StyledProfileImage,
 } from './styles';
-import { ImageWrapper } from '@/styles/commons';
-import BookmarkView, { BookmarkViewData } from './section/BookmarkView';
 
 export interface ProfileViewProps {
   accessUser: string | null;
@@ -56,6 +56,7 @@ export interface ProfileViewProps {
   profileInfoData: ProfileInfoData | null;
   projectData: ProjectViewData | null;
   bookmarkData: BookmarkViewData | null;
+  alarmData: AlarmViewData | null;
   nickname: string;
   handleLogInOut: () => void;
   handleProfileInfoEditBtn: (category: string) => void;
@@ -77,6 +78,7 @@ const ProfileView = ({
   profileInfoData,
   projectData,
   bookmarkData,
+  alarmData,
   nickname,
   handleLogInOut,
   handleProfileInfoEditBtn,
@@ -285,6 +287,19 @@ const ProfileView = ({
               )}
             </>
           )}
+
+          {currentTab === 'viewAlarms' && (
+            <>
+              {alarmData && <AlarmView data={alarmData} />}
+              {!alarmData && (
+                <>
+                  <Skeleton height={25} top={3} />
+                  <Skeleton height={25} top={3} />
+                  <Skeleton height={25} top={3} />
+                </>
+              )}
+            </>
+          )}
         </LaptopViewContainer>
 
         {/* Mobile view */}
@@ -359,6 +374,26 @@ const ProfileView = ({
                   />
                 </Content>
               ) : null}
+            </ViewContainer>
+
+            <ViewContainer>
+              {alarmData ? (
+                <Content>
+                  <AlarmView data={alarmData} />
+                  <ProfileFooterLink
+                    me={me}
+                    accessUser={accessUser}
+                    loginState={loginState}
+                    handleLogInOut={handleLogInOut}
+                  />
+                </Content>
+              ) : (
+                <>
+                  <Skeleton height={25} top={3} />
+                  <Skeleton height={25} top={3} />
+                  <Skeleton height={25} top={3} />
+                </>
+              )}
             </ViewContainer>
           </SwipeableTabView>
         </MobileViewContainer>
