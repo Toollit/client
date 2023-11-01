@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ProfileView, { ProfileViewProps } from './ProfileView';
 import useSWR, { useSWRConfig, Cache } from 'swr';
 import {
-  profileAlarmsKey,
   profileBookmarksKey,
   profileImageKey,
   profileInfoKey,
@@ -14,7 +13,7 @@ import { errorMessage } from '@/apis/errorMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { updateProfileAPI } from '@/apis/updateProfile';
-import { changeDateFormat, dateFromNow } from '@/utils/changeDateFormat';
+import { changeDateFormat } from '@/utils/changeDateFormat';
 import { open as openDialog, close as closeDialog } from '@/features/dialog';
 import { profileImageFetcher } from '@/apis/profileImageFetcher';
 import {
@@ -36,10 +35,6 @@ import {
   ProfileBookmarksAPIRes,
   profileBookmarksFetcher,
 } from '@/apis/profileBookmarksFetcher';
-import {
-  ProfileAlarmsAPIRes,
-  profileAlarmsFetcher,
-} from '@/apis/profileAlarmsFetcher';
 
 interface CachedData<T> {
   cache: Cache<T | undefined>;
@@ -58,10 +53,6 @@ interface ProfilePageData {
   bookmarks: {
     isLoaded: boolean;
     data: null | ProfileBookmarksAPIRes['data'];
-  };
-  alarms: {
-    isLoaded: boolean;
-    data: null | ProfileAlarmsAPIRes['data'];
   };
 }
 
@@ -100,10 +91,6 @@ const ProfileController = () => {
       data: null,
     },
     bookmarks: {
-      isLoaded: false,
-      data: null,
-    },
-    alarms: {
       isLoaded: false,
       data: null,
     },
@@ -326,47 +313,6 @@ const ProfileController = () => {
             };
           });
         }
-      },
-      use: [serialize],
-    },
-  );
-
-  // Profile User Alarms fetcher
-  const { data: profileAlarmsData } = useSWR(
-    userExistCheckData?.data.existUser &&
-      nickname &&
-      currentTab === 'viewAlarms'
-      ? {
-          url: profileAlarmsKey(nickname),
-          args: {
-            page: '/profile',
-            tag: `profileAlarms`,
-          },
-        }
-      : null,
-    profileAlarmsFetcher,
-    {
-      dedupingInterval: 1000 * 60 * 10,
-      revalidateOnFocus: false,
-      shouldRetryOnError: false,
-      onError(err, key, config) {
-        errorMessage(err);
-        router.back();
-      },
-      onSuccess(res, key, config) {
-        setData((prev) => {
-          return {
-            ...prev,
-            alarms: {
-              isLoaded: true,
-              data: res?.data
-                ? {
-                    alarms: res.data.alarms,
-                  }
-                : null,
-            },
-          };
-        });
       },
       use: [serialize],
     },
@@ -751,30 +697,6 @@ const ProfileController = () => {
     [],
   );
 
-  const handleAlarmDataResponse = useCallback(
-    (data: ProfileAlarmsAPIRes['data'] | null) => {
-      if (!data) {
-        return null;
-      }
-
-      const convertedData = data?.alarms.map((alarm) => {
-        return {
-          ...alarm,
-          project: {
-            ...alarm.project,
-            createdAt: dateFromNow({ date: alarm.project.createdAt }),
-          },
-        };
-      });
-
-      return {
-        alarms: convertedData,
-      };
-    },
-
-    [],
-  );
-
   const handleProjectLoadMore = useCallback(() => {
     if (!nickname) {
       return;
@@ -881,7 +803,6 @@ const ProfileController = () => {
     const profileProjectsKey = getCachedKeyWithTag({
       tag: `profileProjects?count=${projectPostCount}`,
     });
-    const profileAlarmsKey = getCachedKeyWithTag({ tag: 'profileAlarms' });
 
     const profileInfoCachedData = profileInfoKey
       ? (getCachedDataWithKey({
@@ -892,12 +813,6 @@ const ProfileController = () => {
       ? (getCachedDataWithKey({
           key: profileProjectsKey,
         }) as ProfileProjectsAPIRes['data'])
-      : null;
-
-    const profileAlarmsCachedData = profileAlarmsKey
-      ? (getCachedDataWithKey({
-          key: profileAlarmsKey,
-        }) as ProfileAlarmsAPIRes['data'])
       : null;
 
     if (!data.profileInfo.isLoaded && profileInfoCachedData) {
@@ -923,24 +838,12 @@ const ProfileController = () => {
         };
       });
     }
-
-    if (!data.alarms.isLoaded && profileAlarmsCachedData) {
-      setData((prev) => {
-        return {
-          ...prev,
-          alarms: {
-            isLoaded: true,
-            data: profileAlarmsCachedData,
-          },
-        };
-      });
-    }
   }, [
     data,
     profileInfoData,
     profileProjectsData,
     profileBookmarksData,
-    profileAlarmsData,
+
     cache,
     nickname,
     projectPostCount,
@@ -1006,7 +909,7 @@ const ProfileController = () => {
     profileInfoData: handleProfileInfoDataResponse(data.profileInfo.data),
     projectData: handleProjectDataResponse(data.projects.data),
     bookmarkData: handleBookmarkDataResponse(data.bookmarks.data),
-    alarmData: handleAlarmDataResponse(data.alarms.data),
+
     nickname,
     handleLogInOut,
     handleProfileInfoEditBtn,

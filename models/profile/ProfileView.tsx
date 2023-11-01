@@ -13,7 +13,7 @@ import ProfileInfoView, {
 } from './tab/profile/ProfileInfoView';
 import ProjectView, { ProjectViewData } from './tab/project/ProjectView';
 import BookmarkView, { BookmarkViewData } from './tab/bookmark/BookmarkView';
-import AlarmView, { AlarmViewData } from './tab/alarm/AlarmView';
+import AlarmController from './tab/alarm/AlarmController';
 import ProfileFooterLink from './footer/Footer';
 import {
   Container,
@@ -58,7 +58,7 @@ export interface ProfileViewProps {
   profileInfoData: ProfileInfoData | null;
   projectData: ProjectViewData | null;
   bookmarkData: BookmarkViewData | null;
-  alarmData: AlarmViewData | null;
+
   nickname: string;
   handleLogInOut: () => void;
   handleProfileInfoEditBtn: (category: string) => void;
@@ -80,7 +80,7 @@ const ProfileView = ({
   profileInfoData,
   projectData,
   bookmarkData,
-  alarmData,
+
   nickname,
   handleLogInOut,
   handleProfileInfoEditBtn,
@@ -291,16 +291,7 @@ const ProfileView = ({
           )}
 
           {currentTab === 'viewAlarms' && (
-            <>
-              {alarmData && <AlarmView data={alarmData} />}
-              {!alarmData && (
-                <>
-                  <Skeleton height={25} top={3} />
-                  <Skeleton height={25} top={3} />
-                  <Skeleton height={25} top={3} />
-                </>
-              )}
-            </>
+            <AlarmController currentTab={currentTab} />
           )}
         </LaptopViewContainer>
 
@@ -379,23 +370,15 @@ const ProfileView = ({
             </ViewContainer>
 
             <ViewContainer>
-              {alarmData ? (
-                <Content>
-                  <AlarmView data={alarmData} />
-                  <ProfileFooterLink
-                    me={me}
-                    accessUser={accessUser}
-                    loginState={loginState}
-                    handleLogInOut={handleLogInOut}
-                  />
-                </Content>
-              ) : (
-                <>
-                  <Skeleton height={25} top={3} />
-                  <Skeleton height={25} top={3} />
-                  <Skeleton height={25} top={3} />
-                </>
-              )}
+              <Content>
+                <AlarmController currentTab={currentTab} />
+                <ProfileFooterLink
+                  me={me}
+                  accessUser={accessUser}
+                  loginState={loginState}
+                  handleLogInOut={handleLogInOut}
+                />
+              </Content>
             </ViewContainer>
           </SwipeableTabView>
         </MobileViewContainer>
