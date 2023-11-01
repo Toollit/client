@@ -11,7 +11,7 @@ import SwipeableTabView from '@/components/commons/swipeableView/swipeableTabVie
 import ProfileInfoView, {
   ProfileInfoData,
 } from './tab/profile/ProfileInfoView';
-import ProjectView, { ProjectViewData } from './tab/project/ProjectView';
+import ProjectController from './tab/project/ProjectController';
 import BookmarkView, { BookmarkViewData } from './tab/bookmark/BookmarkView';
 import AlarmController from './tab/alarm/AlarmController';
 import ProfileFooterLink from './footer/Footer';
@@ -56,15 +56,13 @@ export interface ProfileViewProps {
     | undefined;
   profileImageData?: string | null;
   profileInfoData: ProfileInfoData | null;
-  projectData: ProjectViewData | null;
   bookmarkData: BookmarkViewData | null;
-
   nickname: string;
   handleLogInOut: () => void;
   handleProfileInfoEditBtn: (category: string) => void;
   profileImgRef: React.RefObject<HTMLInputElement>;
   handleChangeProfileImg: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleProjectLoadMore: () => void;
+
   handleBookmarkLoadMore: () => void;
   handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
   tooltip: TooltipProps;
@@ -78,15 +76,12 @@ const ProfileView = ({
   currentTab,
   profileImageData,
   profileInfoData,
-  projectData,
   bookmarkData,
-
   nickname,
   handleLogInOut,
   handleProfileInfoEditBtn,
   profileImgRef,
   handleChangeProfileImg,
-  handleProjectLoadMore,
   handleBookmarkLoadMore,
   handleTooltipOpen,
   tooltip,
@@ -257,20 +252,7 @@ const ProfileView = ({
           )}
 
           {currentTab === 'viewProjects' && (
-            <>
-              {projectData && (
-                <ProjectView
-                  data={projectData}
-                  loadMore={handleProjectLoadMore}
-                />
-              )}
-              {!projectData && (
-                <>
-                  <Skeleton height={30} top={3} />
-                  <Skeleton height={30} top={3} />
-                </>
-              )}
-            </>
+            <ProjectController currentTab={currentTab} />
           )}
 
           {currentTab === 'viewBookmarks' && (
@@ -324,27 +306,15 @@ const ProfileView = ({
             </ViewContainer>
 
             <ViewContainer>
-              {projectData ? (
-                <Content>
-                  <ProjectView
-                    data={projectData}
-                    loadMore={handleProjectLoadMore}
-                  />
-                  <ProfileFooterLink
-                    me={me}
-                    accessUser={accessUser}
-                    loginState={loginState}
-                    handleLogInOut={handleLogInOut}
-                  />
-                </Content>
-              ) : (
-                <>
-                  <Skeleton height={20} top={3} />
-                  <Skeleton height={20} top={3} />
-                  <Skeleton height={20} top={3} />
-                  <Skeleton height={20} top={3} />
-                </>
-              )}
+              <Content>
+                <ProjectController currentTab={currentTab} />
+                <ProfileFooterLink
+                  me={me}
+                  accessUser={accessUser}
+                  loginState={loginState}
+                  handleLogInOut={handleLogInOut}
+                />
+              </Content>
             </ViewContainer>
 
             <ViewContainer>
