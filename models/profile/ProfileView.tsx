@@ -42,6 +42,7 @@ import {
 } from './styles';
 
 export interface ProfileViewProps {
+  isLaptop: boolean;
   isExistUser?: boolean;
   accessUser: string | null;
   me: boolean;
@@ -63,6 +64,7 @@ export interface ProfileViewProps {
 }
 
 const ProfileView = ({
+  isLaptop,
   isExistUser,
   accessUser,
   me,
@@ -220,101 +222,101 @@ const ProfileView = ({
       </ColumnLeftContainer>
 
       <ColumnRightContainer>
-        {/* Laptop view */}
-        <LaptopViewContainer>
-          {currentTab === 'viewProfile' && (
-            <ProfileInfoController
-              currentTab={currentTab}
-              isExistUser={isExistUser}
-            />
-          )}
+        {isLaptop ? (
+          <LaptopViewContainer>
+            {currentTab === 'viewProfile' && (
+              <ProfileInfoController
+                currentTab={currentTab}
+                isExistUser={isExistUser}
+              />
+            )}
 
-          {currentTab === 'viewProjects' && (
-            <ProjectController
-              currentTab={currentTab}
-              isExistUser={isExistUser}
-            />
-          )}
+            {currentTab === 'viewProjects' && (
+              <ProjectController
+                currentTab={currentTab}
+                isExistUser={isExistUser}
+              />
+            )}
 
-          {currentTab === 'viewBookmarks' && (
-            <BookmarkController
-              currentTab={currentTab}
-              isExistUser={isExistUser}
-            />
-          )}
+            {currentTab === 'viewBookmarks' && (
+              <BookmarkController
+                currentTab={currentTab}
+                isExistUser={isExistUser}
+              />
+            )}
 
-          {currentTab === 'viewAlarms' && (
-            <AlarmController
-              currentTab={currentTab}
-              isExistUser={isExistUser}
-            />
-          )}
-        </LaptopViewContainer>
+            {currentTab === 'viewAlarms' && (
+              <AlarmController
+                currentTab={currentTab}
+                isExistUser={isExistUser}
+              />
+            )}
+          </LaptopViewContainer>
+        ) : (
+          <MobileViewContainer>
+            <SwipeableTabView tabs={tabs}>
+              <ViewContainer>
+                <Content>
+                  <ProfileInfoController
+                    currentTab={currentTab}
+                    isExistUser={isExistUser}
+                  />
+                  <ProfileFooterLink
+                    me={me}
+                    accessUser={accessUser}
+                    loginState={loginState}
+                    handleLogInOut={handleLogInOut}
+                  />
+                </Content>
+              </ViewContainer>
 
-        {/* Mobile view */}
-        <MobileViewContainer>
-          <SwipeableTabView tabs={tabs}>
-            <ViewContainer>
-              <Content>
-                <ProfileInfoController
-                  currentTab={currentTab}
-                  isExistUser={isExistUser}
-                />
-                <ProfileFooterLink
-                  me={me}
-                  accessUser={accessUser}
-                  loginState={loginState}
-                  handleLogInOut={handleLogInOut}
-                />
-              </Content>
-            </ViewContainer>
+              <ViewContainer>
+                <Content>
+                  <ProjectController
+                    currentTab={currentTab}
+                    isExistUser={isExistUser}
+                  />
+                  <ProfileFooterLink
+                    me={me}
+                    accessUser={accessUser}
+                    loginState={loginState}
+                    handleLogInOut={handleLogInOut}
+                  />
+                </Content>
+              </ViewContainer>
 
-            <ViewContainer>
-              <Content>
-                <ProjectController
-                  currentTab={currentTab}
-                  isExistUser={isExistUser}
-                />
-                <ProfileFooterLink
-                  me={me}
-                  accessUser={accessUser}
-                  loginState={loginState}
-                  handleLogInOut={handleLogInOut}
-                />
-              </Content>
-            </ViewContainer>
+              <ViewContainer>
+                <Content>
+                  <BookmarkController
+                    currentTab={currentTab}
+                    isExistUser={isExistUser}
+                  />
+                  <ProfileFooterLink
+                    me={me}
+                    accessUser={accessUser}
+                    loginState={loginState}
+                    handleLogInOut={handleLogInOut}
+                  />
+                </Content>
+              </ViewContainer>
 
-            <ViewContainer>
-              <Content>
-                <BookmarkController
-                  currentTab={currentTab}
-                  isExistUser={isExistUser}
-                />
-                <ProfileFooterLink
-                  me={me}
-                  accessUser={accessUser}
-                  loginState={loginState}
-                  handleLogInOut={handleLogInOut}
-                />
-              </Content>
-            </ViewContainer>
-
-            <ViewContainer>
-              <Content>
-                <AlarmController
-                  currentTab={currentTab}
-                  isExistUser={isExistUser}
-                />
-                <ProfileFooterLink
-                  me={me}
-                  accessUser={accessUser}
-                  loginState={loginState}
-                  handleLogInOut={handleLogInOut}
-                />
-              </Content>
-            </ViewContainer>
-          </SwipeableTabView>
-        </MobileViewContainer>
+              <ViewContainer>
+                <Content>
+                  <AlarmController
+                    currentTab={currentTab}
+                    isExistUser={isExistUser}
+                  />
+                  <ProfileFooterLink
+                    me={me}
+                    accessUser={accessUser}
+                    loginState={loginState}
+                    handleLogInOut={handleLogInOut}
+                  />
+                </Content>
+              </ViewContainer>
+            </SwipeableTabView>
+          </MobileViewContainer>
+        )}
       </ColumnRightContainer>
       <Dialog />
     </Container>

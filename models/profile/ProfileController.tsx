@@ -12,6 +12,7 @@ import useLogout from '@/hooks/useLogout';
 import { serialize } from '@/middleware/swr/serialize';
 import useTooltip from '@/hooks/useTooltip';
 import { userExistCheckFetcher } from '@/apis/userExistCheckFetcher';
+import useWindowSize from '@/hooks/useWindowSize';
 
 interface CachedData<T> {
   cache: Cache<T | undefined>;
@@ -38,6 +39,7 @@ const ProfileController = () => {
     handleTooltipOpen,
     handleTooltipClose,
   } = useTooltip();
+  const { isLaptop } = useWindowSize();
 
   const [nickname, setNickname] = useState('');
   const [currentTab, setCurrentTab] = useState<ProfileCurrentTab>();
@@ -216,6 +218,7 @@ const ProfileController = () => {
   }, [router]);
 
   const props: ProfileViewProps = {
+    isLaptop,
     isExistUser: userExistCheckData?.data.existUser,
     accessUser,
     me: nickname === accessUser,
