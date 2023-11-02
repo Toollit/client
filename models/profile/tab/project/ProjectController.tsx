@@ -10,6 +10,7 @@ import { errorMessage } from '@/apis/errorMessage';
 import { useRouter } from 'next/router';
 import { serialize } from '@/middleware/swr/serialize';
 import useCachedKeys from '@/hooks/useCachedKeys';
+import { ProfileCurrentTab } from '@/models/profile/ProfileController';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
@@ -19,15 +20,14 @@ interface ProjectData {
 }
 
 export interface ProjectControllerProps {
-  currentTab:
-    | 'viewProfile'
-    | 'viewProjects'
-    | 'viewBookmarks'
-    | 'viewAlarms'
-    | undefined;
+  currentTab: ProfileCurrentTab;
+  isExistUser?: boolean;
 }
 
-const ProjectController = ({ currentTab }: ProjectControllerProps) => {
+const ProjectController = ({
+  currentTab,
+  isExistUser,
+}: ProjectControllerProps) => {
   const router = useRouter();
   const { getCachedKeyWithTag, getCachedDataWithKey } = useCachedKeys();
 
@@ -38,10 +38,9 @@ const ProjectController = ({ currentTab }: ProjectControllerProps) => {
   });
   const [projectPostCount, setProjectPostCount] = useState(5); // Load by 5
 
-  // Project create and join list fetcher
   const { data: profileProjectsData, mutate: profileProjectsDataMutate } =
     useSWR(
-      currentTab === 'viewProjects' && nickname
+      isExistUser && currentTab === 'viewProjects' && nickname
         ? {
             url: profileProjectsKey(nickname, projectPostCount),
             args: {

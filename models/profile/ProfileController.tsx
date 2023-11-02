@@ -1,23 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ProfileView, { ProfileViewProps } from './ProfileView';
-import useSWR, { useSWRConfig, Cache } from 'swr';
-import {
-  profileImageKey,
-  profileInfoKey,
-  userExistCheckKey,
-} from '@/apis/keys';
+import useSWR, { Cache } from 'swr';
+import { profileImageKey, userExistCheckKey } from '@/apis/keys';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/errorMessage';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
 import { updateProfileAPI } from '@/apis/updateProfile';
 import { profileImageFetcher } from '@/apis/profileImageFetcher';
-import { ProfileInfoAPIRes } from '@/apis/profileInfoFetcher';
 import type { ScopedMutator } from 'swr/_internal';
 import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
 import { serialize } from '@/middleware/swr/serialize';
-import useCachedKeys from '@/hooks/useCachedKeys';
 import useTooltip from '@/hooks/useTooltip';
 import { userExistCheckFetcher } from '@/apis/userExistCheckFetcher';
 
@@ -27,6 +19,13 @@ interface CachedData<T> {
 }
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
+
+export type ProfileCurrentTab =
+  | 'viewProfile'
+  | 'viewProjects'
+  | 'viewBookmarks'
+  | 'viewAlarms'
+  | undefined;
 
 const ProfileController = () => {
   const router = useRouter();
@@ -41,9 +40,7 @@ const ProfileController = () => {
   } = useTooltip();
 
   const [nickname, setNickname] = useState('');
-  const [currentTab, setCurrentTab] = useState<
-    'viewProfile' | 'viewProjects' | 'viewBookmarks' | 'viewAlarms' | undefined
-  >();
+  const [currentTab, setCurrentTab] = useState<ProfileCurrentTab>();
 
   const tabs = useRef([
     { name: '프로필', query: 'viewProfile' },
@@ -219,6 +216,7 @@ const ProfileController = () => {
   }, [router]);
 
   const props: ProfileViewProps = {
+    isExistUser: userExistCheckData?.data.existUser,
     accessUser,
     me: nickname === accessUser,
     loginState: accessUser,

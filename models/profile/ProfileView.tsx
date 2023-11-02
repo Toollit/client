@@ -42,6 +42,7 @@ import {
 } from './styles';
 
 export interface ProfileViewProps {
+  isExistUser?: boolean;
   accessUser: string | null;
   me: boolean;
   loginState?: string | null;
@@ -62,6 +63,7 @@ export interface ProfileViewProps {
 }
 
 const ProfileView = ({
+  isExistUser,
   accessUser,
   me,
   loginState,
@@ -221,19 +223,31 @@ const ProfileView = ({
         {/* Laptop view */}
         <LaptopViewContainer>
           {currentTab === 'viewProfile' && (
-            <ProfileInfoController currentTab={currentTab} />
+            <ProfileInfoController
+              currentTab={currentTab}
+              isExistUser={isExistUser}
+            />
           )}
 
           {currentTab === 'viewProjects' && (
-            <ProjectController currentTab={currentTab} />
+            <ProjectController
+              currentTab={currentTab}
+              isExistUser={isExistUser}
+            />
           )}
 
           {currentTab === 'viewBookmarks' && (
-            <BookmarkController currentTab={currentTab} />
+            <BookmarkController
+              currentTab={currentTab}
+              isExistUser={isExistUser}
+            />
           )}
 
           {currentTab === 'viewAlarms' && (
-            <AlarmController currentTab={currentTab} />
+            <AlarmController
+              currentTab={currentTab}
+              isExistUser={isExistUser}
+            />
           )}
         </LaptopViewContainer>
 
@@ -242,7 +256,10 @@ const ProfileView = ({
           <SwipeableTabView tabs={tabs}>
             <ViewContainer>
               <Content>
-                <ProfileInfoController currentTab={currentTab} />
+                <ProfileInfoController
+                  currentTab={currentTab}
+                  isExistUser={isExistUser}
+                />
                 <ProfileFooterLink
                   me={me}
                   accessUser={accessUser}
@@ -254,7 +271,10 @@ const ProfileView = ({
 
             <ViewContainer>
               <Content>
-                <ProjectController currentTab={currentTab} />
+                <ProjectController
+                  currentTab={currentTab}
+                  isExistUser={isExistUser}
+                />
                 <ProfileFooterLink
                   me={me}
                   accessUser={accessUser}
@@ -266,7 +286,10 @@ const ProfileView = ({
 
             <ViewContainer>
               <Content>
-                <BookmarkController currentTab={currentTab} />
+                <BookmarkController
+                  currentTab={currentTab}
+                  isExistUser={isExistUser}
+                />
                 <ProfileFooterLink
                   me={me}
                   accessUser={accessUser}
@@ -278,7 +301,10 @@ const ProfileView = ({
 
             <ViewContainer>
               <Content>
-                <AlarmController currentTab={currentTab} />
+                <AlarmController
+                  currentTab={currentTab}
+                  isExistUser={isExistUser}
+                />
                 <ProfileFooterLink
                   me={me}
                   accessUser={accessUser}

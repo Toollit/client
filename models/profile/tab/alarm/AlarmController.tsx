@@ -11,6 +11,7 @@ import {
 } from '@/apis/profileAlarmsFetcher';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { dateFromNow } from '@/utils/changeDateFormat';
+import { ProfileCurrentTab } from '@/models/profile/ProfileController';
 
 interface AlarmData {
   isLoaded: boolean;
@@ -18,15 +19,11 @@ interface AlarmData {
 }
 
 export interface AlarmControllerProps {
-  currentTab:
-    | 'viewProfile'
-    | 'viewProjects'
-    | 'viewBookmarks'
-    | 'viewAlarms'
-    | undefined;
+  currentTab: ProfileCurrentTab;
+  isExistUser?: boolean;
 }
 
-const AlarmController = ({ currentTab }: AlarmControllerProps) => {
+const AlarmController = ({ currentTab, isExistUser }: AlarmControllerProps) => {
   const router = useRouter();
   const { getCachedKeyWithTag, getCachedDataWithKey } = useCachedKeys();
 
@@ -34,7 +31,7 @@ const AlarmController = ({ currentTab }: AlarmControllerProps) => {
   const [nickname, setNickname] = useState('');
 
   const { data: profileAlarmsData } = useSWR(
-    currentTab === 'viewAlarms' && nickname
+    isExistUser && currentTab === 'viewAlarms' && nickname
       ? {
           url: profileAlarmsKey(nickname),
           args: {

@@ -10,6 +10,7 @@ import {
 import { errorMessage } from '@/apis/errorMessage';
 import { serialize } from '@/middleware/swr/serialize';
 import useCachedKeys from '@/hooks/useCachedKeys';
+import { ProfileCurrentTab } from '@/models/profile/ProfileController';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
@@ -19,15 +20,14 @@ interface BookmarkData {
 }
 
 export interface BookmarkControllerProps {
-  currentTab:
-    | 'viewProfile'
-    | 'viewProjects'
-    | 'viewBookmarks'
-    | 'viewAlarms'
-    | undefined;
+  currentTab: ProfileCurrentTab;
+  isExistUser?: boolean;
 }
 
-const BookmarkController = ({ currentTab }: BookmarkControllerProps) => {
+const BookmarkController = ({
+  currentTab,
+  isExistUser,
+}: BookmarkControllerProps) => {
   const router = useRouter();
   const { getCachedKeyWithTag, getCachedDataWithKey } = useCachedKeys();
 
@@ -38,9 +38,8 @@ const BookmarkController = ({ currentTab }: BookmarkControllerProps) => {
   });
   const [bookmarkPostCount, setBookmarkPostCount] = useState(5); // Load by 5
 
-  // Profile User bookmarks fetcher
   const { data: profileBookmarksData } = useSWR(
-    nickname && currentTab === 'viewBookmarks'
+    isExistUser && currentTab === 'viewBookmarks' && nickname
       ? {
           url: profileBookmarksKey(nickname, bookmarkPostCount),
           args: {
@@ -175,6 +174,7 @@ const BookmarkController = ({ currentTab }: BookmarkControllerProps) => {
     }
   }, [
     data,
+    profileBookmarksData,
     nickname,
     bookmarkPostCount,
     getCachedKeyWithTag,

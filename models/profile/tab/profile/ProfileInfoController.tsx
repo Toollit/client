@@ -16,6 +16,7 @@ import { RootState } from '@/store';
 import { updateProfileAPI } from '@/apis/updateProfile';
 import useAuth from '@/hooks/useAuth';
 import useCachedKeys from '@/hooks/useCachedKeys';
+import { ProfileCurrentTab } from '@/models/profile/ProfileController';
 
 interface ProfileInfoData {
   isLoaded: boolean;
@@ -23,19 +24,19 @@ interface ProfileInfoData {
 }
 
 export interface ProfileInfoControllerProps {
-  currentTab:
-    | 'viewProfile'
-    | 'viewProjects'
-    | 'viewBookmarks'
-    | 'viewAlarms'
-    | undefined;
+  currentTab: ProfileCurrentTab;
+  isExistUser?: boolean;
 }
 
-const ProfileInfoController = ({ currentTab }: ProfileInfoControllerProps) => {
+const ProfileInfoController = ({
+  currentTab,
+  isExistUser,
+}: ProfileInfoControllerProps) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { nickname: accessUser, authMutate } = useAuth();
-  const { getCachedKeyWithTag, getCachedDataWithKey } = useCachedKeys();
+  const { getCachedKeyWithTag, getCachedDataWithKey, getCustomCachedKeys } =
+    useCachedKeys();
 
   const updatePage = useSelector((state: RootState) => state.dialog.page);
   const updateCategory = useSelector(
@@ -51,7 +52,7 @@ const ProfileInfoController = ({ currentTab }: ProfileInfoControllerProps) => {
   });
 
   const { data: profileInfoData, mutate: profileInfoDataMutate } = useSWR(
-    currentTab === 'viewProfile' && nickname
+    isExistUser && currentTab === 'viewProfile' && nickname
       ? {
           url: profileInfoKey(nickname),
           args: {
