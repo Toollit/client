@@ -8,12 +8,11 @@ import Dialog from '@/components/commons/dialog';
 import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
 import { ImageWrapper } from '@/styles/commons';
 import SwipeableTabView from '@/components/commons/swipeableView/swipeableTabViews';
-import ProfileInfoView, {
-  ProfileInfoData,
-} from './tab/profile/ProfileInfoView';
 import ProjectController from './tab/project/ProjectController';
 import AlarmController from './tab/alarm/AlarmController';
 import ProfileFooterLink from './footer/Footer';
+import BookmarkController from './tab/bookmark/BookmarkController';
+import ProfileInfoController from './tab/profile/ProfileInfoController';
 import {
   Container,
   ColumnLeftContainer,
@@ -41,7 +40,6 @@ import {
   Content,
   StyledProfileImage,
 } from './styles';
-import BookmarkController from './tab/bookmark/BookmarkController';
 
 export interface ProfileViewProps {
   accessUser: string | null;
@@ -55,10 +53,8 @@ export interface ProfileViewProps {
     | 'viewAlarms'
     | undefined;
   profileImageData?: string | null;
-  profileInfoData: ProfileInfoData | null;
   nickname: string;
   handleLogInOut: () => void;
-  handleProfileInfoEditBtn: (category: string) => void;
   profileImgRef: React.RefObject<HTMLInputElement>;
   handleChangeProfileImg: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -72,10 +68,8 @@ const ProfileView = ({
   tabs,
   currentTab,
   profileImageData,
-  profileInfoData,
   nickname,
   handleLogInOut,
-  handleProfileInfoEditBtn,
   profileImgRef,
   handleChangeProfileImg,
   handleTooltipOpen,
@@ -227,23 +221,7 @@ const ProfileView = ({
         {/* Laptop view */}
         <LaptopViewContainer>
           {currentTab === 'viewProfile' && (
-            <>
-              {profileInfoData && (
-                <ProfileInfoView
-                  me={me}
-                  data={profileInfoData}
-                  editBtnHandler={handleProfileInfoEditBtn}
-                />
-              )}
-              {!profileInfoData && (
-                <>
-                  <Skeleton height={25} top={3} />
-                  <Skeleton height={15} top={3} />
-                  <Skeleton height={25} top={3} />
-                  <Skeleton height={15} top={3} />
-                </>
-              )}
-            </>
+            <ProfileInfoController currentTab={currentTab} />
           )}
 
           {currentTab === 'viewProjects' && (
@@ -263,28 +241,15 @@ const ProfileView = ({
         <MobileViewContainer>
           <SwipeableTabView tabs={tabs}>
             <ViewContainer>
-              {profileInfoData ? (
-                <Content>
-                  <ProfileInfoView
-                    me={me}
-                    data={profileInfoData}
-                    editBtnHandler={handleProfileInfoEditBtn}
-                  />
-                  <ProfileFooterLink
-                    me={me}
-                    accessUser={accessUser}
-                    loginState={loginState}
-                    handleLogInOut={handleLogInOut}
-                  />
-                </Content>
-              ) : (
-                <>
-                  <Skeleton height={20} top={3} />
-                  <Skeleton height={20} top={3} />
-                  <Skeleton height={20} top={3} />
-                  <Skeleton height={20} top={3} />
-                </>
-              )}
+              <Content>
+                <ProfileInfoController currentTab={currentTab} />
+                <ProfileFooterLink
+                  me={me}
+                  accessUser={accessUser}
+                  loginState={loginState}
+                  handleLogInOut={handleLogInOut}
+                />
+              </Content>
             </ViewContainer>
 
             <ViewContainer>
@@ -300,25 +265,15 @@ const ProfileView = ({
             </ViewContainer>
 
             <ViewContainer>
-              {currentTab === 'viewBookmarks' ? (
-                <Content>
-                  <div>
-                    <div>12342134</div>
-                    <div>12342134</div>
-                    <div>핸드폰 번호 수정</div>
-                    <div>이메일 수정</div>
-                    <div>이메일 공개</div>
-                  </div>
-                  <div>간단한 자기소개</div>
-                  <div>사용 프로그램 또는 기술</div>
-                  <ProfileFooterLink
-                    me={me}
-                    accessUser={accessUser}
-                    loginState={loginState}
-                    handleLogInOut={handleLogInOut}
-                  />
-                </Content>
-              ) : null}
+              <Content>
+                <BookmarkController currentTab={currentTab} />
+                <ProfileFooterLink
+                  me={me}
+                  accessUser={accessUser}
+                  loginState={loginState}
+                  handleLogInOut={handleLogInOut}
+                />
+              </Content>
             </ViewContainer>
 
             <ViewContainer>
