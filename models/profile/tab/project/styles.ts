@@ -102,11 +102,13 @@ const HashtagContainer = styled.ul`
 const SubInfo = styled.div`
   display: flex;
   justify-content: flex-end;
+  margin-right: 0.5rem;
 
   div {
     display: flex;
     line-height: 2.5rem;
     margin-left: 1rem;
+    margin: 0 0.3rem;
 
     :nth-last-of-type(1) {
       span {
