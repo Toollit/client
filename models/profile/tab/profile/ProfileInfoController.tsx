@@ -26,11 +26,13 @@ interface ProfileInfoData {
 export interface ProfileInfoControllerProps {
   currentTab: ProfileCurrentTab;
   isExistUser?: boolean;
+  nickname: string;
 }
 
 const ProfileInfoController = ({
   currentTab,
   isExistUser,
+  nickname,
 }: ProfileInfoControllerProps) => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -45,7 +47,7 @@ const ProfileInfoController = ({
   const updateNewValue = useSelector(
     (state: RootState) => state.dialog.update?.newValue,
   );
-  const [nickname, setNickname] = useState('');
+
   const [data, setData] = useState<ProfileInfoData>({
     isLoaded: false,
     data: null,
@@ -355,15 +357,6 @@ const ProfileInfoController = ({
     getCachedKeyWithTag,
     getCachedDataWithKey,
   ]);
-
-  // useEffect for troubleshooting nickname undefined upon reload or tab movement
-  useEffect(() => {
-    const nickname = router.query.nickname as string | undefined;
-
-    if (nickname !== undefined && typeof nickname === 'string') {
-      setNickname(nickname);
-    }
-  }, [router]);
 
   const props: ProfileInfoViewProps = {
     me: nickname === accessUser,

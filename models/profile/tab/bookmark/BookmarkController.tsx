@@ -22,16 +22,17 @@ interface BookmarkData {
 export interface BookmarkControllerProps {
   currentTab: ProfileCurrentTab;
   isExistUser?: boolean;
+  nickname: string;
 }
 
 const BookmarkController = ({
   currentTab,
   isExistUser,
+  nickname,
 }: BookmarkControllerProps) => {
   const router = useRouter();
   const { getCachedKeyWithTag, getCachedDataWithKey } = useCachedKeys();
 
-  const [nickname, setNickname] = useState('');
   const [data, setData] = useState<BookmarkData>({
     isLoaded: false,
     data: null,
@@ -180,15 +181,6 @@ const BookmarkController = ({
     getCachedKeyWithTag,
     getCachedDataWithKey,
   ]);
-
-  // useEffect for troubleshooting nickname undefined upon reload or tab movement
-  useEffect(() => {
-    const nickname = router.query.nickname as string | undefined;
-
-    if (nickname !== undefined && typeof nickname === 'string') {
-      setNickname(nickname);
-    }
-  }, [router]);
 
   const props: BookmarkViewProps = {
     data: handleBookmarkDataResponse(data.data),

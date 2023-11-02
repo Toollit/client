@@ -21,14 +21,18 @@ interface AlarmData {
 export interface AlarmControllerProps {
   currentTab: ProfileCurrentTab;
   isExistUser?: boolean;
+  nickname: string;
 }
 
-const AlarmController = ({ currentTab, isExistUser }: AlarmControllerProps) => {
+const AlarmController = ({
+  currentTab,
+  isExistUser,
+  nickname,
+}: AlarmControllerProps) => {
   const router = useRouter();
   const { getCachedKeyWithTag, getCachedDataWithKey } = useCachedKeys();
 
   const [data, setData] = useState<AlarmData>({ isLoaded: false, data: null });
-  const [nickname, setNickname] = useState('');
 
   const { data: profileAlarmsData } = useSWR(
     isExistUser && currentTab === 'viewAlarms' && nickname
@@ -114,15 +118,6 @@ const AlarmController = ({ currentTab, isExistUser }: AlarmControllerProps) => {
     getCachedKeyWithTag,
     getCachedDataWithKey,
   ]);
-
-  // useEffect for troubleshooting nickname undefined upon reload or tab movement
-  useEffect(() => {
-    const nickname = router.query.nickname as string | undefined;
-
-    if (nickname !== undefined && typeof nickname === 'string') {
-      setNickname(nickname);
-    }
-  }, [router]);
 
   const props: AlarmViewProps = {
     data: handleAlarmDataResponse(data.data),

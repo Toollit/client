@@ -22,16 +22,17 @@ interface ProjectData {
 export interface ProjectControllerProps {
   currentTab: ProfileCurrentTab;
   isExistUser?: boolean;
+  nickname: string;
 }
 
 const ProjectController = ({
   currentTab,
   isExistUser,
+  nickname,
 }: ProjectControllerProps) => {
   const router = useRouter();
   const { getCachedKeyWithTag, getCachedDataWithKey } = useCachedKeys();
 
-  const [nickname, setNickname] = useState('');
   const [data, setData] = useState<ProjectData>({
     isLoaded: false,
     data: null,
@@ -179,15 +180,6 @@ const ProjectController = ({
     getCachedKeyWithTag,
     getCachedDataWithKey,
   ]);
-
-  // useEffect for troubleshooting nickname undefined upon reload or tab movement
-  useEffect(() => {
-    const nickname = router.query.nickname as string | undefined;
-
-    if (nickname !== undefined && typeof nickname === 'string') {
-      setNickname(nickname);
-    }
-  }, [router]);
 
   const props: ProjectViewProps = {
     data: handleProjectDataResponse(data.data),
