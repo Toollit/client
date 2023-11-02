@@ -1,0 +1,201 @@
+import React, { useCallback, useEffect, useState } from 'react';
+import BookmarkView, { BookmarkViewProps } from './BookmarkView';
+import useSWR, { useSWRConfig, Cache } from 'swr';
+import { useRouter } from 'next/router';
+import { profileBookmarksKey } from '@/apis/keys';
+import {
+  ProfileBookmarksAPIRes,
+  profileBookmarksFetcher,
+} from '@/apis/profileBookmarksFetcher';
+import { errorMessage } from '@/apis/errorMessage';
+import { serialize } from '@/middleware/swr/serialize';
+import useCachedKeys from '@/hooks/useCachedKeys';
+
+type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
+
+interface BookmarkData {
+  isLoaded: boolean;
+  data: ProfileBookmarksAPIRes['data'] | null;
+}
+
+export interface BookmarkControllerProps {
+  currentTab:
+    | 'viewProfile'
+    | 'viewProjects'
+    | 'viewBookmarks'
+    | 'viewAlarms'
+    | undefined;
+}
+
+const BookmarkController = ({ currentTab }: BookmarkControllerProps) => {
+  const router = useRouter();
+  const { getCachedKeyWithTag, getCachedDataWithKey } = useCachedKeys();
+
+  const [nickname, setNickname] = useState('');
+  const [data, setData] = useState<BookmarkData>({
+    isLoaded: false,
+    data: null,
+  });
+  const [bookmarkPostCount, setBookmarkPostCount] = useState(5); // Load by 5
+
+  // Profile User bookmarks fetcher
+  const { data: profileBookmarksData } = useSWR(
+    nickname && currentTab === 'viewBookmarks'
+      ? {
+          url: profileBookmarksKey(nickname, bookmarkPostCount),
+          args: {
+            page: '/profile',
+            tag: `profileBookmarks?count=${bookmarkPostCount}`,
+          },
+        }
+      : null,
+    profileBookmarksFetcher,
+    {
+      dedupingInterval: 1000 * 60 * 10,
+      revalidateOnFocus: false,
+      shouldRetryOnError: false,
+      onError(err, key, config) {
+        errorMessage(err);
+        router.back();
+      },
+      onSuccess(res, key, config) {
+        if (bookmarkPostCount > 5) {
+          setData((prev) => {
+            return {
+              isLoaded: true,
+              data:
+                prev.data?.bookmarks && res?.data
+                  ? {
+                      bookmarks: [
+                        ...prev.data?.bookmarks,
+                        ...res.data?.bookmarks,
+                      ],
+
+                      total: res.data?.total,
+                    }
+                  : null,
+            };
+          });
+        }
+
+        if (bookmarkPostCount <= 5) {
+          setData({
+            isLoaded: true,
+            data: res?.data,
+          });
+        }
+      },
+      use: [serialize],
+    },
+  );
+
+  const handleBookmarkDataResponse = useCallback(
+    (data: ProfileBookmarksAPIRes['data'] | null) => {
+      if (!data) {
+        return null;
+      }
+
+      const convertedData = data?.bookmarks?.map((project) => {
+        return {
+          ...project,
+          memberTypes: project.memberTypes.map((type) => {
+            return type === 'pm'
+              ? type.toUpperCase()
+              : type.charAt(0).toUpperCase() + type.slice(1);
+          }) as CustomMemberTypes,
+        };
+      });
+
+      return {
+        bookmarks: convertedData,
+        total: data.total,
+        showLoadMore: data.bookmarks?.length !== data.total,
+      };
+    },
+    [],
+  );
+
+  const handleBookmarkLoadMore = useCallback(() => {
+    setBookmarkPostCount((prev) => prev + 5);
+
+    // The code written under that comment only works if there is cached data. Logic for leveraging cached data without additional data load.
+    const key = getCachedKeyWithTag({
+      tag: `profileBookmarks?count=${bookmarkPostCount + 5}`,
+    });
+
+    if (!key) {
+      return;
+    }
+
+    const profileBookmarksCachedData = getCachedDataWithKey({
+      key,
+    }) as ProfileBookmarksAPIRes['data'];
+
+    if (profileBookmarksCachedData !== undefined) {
+      setData((prev) => {
+        return {
+          isLoaded: true,
+          data:
+            prev.data?.bookmarks && profileBookmarksCachedData
+              ? {
+                  bookmarks: [
+                    ...prev.data?.bookmarks,
+                    ...profileBookmarksCachedData.bookmarks,
+                  ],
+
+                  total: prev.data.total,
+                }
+              : null,
+        };
+      });
+    }
+  }, [bookmarkPostCount, getCachedKeyWithTag, getCachedDataWithKey]);
+
+  // 프로필 페이지 특정 탭에 있다가 다른 페이지 다녀온 경우 캐싱 된 데이터가 존재하는 경우 state 업데이트
+  useEffect(() => {
+    if (!nickname) {
+      return;
+    }
+
+    const profileBookmarksKey = getCachedKeyWithTag({
+      tag: `profileBookmarks?count=${bookmarkPostCount}`,
+    });
+
+    const profileBookmarksCachedData = profileBookmarksKey
+      ? (getCachedDataWithKey({
+          key: profileBookmarksKey,
+        }) as ProfileBookmarksAPIRes['data'])
+      : null;
+
+    if (!data.isLoaded && profileBookmarksCachedData) {
+      setData({
+        isLoaded: true,
+        data: profileBookmarksCachedData,
+      });
+    }
+  }, [
+    data,
+    nickname,
+    bookmarkPostCount,
+    getCachedKeyWithTag,
+    getCachedDataWithKey,
+  ]);
+
+  // useEffect for troubleshooting nickname undefined upon reload or tab movement
+  useEffect(() => {
+    const nickname = router.query.nickname as string | undefined;
+
+    if (nickname !== undefined && typeof nickname === 'string') {
+      setNickname(nickname);
+    }
+  }, [router]);
+
+  const props: BookmarkViewProps = {
+    data: handleBookmarkDataResponse(data.data),
+    loadMore: handleBookmarkLoadMore,
+  };
+
+  return <BookmarkView {...props} />;
+};
+
+export default BookmarkController;

@@ -12,7 +12,6 @@ import ProfileInfoView, {
   ProfileInfoData,
 } from './tab/profile/ProfileInfoView';
 import ProjectController from './tab/project/ProjectController';
-import BookmarkView, { BookmarkViewData } from './tab/bookmark/BookmarkView';
 import AlarmController from './tab/alarm/AlarmController';
 import ProfileFooterLink from './footer/Footer';
 import {
@@ -42,6 +41,7 @@ import {
   Content,
   StyledProfileImage,
 } from './styles';
+import BookmarkController from './tab/bookmark/BookmarkController';
 
 export interface ProfileViewProps {
   accessUser: string | null;
@@ -56,14 +56,11 @@ export interface ProfileViewProps {
     | undefined;
   profileImageData?: string | null;
   profileInfoData: ProfileInfoData | null;
-  bookmarkData: BookmarkViewData | null;
   nickname: string;
   handleLogInOut: () => void;
   handleProfileInfoEditBtn: (category: string) => void;
   profileImgRef: React.RefObject<HTMLInputElement>;
   handleChangeProfileImg: (event: React.ChangeEvent<HTMLInputElement>) => void;
-
-  handleBookmarkLoadMore: () => void;
   handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
   tooltip: TooltipProps;
 }
@@ -76,13 +73,11 @@ const ProfileView = ({
   currentTab,
   profileImageData,
   profileInfoData,
-  bookmarkData,
   nickname,
   handleLogInOut,
   handleProfileInfoEditBtn,
   profileImgRef,
   handleChangeProfileImg,
-  handleBookmarkLoadMore,
   handleTooltipOpen,
   tooltip,
 }: ProfileViewProps) => {
@@ -256,20 +251,7 @@ const ProfileView = ({
           )}
 
           {currentTab === 'viewBookmarks' && (
-            <>
-              {bookmarkData && (
-                <BookmarkView
-                  data={bookmarkData}
-                  loadMore={handleBookmarkLoadMore}
-                />
-              )}
-              {!bookmarkData && (
-                <>
-                  <Skeleton height={30} top={3} />
-                  <Skeleton height={30} top={3} />
-                </>
-              )}
-            </>
+            <BookmarkController currentTab={currentTab} />
           )}
 
           {currentTab === 'viewAlarms' && (
