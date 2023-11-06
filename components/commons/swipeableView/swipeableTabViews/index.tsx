@@ -21,6 +21,7 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
   const [indicatorPosition, setIndicatorPosition] = useState(0);
   const [offsetWidth, setOffsetWidth] = useState(0);
   const updateHeightAction = useRef<null | Actions['updateHeight']>(null);
+  const [viewHeight, setViewHeight] = useState<number | undefined>(undefined);
 
   const handleUpdateHeight = useCallback((actions: Actions) => {
     // actions.updateHeight();
@@ -36,6 +37,15 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
       push({ query: { ...query, tab: tabs[tabIndex].query } }, undefined, {
         shallow: true,
       });
+
+      const viewContainer = document.querySelector(
+        '.react-swipeable-view-container',
+      );
+
+      const viewContainerHeight =
+        viewContainer?.children[tabIndex].children[0].clientHeight;
+
+      setViewHeight(viewContainerHeight);
     },
     [push, query, tabs],
   );
@@ -126,11 +136,11 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
       </CustomMuiTabs>
 
       <SwipeableViews
-        animateHeight={true}
         action={handleUpdateHeight}
         index={currentTabIndex}
         enableMouseEvents
         onChangeIndex={handleChangeIndex}
+        containerStyle={{ height: viewHeight }}
         // onSwitching={handleSwitching}
       >
         {children}
