@@ -27,20 +27,6 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
     updateHeightAction.current = actions.updateHeight;
   }, []);
 
-  const handleChange = useCallback(
-    (event: React.SyntheticEvent, tabIndex: number) => {
-      setCurrentTabIndex(tabIndex);
-
-      window.scrollTo({ top: 0 });
-
-      push({ query: { ...query, tab: tabs[tabIndex].query } }, undefined, {
-        shallow: true,
-      });
-    },
-
-    [push, query, tabs],
-  );
-
   const handleChangeIndex = useCallback(
     (tabIndex: number) => {
       setCurrentTabIndex(tabIndex);
@@ -122,7 +108,7 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
     <div>
       <CustomMuiTabs
         value={currentTabIndex}
-        onChange={handleChange}
+        onChange={(event, index) => handleChangeIndex(index)}
         disabled
         width={offsetWidth}
       >
