@@ -7,7 +7,11 @@ import {
   swipeableViewHeight,
   updateSwipeableViewState,
 } from '@/features/swipeableView';
-import { CustomMuiTabs, CustomMuiTab } from './styles';
+import {
+  CustomMuiTabs,
+  CustomMuiTab,
+  SwipeableViewsCustomStyles,
+} from './styles';
 
 interface SwipeableTabViewProps {
   tabs: { name: string; query: string }[];
@@ -139,6 +143,7 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
 
   return (
     <div>
+      <SwipeableViewsCustomStyles />
       <CustomMuiTabs
         value={currentTabIndex}
         onChange={(event, index) => handleChangeIndex(index)}

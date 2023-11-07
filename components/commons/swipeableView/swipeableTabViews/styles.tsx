@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import { css, Global } from '@emotion/react';
 
 interface CustomMuiTabsProps {
   width: number;
@@ -8,7 +9,7 @@ interface CustomMuiTabsProps {
 
 const CustomMuiTabs = styled(Tabs)<CustomMuiTabsProps>`
   &.MuiTabs-root {
-    width: calc(100vw - 4rem);
+    width: calc(100vw - 3rem);
     margin: 0 auto;
   }
 
@@ -33,4 +34,14 @@ const CustomMuiTab = styled(Tab)`
   }
 `;
 
-export { CustomMuiTabs, CustomMuiTab };
+const swipeableViewStyles = css`
+  ::-webkit-scrollbar {
+    width: 0;
+  }
+`;
+
+const SwipeableViewsCustomStyles = () => {
+  return <Global styles={swipeableViewStyles} />;
+};
+
+export { CustomMuiTabs, CustomMuiTab, SwipeableViewsCustomStyles };
