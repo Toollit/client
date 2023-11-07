@@ -1,27 +1,38 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import SwipeableViews, { Actions } from 'react-swipeable-views';
-import { useDispatch } from 'react-redux';
-import { updateSwipeableViewState } from '@/features/swipeableView';
 import { useRouter } from 'next/router';
+import { RootState } from '@/store';
+import SwipeableViews, { Actions } from 'react-swipeable-views';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  swipeableViewHeight,
+  updateSwipeableViewState,
+} from '@/features/swipeableView';
 import { CustomMuiTabs, CustomMuiTab } from './styles';
 
 interface SwipeableTabViewProps {
   tabs: { name: string; query: string }[];
-  children: React.ReactNode;
+  children: React.ReactNode[];
 }
 
 const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
   const dispatch = useDispatch();
   const { push, query } = useRouter();
 
+  const needUpdateViewHeight = useSelector(
+    (state: RootState) => state.swipeableView.needUpdateViewHeight,
+  );
+
   const [currentTabIndex, setCurrentTabIndex] = useState(0);
 
   const tabRefs = useRef<HTMLDivElement[]>([]);
 
-  const [indicatorPosition, setIndicatorPosition] = useState(0);
+  // const [indicatorPosition, setIndicatorPosition] = useState(0);
+  const [isFirstRender, setIsFirstRender] = useState(true);
   const [offsetWidth, setOffsetWidth] = useState(0);
   const updateHeightAction = useRef<null | Actions['updateHeight']>(null);
-  const [viewHeight, setViewHeight] = useState<number | undefined>(undefined);
+  const [viewHeight, setViewHeight] = useState<number | undefined | string>(
+    undefined,
+  );
 
   const handleUpdateHeight = useCallback((actions: Actions) => {
     // actions.updateHeight();
@@ -37,15 +48,6 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
       push({ query: { ...query, tab: tabs[tabIndex].query } }, undefined, {
         shallow: true,
       });
-
-      const viewContainer = document.querySelector(
-        '.react-swipeable-view-container',
-      );
-
-      const viewContainerHeight =
-        viewContainer?.children[tabIndex].children[0].clientHeight;
-
-      setViewHeight(viewContainerHeight);
     },
     [push, query, tabs],
   );
@@ -87,6 +89,27 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
   //   },
   //   [currentTabIndex],
   // );
+
+  useEffect(() => {
+    setTimeout(
+      () => {
+        const viewContainer = document.querySelector(
+          '.react-swipeable-view-container',
+        );
+
+        const clientHeight =
+          viewContainer?.children[currentTabIndex]?.children[0].clientHeight;
+        setViewHeight(clientHeight);
+
+        if (needUpdateViewHeight) {
+          dispatch(swipeableViewHeight({ needUpdateViewHeight: false }));
+        }
+
+        setIsFirstRender(false);
+      },
+      isFirstRender ? 1000 : 100,
+    );
+  }, [currentTabIndex, needUpdateViewHeight, dispatch, isFirstRender]);
 
   useEffect(() => {
     dispatch(updateSwipeableViewState({ tabIndex: currentTabIndex }));
