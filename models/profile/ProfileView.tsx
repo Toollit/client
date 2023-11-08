@@ -34,10 +34,7 @@ import {
   ImageEditBtn,
   ProfileImageSkeletonContainer,
   MyProfile,
-  LaptopViewContainer,
-  MobileViewContainer,
   ViewContainer,
-  Content,
   StyledProfileImage,
 } from './styles';
 
@@ -223,11 +220,12 @@ const ProfileView = ({
 
       <ColumnRightContainer>
         {isLaptop ? (
-          <LaptopViewContainer>
+          <>
             {currentTab === 'viewProfile' && (
               <ProfileInfoController
                 currentTab={currentTab}
                 isExistUser={isExistUser}
+                nickname={nickname}
               />
             )}
 
@@ -235,6 +233,7 @@ const ProfileView = ({
               <ProjectController
                 currentTab={currentTab}
                 isExistUser={isExistUser}
+                nickname={nickname}
               />
             )}
 
@@ -242,6 +241,7 @@ const ProfileView = ({
               <BookmarkController
                 currentTab={currentTab}
                 isExistUser={isExistUser}
+                nickname={nickname}
               />
             )}
 
@@ -249,73 +249,68 @@ const ProfileView = ({
               <AlarmController
                 currentTab={currentTab}
                 isExistUser={isExistUser}
+                nickname={nickname}
               />
             )}
-          </LaptopViewContainer>
+          </>
         ) : (
-          <MobileViewContainer>
-            <SwipeableTabView tabs={tabs}>
-              <ViewContainer>
-                <Content>
-                  <ProfileInfoController
-                    currentTab={currentTab}
-                    isExistUser={isExistUser}
-                  />
-                  <ProfileFooterLink
-                    me={me}
-                    accessUser={accessUser}
-                    loginState={loginState}
-                    handleLogInOut={handleLogInOut}
-                  />
-                </Content>
-              </ViewContainer>
+          <SwipeableTabView tabs={tabs}>
+            <ViewContainer>
+              <ProfileInfoController
+                currentTab={currentTab}
+                isExistUser={isExistUser}
+                nickname={nickname}
+              />
+              <ProfileFooterLink
+                me={me}
+                accessUser={accessUser}
+                loginState={loginState}
+                handleLogInOut={handleLogInOut}
+              />
+            </ViewContainer>
 
-              <ViewContainer>
-                <Content>
-                  <ProjectController
-                    currentTab={currentTab}
-                    isExistUser={isExistUser}
-                  />
-                  <ProfileFooterLink
-                    me={me}
-                    accessUser={accessUser}
-                    loginState={loginState}
-                    handleLogInOut={handleLogInOut}
-                  />
-                </Content>
-              </ViewContainer>
+            <ViewContainer>
+              <ProjectController
+                currentTab={currentTab}
+                isExistUser={isExistUser}
+                nickname={nickname}
+              />
+              <ProfileFooterLink
+                me={me}
+                accessUser={accessUser}
+                loginState={loginState}
+                handleLogInOut={handleLogInOut}
+              />
+            </ViewContainer>
 
-              <ViewContainer>
-                <Content>
-                  <BookmarkController
-                    currentTab={currentTab}
-                    isExistUser={isExistUser}
-                  />
-                  <ProfileFooterLink
-                    me={me}
-                    accessUser={accessUser}
-                    loginState={loginState}
-                    handleLogInOut={handleLogInOut}
-                  />
-                </Content>
-              </ViewContainer>
+            <ViewContainer>
+              <BookmarkController
+                currentTab={currentTab}
+                isExistUser={isExistUser}
+                nickname={nickname}
+              />
+              <ProfileFooterLink
+                me={me}
+                accessUser={accessUser}
+                loginState={loginState}
+                handleLogInOut={handleLogInOut}
+              />
+            </ViewContainer>
 
-              <ViewContainer>
-                <Content>
-                  <AlarmController
-                    currentTab={currentTab}
-                    isExistUser={isExistUser}
-                  />
-                  <ProfileFooterLink
-                    me={me}
-                    accessUser={accessUser}
-                    loginState={loginState}
-                    handleLogInOut={handleLogInOut}
-                  />
-                </Content>
-              </ViewContainer>
-            </SwipeableTabView>
-          </MobileViewContainer>
+            <ViewContainer>
+              <AlarmController
+                currentTab={currentTab}
+                isExistUser={isExistUser}
+                nickname={nickname}
+              />
+              <ProfileFooterLink
+                me={me}
+                accessUser={accessUser}
+                loginState={loginState}
+                handleLogInOut={handleLogInOut}
+              />
+            </ViewContainer>
+          </SwipeableTabView>
         )}
       </ColumnRightContainer>
       <Dialog />
