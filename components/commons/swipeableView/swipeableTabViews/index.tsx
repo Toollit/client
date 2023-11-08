@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { RootState } from '@/store';
-import SwipeableViews, { Actions } from 'react-swipeable-views';
+import SwipeableViews from 'react-swipeable-views';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   swipeableViewHeight,
@@ -28,20 +28,14 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
 
   const [currentTabIndex, setCurrentTabIndex] = useState(0);
 
-  const tabRefs = useRef<HTMLDivElement[]>([]);
-
   // const [indicatorPosition, setIndicatorPosition] = useState(0);
   const [isFirstRender, setIsFirstRender] = useState(true);
-  const [offsetWidth, setOffsetWidth] = useState(0);
-  const updateHeightAction = useRef<null | Actions['updateHeight']>(null);
   const [viewHeight, setViewHeight] = useState<number | undefined | string>(
     undefined,
   );
+  const [offsetWidth, setOffsetWidth] = useState(0);
 
-  const handleUpdateHeight = useCallback((actions: Actions) => {
-    // actions.updateHeight();
-    updateHeightAction.current = actions.updateHeight;
-  }, []);
+  const tabRefs = useRef<HTMLDivElement[]>([]);
 
   const handleChangeIndex = useCallback(
     (tabIndex: number) => {
@@ -130,13 +124,6 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
   }, [tabs, query.tab]);
 
   useEffect(() => {
-    // updates SwipeableViews container size. view container size is truncated due to container size determined by the skeleton shown on the screen before receiving the data
-    if (updateHeightAction.current) {
-      updateHeightAction.current();
-    }
-  }, [children]);
-
-  useEffect(() => {
     const offsetWidth = tabRefs.current[currentTabIndex]?.offsetWidth;
     setOffsetWidth(offsetWidth);
   }, [currentTabIndex]);
@@ -146,7 +133,7 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
       <SwipeableViewsCustomStyles />
       <CustomMuiTabs
         value={currentTabIndex}
-        onChange={(event, index) => handleChangeIndex(index)}
+        onChange={(_, index) => handleChangeIndex(index)}
         disabled
         width={offsetWidth}
       >
@@ -164,7 +151,6 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
       </CustomMuiTabs>
 
       <SwipeableViews
-        action={handleUpdateHeight}
         index={currentTabIndex}
         enableMouseEvents
         onChangeIndex={handleChangeIndex}
