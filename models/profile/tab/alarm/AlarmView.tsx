@@ -78,9 +78,9 @@ const AlarmView = ({ data }: AlarmViewProps) => {
       )}
       {!data && (
         <>
-          <Skeleton height={25} top={3} />
-          <Skeleton height={25} top={3} />
-          <Skeleton height={25} top={3} />
+          <Skeleton height={25} bottom={3} />
+          <Skeleton height={25} bottom={3} />
+          <Skeleton height={25} bottom={3} />
         </>
       )}
     </>

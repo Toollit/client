@@ -42,7 +42,7 @@ const ProfileInfoView = ({
       {data && (
         <>
           {/* Profile info box */}
-          <BoxContainer>
+          <BoxContainer marginBottom={'3rem'}>
             <BoxTitle>내 프로필</BoxTitle>
             <BoxContent>
               <ContentContainer>
@@ -97,7 +97,7 @@ const ProfileInfoView = ({
           </BoxContainer>
 
           {/* Introduce box */}
-          <BoxContainer>
+          <BoxContainer marginBottom={'3rem'}>
             <BoxTitle>자기소개</BoxTitle>
             <IntroduceContentContainer>
               <Info>{data?.introduce ?? '작성된 내용이 없습니다.'}</Info>
@@ -113,7 +113,7 @@ const ProfileInfoView = ({
           </BoxContainer>
 
           {/* Additional info box */}
-          <BoxContainer>
+          <BoxContainer marginBottom={'3rem'}>
             <BoxTitle>추가 정보</BoxTitle>
             <BoxContent>
               <ContentContainer>
@@ -221,10 +221,10 @@ const ProfileInfoView = ({
 
       {!data && (
         <>
-          <Skeleton height={25} top={3} />
-          <Skeleton height={15} top={3} />
-          <Skeleton height={25} top={3} />
-          <Skeleton height={15} top={3} />
+          <Skeleton height={25} bottom={3} />
+          <Skeleton height={15} bottom={3} />
+          <Skeleton height={25} bottom={3} />
+          <Skeleton height={15} bottom={3} />
         </>
       )}
     </>

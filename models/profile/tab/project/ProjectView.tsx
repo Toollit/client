@@ -109,10 +109,10 @@ const ProjectView = ({ data, loadMore }: ProjectViewProps) => {
 
       {!data && (
         <>
-          <Skeleton height={20} top={3} />
-          <Skeleton height={20} top={3} />
-          <Skeleton height={20} top={3} />
-          <Skeleton height={20} top={3} />
+          <Skeleton height={20} bottom={3} />
+          <Skeleton height={20} bottom={3} />
+          <Skeleton height={20} bottom={3} />
+          <Skeleton height={20} bottom={3} />
         </>
       )}
 
