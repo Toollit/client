@@ -36,37 +36,16 @@ const ColumnRightContainer = styled.div`
   ${mediaQueryLaptop} {
     display: table-cell;
     width: 65%;
-    padding: 0 3rem 5rem 3rem;
-  }
-`;
-
-const LaptopViewContainer = styled.div`
-  display: none;
-
-  ${mediaQueryLaptop} {
-    /* display: table-cell; */
-    /* width: 100; */
-    /* padding: 0 3rem 5rem 3rem; */
-    display: initial;
-    width: 100%;
-  }
-`;
-
-const MobileViewContainer = styled.div`
-  width: 100vw;
-  height: fit-content;
-  padding-bottom: 5rem;
-  display: initial;
-
-  ${mediaQueryLaptop} {
-    display: none;
+    padding: 3rem 3rem 5rem 3rem;
   }
 `;
 
 const GNBArea = styled.div`
   background-color: #fff;
-  padding: 1.6rem 1rem 1.6rem 2rem;
   display: flex;
+  height: 6rem;
+  align-items: center;
+  padding-left: 1.5rem;
 `;
 
 const GNBLink = styled.a`
@@ -93,6 +72,11 @@ const BlankImageContainer = styled.div`
   height: 15rem;
 `;
 
+const BlankImage = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const ProfileImageContainer = styled.div`
   position: relative;
   height: 15rem;
@@ -104,11 +88,6 @@ const ProfileImageContainer = styled.div`
 
 const StyledProfileImage = styled(Image)`
   border-radius: 25rem;
-`;
-
-const BlankImage = styled.div`
-  display: flex;
-  justify-content: center;
 `;
 
 const ImageEditBtn = styled.button`
@@ -149,12 +128,10 @@ const TabHighlight = (theme: Theme) => css`
 
   ::after {
     content: '';
-
     width: 100%;
     position: absolute;
     left: 0;
     bottom: -0.5rem;
-
     border-width: 0 0 2px;
     border-style: solid;
   }
@@ -276,33 +253,13 @@ const Logo = styled.a`
 `;
 
 const ViewContainer = styled.div`
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  min-height: calc(100vh - 30.9rem); // 30.9 = title + profile image + tab
-  height: auto;
-`;
-
-const MobileContainer = styled.div`
-  display: initial;
-
-  ${mediaQueryLaptop} {
-    display: none;
-  }
-`;
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 30.9rem);
-  height: auto;
+  padding: 3rem 1.5rem 0rem 1.5rem;
 `;
 
 export {
   Container,
   ColumnLeftContainer,
   ColumnRightContainer,
-  LaptopViewContainer,
-  MobileViewContainer,
   GNBArea,
   GNBLink,
   GNBTitle,
@@ -322,6 +279,4 @@ export {
   ImageEditBtn,
   ProfileImageSkeletonContainer,
   ViewContainer,
-  MobileContainer,
-  Content,
 };
