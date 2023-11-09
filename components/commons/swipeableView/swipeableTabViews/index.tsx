@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import { RootState } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import SwipeableViews from 'react-swipeable-views';
-import { useDispatch, useSelector } from 'react-redux';
 import {
-  swipeableViewHeight,
-  updateSwipeableViewState,
+  swipeableViewTab,
+  updateSwipeableViewHeight,
 } from '@/features/swipeableView';
 import {
   CustomMuiTabs,
@@ -19,14 +18,15 @@ interface SwipeableTabViewProps {
 }
 
 const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
   const { push, query } = useRouter();
 
-  const needUpdateViewHeight = useSelector(
-    (state: RootState) => state.swipeableView.needUpdateViewHeight,
+  const needUpdateViewHeight = useAppSelector(
+    (state) => state.swipeableView.view.needUpdateHeight,
   );
 
-  const [currentTabIndex, setCurrentTabIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   // const [indicatorPosition, setIndicatorPosition] = useState(0);
   const [isFirstRender, setIsFirstRender] = useState(true);
@@ -39,7 +39,7 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
 
   const handleChangeIndex = useCallback(
     (tabIndex: number) => {
-      setCurrentTabIndex(tabIndex);
+      setCurrentIndex(tabIndex);
 
       window.scrollTo({ top: 0 });
 
@@ -53,8 +53,8 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
   // const handleSwitching = useCallback(
   //   (swipeDegree: number, type: OnSwitchingCallbackTypeDescriptor) => {
   //     // swipe left
-  //     if (swipeDegree < currentTabIndex) {
-  //       const width: number = tabRefs.current[currentTabIndex - 300]?.offsetWidth;
+  //     if (swipeDegree < currentIndex) {
+  //       const width: number = tabRefs.current[currentIndex - 300]?.offsetWidth;
 
   //       const decimal = swipeDegree.toString().split('.')[300]?.slice(0, 2); // 소수점 이하 값만 가져옴
 
@@ -67,8 +67,8 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
   //     }
 
   //     // swipe right
-  //     if (swipeDegree > currentTabIndex) {
-  //       const width: number = tabRefs.current[currentTabIndex + 1]?.offsetWidth;
+  //     if (swipeDegree > currentIndex) {
+  //       const width: number = tabRefs.current[currentIndex + 1]?.offsetWidth;
 
   //       const decimal = swipeDegree.toString().split('.')[1]?.slice(0, 2); // 소수점 이하 값만 가져옴
 
@@ -81,13 +81,14 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
   //     }
 
   //     // if (type === 'end') {
-  //     //   console.log('currentTabIndex ===>', currentTabIndex);
-  //     //   setIndicatorPosition(tabRefs.current[currentTabIndex]?.offsetWidth);
+  //     //   console.log('currentIndex ===>', currentIndex);
+  //     //   setIndicatorPosition(tabRefs.current[currentIndex]?.offsetWidth);
   //     // }
   //   },
-  //   [currentTabIndex],
+  //   [currentIndex],
   // );
 
+  // After rendering the screen, it runs once and whenever the needUpdateViewHeight value changes to update the height of the view.
   useEffect(() => {
     setTimeout(
       () => {
@@ -96,43 +97,44 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
         );
 
         const clientHeight =
-          viewContainer?.children[currentTabIndex]?.children[0].clientHeight;
+          viewContainer?.children[currentIndex]?.children[0].clientHeight;
+
         setViewHeight(clientHeight);
 
         if (needUpdateViewHeight) {
-          dispatch(swipeableViewHeight({ needUpdateViewHeight: false }));
+          dispatch(updateSwipeableViewHeight(false));
         }
 
         setIsFirstRender(false);
       },
       isFirstRender ? 1000 : 100,
     );
-  }, [currentTabIndex, needUpdateViewHeight, dispatch, isFirstRender]);
+  }, [currentIndex, needUpdateViewHeight, dispatch, isFirstRender]);
 
   useEffect(() => {
-    dispatch(updateSwipeableViewState({ tabIndex: currentTabIndex }));
-  }, [currentTabIndex, dispatch]);
+    dispatch(swipeableViewTab({ currentIndex }));
+  }, [currentIndex, dispatch]);
 
   useEffect(() => {
     const currentTab = query.tab;
 
     tabs.findIndex((tab, index) => {
       if (tab.query === currentTab) {
-        return setCurrentTabIndex(index);
+        return setCurrentIndex(index);
       }
     });
   }, [tabs, query.tab]);
 
   useEffect(() => {
-    const offsetWidth = tabRefs.current[currentTabIndex]?.offsetWidth;
+    const offsetWidth = tabRefs.current[currentIndex]?.offsetWidth;
     setOffsetWidth(offsetWidth);
-  }, [currentTabIndex]);
+  }, [currentIndex]);
 
   return (
     <div>
       <SwipeableViewsCustomStyles />
       <CustomMuiTabs
-        value={currentTabIndex}
+        value={currentIndex}
         onChange={(_, index) => handleChangeIndex(index)}
         disabled
         width={offsetWidth}
@@ -151,7 +153,7 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
       </CustomMuiTabs>
 
       <SwipeableViews
-        index={currentTabIndex}
+        index={currentIndex}
         enableMouseEvents
         onChangeIndex={handleChangeIndex}
         containerStyle={{ height: viewHeight }}
