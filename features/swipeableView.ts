@@ -1,39 +1,56 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface InitialState {
-  tabIndex: number;
-  needUpdateViewHeight: boolean;
+  tab: {
+    currentIndex: number;
+  };
+  view: {
+    needUpdateHeight: boolean;
+  };
 }
 
 const initialState: InitialState = {
-  tabIndex: 0,
-  needUpdateViewHeight: false,
+  tab: {
+    currentIndex: 0,
+  },
+  view: {
+    needUpdateHeight: false,
+  },
 };
+
+const updateSwipeableViewHeight = createAsyncThunk(
+  'swipeableView/updateHeight',
+  async (needUpdateHeight: boolean) => {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    return { needUpdateHeight };
+  },
+);
 
 const swipeableViewSlice = createSlice({
   name: 'swipeableView',
   initialState,
   reducers: {
-    updateSwipeableViewState: (
+    swipeableViewTab: (
       state,
-      action: PayloadAction<Pick<InitialState, 'tabIndex'>>,
+      action: PayloadAction<Pick<InitialState['tab'], 'currentIndex'>>,
     ) => {
-      const { tabIndex } = action.payload;
-      state.tabIndex = tabIndex;
+      const { currentIndex } = action.payload;
+      state.tab.currentIndex = currentIndex;
     },
-    swipeableViewHeight: (
-      state,
-      action: PayloadAction<Pick<InitialState, 'needUpdateViewHeight'>>,
-    ) => {
-      const { needUpdateViewHeight } = action.payload;
-      state.needUpdateViewHeight = needUpdateViewHeight;
-    },
+  },
+  extraReducers(builder) {
+    builder.addCase(updateSwipeableViewHeight.fulfilled, (state, action) => {
+      const { needUpdateHeight } = action.payload;
+      state.view.needUpdateHeight = needUpdateHeight;
+    });
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { updateSwipeableViewState, swipeableViewHeight } =
-  swipeableViewSlice.actions;
+export const { swipeableViewTab } = swipeableViewSlice.actions;
+
+export { updateSwipeableViewHeight };
 
 export default swipeableViewSlice.reducer;
