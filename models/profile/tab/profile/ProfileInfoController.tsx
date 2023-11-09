@@ -10,13 +10,14 @@ import { profileInfoKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
 import { serialize } from '@/middleware/swr/serialize';
 import { changeDateFormat } from '@/utils/changeDateFormat';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { open as openDialog, close as closeDialog } from '@/features/dialog';
-import { RootState } from '@/store';
+import { RootState, useAppDispatch } from '@/store';
 import { updateProfileAPI } from '@/apis/updateProfile';
 import useAuth from '@/hooks/useAuth';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { ProfileCurrentTab } from '@/models/profile/ProfileController';
+import { updateSwipeableViewHeight } from '@/features/swipeableView';
 
 interface ProfileInfoData {
   isLoaded: boolean;
@@ -35,7 +36,7 @@ const ProfileInfoController = ({
   nickname,
 }: ProfileInfoControllerProps) => {
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { nickname: accessUser, authMutate } = useAuth();
   const { getCachedKeyWithTag, getCachedDataWithKey, getCustomCachedKeys } =
     useCachedKeys();
@@ -330,6 +331,11 @@ const ProfileInfoController = ({
     }
   }, [updatePage, updateCategory, handleUpdateProfile]);
 
+  // The reason data is write in the dependencies is to adjust the screen size when the data is updated.
+  useEffect(() => {
+    dispatch(updateSwipeableViewHeight(true));
+  }, [data, dispatch]);
+
   // 프로필 페이지 특정 탭에 있다가 다른 페이지 다녀온 경우 캐싱 된 데이터가 존재하는 경우 state 업데이트
   useEffect(() => {
     if (!nickname) {
@@ -351,6 +357,7 @@ const ProfileInfoController = ({
       });
     }
   }, [
+    dispatch,
     data,
     profileInfoData,
     nickname,
