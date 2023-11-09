@@ -1,4 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, AnyAction } from '@reduxjs/toolkit';
+import { ThunkDispatch } from 'redux-thunk';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import logger from 'redux-logger';
 import userSlice from 'features/user';
 import signUpSlice from '@/features/signUp';
@@ -42,5 +44,9 @@ const store = makeStore();
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore['getState']>;
 export type AppDispatch = AppStore['dispatch'];
+
+type TypedDispatch<T> = ThunkDispatch<T, any, AnyAction>;
+export const useAppDispatch = () => useDispatch<TypedDispatch<RootState>>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export default store;
