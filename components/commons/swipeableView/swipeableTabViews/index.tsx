@@ -90,7 +90,7 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
 
   // After rendering the screen, it runs once and whenever the needUpdateViewHeight value changes to update the height of the view.
   useEffect(() => {
-    setTimeout(
+    const timeoutId = setTimeout(
       () => {
         const viewContainer = document.querySelector(
           '.react-swipeable-view-container',
@@ -109,6 +109,10 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
       },
       isFirstRender ? 1000 : 100,
     );
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [currentIndex, needUpdateViewHeight, dispatch, isFirstRender]);
 
   useEffect(() => {
