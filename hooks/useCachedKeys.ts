@@ -1,13 +1,17 @@
-import React, { useCallback, useRef, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useSWRConfig } from 'swr';
 
-interface CustomCachedKeys {
+interface DeserializedCachedKeys {
   key: string;
   url: string;
   args: { page: string; tag: string };
 }
 
-interface FunctionProps {
+interface GetCachedDataParam {
+  tag: string;
+}
+
+interface MutateParam {
   [key: string]: string;
 }
 
@@ -17,6 +21,9 @@ interface FunctionProps {
 const useCachedKeys = () => {
   const { mutate, cache } = useSWRConfig();
 
+  /**
+   * Remove all cached keys
+   */
   const clearCache = useCallback(() => {
     const cachedKeys = cache.keys();
 
@@ -25,73 +32,78 @@ const useCachedKeys = () => {
     }
   }, [cache]);
 
-  const getCustomCachedKeys = useCallback(() => {
+  /**
+   * Get all cached keys
+   */
+  const getCachedKeys = useCallback(() => {
     const cachedKeys = cache.keys();
 
     const keys = Array.from(cachedKeys);
 
-    let customCachedKeys: CustomCachedKeys[] = [];
+    let processedCachedKeys: DeserializedCachedKeys[] = [];
 
     for (let i = 0; i < keys.length; i++) {
-      customCachedKeys.push({ key: keys[i], ...JSON.parse(keys[i]) });
+      processedCachedKeys.push({ key: keys[i], ...JSON.parse(keys[i]) });
     }
 
-    return customCachedKeys;
+    return processedCachedKeys;
   }, [cache]);
 
-  const getCachedKeyWithTag = useCallback(
-    ({ tag }: FunctionProps) => {
-      const found = getCustomCachedKeys().find((key) => key.args?.tag === tag);
+  /**
+   * Get cached data with tag
+   * @param {string} tag - tag contained in serialized cache key
+   * @returns {unknown | undefined} - Unknown if data is present, undefined if not
+   */
+  const getCachedData = useCallback(
+    ({ tag }: GetCachedDataParam) => {
+      const found = getCachedKeys().find((key) => key.args?.tag === tag);
 
-      const key = found?.key;
+      const cachedKey = found?.key;
 
-      return key;
+      if (cachedKey) {
+        const cachedData = cache.get(cachedKey)?.data?.data;
+
+        return cachedData;
+      }
     },
-    [getCustomCachedKeys],
+    [getCachedKeys, cache],
   );
 
-  const getCachedDataWithKey = useCallback(
-    ({ key }: FunctionProps) => {
-      const cachedData = cache.get(key)?.data?.data;
-
-      return cachedData;
-    },
-    [cache],
-  );
-
-  const mutateCachedKeysWithTag = useCallback(
-    ({ tag }: FunctionProps) => {
-      const found = getCustomCachedKeys().filter(
-        (key) => key.args?.tag === tag,
-      );
+  /**
+   * Revalidate cached data with tag
+   * @param {string} tag - tag contained in serialized cache key
+   */
+  const mutateTag = useCallback(
+    ({ tag }: MutateParam) => {
+      const found = getCachedKeys().filter((key) => key.args?.tag === tag);
 
       found.forEach((v) => {
         return mutate(v.key, undefined, true);
       });
     },
-    [mutate, getCustomCachedKeys],
+    [mutate, getCachedKeys],
   );
 
-  const mutateCachedKeysWithPage = useCallback(
-    ({ page }: FunctionProps) => {
-      const found = getCustomCachedKeys().filter(
-        (key) => key.args?.page === page,
-      );
+  /**
+   * Revalidate cached data with page
+   * @param {string} tag - tag contained in serialized cache key
+   */
+  const mutatePage = useCallback(
+    ({ page }: MutateParam) => {
+      const found = getCachedKeys().filter((key) => key.args?.page === page);
 
       found.forEach((v) => {
         return mutate(v.key, undefined, true);
       });
     },
-    [mutate, getCustomCachedKeys],
+    [mutate, getCachedKeys],
   );
 
   return {
     clearCache,
-    getCustomCachedKeys,
-    getCachedKeyWithTag,
-    getCachedDataWithKey,
-    mutateCachedKeysWithTag,
-    mutateCachedKeysWithPage,
+    getCachedData,
+    mutateTag,
+    mutatePage,
   };
 };
 
