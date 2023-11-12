@@ -39,7 +39,7 @@ import {
 } from './styles';
 
 export interface ProfileViewProps {
-  isLaptop: boolean;
+  isLaptop: boolean | null;
   isExistUser?: boolean;
   accessUser: string | null;
   me: boolean;
@@ -219,7 +219,7 @@ const ProfileView = ({
       </ColumnLeftContainer>
 
       <ColumnRightContainer>
-        {isLaptop ? (
+        {isLaptop !== null && isLaptop && (
           <>
             {currentTab === 'viewProfile' && (
               <ProfileInfoController
@@ -253,7 +253,9 @@ const ProfileView = ({
               />
             )}
           </>
-        ) : (
+        )}
+
+        {isLaptop !== null && !isLaptop && (
           <SwipeableTabView tabs={tabs}>
             <ViewContainer>
               <ProfileInfoController
