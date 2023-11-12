@@ -52,7 +52,7 @@ const Nav = ({
   const dispatch = useDispatch();
   const { authMutate } = useAuth();
   const { isMobile } = useCheckUserAgent();
-  const { mutateCachedKeysWithPage } = useCachedKeys();
+  const { mutatePage } = useCachedKeys();
 
   const searchDrawerOpenState = useSelector(
     (state: RootState) => state.drawer.search,
@@ -99,8 +99,8 @@ const Nav = ({
   }, [authMutate, router]);
 
   useEffect(() => {
-    mutateCachedKeysWithPage({ page: '/' });
-  }, [mutateCachedKeysWithPage]);
+    mutatePage({ page: '/' });
+  }, [mutatePage]);
 
   switch (type) {
     case 'default':

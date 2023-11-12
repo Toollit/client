@@ -32,7 +32,7 @@ const ProjectDetailController = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { nickname: accessUser, authMutate } = useAuth();
-  const { mutateCachedKeysWithTag } = useCachedKeys();
+  const { mutateTag } = useCachedKeys();
   const {
     tooltipAnchorEl,
     setTooltipAnchorEl,
@@ -128,8 +128,8 @@ const ProjectDetailController = () => {
         const status = response?.data.status;
 
         bookmarkMutate();
-        mutateCachedKeysWithTag({ tag: 'projectsBookmarksStatus' });
-        mutateCachedKeysWithTag({ tag: 'projects' });
+        mutateTag({ tag: 'projectsBookmarksStatus' });
+        mutateTag({ tag: 'projects' });
 
         clearTimeout(bookmarkAlertTimeoutId);
 
@@ -165,7 +165,7 @@ const ProjectDetailController = () => {
     router,
     authMutate,
     bookmarkMutate,
-    mutateCachedKeysWithTag,
+    mutateTag,
     bookmarkAlertTimeoutId,
   ]);
 

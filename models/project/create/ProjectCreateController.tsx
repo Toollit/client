@@ -17,7 +17,7 @@ import useWindowSize from '@/hooks/useWindowSize';
 const ProjectCreateController = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { mutateCachedKeysWithTag } = useCachedKeys();
+  const { mutateTag, mutatePage } = useCachedKeys();
   const { titleRef, editorRef, handleData } = useEditorContent();
   const {
     tooltipAnchorEl,
@@ -108,7 +108,8 @@ const ProjectCreateController = () => {
 
         const response = await createProjectAPI(formData);
 
-        mutateCachedKeysWithTag({ tag: 'projects' });
+        mutateTag({ tag: 'projects' });
+        mutatePage({ page: '/profile' });
 
         const postId = response?.data.postId;
         // Use replace instead of push because decided to back out so can't access that page again
@@ -129,7 +130,8 @@ const ProjectCreateController = () => {
       titleRef,
       handleData,
       hashtagRef,
-      mutateCachedKeysWithTag,
+      mutateTag,
+      mutatePage,
       representativeImageFile,
       isLoading,
     ],

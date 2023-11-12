@@ -16,6 +16,7 @@ import useTooltip from '@/hooks/useTooltip';
 import { StaticImageData } from 'next/image';
 import projectDefaultImage from 'public/static/images/project.jpg';
 import useWindowSize from '@/hooks/useWindowSize';
+import useCachedKeys from '@/hooks/useCachedKeys';
 
 interface ModifyControllerProps {
   postId: string;
@@ -33,6 +34,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
     handleTooltipClose,
   } = useTooltip();
   const { isLaptop } = useWindowSize();
+  const { mutatePage } = useCachedKeys();
 
   const isLoading = useSelector((state: RootState) => state.isLoading.status);
 
@@ -153,6 +155,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
         const response = await updateProjectAPI(formData);
 
         projectDetailMutate();
+        mutatePage({ page: '/profile' });
 
         const postId = response?.data.postId;
         // Use replace instead of push because decided to back out so can't access that page again
@@ -173,6 +176,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
       handleData,
       hashtagRef,
       projectDetailMutate,
+      mutatePage,
       isLoading,
       dispatch,
       representativeImageFile,
