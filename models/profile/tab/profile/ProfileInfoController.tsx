@@ -38,8 +38,7 @@ const ProfileInfoController = ({
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { nickname: accessUser, authMutate } = useAuth();
-  const { getCachedKeyWithTag, getCachedDataWithKey, getCustomCachedKeys } =
-    useCachedKeys();
+  const { getCachedData } = useCachedKeys();
 
   const updatePage = useSelector((state: RootState) => state.dialog.page);
   const updateCategory = useSelector(
@@ -342,13 +341,9 @@ const ProfileInfoController = ({
       return;
     }
 
-    const profileInfoKey = getCachedKeyWithTag({ tag: 'profileInfo' });
-
-    const profileInfoCachedData = profileInfoKey
-      ? (getCachedDataWithKey({
-          key: profileInfoKey,
-        }) as ProfileInfoAPIRes['data'])
-      : null;
+    const profileInfoCachedData = getCachedData({
+      tag: 'profileInfo',
+    }) as ProfileInfoAPIRes['data'];
 
     if (!data.isLoaded && profileInfoCachedData) {
       setData({
@@ -356,14 +351,7 @@ const ProfileInfoController = ({
         data: profileInfoCachedData,
       });
     }
-  }, [
-    dispatch,
-    data,
-    profileInfoData,
-    nickname,
-    getCachedKeyWithTag,
-    getCachedDataWithKey,
-  ]);
+  }, [dispatch, data, profileInfoData, nickname, getCachedData]);
 
   const props: ProfileInfoViewProps = {
     me: nickname === accessUser,

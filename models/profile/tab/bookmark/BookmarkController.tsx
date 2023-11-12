@@ -34,7 +34,7 @@ const BookmarkController = ({
 }: BookmarkControllerProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { getCachedKeyWithTag, getCachedDataWithKey } = useCachedKeys();
+  const { getCachedData } = useCachedKeys();
 
   const [data, setData] = useState<BookmarkData>({
     isLoaded: false,
@@ -121,20 +121,11 @@ const BookmarkController = ({
   const handleBookmarkLoadMore = useCallback(() => {
     setBookmarkPostCount((prev) => prev + 5);
 
-    // The code written under that comment only works if there is cached data. Logic for leveraging cached data without additional data load.
-    const key = getCachedKeyWithTag({
+    const profileBookmarksCachedData = getCachedData({
       tag: `profileBookmarks?count=${bookmarkPostCount + 5}`,
-    });
-
-    if (!key) {
-      return;
-    }
-
-    const profileBookmarksCachedData = getCachedDataWithKey({
-      key,
     }) as ProfileBookmarksAPIRes['data'];
 
-    if (profileBookmarksCachedData !== undefined) {
+    if (profileBookmarksCachedData) {
       setData((prev) => {
         return {
           isLoaded: true,
@@ -152,7 +143,7 @@ const BookmarkController = ({
         };
       });
     }
-  }, [bookmarkPostCount, getCachedKeyWithTag, getCachedDataWithKey]);
+  }, [bookmarkPostCount, getCachedData]);
 
   // The reason data is write in the dependencies is to adjust the screen size when the data is updated.
   useEffect(() => {
@@ -165,15 +156,9 @@ const BookmarkController = ({
       return;
     }
 
-    const profileBookmarksKey = getCachedKeyWithTag({
+    const profileBookmarksCachedData = getCachedData({
       tag: `profileBookmarks?count=${bookmarkPostCount}`,
-    });
-
-    const profileBookmarksCachedData = profileBookmarksKey
-      ? (getCachedDataWithKey({
-          key: profileBookmarksKey,
-        }) as ProfileBookmarksAPIRes['data'])
-      : null;
+    }) as ProfileBookmarksAPIRes['data'];
 
     if (!data.isLoaded && profileBookmarksCachedData) {
       setData({
@@ -187,8 +172,7 @@ const BookmarkController = ({
     profileBookmarksData,
     nickname,
     bookmarkPostCount,
-    getCachedKeyWithTag,
-    getCachedDataWithKey,
+    getCachedData,
   ]);
 
   const props: BookmarkViewProps = {

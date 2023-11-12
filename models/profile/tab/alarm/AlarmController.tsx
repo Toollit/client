@@ -33,7 +33,7 @@ const AlarmController = ({
 }: AlarmControllerProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { getCachedKeyWithTag, getCachedDataWithKey } = useCachedKeys();
+  const { getCachedData } = useCachedKeys();
 
   const [data, setData] = useState<AlarmData>({ isLoaded: false, data: null });
 
@@ -105,13 +105,9 @@ const AlarmController = ({
       return;
     }
 
-    const profileAlarmsKey = getCachedKeyWithTag({ tag: 'profileAlarms' });
-
-    const profileAlarmsCachedData = profileAlarmsKey
-      ? (getCachedDataWithKey({
-          key: profileAlarmsKey,
-        }) as ProfileAlarmsAPIRes['data'])
-      : null;
+    const profileAlarmsCachedData = getCachedData({
+      tag: 'profileAlarms',
+    }) as ProfileAlarmsAPIRes['data'];
 
     if (!data.isLoaded && profileAlarmsCachedData) {
       setData({
@@ -119,14 +115,7 @@ const AlarmController = ({
         data: profileAlarmsCachedData,
       });
     }
-  }, [
-    dispatch,
-    data,
-    profileAlarmsData,
-    nickname,
-    getCachedKeyWithTag,
-    getCachedDataWithKey,
-  ]);
+  }, [dispatch, data, profileAlarmsData, nickname, getCachedData]);
 
   const props: AlarmViewProps = {
     data: handleAlarmDataResponse(data.data),

@@ -34,8 +34,7 @@ const ProjectController = ({
 }: ProjectControllerProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-
-  const { getCachedKeyWithTag, getCachedDataWithKey } = useCachedKeys();
+  const { getCachedData } = useCachedKeys();
 
   const [data, setData] = useState<ProjectData>({
     isLoaded: false,
@@ -122,17 +121,8 @@ const ProjectController = ({
   const handleProjectLoadMore = useCallback(() => {
     setProjectPostCount((prev) => prev + 5);
 
-    // The code written under that comment only works if there is cached data. Logic for leveraging cached data without additional data load.
-    const key = getCachedKeyWithTag({
+    const profileProjectsCachedData = getCachedData({
       tag: `profileProjects?count=${projectPostCount + 5}`,
-    });
-
-    if (!key) {
-      return;
-    }
-
-    const profileProjectsCachedData = getCachedDataWithKey({
-      key,
     }) as ProfileProjectsAPIRes['data'];
 
     if (profileProjectsCachedData !== undefined) {
@@ -152,7 +142,7 @@ const ProjectController = ({
         };
       });
     }
-  }, [projectPostCount, getCachedKeyWithTag, getCachedDataWithKey]);
+  }, [projectPostCount, getCachedData]);
 
   // The reason data is write in the dependencies is to adjust the screen size when the data is updated.
   useEffect(() => {
@@ -165,15 +155,9 @@ const ProjectController = ({
       return;
     }
 
-    const profileProjectsKey = getCachedKeyWithTag({
+    const profileProjectsCachedData = getCachedData({
       tag: `profileProjects?count=${projectPostCount}`,
-    });
-
-    const profileProjectsCachedData = profileProjectsKey
-      ? (getCachedDataWithKey({
-          key: profileProjectsKey,
-        }) as ProfileProjectsAPIRes['data'])
-      : null;
+    }) as ProfileProjectsAPIRes['data'];
 
     if (!data.isLoaded && profileProjectsCachedData) {
       setData({
@@ -187,8 +171,7 @@ const ProjectController = ({
     profileProjectsData,
     nickname,
     projectPostCount,
-    getCachedKeyWithTag,
-    getCachedDataWithKey,
+    getCachedData,
   ]);
 
   const props: ProjectViewProps = {
