@@ -61,7 +61,7 @@ const ProfileInfoController = ({
           url: profileInfoKey(nickname),
           args: {
             page: '/profile',
-            tag: 'profileInfo',
+            tag: `profileInfo/${nickname}`,
           },
         }
       : null,
@@ -103,7 +103,7 @@ const ProfileInfoController = ({
         // If revalidate immediately. It will make an api request with the previous nickname value, resulting in an error. It should be handled asynchronously.
         setTimeout(async () => {
           await authMutate();
-          profileInfoDataMutate();
+          await profileInfoDataMutate();
         }, 100);
 
         return dispatch(closeDialog());
@@ -347,7 +347,7 @@ const ProfileInfoController = ({
     }
 
     const profileInfoCachedData = getCachedData({
-      tag: 'profileInfo',
+      tag: `profileInfo/${nickname}`,
     }) as ProfileInfoAPIRes['data'];
 
     if (!data.isLoaded && profileInfoCachedData) {
