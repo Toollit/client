@@ -25,12 +25,14 @@ const useCachedKeys = () => {
    * Remove all cached keys
    */
   const clearCache = useCallback(() => {
-    const cachedKeys = cache.keys();
+    // const cachedKeys = cache.keys();
 
-    for (let key of cachedKeys) {
-      cache.delete(key);
-    }
-  }, [cache]);
+    // for (let key of cachedKeys) {
+    //   cache.delete(key);
+    // }
+
+    mutate(() => true, undefined, { revalidate: true });
+  }, [mutate]);
 
   /**
    * Get all cached keys
@@ -100,6 +102,7 @@ const useCachedKeys = () => {
   );
 
   return {
+    getCachedKeys,
     clearCache,
     getCachedData,
     mutateTag,
