@@ -2,15 +2,12 @@ import { serverInstance } from 'apis/axios';
 import { FetcherParams } from './types';
 
 export interface Notification {
-  type:
-    | 'projectJoinRequest'
-    | 'approveProjectJoinRequest'
-    | 'rejectProjectJoinRequest';
+  type: 'projectJoinRequest' | 'projectJoinApprove' | 'projectJoinReject';
   id: number;
   projectId: number;
   projectTitle: string;
   createdAt: string;
-  joinRequestUserNickname: string;
+  notificationCreator: string;
 }
 
 export interface ProfileNotificationsAPIReq {}
@@ -19,7 +16,8 @@ export interface ProfileNotificationsAPIRes {
   success: boolean;
   message: string | null;
   data?: {
-    notifications: Notification[] | [];
+    notifications: Notification[];
+    total: number;
   };
 }
 
