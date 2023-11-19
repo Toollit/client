@@ -27,7 +27,7 @@ export interface NotificationViewProps {
   };
 }
 
-const AlarmView = ({ data, each }: NotificationViewProps) => {
+const NotificationView = ({ data, each }: NotificationViewProps) => {
   return (
     <>
       {data ? (
@@ -99,4 +99,4 @@ const AlarmView = ({ data, each }: NotificationViewProps) => {
   );
 };
 
-export default AlarmView;
+export default NotificationView;

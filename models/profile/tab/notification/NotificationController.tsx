@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import AlarmView, { NotificationViewProps } from './AlarmView';
+import AlarmView, { NotificationViewProps } from './NotificationView';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { profileNotificationsKey } from '@/apis/keys';
@@ -29,7 +29,7 @@ export interface NotificationControllerProps {
   nickname: string;
 }
 
-const AlarmController = ({
+const NotificationController = ({
   currentTab,
   isExistUser,
   nickname,
@@ -160,4 +160,4 @@ const AlarmController = ({
   return <AlarmView {...props} />;
 };
 
-export default AlarmController;
+export default NotificationController;
