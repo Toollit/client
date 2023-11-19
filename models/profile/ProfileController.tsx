@@ -21,11 +21,11 @@ interface CachedData<T> {
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
-export type ProfileCurrentTab =
+export type ProfileTab =
   | 'viewProfile'
   | 'viewProjects'
   | 'viewBookmarks'
-  | 'viewAlarms'
+  | 'viewNotifications'
   | undefined;
 
 const ProfileController = () => {
@@ -42,13 +42,13 @@ const ProfileController = () => {
   const { isLaptop } = useWindowSize();
 
   const [nickname, setNickname] = useState('');
-  const [currentTab, setCurrentTab] = useState<ProfileCurrentTab>();
+  const [currentTab, setCurrentTab] = useState<ProfileTab>();
 
   const tabs = useRef([
     { name: '프로필', query: 'viewProfile' },
     { name: '프로젝트', query: 'viewProjects' },
     { name: '북마크', query: 'viewBookmarks' },
-    { name: '알림', query: 'viewAlarms' },
+    { name: '알림', query: 'viewNotifications' },
   ]);
 
   const profileImgRef = useRef<HTMLInputElement>(null);
@@ -99,11 +99,11 @@ const ProfileController = () => {
     },
   );
 
-  const handleLogInOut = useCallback(() => {
+  const handleLogInOut = useCallback(async () => {
     const isLoggedIn = accessUser;
 
     if (isLoggedIn) {
-      return logOut({ push: '/' });
+      return await logOut({ push: '/' });
     }
 
     if (!isLoggedIn) {
@@ -176,7 +176,7 @@ const ProfileController = () => {
       | 'viewProfile'
       | 'viewProjects'
       | 'viewBookmarks'
-      | 'viewAlarms'
+      | 'viewNotifications'
       | undefined;
 
     if (nickname && currentTab === undefined) {
@@ -194,7 +194,7 @@ const ProfileController = () => {
         currentTab === 'viewProfile' ||
         currentTab === 'viewProjects' ||
         currentTab === 'viewBookmarks' ||
-        currentTab === 'viewAlarms'
+        currentTab === 'viewNotifications'
       )
     ) {
       (async () => {

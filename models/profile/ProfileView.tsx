@@ -9,10 +9,12 @@ import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
 import { ImageWrapper } from '@/styles/commons';
 import SwipeableTabView from '@/components/commons/swipeableView/swipeableTabViews';
 import ProjectController from './tab/project/ProjectController';
-import AlarmController from './tab/alarm/AlarmController';
+import NotificationController from './tab/notification/NotificationController';
 import ProfileFooterLink from './footer/Footer';
 import BookmarkController from './tab/bookmark/BookmarkController';
 import ProfileInfoController from './tab/profile/ProfileInfoController';
+import { ProfileTab } from './ProfileController';
+import AppLayout from '@/components/appLayout';
 import {
   Container,
   ColumnLeftContainer,
@@ -45,12 +47,7 @@ export interface ProfileViewProps {
   me: boolean;
   loginState?: string | null;
   tabs: { name: string; query: string }[];
-  currentTab:
-    | 'viewProfile'
-    | 'viewProjects'
-    | 'viewBookmarks'
-    | 'viewAlarms'
-    | undefined;
+  currentTab: ProfileTab;
   profileImageData?: string | null;
   nickname: string;
   handleLogInOut: () => void;
@@ -77,246 +74,248 @@ const ProfileView = ({
   tooltip,
 }: ProfileViewProps) => {
   return (
-    <Container>
-      <ColumnLeftContainer role=''>
-        <GNBArea>
-          <Link href={'/'} passHref>
-            <GNBLink>
-              <GetitLogo width={3.2} height={3.2} />
-              <GNBTitle>Getit 프로필</GNBTitle>
-            </GNBLink>
-          </Link>
-        </GNBArea>
+    <AppLayout type='none' footer={false}>
+      <Container>
+        <ColumnLeftContainer role=''>
+          <GNBArea>
+            <Link href={'/'} passHref>
+              <GNBLink>
+                <GetitLogo width={3.2} height={3.2} />
+                <GNBTitle>Getit 프로필</GNBTitle>
+              </GNBLink>
+            </Link>
+          </GNBArea>
 
-        <ProfileArea>
-          {/* Loading profile image */}
-          {profileImageData === undefined && (
-            <ProfileImageSkeletonContainer>
-              <Skeleton shape='circular' width={12} height={12} />
-            </ProfileImageSkeletonContainer>
-          )}
+          <ProfileArea>
+            {/* Loading profile image */}
+            {profileImageData === undefined && (
+              <ProfileImageSkeletonContainer>
+                <Skeleton shape='circular' width={12} height={12} />
+              </ProfileImageSkeletonContainer>
+            )}
 
-          {/* Default profile image */}
-          {profileImageData === null && (
-            <BlankImageContainer>
-              <BlankImage>
-                <AccountCircleIcon
-                  fill={true}
-                  width={15}
-                  height={15}
-                  color='#767678'
+            {/* Default profile image */}
+            {profileImageData === null && (
+              <BlankImageContainer>
+                <BlankImage>
+                  <AccountCircleIcon
+                    fill={true}
+                    width={15}
+                    height={15}
+                    color='#767678'
+                  />
+                </BlankImage>
+              </BlankImageContainer>
+            )}
+
+            {/* User settings profile image */}
+            {profileImageData && (
+              <ProfileImageContainer>
+                <ImageWrapper width={12} height={12}>
+                  <StyledProfileImage
+                    src={profileImageData}
+                    alt={'profile image'}
+                    draggable={false}
+                    priority
+                    layout='fill'
+                  />
+                </ImageWrapper>
+              </ProfileImageContainer>
+            )}
+
+            {/* Change profile image button */}
+            {me && (
+              <>
+                <input
+                  hidden
+                  type='file'
+                  accept='image/jpg, image/jpeg, image/png'
+                  ref={profileImgRef}
+                  onChange={handleChangeProfileImg}
                 />
-              </BlankImage>
-            </BlankImageContainer>
-          )}
 
-          {/* User settings profile image */}
-          {profileImageData && (
-            <ProfileImageContainer>
-              <ImageWrapper width={12} height={12}>
-                <StyledProfileImage
-                  src={profileImageData}
-                  alt={'profile image'}
-                  draggable={false}
-                  priority
-                  layout='fill'
-                />
-              </ImageWrapper>
-            </ProfileImageContainer>
-          )}
+                <ImageEditBtn onClick={handleTooltipOpen}>
+                  <EditCircleIcon
+                    fill={true}
+                    width={3.5}
+                    height={3.5}
+                    color='#4dd290'
+                  />
+                </ImageEditBtn>
+                <Tooltip {...tooltip} />
+              </>
+            )}
 
-          {/* Change profile image button */}
-          {me && (
+            <UserNickname>{nickname}</UserNickname>
+          </ProfileArea>
+
+          <HeaderLeft>
+            <Menu currentTab={currentTab} role='menu'>
+              {tabs.map((tab, index) => {
+                return (
+                  <li key={tab.name}>
+                    <Link
+                      href={{
+                        pathname: `/profile/${nickname}`,
+                        query: {
+                          tab: tab.query,
+                        },
+                      }}
+                    >
+                      <a>{tab.name}</a>
+                    </Link>
+                  </li>
+                );
+              })}
+            </Menu>
+
+            <DividerContainer>
+              <Divider type='thin' />
+            </DividerContainer>
+
+            <FooterLink>
+              <ul>
+                <li>
+                  {me ? (
+                    <LogInOut onClick={handleLogInOut}>
+                      {loginState ? '로그아웃' : '로그인'}
+                    </LogInOut>
+                  ) : (
+                    <Link
+                      href={accessUser ? `/profile/${accessUser}` : '/login'}
+                      passHref
+                    >
+                      <MyProfile>내프로필</MyProfile>
+                    </Link>
+                  )}
+                </li>
+                <li>
+                  <Link href='/'>
+                    <a>고객센터</a>
+                  </Link>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <Link href='/' passHref>
+                    <Logo>Getit</Logo>
+                  </Link>
+                </li>
+                <li>
+                  <Link href=''>
+                    <a>개인정보처리방침</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href=''>
+                    <a>이용약관</a>
+                  </Link>
+                </li>
+              </ul>
+            </FooterLink>
+          </HeaderLeft>
+        </ColumnLeftContainer>
+
+        <ColumnRightContainer>
+          {isLaptop !== null && isLaptop && (
             <>
-              <input
-                hidden
-                type='file'
-                accept='image/jpg, image/jpeg, image/png'
-                ref={profileImgRef}
-                onChange={handleChangeProfileImg}
-              />
-
-              <ImageEditBtn onClick={handleTooltipOpen}>
-                <EditCircleIcon
-                  fill={true}
-                  width={3.5}
-                  height={3.5}
-                  color='#4dd290'
+              {currentTab === 'viewProfile' && (
+                <ProfileInfoController
+                  currentTab={currentTab}
+                  isExistUser={isExistUser}
+                  nickname={nickname}
                 />
-              </ImageEditBtn>
-              <Tooltip {...tooltip} />
+              )}
+
+              {currentTab === 'viewProjects' && (
+                <ProjectController
+                  currentTab={currentTab}
+                  isExistUser={isExistUser}
+                  nickname={nickname}
+                />
+              )}
+
+              {currentTab === 'viewBookmarks' && (
+                <BookmarkController
+                  currentTab={currentTab}
+                  isExistUser={isExistUser}
+                  nickname={nickname}
+                />
+              )}
+
+              {currentTab === 'viewNotifications' && (
+                <NotificationController
+                  currentTab={currentTab}
+                  isExistUser={isExistUser}
+                  nickname={nickname}
+                />
+              )}
             </>
           )}
 
-          <UserNickname>{nickname}</UserNickname>
-        </ProfileArea>
+          {isLaptop !== null && !isLaptop && (
+            <SwipeableTabView tabs={tabs}>
+              <ViewContainer>
+                <ProfileInfoController
+                  currentTab={currentTab}
+                  isExistUser={isExistUser}
+                  nickname={nickname}
+                />
+                <ProfileFooterLink
+                  me={me}
+                  accessUser={accessUser}
+                  loginState={loginState}
+                  handleLogInOut={handleLogInOut}
+                />
+              </ViewContainer>
 
-        <HeaderLeft>
-          <Menu currentTab={currentTab} role='menu'>
-            {tabs.map((tab, index) => {
-              return (
-                <li key={tab.name}>
-                  <Link
-                    href={{
-                      pathname: `/profile/${nickname}`,
-                      query: {
-                        tab: tab.query,
-                      },
-                    }}
-                  >
-                    <a>{tab.name}</a>
-                  </Link>
-                </li>
-              );
-            })}
-          </Menu>
+              <ViewContainer>
+                <ProjectController
+                  currentTab={currentTab}
+                  isExistUser={isExistUser}
+                  nickname={nickname}
+                />
+                <ProfileFooterLink
+                  me={me}
+                  accessUser={accessUser}
+                  loginState={loginState}
+                  handleLogInOut={handleLogInOut}
+                />
+              </ViewContainer>
 
-          <DividerContainer>
-            <Divider type='thin' />
-          </DividerContainer>
+              <ViewContainer>
+                <BookmarkController
+                  currentTab={currentTab}
+                  isExistUser={isExistUser}
+                  nickname={nickname}
+                />
+                <ProfileFooterLink
+                  me={me}
+                  accessUser={accessUser}
+                  loginState={loginState}
+                  handleLogInOut={handleLogInOut}
+                />
+              </ViewContainer>
 
-          <FooterLink>
-            <ul>
-              <li>
-                {me ? (
-                  <LogInOut onClick={handleLogInOut}>
-                    {loginState ? '로그아웃' : '로그인'}
-                  </LogInOut>
-                ) : (
-                  <Link
-                    href={accessUser ? `/profile/${accessUser}` : '/login'}
-                    passHref
-                  >
-                    <MyProfile>내프로필</MyProfile>
-                  </Link>
-                )}
-              </li>
-              <li>
-                <Link href='/'>
-                  <a>고객센터</a>
-                </Link>
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <Link href='/' passHref>
-                  <Logo>Getit</Logo>
-                </Link>
-              </li>
-              <li>
-                <Link href=''>
-                  <a>개인정보처리방침</a>
-                </Link>
-              </li>
-              <li>
-                <Link href=''>
-                  <a>이용약관</a>
-                </Link>
-              </li>
-            </ul>
-          </FooterLink>
-        </HeaderLeft>
-      </ColumnLeftContainer>
-
-      <ColumnRightContainer>
-        {isLaptop !== null && isLaptop && (
-          <>
-            {currentTab === 'viewProfile' && (
-              <ProfileInfoController
-                currentTab={currentTab}
-                isExistUser={isExistUser}
-                nickname={nickname}
-              />
-            )}
-
-            {currentTab === 'viewProjects' && (
-              <ProjectController
-                currentTab={currentTab}
-                isExistUser={isExistUser}
-                nickname={nickname}
-              />
-            )}
-
-            {currentTab === 'viewBookmarks' && (
-              <BookmarkController
-                currentTab={currentTab}
-                isExistUser={isExistUser}
-                nickname={nickname}
-              />
-            )}
-
-            {currentTab === 'viewAlarms' && (
-              <AlarmController
-                currentTab={currentTab}
-                isExistUser={isExistUser}
-                nickname={nickname}
-              />
-            )}
-          </>
-        )}
-
-        {isLaptop !== null && !isLaptop && (
-          <SwipeableTabView tabs={tabs}>
-            <ViewContainer>
-              <ProfileInfoController
-                currentTab={currentTab}
-                isExistUser={isExistUser}
-                nickname={nickname}
-              />
-              <ProfileFooterLink
-                me={me}
-                accessUser={accessUser}
-                loginState={loginState}
-                handleLogInOut={handleLogInOut}
-              />
-            </ViewContainer>
-
-            <ViewContainer>
-              <ProjectController
-                currentTab={currentTab}
-                isExistUser={isExistUser}
-                nickname={nickname}
-              />
-              <ProfileFooterLink
-                me={me}
-                accessUser={accessUser}
-                loginState={loginState}
-                handleLogInOut={handleLogInOut}
-              />
-            </ViewContainer>
-
-            <ViewContainer>
-              <BookmarkController
-                currentTab={currentTab}
-                isExistUser={isExistUser}
-                nickname={nickname}
-              />
-              <ProfileFooterLink
-                me={me}
-                accessUser={accessUser}
-                loginState={loginState}
-                handleLogInOut={handleLogInOut}
-              />
-            </ViewContainer>
-
-            <ViewContainer>
-              <AlarmController
-                currentTab={currentTab}
-                isExistUser={isExistUser}
-                nickname={nickname}
-              />
-              <ProfileFooterLink
-                me={me}
-                accessUser={accessUser}
-                loginState={loginState}
-                handleLogInOut={handleLogInOut}
-              />
-            </ViewContainer>
-          </SwipeableTabView>
-        )}
-      </ColumnRightContainer>
-      <Dialog />
-    </Container>
+              <ViewContainer>
+                <NotificationController
+                  currentTab={currentTab}
+                  isExistUser={isExistUser}
+                  nickname={nickname}
+                />
+                <ProfileFooterLink
+                  me={me}
+                  accessUser={accessUser}
+                  loginState={loginState}
+                  handleLogInOut={handleLogInOut}
+                />
+              </ViewContainer>
+            </SwipeableTabView>
+          )}
+        </ColumnRightContainer>
+        <Dialog />
+      </Container>
+    </AppLayout>
   );
 };
 {

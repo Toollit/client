@@ -2,12 +2,16 @@ import { mediaQueryLaptop } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 import { Theme, css } from '@emotion/react';
 import Image from 'next/image';
+import { ProfileTab } from './ProfileController';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100%;
-  height: auto;
+  /* min-height: 100%; */
+  /* height: auto; */
+  min-height: 100vh;
+  height: 100%;
+  width: 100%;
 
   ${mediaQueryLaptop} {
     flex-direction: row;
@@ -137,14 +141,7 @@ const TabHighlight = (theme: Theme) => css`
   }
 `;
 
-const Menu = styled.ul<{
-  currentTab:
-    | 'viewProfile'
-    | 'viewProjects'
-    | 'viewBookmarks'
-    | 'viewAlarms'
-    | undefined;
-}>`
+const Menu = styled.ul<{ currentTab: ProfileTab }>`
   padding: 4rem 3.9rem;
 
   li {
@@ -180,7 +177,7 @@ const Menu = styled.ul<{
             ${TabHighlight(props.theme)}
           }
         `;
-      case 'viewAlarms':
+      case 'viewNotifications':
         return css`
           li:nth-of-type(4) a {
             ${TabHighlight(props.theme)}
