@@ -11,27 +11,34 @@ interface AppLayoutProps extends NavProps {
   footer?: boolean;
 }
 
+/**
+ * @props children - content component
+ * @props type - GNB style
+ * @props title - title to be shown in the middle of the GNB
+ * @props boundary - GNB border bottom
+ * @props fullSize - GNB width size. (true - width 100%, false - width 102.4rem)
+ * @props onClick - GNB left side default icons click handler
+ * @props footer - footer content
+ */
 const AppLayout = ({
   children,
   type,
   title,
-  menu,
   boundary,
   fullSize,
   onClick,
   footer = true,
 }: AppLayoutProps) => {
   return (
-    <Container>
+    <Container type={type}>
       <Nav
         type={type}
         title={title}
-        menu={menu}
         boundary={boundary}
         fullSize={fullSize}
         onClick={onClick}
       />
-      <Content type={type}>{children}</Content>
+      <Content>{children}</Content>
       {footer && <Footer />}
 
       {/* Right bottom notification  */}
