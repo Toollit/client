@@ -1,28 +1,30 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import AlarmView, { AlarmViewProps } from './AlarmView';
+import AlarmView, { NotificationViewProps } from './AlarmView';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
-import { profileAlarmsKey } from '@/apis/keys';
+import { profileNotificationsKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
 import { serialize } from '@/middleware/swr/serialize';
 import {
-  ProfileAlarmsAPIRes,
-  profileAlarmsFetcher,
-} from '@/apis/profileAlarmsFetcher';
+  ProfileNotificationsAPIRes,
+  profileNotificationsFetcher,
+} from '@/apis/profileNotificationsFetcher';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { dateFromNow } from '@/utils/changeDateFormat';
-import { ProfileCurrentTab } from '@/models/profile/ProfileController';
+import { ProfileTab } from '@/models/profile/ProfileController';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
 import { useAppDispatch } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
+import { projectJoinApproveAPI } from '@/apis/projectJoinApprove';
+import { projectJoinRejectAPI } from '@/apis/projectJoinReject';
 
-interface AlarmData {
+interface NotificationData {
   isLoaded: boolean;
-  data: ProfileAlarmsAPIRes['data'] | null;
+  data: ProfileNotificationsAPIRes['data'];
 }
 
-export interface AlarmControllerProps {
-  currentTab: ProfileCurrentTab;
+export interface NotificationControllerProps {
+  currentTab: ProfileTab;
   isExistUser?: boolean;
   nickname: string;
 }
@@ -31,25 +33,28 @@ const AlarmController = ({
   currentTab,
   isExistUser,
   nickname,
-}: AlarmControllerProps) => {
+}: NotificationControllerProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { getCachedData } = useCachedKeys();
   const { isLaptop } = useWindowSize();
 
-  const [data, setData] = useState<AlarmData>({ isLoaded: false, data: null });
+  const [data, setData] = useState<NotificationData>({
+    isLoaded: false,
+    data: { notifications: [], total: 0 },
+  });
 
   const { data: profileAlarmsData } = useSWR(
-    isExistUser && currentTab === 'viewAlarms' && nickname
+    isExistUser && currentTab === 'viewNotifications' && nickname
       ? {
-          url: profileAlarmsKey(nickname),
+          url: profileNotificationsKey(nickname),
           args: {
             page: '/profile',
-            tag: `profileAlarms`,
+            tag: `profileNotifications`,
           },
         }
       : null,
-    profileAlarmsFetcher,
+    profileNotificationsFetcher,
     {
       dedupingInterval: 1000 * 60 * 10,
       revalidateOnFocus: false,
@@ -61,38 +66,49 @@ const AlarmController = ({
       onSuccess(res, key, config) {
         setData({
           isLoaded: true,
-          data: res?.data
-            ? {
-                alarms: res.data.alarms,
-              }
-            : null,
+          data: res?.data,
         });
       },
       use: [serialize],
     },
   );
 
-  const handleAlarmDataResponse = useCallback(
-    (data: ProfileAlarmsAPIRes['data'] | null) => {
-      if (!data) {
-        return null;
-      }
-
-      const convertedData = data?.alarms.map((alarm) => {
+  const handleProcessedData = useCallback(
+    (data: ProfileNotificationsAPIRes['data']) => {
+      const convertedData = data?.notifications.map((notification) => {
         return {
-          ...alarm,
-          project: {
-            ...alarm.project,
-            createdAt: dateFromNow({ date: alarm.project.createdAt }),
-          },
+          ...notification,
+          nickname: notification.notificationCreator ?? '',
+          createdAt: dateFromNow({ date: notification.createdAt }),
         };
       });
 
-      return {
-        alarms: convertedData,
-      };
+      return convertedData;
     },
+    [],
+  );
 
+  const handleProjectJoinApprove = useCallback(
+    async (notificationId: number) => {
+      try {
+        await projectJoinApproveAPI({ notificationId });
+
+        alert('프로젝트 멤버로 추가되었습니다.');
+      } catch (error) {
+        errorMessage(error);
+      }
+    },
+    [],
+  );
+
+  const handleProjectJoinReject = useCallback(
+    async (notificationId: number) => {
+      try {
+        await projectJoinRejectAPI({ notificationId });
+      } catch (error) {
+        errorMessage(error);
+      }
+    },
     [],
   );
 
@@ -111,8 +127,8 @@ const AlarmController = ({
     }
 
     const profileAlarmsCachedData = getCachedData({
-      tag: 'profileAlarms',
-    }) as ProfileAlarmsAPIRes['data'];
+      tag: 'profileNotifications',
+    }) as ProfileNotificationsAPIRes['data'];
 
     if (!data.isLoaded && profileAlarmsCachedData) {
       setData({
@@ -122,8 +138,23 @@ const AlarmController = ({
     }
   }, [dispatch, data, profileAlarmsData, nickname, getCachedData]);
 
-  const props: AlarmViewProps = {
-    data: handleAlarmDataResponse(data.data),
+  const props: NotificationViewProps = {
+    data: handleProcessedData(data.data),
+    each: (data) => ({
+      // handleRemove: () => {},
+      handleApprove: () => {
+        const result = confirm('정말 수락하시겠습니까?');
+        if (result) {
+          handleProjectJoinApprove(data.id);
+        }
+      },
+      handleReject: () => {
+        const result = confirm('정말 거절하시겠습니까?');
+        if (result) {
+          handleProjectJoinReject(data.id);
+        }
+      },
+    }),
   };
 
   return <AlarmView {...props} />;

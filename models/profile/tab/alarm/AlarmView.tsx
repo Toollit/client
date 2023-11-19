@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Alarm } from '@/apis/profileAlarmsFetcher';
+import { Notification } from '@/apis/profileNotificationsFetcher';
 import { Button } from '@/components/commons/button';
 import Skeleton from '@/components/commons/skeleton';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
@@ -19,50 +19,63 @@ import {
   Label,
 } from './styles';
 
-export interface AlarmViewData {
-  alarms: Alarm[] | null;
+export interface NotificationViewProps {
+  data?: Notification[];
+  each: (data: Notification) => {
+    handleApprove: () => void;
+    handleReject: () => void;
+  };
 }
 
-export interface AlarmViewProps {
-  data: AlarmViewData | null;
-}
-
-const AlarmView = ({ data }: AlarmViewProps) => {
+const AlarmView = ({ data, each }: NotificationViewProps) => {
   return (
     <>
-      {data && (
+      {data ? (
         <BoxContainer>
           <BoxTitle>알림</BoxTitle>
           <BoxContent>
-            {data?.alarms && data.alarms?.length > 0 ? (
+            {data.length > 0 ? (
               <>
-                {data.alarms?.map((v, index) => {
+                {data.map((notification) => {
+                  const { handleApprove, handleReject } = each(notification);
+
                   return (
-                    <Content key={`/profile/project/${v.project.id}-${index}`}>
+                    <Content key={notification.id}>
                       <InfoContainer>
                         <LeftColumnContainer>
                           <NotificationsNoneIcon color='action' />
                         </LeftColumnContainer>
                         <RightColumnContainer>
                           <AlarmTitle>
-                            {v.requestUser.nickname}님의 프로젝트 참가 신청이
-                            도착했어요!{' '}
-                            <Link href={`/profile/${v.requestUser.nickname}`}>
-                              프로필 보러 가기
+                            <Link
+                              href={`/profile/${notification.notificationCreator}`}
+                            >
+                              {notification.notificationCreator}
                             </Link>
+                            님의 프로젝트 참가 신청이 도착했어요!
                           </AlarmTitle>
 
                           <Label>프로젝트</Label>
-                          <Link href={`/project/${v.project.id}`} passHref>
-                            <ProjectTitle>{v.project.title}</ProjectTitle>
+                          <Link href={`/project/${notification.id}`} passHref>
+                            <ProjectTitle>
+                              {notification.projectTitle}
+                            </ProjectTitle>
                           </Link>
 
-                          <RequestTime>{v.project.createdAt}</RequestTime>
+                          <RequestTime>{notification.createdAt}</RequestTime>
                         </RightColumnContainer>
                       </InfoContainer>
                       <ButtonContainer>
-                        <Button type='submit' text='수락' />
-                        <Button type='normal' text='거절' />
+                        <Button
+                          type='submit'
+                          text='수락'
+                          onClick={handleApprove}
+                        />
+                        <Button
+                          type='normal'
+                          text='거절'
+                          onClick={handleReject}
+                        />
                       </ButtonContainer>
                     </Content>
                   );
@@ -75,8 +88,7 @@ const AlarmView = ({ data }: AlarmViewProps) => {
             )}
           </BoxContent>
         </BoxContainer>
-      )}
-      {!data && (
+      ) : (
         <>
           <Skeleton height={25} bottom={3} />
           <Skeleton height={25} bottom={3} />
