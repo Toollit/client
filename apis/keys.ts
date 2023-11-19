@@ -44,6 +44,6 @@ export const profileBookmarksKey = (nickname: string, count: number) => {
   return `${PROFILE_API_ENDPOINT}/${nickname}?tab=viewBookmarks&count=${count}`;
 };
 
-export const profileAlarmsKey = (nickname: string) => {
-  return `${PROFILE_API_ENDPOINT}/${nickname}?tab=viewAlarms`;
+export const profileNotificationsKey = (nickname: string) => {
+  return `${PROFILE_API_ENDPOINT}/${nickname}?tab=viewNotifications`;
 };
