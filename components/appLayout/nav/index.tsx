@@ -35,7 +35,6 @@ export interface NavProps {
 /**
  * @props type - 'default' | 'close' | 'back' | 'none';
  * @props title - nav center text
- * @props menu - nav right side icons
  * @props boundary - nav bottom border show
  * @props fullSize - use only when type back or close and boundary false
  * @props onClick - nav left side default icons click handler
@@ -43,7 +42,6 @@ export interface NavProps {
 const Nav = ({
   type,
   title,
-  menu,
   boundary = true,
   fullSize = true,
   onClick,
