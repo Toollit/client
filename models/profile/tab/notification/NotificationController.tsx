@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import AlarmView, { NotificationViewProps } from './NotificationView';
+import NotificationView, { NotificationViewProps } from './NotificationView';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { profileNotificationsKey } from '@/apis/keys';
@@ -44,7 +44,7 @@ const NotificationController = ({
     data: { notifications: [], total: 0 },
   });
 
-  const { data: profileAlarmsData } = useSWR(
+  const { data: notificationsData, mutate: notificationsMutate } = useSWR(
     isExistUser && currentTab === 'viewNotifications' && nickname
       ? {
           url: profileNotificationsKey(nickname),
@@ -94,22 +94,28 @@ const NotificationController = ({
         await projectJoinApproveAPI({ notificationId });
 
         alert('프로젝트 멤버로 추가되었습니다.');
+
+        notificationsMutate();
       } catch (error) {
         errorMessage(error);
       }
     },
-    [],
+    [notificationsMutate],
   );
 
   const handleProjectJoinReject = useCallback(
     async (notificationId: number) => {
       try {
         await projectJoinRejectAPI({ notificationId });
+
+        alert('프로젝트 참여 요청을 거절했습니다.');
+
+        notificationsMutate();
       } catch (error) {
         errorMessage(error);
       }
     },
-    [],
+    [notificationsMutate],
   );
 
   // The reason data is write in the dependencies is to adjust the screen size when the data is updated.
@@ -126,17 +132,17 @@ const NotificationController = ({
       return;
     }
 
-    const profileAlarmsCachedData = getCachedData({
+    const profileNotificationsCachedData = getCachedData({
       tag: 'profileNotifications',
     }) as ProfileNotificationsAPIRes['data'];
 
-    if (!data.isLoaded && profileAlarmsCachedData) {
+    if (!data.isLoaded && profileNotificationsCachedData) {
       setData({
         isLoaded: true,
-        data: profileAlarmsCachedData,
+        data: profileNotificationsCachedData,
       });
     }
-  }, [dispatch, data, profileAlarmsData, nickname, getCachedData]);
+  }, [dispatch, data, notificationsData, nickname, getCachedData]);
 
   const props: NotificationViewProps = {
     data: handleProcessedData(data.data),
@@ -157,7 +163,7 @@ const NotificationController = ({
     }),
   };
 
-  return <AlarmView {...props} />;
+  return <NotificationView {...props} />;
 };
 
 export default NotificationController;
