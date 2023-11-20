@@ -82,7 +82,7 @@ const ResetPasswordController = () => {
           '비밀번호 변경이 완료되었습니다. 새로운 비밀번호로 다시 로그인해주세요.',
         );
 
-        logOut({ push: '/login' });
+        await logOut({ replace: '/login' });
 
         router.events.on('routeChangeComplete', () => {
           dispatch(loading({ status: false }));
@@ -104,8 +104,8 @@ const ResetPasswordController = () => {
     ],
   );
 
-  const handleLogout = useCallback(() => {
-    logOut({ replace: '/' });
+  const handleLogout = useCallback(async () => {
+    await logOut({ replace: '/' });
   }, [logOut]);
 
   useEffect(() => {
