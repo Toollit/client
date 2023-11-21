@@ -6,6 +6,7 @@ import { profileNotificationsKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
 import { serialize } from '@/middleware/swr/serialize';
 import {
+  Notification,
   ProfileNotificationsAPIRes,
   profileNotificationsFetcher,
 } from '@/apis/profileNotificationsFetcher';
@@ -17,6 +18,7 @@ import { useAppDispatch } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 import { projectJoinApproveAPI } from '@/apis/projectJoinApprove';
 import { projectJoinRejectAPI } from '@/apis/projectJoinReject';
+import useTooltip from '@/hooks/useTooltip';
 
 interface NotificationData {
   isLoaded: boolean;
@@ -38,6 +40,13 @@ const NotificationController = ({
   const dispatch = useAppDispatch();
   const { getCachedData } = useCachedKeys();
   const { isLaptop } = useWindowSize();
+  const {
+    tooltipAnchorEl,
+    setTooltipAnchorEl,
+    tooltipOpen,
+    handleTooltipOpen,
+    handleTooltipClose,
+  } = useTooltip();
 
   const [data, setData] = useState<NotificationData>({
     isLoaded: false,
@@ -76,8 +85,22 @@ const NotificationController = ({
   const handleProcessedData = useCallback(
     (data: ProfileNotificationsAPIRes['data']) => {
       const convertedData = data?.notifications.map((notification) => {
+        const notificationInfo = () => {
+          switch (notification.type) {
+            case 'projectJoinRequest':
+              return '프로젝트 참가 신청이 도착했어요!';
+            case 'projectJoinApprove':
+              return '프로젝트 참가 신청이 승인됐어요!';
+            case 'projectJoinReject':
+              return '프로젝트 참가 신청이 거절됐어요!';
+            default:
+              break;
+          }
+        };
+
         return {
           ...notification,
+          notificationInfo: notificationInfo(),
           nickname: notification.notificationCreator ?? '',
           createdAt: dateFromNow({ date: notification.createdAt }),
         };
@@ -90,6 +113,12 @@ const NotificationController = ({
 
   const handleProjectJoinApprove = useCallback(
     async (notificationId: number) => {
+      const result = confirm('정말 수락하시겠습니까?');
+
+      if (!result) {
+        return;
+      }
+
       try {
         await projectJoinApproveAPI({ notificationId });
 
@@ -105,6 +134,12 @@ const NotificationController = ({
 
   const handleProjectJoinReject = useCallback(
     async (notificationId: number) => {
+      const result = confirm('정말 거절하시겠습니까?');
+
+      if (!result) {
+        return;
+      }
+
       try {
         await projectJoinRejectAPI({ notificationId });
 
@@ -116,6 +151,14 @@ const NotificationController = ({
       }
     },
     [notificationsMutate],
+  );
+
+  const each = useCallback(
+    (data: Notification) => ({
+      handleProjectJoinApprove: () => handleProjectJoinApprove(data.id),
+      handleProjectJoinReject: () => handleProjectJoinReject(data.id),
+    }),
+    [handleProjectJoinApprove, handleProjectJoinReject],
   );
 
   // The reason data is write in the dependencies is to adjust the screen size when the data is updated.
@@ -146,21 +189,19 @@ const NotificationController = ({
 
   const props: NotificationViewProps = {
     data: handleProcessedData(data.data),
-    each: (data) => ({
-      // handleRemove: () => {},
-      handleApprove: () => {
-        const result = confirm('정말 수락하시겠습니까?');
-        if (result) {
-          handleProjectJoinApprove(data.id);
-        }
-      },
-      handleReject: () => {
-        const result = confirm('정말 거절하시겠습니까?');
-        if (result) {
-          handleProjectJoinReject(data.id);
-        }
-      },
-    }),
+    each,
+    tooltip: {
+      items: [
+        {
+          text: '삭제',
+          handler: () => console.log('삭제'),
+        },
+      ],
+      anchorEl: tooltipAnchorEl,
+      open: tooltipOpen,
+      onClose: handleTooltipClose,
+    },
+    handleTooltipOpen,
   };
 
   return <NotificationView {...props} />;
