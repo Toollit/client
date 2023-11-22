@@ -92,15 +92,9 @@ const NotificationDeleteButton = styled.div`
   top: 1.5rem;
 `;
 
-const MoreVertIcon = styled(MoreVert)`
+const MoreIcon = styled(MoreVert)`
   font-size: 2.5rem;
   color: ${(props) => props.theme.colors.gray};
-`;
-
-const MoreButton = styled.button`
-  border: transparent;
-  background-color: transparent;
-  cursor: pointer;
 `;
 
 const Notice = styled.p`
@@ -119,7 +113,6 @@ export {
   ProjectTitle,
   NotificationController,
   NotificationDeleteButton,
-  MoreVertIcon,
-  MoreButton,
+  MoreIcon,
   Notice,
 };

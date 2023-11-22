@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { Notification } from '@/apis/profileNotificationsFetcher';
-import { BackButton, Button, CloseButton } from '@/components/commons/button';
+import { Button } from '@/components/commons/button';
 import Skeleton from '@/components/commons/skeleton';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
-import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
+import EditDrawerButton from '@/components/commons/drawer/edit';
 import {
   BoxContent,
   Content,
@@ -17,8 +17,7 @@ import {
   User,
   NotificationType,
   NotificationDeleteButton,
-  MoreVertIcon,
-  MoreButton,
+  MoreIcon,
 } from './styles';
 
 interface CustomNotification extends Notification {
@@ -30,17 +29,11 @@ export interface NotificationViewProps {
   each: (data: Notification) => {
     handleProjectJoinApprove: () => void;
     handleProjectJoinReject: () => void;
+    handleRemoveNotification: () => void;
   };
-  tooltip: TooltipProps;
-  handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const NotificationView = ({
-  data,
-  each,
-  tooltip,
-  handleTooltipOpen,
-}: NotificationViewProps) => {
+const NotificationView = ({ data, each }: NotificationViewProps) => {
   return (
     <>
       {data ? (
@@ -50,8 +43,11 @@ const NotificationView = ({
             {data.length > 0 ? (
               <>
                 {data.map((notification) => {
-                  const { handleProjectJoinApprove, handleProjectJoinReject } =
-                    each(notification);
+                  const {
+                    handleProjectJoinApprove,
+                    handleProjectJoinReject,
+                    handleRemoveNotification,
+                  } = each(notification);
 
                   if (notification.type === 'projectJoinRequest') {
                     return (
@@ -121,12 +117,11 @@ const NotificationView = ({
                         </Link>
 
                         <NotificationDeleteButton>
-                          <>
-                            <MoreButton onClick={handleTooltipOpen}>
-                              <MoreVertIcon />
-                            </MoreButton>
-                            <Tooltip {...tooltip} />
-                          </>
+                          <EditDrawerButton
+                            icon={<MoreIcon />}
+                            option={{ delete: true }}
+                            handleDelete={handleRemoveNotification}
+                          />
                         </NotificationDeleteButton>
                       </Content>
                     );

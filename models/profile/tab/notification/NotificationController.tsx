@@ -18,7 +18,7 @@ import { useAppDispatch } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 import { projectJoinApproveAPI } from '@/apis/projectJoinApprove';
 import { projectJoinRejectAPI } from '@/apis/projectJoinReject';
-import useTooltip from '@/hooks/useTooltip';
+import { profileNotificationDeleteAPI } from '@/apis/profileNotificationDelete';
 
 interface NotificationData {
   isLoaded: boolean;
@@ -40,13 +40,6 @@ const NotificationController = ({
   const dispatch = useAppDispatch();
   const { getCachedData } = useCachedKeys();
   const { isLaptop } = useWindowSize();
-  const {
-    tooltipAnchorEl,
-    setTooltipAnchorEl,
-    tooltipOpen,
-    handleTooltipOpen,
-    handleTooltipClose,
-  } = useTooltip();
 
   const [data, setData] = useState<NotificationData>({
     isLoaded: false,
@@ -80,6 +73,25 @@ const NotificationController = ({
       },
       use: [serialize],
     },
+  );
+
+  const handleRemoveNotification = useCallback(
+    async (notificationId: number) => {
+      const result = confirm(
+        '알림을 삭제하시겠습니까? 삭제 후 알림 복원이 불가능합니다.',
+      );
+
+      if (result) {
+        try {
+          await profileNotificationDeleteAPI({ notificationId });
+
+          notificationsMutate();
+        } catch (error) {
+          errorMessage(error);
+        }
+      }
+    },
+    [notificationsMutate],
   );
 
   const handleProcessedData = useCallback(
@@ -157,8 +169,13 @@ const NotificationController = ({
     (data: Notification) => ({
       handleProjectJoinApprove: () => handleProjectJoinApprove(data.id),
       handleProjectJoinReject: () => handleProjectJoinReject(data.id),
+      handleRemoveNotification: () => handleRemoveNotification(data.id),
     }),
-    [handleProjectJoinApprove, handleProjectJoinReject],
+    [
+      handleProjectJoinApprove,
+      handleProjectJoinReject,
+      handleRemoveNotification,
+    ],
   );
 
   // The reason data is write in the dependencies is to adjust the screen size when the data is updated.
@@ -190,18 +207,6 @@ const NotificationController = ({
   const props: NotificationViewProps = {
     data: handleProcessedData(data.data),
     each,
-    tooltip: {
-      items: [
-        {
-          text: '삭제',
-          handler: () => console.log('삭제'),
-        },
-      ],
-      anchorEl: tooltipAnchorEl,
-      open: tooltipOpen,
-      onClose: handleTooltipClose,
-    },
-    handleTooltipOpen,
   };
 
   return <NotificationView {...props} />;
