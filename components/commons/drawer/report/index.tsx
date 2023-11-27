@@ -129,8 +129,6 @@ const Report = () => {
       const data = {
         postId: Number(postId),
         postType,
-        title,
-        writer,
         reason,
         url: router.asPath,
       };

@@ -3,8 +3,6 @@ import { serverInstance } from 'apis/axios';
 export interface ReportAPIReq {
   postId: number;
   postType: string;
-  title: string;
-  writer: string;
   reason: string;
   url: string;
 }
