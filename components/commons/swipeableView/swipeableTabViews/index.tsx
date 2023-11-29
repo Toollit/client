@@ -41,7 +41,10 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
     (tabIndex: number) => {
       setCurrentIndex(tabIndex);
 
-      window.scrollTo({ top: 0 });
+      // In the mobile version, the safe-area-inset size is not properly recognized.
+      // This causes the mobile version to fail to move to the top end as much as the best safe-area-inset size.
+      // So, give enough -100 to solve the problem of not being able to scroll to the top end.
+      window.scrollTo({ top: -100 });
 
       push({ query: { ...query, tab: tabs[tabIndex].query } }, undefined, {
         shallow: true,
