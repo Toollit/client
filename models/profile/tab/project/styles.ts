@@ -135,6 +135,7 @@ const LoadMoreButton = styled.button`
   border: none;
   border-radius: ${(props) => props.theme.borderRadius.base};
   background-color: ${(props) => props.theme.colors.lightGray};
+  color: #000;
 `;
 
 const Notice = styled.p`
