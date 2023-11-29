@@ -10,7 +10,7 @@ import {
 import { errorMessage } from '@/apis/errorMessage';
 import { serialize } from '@/middleware/swr/serialize';
 import useCachedKeys from '@/hooks/useCachedKeys';
-import { ProfileCurrentTab } from '@/models/profile/ProfileController';
+import { ProfileTab } from '@/models/profile/ProfileController';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
 import { useAppDispatch } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
@@ -23,7 +23,7 @@ interface BookmarkData {
 }
 
 export interface BookmarkControllerProps {
-  currentTab: ProfileCurrentTab;
+  currentTab: ProfileTab;
   isExistUser?: boolean;
   nickname: string;
 }

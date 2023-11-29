@@ -16,7 +16,7 @@ import { RootState, useAppDispatch } from '@/store';
 import { updateProfileAPI } from '@/apis/updateProfile';
 import useAuth from '@/hooks/useAuth';
 import useCachedKeys from '@/hooks/useCachedKeys';
-import { ProfileCurrentTab } from '@/models/profile/ProfileController';
+import { ProfileTab } from '@/models/profile/ProfileController';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
 import useWindowSize from '@/hooks/useWindowSize';
 
@@ -26,7 +26,7 @@ interface ProfileInfoData {
 }
 
 export interface ProfileInfoControllerProps {
-  currentTab: ProfileCurrentTab;
+  currentTab: ProfileTab;
   isExistUser?: boolean;
   nickname: string;
 }
@@ -101,9 +101,9 @@ const ProfileInfoController = ({
         }
 
         // If revalidate immediately. It will make an api request with the previous nickname value, resulting in an error. It should be handled asynchronously.
-        setTimeout(async () => {
-          await authMutate();
-          await profileInfoDataMutate();
+        setTimeout(() => {
+          authMutate();
+          profileInfoDataMutate();
         }, 100);
 
         return dispatch(closeDialog());
