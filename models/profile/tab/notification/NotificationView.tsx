@@ -66,7 +66,7 @@ const NotificationView = ({ data, each }: NotificationViewProps) => {
                         <NotificationType>
                           {notification.notificationInfo}
                         </NotificationType>
-                        <Link href={`/project/${notification.id}`}>
+                        <Link href={`/project/${notification.projectId}`}>
                           <a>
                             <ProjectTitle>
                               <strong>[프로젝트]</strong>
@@ -107,7 +107,7 @@ const NotificationView = ({ data, each }: NotificationViewProps) => {
                           {notification.notificationInfo}
                         </NotificationType>
 
-                        <Link href={`/project/${notification.id}`}>
+                        <Link href={`/project/${notification.projectId}`}>
                           <a>
                             <ProjectTitle>
                               <strong>[프로젝트]</strong>
