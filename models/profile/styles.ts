@@ -251,6 +251,10 @@ const Logo = styled.a`
 
 const ViewContainer = styled.div`
   padding: 3rem 1.5rem 0rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  min-height: ${(props) =>
+    `calc(100vh - ${props.theme.layout.navHeight} - ${props.theme.layout.profileHeight} - ${props.theme.layout.swipeableViewTabHeight} )`};
 `;
 
 export {
