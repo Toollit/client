@@ -35,7 +35,6 @@ const OpenButton = styled.button`
 const Container = styled(Box)`
   max-width: 102.4rem;
   width: 100%;
-  padding: 2rem 1.5rem calc(2rem + constant(safe-area-inset-bottom)) 1.5rem;
   padding: 2rem 1.5rem calc(2rem + env(safe-area-inset-bottom)) 1.5rem;
   margin: 0 auto;
 `;
