@@ -87,6 +87,8 @@ declare module '@emotion/react' {
     layout: {
       navHeight: string;
       bottomButtonHeight: string;
+      swipeableViewTabHeight: string;
+      profileHeight: string;
     };
   }
 }

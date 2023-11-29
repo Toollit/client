@@ -86,6 +86,8 @@ const boxShadow = {
 const layout = {
   navHeight: '6rem',
   bottomButtonHeight: '9rem',
+  swipeableViewTabHeight: '4.8rem',
+  profileHeight: '19.4rem',
 };
 
 const theme = {
