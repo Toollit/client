@@ -32,18 +32,15 @@ const OpenButton = styled.button`
   background-color: transparent;
 `;
 
-const StyledBox = styled(Box)`
+const Container = styled(Box)`
   max-width: 102.4rem;
   width: 100%;
-  padding: 2rem 1.5rem;
+  padding: 2rem 1.5rem calc(2rem + constant(safe-area-inset-bottom)) 1.5rem;
+  padding: 2rem 1.5rem calc(2rem + env(safe-area-inset-bottom)) 1.5rem;
   margin: 0 auto;
 `;
 
-const Container = styled.div`
-  padding: 2rem 1.5rem;
-`;
-
-const ControlButtonContainer = styled.ul`
+const ButtonBox = styled.ul`
   border-radius: 1.2rem;
   background-color: #fff;
 
@@ -60,11 +57,12 @@ const ControlButtonContainer = styled.ul`
   }
 `;
 
-const ControlButton = styled.button`
+const Button = styled.button`
   display: flex;
   align-items: center;
   text-align: left;
   background-color: #fff;
+  color: #000;
   min-height: 6.5rem;
   width: 100%;
   padding: 1.4rem 2rem 1.2rem;
@@ -76,16 +74,19 @@ const ControlButton = styled.button`
 const DeleteIcon = styled(DeleteForeverOutlined)`
   width: 3rem;
   height: 3rem;
+  color: #000;
 `;
 
 const EditIcon = styled(ModeEditOutlineOutlined)`
   width: 3rem;
   height: 3rem;
+  color: #000;
 `;
 
 const ReportIcon = styled(ErrorOutlineOutlined)`
   width: 3rem;
   height: 3rem;
+  color: #000;
 `;
 
 const Icon = styled.div`
@@ -100,21 +101,21 @@ const CancelButton = styled.button`
   align-items: center;
   height: 5rem;
   background-color: #fff;
+  color: #000;
   width: 100%;
   margin: 0.7rem auto 0 auto;
   border-radius: 1.2rem;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: 600;
   border-style: none;
-  font-weight: 500;
 `;
 
 export {
   CustomDrawerStyles,
   OpenButton,
-  StyledBox,
   Container,
-  ControlButtonContainer,
-  ControlButton,
+  ButtonBox,
+  Button,
   Icon,
   Text,
   CancelButton,

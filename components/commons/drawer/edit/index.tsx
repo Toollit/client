@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Drawer as MUIDrawer } from '@mui/material';
 import {
   CustomDrawerStyles,
-  StyledBox,
+  Container,
   CancelButton,
-  ControlButtonContainer,
-  ControlButton,
+  ButtonBox,
+  Button,
   Text,
   Icon,
   DeleteIcon,
@@ -80,22 +80,22 @@ const EditDrawerButton = ({
       <React.Fragment>
         <OpenButton onClick={toggleDrawer(true)}>{icon}</OpenButton>
         <MUIDrawer anchor={'bottom'} open={open} onClose={toggleDrawer(false)}>
-          <StyledBox
+          <Container
             role='presentation'
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
           >
-            <ControlButtonContainer>
+            <ButtonBox>
               {buttons.map((item, index) => (
-                <ControlButton key={item.text} onClick={item.onClick}>
+                <Button key={item.text} onClick={item.onClick}>
                   <Icon>{item.icon}</Icon>
                   <Text>{item.text}</Text>
-                </ControlButton>
+                </Button>
               ))}
-            </ControlButtonContainer>
+            </ButtonBox>
 
             <CancelButton>취소</CancelButton>
-          </StyledBox>
+          </Container>
         </MUIDrawer>
       </React.Fragment>
     </div>
