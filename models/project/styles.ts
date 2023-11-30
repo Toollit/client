@@ -264,24 +264,18 @@ const MembersContainer = styled.div`
 
 const Members = styled.ul`
   display: flex;
-  /* overflow: auto; */
-  align-items: center;
   padding: 1.5rem 0;
-  min-width: 18rem;
+  flex-wrap: wrap;
 `;
 
-const Avatar = styled.li<{ index: number }>`
-  min-width: 0;
-  max-width: 2.8rem;
-  /* transform: translateX(${(props) => `${props.index * -30}`}%); */
-`;
+const Avatar = styled.li`
+  width: 4.5rem;
+  height: 4.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-const RestMemberCount = styled.span`
-  width: 100%;
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: ${(props) => props.theme.colors.theme};
-  padding: 0 0.8rem;
+  cursor: pointer;
 `;
 
 const JoinButtonContainer = styled.div`
@@ -290,6 +284,7 @@ const JoinButtonContainer = styled.div`
 
 const MemberSkeletonContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   padding: 1.5rem 0;
 `;
 
@@ -323,7 +318,6 @@ export {
   MembersContainer,
   Members,
   Avatar,
-  RestMemberCount,
   JoinButtonContainer,
   MemberSkeletonContainer,
 };

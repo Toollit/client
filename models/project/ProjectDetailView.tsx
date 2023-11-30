@@ -1,22 +1,26 @@
 import React from 'react';
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import Title from 'components/commons/title';
 import AppLayout from '@/components/appLayout';
 import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
 import Hashtag from '@/components/commons/hashtag';
+import Skeleton from '@/components/commons/skeleton';
+import Report from '@/components/commons/drawer/report';
+import { Button } from '@/components/commons/button';
+import { InnerContainer, ImageWrapper } from '@/styles/commons';
+import BasicTooltip from '@/components/commons/tooltip/basic';
 import {
   ProjectContent,
   ProjectMember,
   ProjectWriter,
 } from '@/apis/projectFetcher';
-import Skeleton from '@/components/commons/skeleton';
-import Report from '@/components/commons/drawer/report';
-import { Button } from '@/components/commons/button';
-import { ShareIcon, BookmarkIcon, MoreIcon } from '@/assets/icons';
-import { InnerContainer, ImageWrapper } from '@/styles/commons';
-import FastScroll from '@/components/commons/fastScroll';
-import Link from 'next/link';
-import { StaticImageData } from 'next/image';
+import {
+  ShareIcon,
+  BookmarkIcon,
+  MoreIcon,
+  AccountCircleIcon,
+} from '@/assets/icons';
 import {
   Container,
   ColumnLeftContainer,
@@ -44,7 +48,6 @@ import {
   ProjectMembersContainer,
   Members,
   Avatar,
-  RestMemberCount,
   MembersContainer,
   StickyContainer,
   WriterInfo,
@@ -69,28 +72,17 @@ const DynamicTuiViewer = dynamic(
   },
 );
 
-interface Writer extends Omit<ProjectWriter, 'profileImage'> {
-  profileImage: string | StaticImageData;
-}
 interface Content extends Omit<ProjectContent, 'memberTypes'> {
   memberTypes: ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
-}
-
-interface Member extends Omit<ProjectMember, 'profiles'> {
-  profiles: {
-    nickname: string;
-    profileImage: string | StaticImageData;
-  }[];
-  moreMemberCount: string | null;
 }
 
 export interface ProjectDetailViewProps {
   me: boolean;
   isClientRendering: boolean;
   postId: string;
-  writer?: Writer;
+  writer?: ProjectWriter;
   content?: Content;
-  member?: Member;
+  member?: ProjectMember;
   bookmark?: boolean;
   handleBookmark: () => void;
   handleShare: () => void;
@@ -122,9 +114,9 @@ const ProjectDetailView = ({
               <ContentContainer>
                 <ContentHeader>
                   <RecruitMemberType>
-                    {content.memberTypes.map((type, index) => {
+                    {content.memberTypes.map((type) => {
                       return (
-                        <MemberType key={type + index} type={type}>
+                        <MemberType key={type} type={type}>
                           {type}
                         </MemberType>
                       );
@@ -154,13 +146,8 @@ const ProjectDetailView = ({
 
                 <ProjectContentBottomContainer>
                   <HashtagsContainer>
-                    {content.hashtags.map((hashtag, index) => {
-                      return (
-                        <Hashtag
-                          tagName={hashtag}
-                          key={`/project/${postId}/${hashtag}`}
-                        />
-                      );
+                    {content.hashtags.map((hashtag) => {
+                      return <Hashtag key={hashtag} tagName={hashtag} />;
                     })}
                   </HashtagsContainer>
                   <ButtonContainer>
@@ -187,29 +174,43 @@ const ProjectDetailView = ({
           <ColumnRightContainer>
             <StickyContainer>
               {writer ? (
-                <WriterInfoContainer>
-                  <WriterProfileImage>
-                    <ImageWrapper width={6} height={6}>
-                      <StyledImage
-                        src={writer.profileImage}
-                        alt={`${writer.nickname} profile`}
-                        draggable={false}
-                        priority
-                        layout='fill'
-                      />
-                    </ImageWrapper>
-                  </WriterProfileImage>
-                  <WriterInfo>
-                    <Writer>
-                      <div>작성자</div>
-                      <div>{writer.nickname}</div>
-                    </Writer>
-                    <LastLoginAt>
-                      <div>마지막 접속</div>
-                      <div>{writer.lastLoginAt}</div>
-                    </LastLoginAt>
-                  </WriterInfo>
-                </WriterInfoContainer>
+                <Link href={`/profile/${writer.nickname}`}>
+                  <a>
+                    <WriterInfoContainer>
+                      {writer.profileImage ? (
+                        <WriterProfileImage>
+                          <ImageWrapper width={6} height={6}>
+                            <StyledImage
+                              src={writer.profileImage}
+                              alt={`${writer.nickname} profile`}
+                              draggable={false}
+                              priority
+                              layout='fill'
+                            />
+                          </ImageWrapper>
+                        </WriterProfileImage>
+                      ) : (
+                        <AccountCircleIcon
+                          fill={true}
+                          width={8}
+                          height={8}
+                          color='#767678'
+                        />
+                      )}
+
+                      <WriterInfo>
+                        <Writer>
+                          <div>작성자</div>
+                          <div>{writer.nickname}</div>
+                        </Writer>
+                        <LastLoginAt>
+                          <div>마지막 접속</div>
+                          <div>{writer.lastLoginAt}</div>
+                        </LastLoginAt>
+                      </WriterInfo>
+                    </WriterInfoContainer>
+                  </a>
+                </Link>
               ) : (
                 <Skeleton height={20} />
               )}
@@ -228,28 +229,40 @@ const ProjectDetailView = ({
                 {member ? (
                   <MembersContainer>
                     <Members>
-                      {member?.profiles.map((info, index) => {
-                        if (index > 5) {
-                          return null;
-                        }
-
+                      {member?.profiles.map((user) => {
                         return (
-                          <Avatar key={info.nickname + index} index={index}>
-                            <ImageWrapper width={3.5} height={3.5}>
-                              <StyledImage
-                                src={info.profileImage}
-                                alt={`${info.nickname} profile image`}
-                                draggable={false}
-                                priority
-                                layout='fill'
-                              />
-                            </ImageWrapper>
-                          </Avatar>
+                          <Link
+                            href={`/profile/${user.nickname}`}
+                            key={user.nickname}
+                          >
+                            <a>
+                              <BasicTooltip text={user.nickname}>
+                                <Avatar>
+                                  {user.profileImage ? (
+                                    <ImageWrapper width={3.5} height={3.5}>
+                                      <StyledImage
+                                        src={user.profileImage}
+                                        alt={`${user.nickname} profile image`}
+                                        draggable={false}
+                                        priority
+                                        layout='fill'
+                                      />
+                                    </ImageWrapper>
+                                  ) : (
+                                    <AccountCircleIcon
+                                      fill={true}
+                                      width={4.5}
+                                      height={4.5}
+                                      color='#767678'
+                                    />
+                                  )}
+                                </Avatar>
+                              </BasicTooltip>
+                            </a>
+                          </Link>
                         );
                       })}
                     </Members>
-
-                    <RestMemberCount>{member?.moreMemberCount}</RestMemberCount>
                   </MembersContainer>
                 ) : (
                   <MemberSkeletonContainer>
@@ -257,25 +270,36 @@ const ProjectDetailView = ({
                       width={3.5}
                       height={3.5}
                       shape='circular'
-                      right={-1.3}
+                      right={1}
+                      bottom={1}
                     />
                     <Skeleton
                       width={3.5}
                       height={3.5}
                       shape='circular'
-                      right={-1.3}
+                      right={1}
+                      bottom={1}
                     />
                     <Skeleton
                       width={3.5}
                       height={3.5}
                       shape='circular'
-                      right={-1.3}
+                      right={1}
+                      bottom={1}
                     />
                     <Skeleton
                       width={3.5}
                       height={3.5}
                       shape='circular'
-                      right={-1.3}
+                      right={1}
+                      bottom={1}
+                    />
+                    <Skeleton
+                      width={3.5}
+                      height={3.5}
+                      shape='circular'
+                      right={1}
+                      bottom={1}
                     />
                   </MemberSkeletonContainer>
                 )}
@@ -284,8 +308,6 @@ const ProjectDetailView = ({
           </ColumnRightContainer>
         </Container>
       </InnerContainer>
-
-      <FastScroll scroll='both' />
       <Report />
     </AppLayout>
   );

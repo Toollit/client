@@ -3,11 +3,7 @@ import ProjectDetailView, { ProjectDetailViewProps } from './ProjectDetailView';
 import { changeDateFormat, dateFromNow } from '@/utils/changeDateFormat';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import {
-  ProjectAPIRes,
-  ProjectMember,
-  projectFetcher,
-} from '@/apis/projectFetcher';
+import { ProjectAPIRes, projectFetcher } from '@/apis/projectFetcher';
 import { projectDetailBookmarkStatusKey, projectDetailKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
 import useAuth from '@/hooks/useAuth';
@@ -23,7 +19,6 @@ import { DeleteIcon, EditSquareIcon } from '@/assets/icons';
 import useTooltip from '@/hooks/useTooltip';
 import { RootState } from '@/store';
 import { loading } from '@/features/loading';
-import BlankProfile from '@/public/static/images/blank-profile-1280.png';
 import { joinProjectAPI } from '@/apis/joinProject';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
@@ -275,23 +270,6 @@ const ProjectDetailController = () => {
     }
   }, [dispatch, router, authMutate, postId, projectDetail, setTooltipAnchorEl]);
 
-  const handleMemberProfiles = useCallback((value: ProjectMember) => {
-    const checkImage = value.profiles.map((profile) => {
-      return {
-        nickname: profile.nickname,
-        profileImage: profile.profileImage
-          ? profile.profileImage
-          : BlankProfile,
-      };
-    });
-
-    return {
-      profiles: checkImage,
-      moreMemberCount:
-        value.profiles.length > 6 ? `+${value.profiles.length - 6}` : null,
-    };
-  }, []);
-
   const handleJoinProject = useCallback(async () => {
     try {
       const result = confirm('프로젝트에 참가하시겠습니까?');
@@ -343,11 +321,9 @@ const ProjectDetailController = () => {
           lastLoginAt: dateFromNow({
             date: projectDetail.data.writer.lastLoginAt,
           }),
-          profileImage: projectDetail.data.writer.profileImage
-            ? projectDetail.data.writer.profileImage
-            : BlankProfile,
+          profileImage: projectDetail.data.writer.profileImage,
         }
-      : undefined,
+      : projectDetail,
     content: projectDetail
       ? {
           title: projectDetail.data.content.title,
@@ -369,10 +345,8 @@ const ProjectDetailController = () => {
           recruitCount: projectDetail.data.content.recruitCount,
           representativeImage: projectDetail.data.content.representativeImage,
         }
-      : undefined,
-    member: projectDetail
-      ? handleMemberProfiles(projectDetail.data.member)
-      : undefined,
+      : projectDetail,
+    member: projectDetail?.data.member,
     bookmark: bookmark?.data.bookmark,
     handleBookmark,
     handleShare,
