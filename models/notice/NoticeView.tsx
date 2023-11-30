@@ -1,23 +1,38 @@
 import React from 'react';
+import Link from 'next/link';
+import { Notice } from './NoticeController';
 import AppLayout from '@/components/appLayout';
-import { CenterLayoutContainer } from '@/styles/commons';
+import { InnerContainer } from '@/styles/commons';
 import Title from '@/components/commons/title';
-import Block from '@/components/commons/block';
 import {
-  Container,
+  Content,
+  Header,
   InputBox,
   SearchForm,
   SearchIcon,
   SubTitle,
+  Table,
+  TableBody,
+  TableDate,
+  TableHeader,
+  TableTitle,
 } from './styles';
 
-export interface NoticeViewProps {}
+export interface NoticeViewProps {
+  handleSearchNotice: (e: React.KeyboardEvent<HTMLFormElement>) => void;
+  SearchInputRef: React.RefObject<HTMLInputElement>;
+  data: Notice[];
+}
 
-const NoticeView = ({}: NoticeViewProps) => {
+const NoticeView = ({
+  handleSearchNotice,
+  SearchInputRef,
+  data,
+}: NoticeViewProps) => {
   return (
     <AppLayout type='default'>
-      <CenterLayoutContainer>
-        <Block paddingLeft={1.5} paddingRight={1.5}>
+      <InnerContainer>
+        <Header>
           <Title text='공지사항' />
           <SubTitle>
             <p>
@@ -25,41 +40,40 @@ const NoticeView = ({}: NoticeViewProps) => {
               알려드립니다!
             </p>
           </SubTitle>
-        </Block>
+        </Header>
 
-        {/* Notice search input */}
-        <Block
-          paddingLeft={1.5}
-          paddingRight={1.5}
-          paddingTop={2}
-          paddingBottom={2}
-        >
-          <SearchForm>
-            <InputBox>
-              <input type='text' placeholder='제목, 내용' />
-              <button>
-                <SearchIcon fontSize='inherit' />
-              </button>
-            </InputBox>
-          </SearchForm>
-        </Block>
+        <SearchForm onSubmit={handleSearchNotice}>
+          <InputBox>
+            <input type='text' placeholder='제목, 내용' ref={SearchInputRef} />
+            <button>
+              <SearchIcon fontSize='inherit' />
+            </button>
+          </InputBox>
+        </SearchForm>
 
-        {/* Notice list or search result */}
-        <Container>
-          <ul>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>5</li>
-            <li>6</li>
-            <li>7</li>
-            <li>8</li>
-            <li>9</li>
-            <li>10</li>
-          </ul>
-        </Container>
-      </CenterLayoutContainer>
+        <Content>
+          <Table>
+            <TableHeader>
+              <tr>
+                <TableTitle>제목</TableTitle>
+                <TableDate>작성일</TableDate>
+              </tr>
+            </TableHeader>
+            <TableBody>
+              {data.map((notice) => (
+                <tr key={notice.title}>
+                  <td>
+                    <Link href={`/notice/${notice.id}`}>
+                      <a>{notice.title}</a>
+                    </Link>
+                  </td>
+                  <td>{notice.date}</td>
+                </tr>
+              ))}
+            </TableBody>
+          </Table>
+        </Content>
+      </InnerContainer>
     </AppLayout>
   );
 };

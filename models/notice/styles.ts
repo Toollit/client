@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 import { Search } from '@mui/icons-material';
 
-const Container = styled.div`
-  /* flex: 1 1 auto; */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
+const Content = styled.div`
+  padding: 1.5rem 1.5rem 20rem 1.5rem;
+`;
+
+const Header = styled.div`
+  padding: 2rem 1.5rem;
 `;
 
 const SubTitle = styled.div`
@@ -23,6 +23,7 @@ const SubTitle = styled.div`
 const SearchForm = styled.form`
   display: flex;
   flex-direction: row-reverse;
+  padding: 1.5rem;
 `;
 
 const InputBox = styled.div`
@@ -67,4 +68,60 @@ const SearchIcon = styled(Search)`
   color: #888888;
 `;
 
-export { Container, SubTitle, SearchForm, InputBox, SearchIcon };
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+`;
+
+const TableHeader = styled.thead`
+  th {
+    padding: 1rem 0;
+    font-size: 1.4rem;
+    border-top: 2px solid #42495b;
+    border-bottom: 1px solid #e5e5e5;
+  }
+`;
+const TableTitle = styled.th`
+  width: 85%;
+  border-right: 1px solid #e5e5e5;
+`;
+const TableDate = styled.th`
+  width: 15%;
+`;
+
+const TableBody = styled.tbody`
+  td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 1.4rem;
+
+    /* title */
+    :nth-of-type(1) {
+      border-right: 1px solid #e5e5e5;
+    }
+
+    /* date */
+    :nth-last-of-type(1) {
+      text-align: center;
+    }
+
+    a {
+      color: #000;
+    }
+  }
+`;
+
+export {
+  Content,
+  Header,
+  SubTitle,
+  SearchForm,
+  InputBox,
+  SearchIcon,
+  Table,
+  TableHeader,
+  TableTitle,
+  TableDate,
+  TableBody,
+};
