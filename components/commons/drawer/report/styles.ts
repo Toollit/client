@@ -7,6 +7,7 @@ const Form = styled.form`
 const DefaultInfoContainer = styled.div`
   display: flex;
   align-items: center;
+  padding: 2rem 1.5rem;
 `;
 
 const Category = styled.p`
@@ -29,12 +30,14 @@ const Content = styled.p`
 const ReportReason = styled.div`
   font-size: 1.6rem;
   font-weight: 500;
+  padding: 4rem 1.5rem 0rem 1.5rem;
 `;
 
-const ListGroup = styled.ul`
+const ReasonList = styled.ul`
   list-style: none;
   outline: none;
   font-size: 1.4rem;
+  padding: 1rem 1.5rem 0 1.5rem;
 
   input[type='radio'] {
     appearance: none;
@@ -60,24 +63,24 @@ const ListGroup = styled.ul`
   }
 `;
 
-const TextInputContainer = styled.div`
+const ReasonTextArea = styled.div`
   position: relative;
   margin-top: 0.5rem;
-  border: 1px solid ${(props) => props.theme.colors.border.base};
   padding: 1rem 1rem 3rem 1rem;
 `;
 
 const TextArea = styled.textarea`
   width: 100%;
-  border: none;
   outline: none;
   resize: none;
   font-size: 1.4rem;
+  border: 1px solid ${(props) => props.theme.colors.border.base};
+  padding: 1rem;
 `;
 
 const TextCount = styled.div`
   position: absolute;
-  bottom: 1rem;
+  bottom: 0.8rem;
   right: 1rem;
   font-size: 1.4rem;
   color: ${(props) => props.theme.colors.text.gray};
@@ -86,12 +89,12 @@ const TextCount = styled.div`
 export {
   Form,
   ReportReason,
-  ListGroup,
+  ReasonList,
   TextArea,
   DefaultInfoContainer,
   Category,
   Writer,
   Content,
-  TextInputContainer,
+  ReasonTextArea,
   TextCount,
 };

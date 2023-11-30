@@ -10,19 +10,18 @@ import { BottomButton } from '@/components/commons/button';
 import AppLayout from '@/components/appLayout';
 import { reportAPI } from '@/apis/report';
 import { errorMessage } from '@/apis/errorMessage';
-import Block from '@/components/commons/block';
 import { loading } from '@/features/loading';
 import { InnerContainer } from '@/styles/commons';
 import {
   ReportReason,
-  ListGroup,
+  ReasonList,
   TextArea,
   DefaultInfoContainer,
   Category,
   Writer,
   Content,
   TextCount,
-  TextInputContainer,
+  ReasonTextArea,
   Form,
 } from './styles';
 
@@ -169,64 +168,49 @@ const Report = () => {
       >
         <InnerContainer>
           <Form onSubmit={handleSubmit}>
-            <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
-              <DefaultInfoContainer>
-                <Category>작성자</Category>
-                <Writer>{writer}</Writer>
-              </DefaultInfoContainer>
-            </Block>
+            <DefaultInfoContainer>
+              <Category>작성자</Category>
+              <Writer>{writer}</Writer>
+            </DefaultInfoContainer>
 
-            <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={2}>
-              <DefaultInfoContainer>
-                <Category>게시글</Category>
-                <Content>{title}</Content>
-              </DefaultInfoContainer>
-            </Block>
+            <DefaultInfoContainer>
+              <Category>게시글</Category>
+              <Content>{title}</Content>
+            </DefaultInfoContainer>
 
-            <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={6}>
-              <ReportReason>*사유선택</ReportReason>
-            </Block>
+            <ReportReason>*사유선택</ReportReason>
 
-            <Block paddingLeft={1.5} paddingRight={1.5} paddingTop={1}>
-              <ListGroup>
-                {selectReasonList.current.map((reason) => {
-                  return (
-                    <li key={`/report/${reason.value}`}>
-                      <label>
-                        <input
-                          type='radio'
-                          name='reason'
-                          value={reason.value}
-                          onClick={handleSelect}
-                        />
-                        <span>{reason.value}</span>
-                      </label>
-                    </li>
-                  );
-                })}
-              </ListGroup>
-            </Block>
+            <ReasonList>
+              {selectReasonList.current.map((reason) => {
+                return (
+                  <li key={`/report/${reason.value}`}>
+                    <label>
+                      <input
+                        type='radio'
+                        name='reason'
+                        value={reason.value}
+                        onClick={handleSelect}
+                      />
+                      <span>{reason.value}</span>
+                    </label>
+                  </li>
+                );
+              })}
+            </ReasonList>
 
-            <Block
-              paddingLeft={1.5}
-              paddingRight={1.5}
-              paddingTop={0.5}
-              paddingBottom={0.5}
-            >
-              {showTextarea && (
-                <TextInputContainer>
-                  <TextArea
-                    name='reasonDetail'
-                    cols={30}
-                    rows={10}
-                    placeholder='신고 내용을 입력해 주세요. 최소 10자 이상 입력 해주세요.'
-                    onChange={handleTextarea}
-                    maxLength={1000}
-                  />
-                  <TextCount>{textCount} / 1000</TextCount>
-                </TextInputContainer>
-              )}
-            </Block>
+            {showTextarea && (
+              <ReasonTextArea>
+                <TextArea
+                  name='reasonDetail'
+                  cols={30}
+                  rows={10}
+                  placeholder='신고 내용을 입력해 주세요. 최소 10자 이상 입력 해주세요.'
+                  onChange={handleTextarea}
+                  maxLength={1000}
+                />
+                <TextCount>{textCount} / 1000</TextCount>
+              </ReasonTextArea>
+            )}
 
             <BottomButton text='제출' />
           </Form>
