@@ -138,7 +138,7 @@ const NotificationController = ({
 
         notificationsMutate();
       } catch (error) {
-        errorMessage(error);
+        errorMessage(error, notificationsMutate);
       }
     },
     [notificationsMutate],
@@ -159,7 +159,7 @@ const NotificationController = ({
 
         notificationsMutate();
       } catch (error) {
-        errorMessage(error);
+        errorMessage(error, notificationsMutate);
       }
     },
     [notificationsMutate],
