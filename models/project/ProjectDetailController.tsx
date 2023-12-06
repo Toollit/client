@@ -57,6 +57,7 @@ const ProjectDetailController = () => {
     {
       dedupingInterval: 60 * 10 * 1000,
       revalidateOnMount: false,
+      revalidateOnFocus: false,
       errorRetryCount: 0,
       onError(err, key, config) {
         errorMessage(err);
