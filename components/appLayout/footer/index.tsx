@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Link from 'next/link';
 import { InnerContainer } from '@/styles/commons';
 import {
@@ -11,11 +11,19 @@ import {
 } from './styles';
 
 const Footer = () => {
+  const handleServiceUnavailable = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      alert('서비스 준비 중입니다.');
+    },
+    [],
+  );
+
   return (
     <Container>
       <InnerContainer>
         <NoticeArea>
-          <Link href=''>
+          <Link href='/notice'>
             <a>공지사항</a>
           </Link>
         </NoticeArea>
@@ -23,17 +31,21 @@ const Footer = () => {
         <AsideArea>
           <PartnersContainer>
             <h3>Partners</h3>
-            <Link href=''>
-              <a>비즈니스 · 광고</a>
+            <Link href={'#'}>
+              <a onClick={handleServiceUnavailable}>비즈니스 · 광고</a>
             </Link>
           </PartnersContainer>
           <DeveloperContainer>
             <h3>Developer</h3>
-            <Link href=''>
-              <a>Github</a>
+            <Link href='https://github.com/seungwonleee'>
+              <a target='_blank' rel='noopener noreferrer'>
+                Github
+              </a>
             </Link>
-            <Link href=''>
-              <a>Blog</a>
+            <Link href='https://seungwon-code.blogspot.com/'>
+              <a target='_blank' rel='noopener noreferrer'>
+                Blog
+              </a>
             </Link>
           </DeveloperContainer>
         </AsideArea>
@@ -41,14 +53,8 @@ const Footer = () => {
         <CorpArea>
           <ul>
             <li>
-              <Link href={''}>
-                <a>회사소개</a>
-              </Link>
-            </li>
-            {/* <li>인재채용</li> */}
-            <li>
-              <Link href={''}>
-                <a>제휴제안</a>
+              <Link href={'#'}>
+                <a onClick={handleServiceUnavailable}>제휴제안</a>
               </Link>
             </li>
             <li>
@@ -61,14 +67,10 @@ const Footer = () => {
                 <a>개인정보처리방침</a>
               </Link>
             </li>
+
             <li>
-              <Link href={''}>
-                <a>Getit 정책</a>
-              </Link>
-            </li>
-            <li>
-              <Link href={''}>
-                <a>고객센터</a>
+              <Link href={'/faq'}>
+                <a>FAQ</a>
               </Link>
             </li>
             <li>ⓒ Getit Corp.</li>

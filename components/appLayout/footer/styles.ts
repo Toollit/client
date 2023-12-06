@@ -82,55 +82,42 @@ const DeveloperContainer = styled.div`
 `;
 
 const CorpArea = styled.div`
-  width: fit-content;
-  padding: 3rem 1.5rem 3rem 1.5rem;
-  margin: 0 auto;
+  padding: 2.5rem 1.5rem 2.5rem 1.5rem;
 
   ul {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     font-size: 1.3rem;
 
+    width: fit-content;
+    width: 100%;
+    margin: 0 auto;
+
     li {
-      min-width: 33.3%;
-      text-align: center;
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
+      :not(:nth-of-type(1), :nth-last-of-type(1)) {
+        ::before {
+          content: '|';
+          padding: 0 1rem;
+          color: #d3d5d7;
+        }
+      }
 
       :nth-last-of-type(1) {
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-        font-weight: 600;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+
         width: 100%;
+        text-align: center;
+        font-weight: 600;
       }
-    }
 
-    a {
-      font-size: 1.3rem;
-      color: #000;
+      a {
+        font-size: 1.3rem;
+        color: #000;
 
-      :hover {
-        text-decoration-line: underline;
-      }
-    }
-
-    ${mediaQueryLaptop} {
-      li {
-        min-width: initial;
-
-        :not(:nth-of-type(1)) {
-          ::before {
-            content: '|';
-            margin: 0 2rem;
-            color: #d3d5d7;
-          }
-        }
-
-        :nth-last-of-type(1) {
-          margin-top: 0.5rem;
-          margin-bottom: 0.5rem;
-          width: initial;
-          font-weight: 600;
+        :hover {
+          text-decoration-line: underline;
         }
       }
     }
