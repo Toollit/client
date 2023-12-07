@@ -55,6 +55,23 @@ const HashtagContainer = styled.ul`
   }
 `;
 
+const DeleteAccount = styled.div`
+  padding: 3rem 0.5rem;
+  /* text-align: right; */
+
+  span {
+    font-size: 1.5rem;
+    color: ${({ theme }) => theme.colors.gray};
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 0.5rem;
+
+    &:hover {
+      color: #000;
+    }
+  }
+`;
+
 export {
   BoxContent,
   ContentContainer,
@@ -64,4 +81,5 @@ export {
   IntroduceContentContainer,
   ProgramSkillContainer,
   HashtagContainer,
+  DeleteAccount,
 };

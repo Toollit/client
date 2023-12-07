@@ -322,6 +322,16 @@ const ProfileInfoController = ({
     [dispatch, profileInfoData],
   );
 
+  const handleDeleteAccount = useCallback(async () => {
+    const result = confirm('서비스를 탈퇴 하시겠습니까?');
+
+    if (!result) {
+      return;
+    }
+
+    router.push('/deleteAccount');
+  }, [router]);
+
   useEffect(() => {
     if (updatePage !== 'profile') {
       return;
@@ -362,6 +372,7 @@ const ProfileInfoController = ({
     me: nickname === accessUser,
     data: handleProfileInfoDataResponse(data.data),
     editBtnHandler: handleProfileInfoEditBtn,
+    handleDeleteAccount,
   };
 
   return <ProfileInfoView {...props} />;

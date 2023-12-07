@@ -14,6 +14,7 @@ import {
   IntroduceContentContainer,
   ProgramSkillContainer,
   HashtagContainer,
+  DeleteAccount,
 } from './styles';
 
 interface CustomMyProfile extends Omit<MyProfile, 'skills'> {
@@ -30,12 +31,14 @@ export interface ProfileInfoViewProps {
   me: boolean;
   data?: ProfileInfoData | null;
   editBtnHandler: (category: string) => void;
+  handleDeleteAccount: () => void; //TODO 함수명 일치시키기 editBtnHandler 다르잖아!!!
 }
 
 const ProfileInfoView = ({
   me,
   data,
   editBtnHandler,
+  handleDeleteAccount,
 }: ProfileInfoViewProps) => {
   return (
     <>
@@ -216,6 +219,12 @@ const ProfileInfoView = ({
               )}
             </ProgramSkillContainer>
           </BoxContainer>
+
+          {me && (
+            <DeleteAccount>
+              <span onClick={handleDeleteAccount}>탈퇴하기</span>
+            </DeleteAccount>
+          )}
         </>
       )}
 
