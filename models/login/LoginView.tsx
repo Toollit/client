@@ -6,7 +6,6 @@ import Title from '@/components/commons/title';
 import Divider from '@/components/commons/divider';
 import Input from '@/components/commons/input';
 import Link from 'next/link';
-import Block from '@/components/commons/block';
 import {
   DividerContainer,
   Form,
@@ -31,7 +30,7 @@ export interface LoginViewProps {
   handlePassword: (event: React.ChangeEvent<HTMLInputElement>) => void;
   passwordInputRef: React.ForwardedRef<HTMLInputElement>;
   showPasswordInput: boolean;
-  fillFormComplete: boolean;
+  isFormValid: boolean;
   handlePwInquiryRouting: () => void;
   handleSocialLogin: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -45,7 +44,7 @@ const LoginView = ({
   handlePassword,
   passwordInputRef,
   showPasswordInput,
-  fillFormComplete,
+  isFormValid,
   handlePwInquiryRouting,
   handleSocialLogin,
 }: LoginViewProps) => {
@@ -110,7 +109,7 @@ const LoginView = ({
         </IdPasswordInputContainer>
 
         <SubmitButtonContainer>
-          {fillFormComplete ? (
+          {isFormValid ? (
             <Button type='submit' text='확인' />
           ) : (
             <Button type='submit' text='다음' />

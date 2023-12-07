@@ -20,7 +20,7 @@ const LoginController = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPasswordInput, setShowPasswordInput] = useState(false);
-  const [fillFormComplete, setFillFormComplete] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
@@ -114,7 +114,7 @@ const LoginController = () => {
       setEmail(email);
       setPassword('');
       setShowPasswordInput(false);
-      setFillFormComplete(false);
+      setIsFormValid(false);
     },
     [],
   );
@@ -126,9 +126,9 @@ const LoginController = () => {
       setPassword(password);
 
       if (password.length > 0) {
-        setFillFormComplete(true);
+        setIsFormValid(true);
       } else {
-        setFillFormComplete(false);
+        setIsFormValid(false);
       }
     },
     [],
@@ -178,7 +178,7 @@ const LoginController = () => {
     handlePassword,
     passwordInputRef,
     showPasswordInput,
-    fillFormComplete,
+    isFormValid,
     handlePwInquiryRouting,
     handleSocialLogin,
   };
