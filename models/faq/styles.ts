@@ -136,13 +136,7 @@ const Inquiry = styled.span`
   }
 `;
 
-const ChangeEmailCategory = styled.span`
-  background-color: #e7f9e4;
-`;
-
-const ChangeEmailInfo = styled.p`
-  padding: 1rem 0 2.5rem 0;
-`;
+// background-color: #e7f9e4;
 
 export {
   Content,
@@ -161,6 +155,4 @@ export {
   MUIAccordionDetails,
   MUIExpandMoreIcon,
   Inquiry,
-  ChangeEmailCategory,
-  ChangeEmailInfo,
 };
