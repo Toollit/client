@@ -43,6 +43,7 @@ const useLogout = () => {
           dispatch(loading({ status: false }));
         });
       } catch (error) {
+        dispatch(loading({ status: false }));
         errorMessage(error);
       }
     },
