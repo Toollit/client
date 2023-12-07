@@ -71,11 +71,6 @@ const ProfileArea = styled.div`
   position: relative;
 `;
 
-const BlankImageContainer = styled.div`
-  position: relative;
-  height: 15rem;
-`;
-
 const BlankImage = styled.div`
   display: flex;
   justify-content: center;
@@ -266,7 +261,6 @@ export {
   GNBTitle,
   ProfileArea,
   UserNickname,
-  BlankImageContainer,
   ProfileImageContainer,
   HeaderLeft,
   Menu,

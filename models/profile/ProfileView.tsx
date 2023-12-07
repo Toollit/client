@@ -24,7 +24,6 @@ import {
   GNBTitle,
   ProfileArea,
   UserNickname,
-  BlankImageContainer,
   ProfileImageContainer,
   HeaderLeft,
   Menu,
@@ -96,16 +95,14 @@ const ProfileView = ({
 
             {/* Default profile image */}
             {profileImageData === null && (
-              <BlankImageContainer>
-                <BlankImage>
-                  <AccountCircleIcon
-                    fill={true}
-                    width={15}
-                    height={15}
-                    color='#767678'
-                  />
-                </BlankImage>
-              </BlankImageContainer>
+              <BlankImage>
+                <AccountCircleIcon
+                  fill={true}
+                  width={15}
+                  height={15}
+                  color='#767678'
+                />
+              </BlankImage>
             )}
 
             {/* User settings profile image */}
