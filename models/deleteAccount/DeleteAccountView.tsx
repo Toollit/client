@@ -17,19 +17,16 @@ import {
 
 export interface DeleteAccountViewProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  dropoutAgree: boolean;
-  handleDropoutAgree: () => void;
-  password: string;
-  handlePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  deleteAgree: boolean;
+  handleDeleteAgree: () => void;
   isFormValid: boolean;
 }
 
 const DeleteAccountView = ({
   handleSubmit,
-  dropoutAgree,
-  handleDropoutAgree,
-  password,
-  handlePassword,
+  deleteAgree,
+  handleDeleteAgree,
+
   isFormValid,
 }: DeleteAccountViewProps) => {
   return (
@@ -71,23 +68,16 @@ const DeleteAccountView = ({
             <DropoutAgreeContainer>
               <DropoutAgreeCheckBox
                 type='checkbox'
-                name='dropoutAgree'
-                id='dropoutAgree'
-                checked={dropoutAgree}
-                onChange={handleDropoutAgree}
+                name='deleteAgree'
+                id='deleteAgree'
+                checked={deleteAgree}
+                onChange={handleDeleteAgree}
               />
-              <DropoutAgreeLabel htmlFor='dropoutAgree'>
+              <DropoutAgreeLabel htmlFor='deleteAgree'>
                 안내 사항을 모두 확인하였으며, 이에 동의합니다.
               </DropoutAgreeLabel>
             </DropoutAgreeContainer>
 
-            <Input
-              type='password'
-              placeholder='현재 비밀번호'
-              name='password'
-              onChange={handlePassword}
-              value={password}
-            />
             <ButtonContainer>
               {isFormValid ? (
                 <Button type='submit' text='탈퇴하기' />

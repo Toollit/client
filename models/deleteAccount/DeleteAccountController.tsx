@@ -15,65 +15,55 @@ const DeleteAccountController = ({}: DeleteAccountControllerProps) => {
   const dispatch = useAppDispatch();
   const { clearCache } = useCachedKeys();
 
-  const [dropoutAgree, setDropoutAgree] = useState(false);
-  const [password, setPassword] = useState('');
+  const [deleteAgree, setDeleteAgree] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      if (dropoutAgree && password) {
-        try {
-          dispatch(loading({ status: true }));
+      if (!deleteAgree) {
+        return;
+      }
 
-          await deleteAccountAPI({});
+      try {
+        dispatch(loading({ status: true }));
 
-          alert('메일 발송 완료! 메일을 통해 인증하면 회원 탈퇴가 완료됩니다.');
+        await deleteAccountAPI({});
 
-          clearCache();
+        alert('메일 발송 완료! 메일을 통해 인증하면 회원 탈퇴가 완료됩니다.');
 
-          router.replace('/');
+        clearCache();
 
-          return router.events.on('routeChangeComplete', () => {
-            dispatch(loading({ status: false }));
-          });
-        } catch (error) {
+        router.replace('/');
+
+        return router.events.on('routeChangeComplete', () => {
           dispatch(loading({ status: false }));
-          errorMessage(error);
-        }
+        });
+      } catch (error) {
+        dispatch(loading({ status: false }));
+        errorMessage(error);
       }
     },
-    [router, dispatch, dropoutAgree, password, clearCache],
+    [router, dispatch, deleteAgree, clearCache],
   );
 
-  const handleDropoutAgree = useCallback(() => {
-    setDropoutAgree((prev) => !prev);
+  const handleDeleteAgree = useCallback(() => {
+    setDeleteAgree((prev) => !prev);
   }, []);
 
-  const handlePassword = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.currentTarget.value;
-
-      setPassword(value);
-    },
-    [],
-  );
-
   useEffect(() => {
-    if (dropoutAgree && password) {
+    if (deleteAgree) {
       setIsFormValid(true);
     } else {
       setIsFormValid(false);
     }
-  }, [dropoutAgree, password]);
+  }, [deleteAgree]);
 
   const props: DeleteAccountViewProps = {
     handleSubmit,
-    dropoutAgree,
-    handleDropoutAgree,
-    password,
-    handlePassword,
+    deleteAgree,
+    handleDeleteAgree,
     isFormValid,
   };
 
