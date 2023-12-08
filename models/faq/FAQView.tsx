@@ -32,9 +32,7 @@ const FAQView = ({ handleSearchFAQ, SearchInputRef }: FAQViewProps) => {
       <InnerContainer>
         <Header>
           <Title text='자주 묻는 질문' />
-          <SubTitle>
-            <p>궁금하신 내용을 확인해 보세요!</p>
-          </SubTitle>
+          <SubTitle>궁금하신 내용을 확인해 보세요!</SubTitle>
         </Header>
 
         <SearchForm onSubmit={handleSearchFAQ}>

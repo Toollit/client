@@ -35,7 +35,7 @@ const DeleteAccountView = ({
         <Header>
           <Title text='탈퇴 안내' />
           <SubTitle>
-            <p>회원탈퇴를 신청하기 전에 안내 사항을 꼭 확인해주세요.</p>
+            회원탈퇴를 신청하기 전에 안내 사항을 꼭 확인해주세요.
           </SubTitle>
         </Header>
 
