@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
+import { SearchOutlined, AccountCircleOutlined } from '@mui/icons-material';
 
-const DefaultContainer = styled.nav<{ boundary: boolean }>`
+const DefaultContainer = styled.nav<{ boundary?: boolean }>`
   border-bottom: ${(props) => (props.boundary ? '1px solid #eee' : 'none')};
   width: 100%;
   margin: 0 auto;
@@ -17,7 +17,7 @@ const DefaultContainer = styled.nav<{ boundary: boolean }>`
   background-color: rgba(255, 255, 255, 0.3); */
 `;
 
-const Container = styled.nav<{ boundary: boolean; fullSize?: boolean }>`
+const Container = styled.nav<{ boundary?: boolean; fullSize?: boolean }>`
   border-bottom: ${(props) => (props.boundary ? '1px solid #eee' : 'none')};
   width: 100%;
   margin: 0 auto;
@@ -44,60 +44,23 @@ const ColumnContainer = styled.div`
   padding: 0 0.8rem;
 `;
 
-const ColumnLeftContainer = styled.ul<{ isMobile: boolean }>`
+const ColumnLeftContainer = styled.ul`
   display: flex;
   height: 100%;
   align-items: center;
+`;
 
-  ${(props) => {
-    if (props.isMobile) {
-      return css`
-        li:active > button {
-          border-radius: 25rem;
-          background-color: ${props.theme.colors.button.activeGray};
-        }
-      `;
-    }
-
-    if (!props.isMobile) {
-      return css`
-        li:hover > button {
-          border-radius: 25rem;
-          background-color: ${props.theme.colors.button.hoverGray};
-        }
-
-        li:active > button {
-          border-radius: 25rem;
-          background-color: ${props.theme.colors.button.activeGray};
-        }
-      `;
-    }
-  }}
+const ColumnRightContainer = styled.ul`
+  display: flex;
+  height: 100%;
+  align-items: center;
 
   li {
     height: 100%;
     display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
-
-  a {
-    height: 100%;
-  }
-`;
-
-const ColumnRightContainer = styled.ul<{ isMobile: boolean }>`
-  display: flex;
-  height: 100%;
-  align-items: center;
-
-  li {
-    height: 100%;
-  }
-
-  a {
-    padding-left: 1.2rem;
-    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 1.5rem;
   }
 `;
 
@@ -108,9 +71,9 @@ const StyledLogoLink = styled.a`
   color: #000;
 `;
 
-const LogoText = styled.span`
+const LogoTitle = styled.span`
   line-height: 1.1;
-  font-size: 1.8rem;
+  font-size: 2rem;
   padding: 0rem 0.4rem;
   font-weight: 600;
 `;
@@ -124,11 +87,42 @@ const Title = styled.div`
   font-weight: 500;
 `;
 
-const StyledLink = styled.a`
-  height: 100%;
+const SearchIcon = styled(SearchOutlined)`
+  width: 3.2rem;
+  height: 3.2rem;
+  color: #000;
+  cursor: pointer;
+
+  &.MuiSvgIcon-root {
+    stroke: #fff;
+    stroke-width: 1;
+  }
+`;
+
+const AccountCircleIcon = styled(AccountCircleOutlined)`
+  width: 3.2rem;
+  height: 3.2rem;
+  color: #000;
+  cursor: pointer;
+
+  &.MuiSvgIcon-root {
+    stroke: #fff;
+    stroke-width: 1;
+  }
+`;
+
+const LayoutContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  min-height: 6rem;
+  height: 6rem;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 0 0.8rem;
+`;
+
+const StyledProfileLink = styled.a`
+  height: 3.2rem;
 `;
 
 export {
@@ -138,7 +132,10 @@ export {
   ColumnLeftContainer,
   ColumnRightContainer,
   StyledLogoLink,
-  LogoText,
+  LogoTitle,
   Title,
-  StyledLink,
+  SearchIcon,
+  AccountCircleIcon,
+  LayoutContainer,
+  StyledProfileLink,
 };

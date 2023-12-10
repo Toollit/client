@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
 import Link from 'next/link';
-import { AccountCircleIcon, MenuIcon, SearchIcon } from '@/assets/icons';
 import GetitLogo from '@/assets/images/GetitLogo';
 import { closeDrawer, openDrawer } from '@/features/drawer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,49 +7,58 @@ import { useRouter } from 'next/router';
 import { BackButton, CloseButton } from '@/components/commons/button';
 import { RootState } from '@/store';
 import useAuth from '@/hooks/useAuth';
-import useCheckUserAgent from '@/hooks/useCheckUserAgent';
-import useCachedKeys from '@/hooks/useCachedKeys';
 import { InnerContainer } from '@/styles/commons';
+import Menu from '@/components/commons/drawer/menu';
 import {
   Container,
   ColumnContainer,
   ColumnLeftContainer,
   ColumnRightContainer,
   StyledLogoLink,
-  LogoText,
+  LogoTitle,
   Title,
-  StyledLink,
   DefaultContainer,
+  SearchIcon,
+  AccountCircleIcon,
+  LayoutContainer,
+  StyledProfileLink,
 } from './styles';
 
-export interface NavProps {
-  type: 'default' | 'close' | 'back' | 'none';
+type Default = {
+  type: 'default';
+  boundary?: boolean;
+};
+
+type None = {
+  type: 'none';
+};
+
+type Close = {
+  type: 'close';
   title?: string;
-  menu?: React.ReactNode[];
   boundary?: boolean;
   fullSize?: boolean;
-  onClick?: () => void;
-}
+  handleClose: () => void;
+};
+
+type Back = {
+  type: 'back';
+  title?: string;
+  boundary?: boolean;
+  fullSize?: boolean;
+  handleBack: () => void;
+};
+
+export type NavProps = Default | None | Close | Back;
 
 /**
- * @props type - 'default' | 'close' | 'back' | 'none';
- * @props title - nav center text
- * @props boundary - nav bottom border show
- * @props fullSize - use only when type back or close and boundary false
- * @props onClick - nav left side default icons click handler
+ * Renders a navigation component based on the specified type.
  */
-const Nav = ({
-  type,
-  title,
-  boundary = true,
-  fullSize = true,
-  onClick,
-}: NavProps) => {
+const Nav = <T extends Default | Close | Back | None>(props: T) => {
+  const { type } = props;
   const router = useRouter();
   const dispatch = useDispatch();
-  const { authMutate } = useAuth();
-  const { isMobile } = useCheckUserAgent();
-  const { mutatePage } = useCachedKeys();
+  const { authMutate, nickname } = useAuth();
 
   const searchDrawerOpenState = useSelector(
     (state: RootState) => state.drawer.search,
@@ -84,56 +92,46 @@ const Nav = ({
     }
   }, [dispatch, searchDrawerOpenState]);
 
-  const handleProfileRoute = useCallback(async () => {
-    const response = await authMutate();
-
-    const nickname = response?.data.nickname;
-
-    if (response?.success === false) {
-      router.push('/login');
-    } else {
-      router.push(`/profile/${nickname}`);
-    }
-  }, [authMutate, router]);
-
   useEffect(() => {
-    mutatePage({ page: '/' });
-  }, [mutatePage]);
+    (async () => {
+      await authMutate();
+    })();
+  }, [authMutate]);
 
   switch (type) {
     case 'default':
+      const { boundary: defaultBoundary } = props;
       return (
-        <DefaultContainer boundary={boundary}>
+        <DefaultContainer boundary={defaultBoundary ?? true}>
           <InnerContainer>
             <ColumnContainer>
-              <ColumnLeftContainer isMobile={isMobile}>
+              <ColumnLeftContainer>
                 <li>
                   <Link href='/' passHref>
                     <StyledLogoLink onClick={handleLogoRoute}>
-                      <GetitLogo />
-                      <LogoText>Getit</LogoText>
+                      <GetitLogo width={3.2} height={3.2} />
+                      <LogoTitle>Getit</LogoTitle>
                     </StyledLogoLink>
                   </Link>
                 </li>
               </ColumnLeftContainer>
 
-              <ColumnRightContainer isMobile={isMobile}>
-                <li onClick={handleSearchDrawer}>
-                  <StyledLink>
-                    <SearchIcon width={2.8} height={2.8} />
-                  </StyledLink>
+              <ColumnRightContainer>
+                <li>
+                  <SearchIcon onClick={handleSearchDrawer} />
                 </li>
                 <li>
-                  <StyledLink onClick={handleProfileRoute}>
-                    <AccountCircleIcon width={2.8} height={2.8} />
-                  </StyledLink>
-                </li>
-                <li>
-                  <Link href={'/menu'} passHref>
-                    <StyledLink>
-                      <MenuIcon width={2.8} height={2.8} />
-                    </StyledLink>
+                  <Link
+                    href={nickname ? `/profile/${nickname}` : '/login'}
+                    passHref
+                  >
+                    <StyledProfileLink>
+                      <AccountCircleIcon />
+                    </StyledProfileLink>
                   </Link>
+                </li>
+                <li>
+                  <Menu />
                 </li>
               </ColumnRightContainer>
             </ColumnContainer>
@@ -142,32 +140,41 @@ const Nav = ({
       );
 
     case 'back':
+      const {
+        boundary: backBoundary,
+        title: backTitle,
+        fullSize: backFullSize,
+        handleBack,
+      } = props;
       return (
-        <Container boundary={boundary} fullSize={fullSize}>
-          <ColumnContainer>
-            <Title>{title}</Title>
-            <ColumnLeftContainer isMobile={isMobile}>
-              <li onClick={onClick}>
-                <BackButton />
-              </li>
-            </ColumnLeftContainer>
-            <ColumnRightContainer isMobile={isMobile}></ColumnRightContainer>
-          </ColumnContainer>
+        <Container
+          boundary={backBoundary ?? true}
+          fullSize={backFullSize ?? true}
+        >
+          <LayoutContainer>
+            <BackButton handleBack={handleBack} />
+            <Title>{backTitle}</Title>
+          </LayoutContainer>
         </Container>
       );
 
     case 'close':
+      const {
+        boundary: closeBoundary,
+        title: closeTitle,
+        fullSize: closeFullSize,
+        handleClose,
+      } = props;
+
       return (
-        <Container boundary={boundary} fullSize={fullSize}>
-          <ColumnContainer>
-            <Title>{title}</Title>
-            <ColumnLeftContainer isMobile={isMobile}>
-              <li onClick={onClick}>
-                <CloseButton />
-              </li>
-            </ColumnLeftContainer>
-            <ColumnRightContainer isMobile={isMobile}></ColumnRightContainer>
-          </ColumnContainer>
+        <Container
+          boundary={closeBoundary ?? true}
+          fullSize={closeFullSize ?? true}
+        >
+          <LayoutContainer>
+            <CloseButton handleClose={handleClose} />
+            <Title>{closeTitle}</Title>
+          </LayoutContainer>
         </Container>
       );
 
