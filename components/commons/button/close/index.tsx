@@ -1,14 +1,17 @@
 import React from 'react';
 import { CloseIcon } from '@/assets/icons';
 import { Button } from './styles';
+import useCheckUserAgent from '@/hooks/useCheckUserAgent';
 
-interface CloseBtnProps {
-  onClick?: () => void;
+interface CloseButtonProps {
+  handleClose: () => void;
 }
 
-const CloseButton = ({ onClick }: CloseBtnProps) => {
+const CloseButton = ({ handleClose }: CloseButtonProps) => {
+  const { isMobile } = useCheckUserAgent();
+
   return (
-    <Button onClick={onClick}>
+    <Button onClick={handleClose} isMobile={isMobile}>
       <CloseIcon />
     </Button>
   );

@@ -1,14 +1,17 @@
 import React from 'react';
 import { ArrowBackIcon } from '@/assets/icons';
 import { Button } from './styles';
+import useCheckUserAgent from '@/hooks/useCheckUserAgent';
 
-interface BackBtnProps {
-  onClick?: () => void;
+interface BackButtonProps {
+  handleBack: () => void;
 }
 
-const BackButton = ({ onClick }: BackBtnProps) => {
+const BackButton = ({ handleBack }: BackButtonProps) => {
+  const { isMobile } = useCheckUserAgent();
+
   return (
-    <Button onClick={onClick}>
+    <Button onClick={handleBack} isMobile={isMobile}>
       <ArrowBackIcon />
     </Button>
   );
