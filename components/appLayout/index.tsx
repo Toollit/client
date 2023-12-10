@@ -6,40 +6,22 @@ import LoadingCircularProgress from '@/components/commons/loading';
 import SearchDrawer from '@/components/commons/drawer/search';
 import { Container, Content } from './styles';
 
-interface AppLayoutProps extends NavProps {
+type AppLayoutProps = NavProps & {
   children: React.ReactNode;
   footer?: boolean;
-}
+};
 
 /**
  * @props children - content component
  * @props type - GNB style
- * @props title - title to be shown in the middle of the GNB
- * @props boundary - GNB border bottom
- * @props fullSize - GNB width size. (true - width 100%, false - width 102.4rem)
- * @props onClick - GNB left side default icons click handler
- * @props footer - footer content
  */
-const AppLayout = ({
-  children,
-  type,
-  title,
-  boundary,
-  fullSize,
-  onClick,
-  footer = true,
-}: AppLayoutProps) => {
+const AppLayout = (props: AppLayoutProps) => {
   return (
-    <Container type={type}>
-      <Nav
-        type={type}
-        title={title}
-        boundary={boundary}
-        fullSize={fullSize}
-        onClick={onClick}
-      />
-      <Content>{children}</Content>
-      {footer && <Footer />}
+    <Container type={props.type}>
+      <Nav {...props} />
+
+      <Content>{props.children}</Content>
+      {props.footer && <Footer />}
 
       {/* Right bottom notification  */}
       <Alert />
