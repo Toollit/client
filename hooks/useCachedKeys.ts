@@ -88,7 +88,7 @@ const useCachedKeys = () => {
 
   /**
    * Revalidate cached data with page
-   * @param {string} tag - tag contained in serialized cache key
+   * @param {string} page - page contained in serialized cache key
    */
   const mutatePage = useCallback(
     ({ page }: MutateParam) => {
