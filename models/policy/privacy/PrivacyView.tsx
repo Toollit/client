@@ -10,7 +10,7 @@ const PrivacyView = ({ handleClose }: PrivacyViewProps) => {
   return (
     <AppLayout
       type='close'
-      onClick={handleClose}
+      handleClose={handleClose}
       boundary={true}
       footer={false}
     >

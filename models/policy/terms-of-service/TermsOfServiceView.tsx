@@ -10,7 +10,7 @@ const TermsOfServiceView = ({ handleClose }: TermsOfServiceViewProps) => {
   return (
     <AppLayout
       type='close'
-      onClick={handleClose}
+      handleClose={handleClose}
       boundary={true}
       footer={false}
     >

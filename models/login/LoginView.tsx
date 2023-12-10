@@ -51,7 +51,7 @@ const LoginView = ({
   return (
     <AppLayout
       type='close'
-      onClick={handleClose}
+      handleClose={handleClose}
       boundary={false}
       footer={false}
     >
