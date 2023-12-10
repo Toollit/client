@@ -155,6 +155,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
         const response = await updateProjectAPI(formData);
 
         projectDetailMutate();
+        mutatePage({ page: '/' });
         mutatePage({ page: '/profile' });
 
         const postId = response?.data.postId;
