@@ -108,7 +108,7 @@ const ProjectCreateController = () => {
 
         const response = await createProjectAPI(formData);
 
-        mutateTag({ tag: 'projects' });
+        mutatePage({ page: '/' });
         mutatePage({ page: '/profile' });
 
         const postId = response?.data.postId;
@@ -130,7 +130,6 @@ const ProjectCreateController = () => {
       titleRef,
       handleData,
       hashtagRef,
-      mutateTag,
       mutatePage,
       representativeImageFile,
       isLoading,
