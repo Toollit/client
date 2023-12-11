@@ -16,17 +16,21 @@ type AppLayoutProps = NavProps & {
  * @props type - GNB style
  */
 const AppLayout = (props: AppLayoutProps) => {
+  const { children, footer = true } = props;
   return (
     <Container type={props.type}>
       <Nav {...props} />
 
-      <Content>{props.children}</Content>
-      {props.footer && <Footer />}
+      <Content>{children}</Content>
+
+      {footer && <Footer />}
 
       {/* Right bottom notification  */}
       <Alert />
+
       {/* Loading bar waiting for a response to a request */}
       <LoadingCircularProgress />
+
       {/* Drawer that appears when you click the Nav search icon  */}
       <SearchDrawer />
     </Container>
