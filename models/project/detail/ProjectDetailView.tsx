@@ -77,10 +77,8 @@ interface Content extends Omit<ProjectContent, 'memberTypes'> {
 }
 
 export interface ProjectDetailViewProps {
-  me: boolean;
   isMember: boolean;
   isClientRendering: boolean;
-  postId: string;
   writer?: ProjectWriter;
   content?: Content;
   member?: ProjectMember;
@@ -94,10 +92,8 @@ export interface ProjectDetailViewProps {
 }
 
 const ProjectDetailView = ({
-  me,
   isMember,
   isClientRendering,
-  postId,
   writer,
   content,
   member,

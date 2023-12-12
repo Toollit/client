@@ -273,67 +273,75 @@ const ProjectDetailController = () => {
   }, [dispatch, router, authMutate, postId, projectDetail, setTooltipAnchorEl]);
 
   const handleJoinProject = useCallback(async () => {
-    try {
-      const result = confirm('프로젝트에 참가하시겠습니까?');
-
-      if (!result) {
-        return;
-      }
-
-      const response = await authMutate();
-
-      if (response?.success) {
-        await joinProjectAPI({ postId });
-        return alert(
-          '참가 신청을 했습니다. 프로젝트 장이 승인 후 프로젝트 멤버가 됩니다.',
-        );
-      }
-
-      if (!response?.success) {
-        const result = confirm('로그인 후 이용 가능합니다.');
-
-        if (result) {
-          return router.push('/login');
-        }
-
-        if (!result) {
-          return;
-        }
-      }
-    } catch (error) {
-      errorMessage(error);
-    }
-  }, [authMutate, router, postId]);
-
-  const handleLeaveProject = useCallback(async () => {
-    const result = confirm('프로젝트를 탈퇴하시겠습니까?');
+    const result = confirm('프로젝트에 참가하시겠습니까?');
 
     if (!result) {
       return;
     }
 
-    const auth = await authMutate();
+    try {
+      dispatch(loading({ status: true }));
 
-    if (auth?.success) {
-      try {
+      const auth = await authMutate();
+
+      if (!auth?.success) {
+        const result = confirm('로그인 후 이용 가능합니다.');
+
+        if (result) {
+          router.push('/login');
+        }
+      }
+
+      if (auth?.success) {
+        await joinProjectAPI({ postId });
+        alert(
+          '참가 신청을 했습니다. 프로젝트 장이 승인 후 프로젝트 멤버가 됩니다.',
+        );
+      }
+
+      dispatch(loading({ status: false }));
+    } catch (error) {
+      dispatch(loading({ status: false }));
+      errorMessage(error);
+    }
+  }, [dispatch, authMutate, router, postId]);
+
+  const handleLeaveProject = useCallback(async () => {
+    const result = confirm(
+      '프로젝트를 탈퇴하시겠습니까? 재가입이 가능하나 승인이 필요합니다.',
+    );
+
+    if (!result) {
+      return;
+    }
+
+    try {
+      dispatch(loading({ status: true }));
+
+      const auth = await authMutate();
+
+      if (auth?.success) {
         await leaveProjectAPI({ postId });
 
         projectDetailMutate();
 
-        return alert('프로젝트를 탈퇴 했습니다.');
-      } catch (error) {
-        errorMessage(error);
+        alert('프로젝트를 탈퇴 했습니다.');
       }
-    }
 
-    if (!auth?.success) {
-      const result = confirm('로그인 후 이용 가능합니다.');
+      if (!auth?.success) {
+        const result = confirm('로그인 후 이용 가능합니다.');
 
-      if (result) {
-        return router.push('/login');
+        if (result) {
+          router.push('/login');
+        }
       }
+
+      dispatch(loading({ status: false }));
+    } catch (error) {
+      dispatch(loading({ status: false }));
+      errorMessage(error);
     }
-  }, [authMutate, projectDetailMutate, postId, router]);
+  }, [dispatch, authMutate, projectDetailMutate, postId, router]);
 
   const handleCheckMember = useCallback(
     (data?: ProjectAPIRes['data']) => {
@@ -368,10 +376,8 @@ const ProjectDetailController = () => {
   }, [bookmarkAlertTimeoutId, shareAlertTimeoutId]);
 
   const props: ProjectDetailViewProps = {
-    me: projectDetail?.data.writer.nickname === accessUser,
     isMember: handleCheckMember(projectDetail?.data),
     isClientRendering,
-    postId,
     writer: projectDetail
       ? {
           nickname: projectDetail.data.writer.nickname,
