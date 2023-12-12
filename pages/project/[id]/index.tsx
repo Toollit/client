@@ -3,7 +3,7 @@ import type { NextPage, GetServerSideProps } from 'next';
 import { SWRConfig } from 'swr';
 import Head from 'next/head';
 import { projectFetcher, ProjectDetail } from '@/apis/projectFetcher';
-import ProjectDetailController from '@/models/project/ProjectDetailController';
+import ProjectDetailController from '@/models/project/detail/ProjectDetailController';
 import { projectDetailKey } from '@/apis/keys';
 
 interface PageProps {

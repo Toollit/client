@@ -56,7 +56,7 @@ import {
 } from './styles';
 
 const DynamicTuiViewer = dynamic(
-  () => import('../../components/commons/webEditor/TuiViewer'),
+  () => import('../../../components/commons/webEditor/TuiViewer'),
   {
     loading: () => (
       <>
