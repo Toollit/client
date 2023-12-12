@@ -367,6 +367,22 @@ const ProjectDetailController = () => {
     [accessUser],
   );
 
+  const handleCheckRecruitComplete = useCallback(
+    (data?: ProjectAPIRes['data']) => {
+      if (!data) {
+        return false;
+      }
+
+      const members = data.member.profiles.length;
+      if (typeof members !== 'number') {
+        return false;
+      }
+
+      return data.content.recruitCount === members - 1;
+    },
+    [],
+  );
+
   useEffect(() => {
     setIsClientRendering(true);
 
@@ -376,6 +392,7 @@ const ProjectDetailController = () => {
   }, [bookmarkAlertTimeoutId, shareAlertTimeoutId]);
 
   const props: ProjectDetailViewProps = {
+    isRecruitCompleted: handleCheckRecruitComplete(projectDetail?.data),
     isMember: handleCheckMember(projectDetail?.data),
     isClientRendering,
     writer: projectDetail

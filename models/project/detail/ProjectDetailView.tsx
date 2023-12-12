@@ -77,6 +77,7 @@ interface Content extends Omit<ProjectContent, 'memberTypes'> {
 }
 
 export interface ProjectDetailViewProps {
+  isRecruitCompleted: boolean;
   isMember: boolean;
   isClientRendering: boolean;
   writer?: ProjectWriter;
@@ -92,6 +93,7 @@ export interface ProjectDetailViewProps {
 }
 
 const ProjectDetailView = ({
+  isRecruitCompleted,
   isMember,
   isClientRendering,
   writer,
@@ -216,20 +218,28 @@ const ProjectDetailView = ({
               )}
 
               <JoinButtonContainer>
-                {isMember ? (
-                  <Button
-                    type='submit'
-                    text='탈퇴하기'
-                    shape='square'
-                    onClick={handleLeaveProject}
-                  />
+                {!isMember && isRecruitCompleted ? (
+                  <Button type='disabled' text='모집완료' shape='square' />
                 ) : (
-                  <Button
-                    type='submit'
-                    text='참가하기'
-                    shape='square'
-                    onClick={handleJoinProject}
-                  />
+                  <>
+                    {isMember && (
+                      <Button
+                        type='submit'
+                        text='탈퇴하기'
+                        shape='square'
+                        onClick={handleLeaveProject}
+                      />
+                    )}
+
+                    {!isMember && (
+                      <Button
+                        type='submit'
+                        text='참가하기'
+                        shape='square'
+                        onClick={handleJoinProject}
+                      />
+                    )}
+                  </>
                 )}
               </JoinButtonContainer>
 
