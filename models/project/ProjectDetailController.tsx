@@ -20,6 +20,7 @@ import useTooltip from '@/hooks/useTooltip';
 import { RootState } from '@/store';
 import { loading } from '@/features/loading';
 import { joinProjectAPI } from '@/apis/joinProject';
+import { leaveProjectAPI } from '@/apis/leaveProject';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
@@ -46,7 +47,7 @@ const ProjectDetailController = () => {
   const [shareAlertTimeoutId, setShareAlertTimeoutId] =
     useState<NodeJS.Timeout>();
 
-  const { data: projectDetail } = useSWR(
+  const { data: projectDetail, mutate: projectDetailMutate } = useSWR(
     postId
       ? {
           url: projectDetailKey(postId),
@@ -304,6 +305,60 @@ const ProjectDetailController = () => {
     }
   }, [authMutate, router, postId]);
 
+  const handleLeaveProject = useCallback(async () => {
+    const result = confirm('프로젝트를 탈퇴하시겠습니까?');
+
+    if (!result) {
+      return;
+    }
+
+    const auth = await authMutate();
+
+    if (auth?.success) {
+      try {
+        await leaveProjectAPI({ postId });
+
+        projectDetailMutate();
+
+        return alert('프로젝트를 탈퇴 했습니다.');
+      } catch (error) {
+        errorMessage(error);
+      }
+    }
+
+    if (!auth?.success) {
+      const result = confirm('로그인 후 이용 가능합니다.');
+
+      if (result) {
+        return router.push('/login');
+      }
+    }
+  }, [authMutate, projectDetailMutate, postId, router]);
+
+  const handleCheckMember = useCallback(
+    (data?: ProjectAPIRes['data']) => {
+      const founded = data?.member.profiles.find(
+        (profile) => profile.nickname === accessUser,
+      );
+
+      const isMyPost = data?.writer.nickname === accessUser;
+
+      if (isMyPost) {
+        // project owner. show join text
+        return false;
+      } else {
+        if (founded) {
+          // project member. show leave text
+          return true;
+        } else {
+          // not project member. show join text
+          return false;
+        }
+      }
+    },
+    [accessUser],
+  );
+
   useEffect(() => {
     setIsClientRendering(true);
 
@@ -314,6 +369,7 @@ const ProjectDetailController = () => {
 
   const props: ProjectDetailViewProps = {
     me: projectDetail?.data.writer.nickname === accessUser,
+    isMember: handleCheckMember(projectDetail?.data),
     isClientRendering,
     postId,
     writer: projectDetail
@@ -374,6 +430,7 @@ const ProjectDetailController = () => {
       onClose: handleTooltipClose,
     },
     handleJoinProject,
+    handleLeaveProject,
   };
 
   return <ProjectDetailView {...props} />;

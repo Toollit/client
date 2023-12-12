@@ -78,6 +78,7 @@ interface Content extends Omit<ProjectContent, 'memberTypes'> {
 
 export interface ProjectDetailViewProps {
   me: boolean;
+  isMember: boolean;
   isClientRendering: boolean;
   postId: string;
   writer?: ProjectWriter;
@@ -89,10 +90,12 @@ export interface ProjectDetailViewProps {
   handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
   tooltip: TooltipProps;
   handleJoinProject: () => void;
+  handleLeaveProject: () => void;
 }
 
 const ProjectDetailView = ({
   me,
+  isMember,
   isClientRendering,
   postId,
   writer,
@@ -104,6 +107,7 @@ const ProjectDetailView = ({
   handleTooltipOpen,
   tooltip,
   handleJoinProject,
+  handleLeaveProject,
 }: ProjectDetailViewProps) => {
   return (
     <AppLayout type='default'>
@@ -216,12 +220,21 @@ const ProjectDetailView = ({
               )}
 
               <JoinButtonContainer>
-                <Button
-                  type='submit'
-                  text='참가하기'
-                  shape='square'
-                  onClick={handleJoinProject}
-                />
+                {isMember ? (
+                  <Button
+                    type='submit'
+                    text='탈퇴하기'
+                    shape='square'
+                    onClick={handleLeaveProject}
+                  />
+                ) : (
+                  <Button
+                    type='submit'
+                    text='참가하기'
+                    shape='square'
+                    onClick={handleJoinProject}
+                  />
+                )}
               </JoinButtonContainer>
 
               <ProjectMembersContainer>
