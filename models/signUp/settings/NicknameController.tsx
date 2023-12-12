@@ -6,7 +6,7 @@ import { loading } from '@/features/loading';
 import { errorMessage } from '@/apis/errorMessage';
 import { RootState } from '@/store';
 import { DuplicateCheckNicknameAPI } from '@/apis/duplicateCheckNickname';
-import { updateSocialLoginNicknameAPI } from '@/apis/updateSocialLoginNickname';
+import { updateSettingsNicknameAPI } from '@/apis/updateSettingsNickname';
 import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
 
@@ -77,7 +77,7 @@ const NicknameController = ({}: NicknameControllerProps) => {
 
         await DuplicateCheckNicknameAPI({ nickname });
 
-        await updateSocialLoginNicknameAPI({ nickname });
+        await updateSettingsNicknameAPI({ nickname });
         // revalidate user info for update nickname
         await authMutate();
 
