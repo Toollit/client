@@ -40,6 +40,7 @@ import {
 } from './styles';
 
 export interface ProfileViewProps {
+  isProfileImageLoading: boolean;
   isLaptop: boolean | null;
   isExistUser?: boolean;
   accessUser: string | null;
@@ -57,6 +58,7 @@ export interface ProfileViewProps {
 }
 
 const ProfileView = ({
+  isProfileImageLoading,
   isLaptop,
   isExistUser,
   accessUser,
@@ -87,7 +89,7 @@ const ProfileView = ({
 
           <ProfileArea>
             {/* Loading profile image */}
-            {profileImageData === undefined && (
+            {(profileImageData === undefined || isProfileImageLoading) && (
               <ProfileImageSkeletonContainer>
                 <Skeleton shape='circular' width={12} height={12} />
               </ProfileImageSkeletonContainer>
@@ -113,7 +115,7 @@ const ProfileView = ({
                     src={profileImageData}
                     alt={'profile image'}
                     draggable={false}
-                    priority
+                    priority={true}
                     layout='fill'
                   />
                 </ImageWrapper>

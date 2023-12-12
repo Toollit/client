@@ -13,6 +13,7 @@ import { serialize } from '@/middleware/swr/serialize';
 import useTooltip from '@/hooks/useTooltip';
 import { userExistCheckFetcher } from '@/apis/userExistCheckFetcher';
 import useWindowSize from '@/hooks/useWindowSize';
+import useCachedKeys from '@/hooks/useCachedKeys';
 
 interface CachedData<T> {
   cache: Cache<T | undefined>;
@@ -40,6 +41,7 @@ const ProfileController = () => {
     handleTooltipClose,
   } = useTooltip();
   const { isLaptop } = useWindowSize();
+  const { clearCache } = useCachedKeys();
 
   const [nickname, setNickname] = useState('');
   const [currentTab, setCurrentTab] = useState<ProfileTab>();
@@ -76,7 +78,11 @@ const ProfileController = () => {
   );
 
   // Profile image fetcher
-  const { data: profileImageData, mutate: profileImageMutate } = useSWR(
+  const {
+    data: profileImageData,
+    mutate: profileImageMutate,
+    isLoading: isProfileImageLoading,
+  } = useSWR(
     userExistCheckData?.data.existUser && nickname && currentTab
       ? {
           url: profileImageKey(nickname),
@@ -169,6 +175,12 @@ const ProfileController = () => {
     [uploadProfileImage],
   );
 
+  useEffect(() => {
+    return () => {
+      clearCache();
+    };
+  }, [clearCache]);
+
   // Create to resolve cases where the currentTab is not set or is set strangely when loading a page
   useEffect(() => {
     const nickname = router.query.nickname as string | undefined;
@@ -218,6 +230,7 @@ const ProfileController = () => {
   }, [router]);
 
   const props: ProfileViewProps = {
+    isProfileImageLoading,
     isLaptop,
     isExistUser: userExistCheckData?.data.existUser,
     accessUser,
