@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import Link from 'next/link';
 import GetitLogo from '@/assets/images/GetitLogo';
 import { closeDrawer, openDrawer } from '@/features/drawer';
@@ -58,7 +58,7 @@ const Nav = <T extends Default | Close | Back | None>(props: T) => {
   const { type } = props;
   const router = useRouter();
   const dispatch = useDispatch();
-  const { authMutate, nickname } = useAuth();
+  const { nickname } = useAuth();
 
   const searchDrawerOpenState = useSelector(
     (state: RootState) => state.drawer.search,
@@ -91,12 +91,6 @@ const Nav = <T extends Default | Close | Back | None>(props: T) => {
       return dispatch(openDrawer({ type: 'search' }));
     }
   }, [dispatch, searchDrawerOpenState]);
-
-  useEffect(() => {
-    (async () => {
-      await authMutate();
-    })();
-  }, [authMutate]);
 
   switch (type) {
     case 'default':
