@@ -250,13 +250,10 @@ const ProjectDetailView = ({
                     <Members>
                       {member?.profiles.map((user) => {
                         return (
-                          <Link
-                            href={`/profile/${user.nickname}`}
-                            key={user.nickname}
-                          >
-                            <a>
-                              <BasicTooltip text={user.nickname}>
-                                <Avatar>
+                          <Avatar key={user.nickname}>
+                            <Link href={`/profile/${user.nickname}`}>
+                              <a>
+                                <BasicTooltip text={user.nickname}>
                                   {user.profileImage ? (
                                     <ImageWrapper width={3.5} height={3.5}>
                                       <StyledImage
@@ -275,10 +272,10 @@ const ProjectDetailView = ({
                                       color='#767678'
                                     />
                                   )}
-                                </Avatar>
-                              </BasicTooltip>
-                            </a>
-                          </Link>
+                                </BasicTooltip>
+                              </a>
+                            </Link>
+                          </Avatar>
                         );
                       })}
                     </Members>
