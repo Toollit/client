@@ -105,6 +105,8 @@ const NotificationController = ({
               return '프로젝트 참가 신청이 승인됐어요!';
             case 'projectJoinReject':
               return '프로젝트 참가 신청이 거절됐어요!';
+            case 'projectLeave':
+              return '프로젝트에서 탈퇴했어요!';
             default:
               break;
           }
