@@ -2,7 +2,11 @@ import { serverInstance } from 'apis/axios';
 import { FetcherParams } from './types';
 
 export interface Notification {
-  type: 'projectJoinRequest' | 'projectJoinApprove' | 'projectJoinReject';
+  type:
+    | 'projectJoinRequest'
+    | 'projectJoinApprove'
+    | 'projectJoinReject'
+    | 'projectLeave';
   id: number;
   projectId: number;
   projectTitle: string;
