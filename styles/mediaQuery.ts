@@ -9,6 +9,6 @@
 
 const mediaQueryLaptop = `@media (min-width: 1024px)`;
 const mediaQueryTablet = `@media (min-width: 768px)`;
-const mediaQueryMobile = `@media (min-width: 425px)`;
+const mediaQueryMobile = `@media (min-width: 375px)`;
 
 export { mediaQueryLaptop, mediaQueryTablet, mediaQueryMobile };
