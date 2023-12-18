@@ -30,6 +30,9 @@ const OpenButton = styled.button`
   width: fit-content;
   height: fit-content;
   background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Container = styled(Box)`

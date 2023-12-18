@@ -75,7 +75,7 @@ const NotificationController = ({
     },
   );
 
-  const handleRemoveNotification = useCallback(
+  const handleDeleteNotification = useCallback(
     async (notificationId: number) => {
       const result = confirm(
         '알림을 삭제하시겠습니까? 삭제 후 알림 복원이 불가능합니다.',
@@ -171,12 +171,12 @@ const NotificationController = ({
     (data: Notification) => ({
       handleProjectJoinApprove: () => handleProjectJoinApprove(data.id),
       handleProjectJoinReject: () => handleProjectJoinReject(data.id),
-      handleRemoveNotification: () => handleRemoveNotification(data.id),
+      handleDeleteNotification: () => handleDeleteNotification(data.id),
     }),
     [
       handleProjectJoinApprove,
       handleProjectJoinReject,
-      handleRemoveNotification,
+      handleDeleteNotification,
     ],
   );
 

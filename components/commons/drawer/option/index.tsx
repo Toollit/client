@@ -20,7 +20,7 @@ interface Buttons {
   onClick?: () => void;
 }
 
-interface TooltipDrawerProps {
+interface OptionButtonProps {
   icon: React.ReactNode;
   option: {
     delete?: boolean;
@@ -32,13 +32,13 @@ interface TooltipDrawerProps {
   handleReport?: () => void;
 }
 
-const EditDrawerButton = ({
+const OptionButton = ({
   icon,
   option,
   handleDelete,
   handleModify,
   handleReport,
-}: TooltipDrawerProps) => {
+}: OptionButtonProps) => {
   const [open, setOpen] = useState(false);
   const [buttons, setButtons] = useState<Buttons[]>([]);
   const [type, setType] = useState({
@@ -66,8 +66,8 @@ const EditDrawerButton = ({
     const result: Buttons[] = [];
 
     for (let key in option) {
-      if (option[key as keyof TooltipDrawerProps['option']]) {
-        result.push(type[key as keyof TooltipDrawerProps['option']]);
+      if (option[key as keyof OptionButtonProps['option']]) {
+        result.push(type[key as keyof OptionButtonProps['option']]);
       }
     }
 
@@ -86,7 +86,7 @@ const EditDrawerButton = ({
             onKeyDown={toggleDrawer(false)}
           >
             <ButtonBox>
-              {buttons.map((item, index) => (
+              {buttons.map((item) => (
                 <Button key={item.text} onClick={item.onClick}>
                   <Icon>{item.icon}</Icon>
                   <Text>{item.text}</Text>
@@ -102,4 +102,4 @@ const EditDrawerButton = ({
   );
 };
 
-export default EditDrawerButton;
+export default OptionButton;

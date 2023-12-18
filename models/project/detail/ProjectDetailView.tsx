@@ -9,7 +9,7 @@ import Report from '@/components/commons/drawer/report';
 import { Button } from '@/components/commons/button';
 import { InnerContainer, ImageWrapper } from '@/styles/commons';
 import BasicTooltip from '@/components/commons/tooltip/basic';
-import EditDrawerButton from '@/components/commons/drawer/edit';
+import OptionButton from '@/components/commons/drawer/option';
 import {
   ProjectContent,
   ProjectMember,
@@ -166,14 +166,14 @@ const ProjectDetailView = ({
                       <span>공유</span>
                     </ShareButton>
                     {isMyPost ? (
-                      <EditDrawerButton
+                      <OptionButton
                         icon={<MoreIcon width={4} height={3} />}
                         option={{ modify: true, delete: true }}
                         handleModify={handleModify}
                         handleDelete={handleDelete}
                       />
                     ) : (
-                      <EditDrawerButton
+                      <OptionButton
                         icon={<MoreIcon width={4} height={3} />}
                         option={{ report: true }}
                         handleReport={handleReport}

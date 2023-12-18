@@ -4,7 +4,7 @@ import { Notification } from '@/apis/profileNotificationsFetcher';
 import { Button } from '@/components/commons/button';
 import Skeleton from '@/components/commons/skeleton';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
-import EditDrawerButton from '@/components/commons/drawer/edit';
+import OptionButton from '@/components/commons/drawer/option';
 import {
   BoxContent,
   Content,
@@ -29,7 +29,7 @@ export interface NotificationViewProps {
   each: (data: Notification) => {
     handleProjectJoinApprove: () => void;
     handleProjectJoinReject: () => void;
-    handleRemoveNotification: () => void;
+    handleDeleteNotification: () => void;
   };
 }
 
@@ -46,7 +46,7 @@ const NotificationView = ({ data, each }: NotificationViewProps) => {
                   const {
                     handleProjectJoinApprove,
                     handleProjectJoinReject,
-                    handleRemoveNotification,
+                    handleDeleteNotification,
                   } = each(notification);
 
                   if (notification.type === 'projectJoinRequest') {
@@ -117,10 +117,10 @@ const NotificationView = ({ data, each }: NotificationViewProps) => {
                         </Link>
 
                         <NotificationDeleteButton>
-                          <EditDrawerButton
+                          <OptionButton
                             icon={<MoreIcon />}
                             option={{ delete: true }}
-                            handleDelete={handleRemoveNotification}
+                            handleDelete={handleDeleteNotification}
                           />
                         </NotificationDeleteButton>
                       </Content>
