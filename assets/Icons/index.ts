@@ -5,6 +5,8 @@ import ArrowDoubleRightIcon from './ArrowDoubleRightIcon';
 import ArrowDropDownIcon from './ArrowDropDownIcon';
 import ArrowDropUpIcon from './ArrowDropUpIcon';
 import ArrowForwardIcon from './ArrowForwardIcon';
+import ArrowLeftAltIcon from './ArrowLeftAltIcon';
+import ArrowRightAltIcon from './ArrowRightAltIcon';
 import BookmarkIcon from './BookmarkIcon';
 import CloseIcon from './CloseIcon';
 import DeleteIcon from './DeleteIcon';
@@ -14,10 +16,11 @@ import FilterIcon from './FilterIcon';
 import GithubIcon from './GithubIcon';
 import GoogleIcon from './GoogleIcon';
 import MailIcon from './MailIcon';
-import MenuIcons from './MenuIcon';
+import MenuIcon from './MenuIcon';
 import MoreIcon from './MoreIcon';
 import PersonIcon from './PersonIcon';
 import PhoneIcon from './PhoneIcon';
+import PlusIcon from './PlusIcon';
 import RadioButtonCheckedIcon from './RadioButtonCheckedIcon';
 import RadioButtonUnCheckedIcon from './RadioButtonUnCheckedIcon';
 import SearchIcon from './SearchIcon';
@@ -32,6 +35,8 @@ export {
   ArrowDropDownIcon,
   ArrowDropUpIcon,
   ArrowForwardIcon,
+  ArrowLeftAltIcon,
+  ArrowRightAltIcon,
   BookmarkIcon,
   CloseIcon,
   DeleteIcon,
@@ -41,10 +46,11 @@ export {
   GithubIcon,
   GoogleIcon,
   MailIcon,
-  MenuIcons,
+  MenuIcon,
   MoreIcon,
   PersonIcon,
   PhoneIcon,
+  PlusIcon,
   RadioButtonCheckedIcon,
   RadioButtonUnCheckedIcon,
   SearchIcon,
