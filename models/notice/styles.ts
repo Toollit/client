@@ -9,11 +9,9 @@ const Header = styled.div`
   padding: 2rem 1.5rem;
 `;
 
-const SubTitle = styled.div`
-  p {
-    font-size: 1.6rem;
-    font-weight: 500;
-  }
+const SubTitle = styled.p`
+  font-size: 1.6rem;
+  font-weight: 500;
 
   span {
     color: ${(props) => props.theme.colors.theme};
