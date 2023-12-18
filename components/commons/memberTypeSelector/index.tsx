@@ -9,10 +9,13 @@ interface MemberTypeProps {
 }
 
 /**
- * @props memberTypeRef - memberType 값들을 가져오기 위한 ref
- * @props memberTypes - 기존에 저장된 memberType 값들
+ * @props memberTypeRef - Ref to get memberType values
+ * @props memberTypes - Previously stored memberTypes values
  */
-const MemberType = ({ memberTypeRef, memberTypes }: MemberTypeProps) => {
+const MemberTypeSelector = ({
+  memberTypeRef,
+  memberTypes,
+}: MemberTypeProps) => {
   const [checked, setChecked] = useState({
     developer: false,
     designer: false,
@@ -38,6 +41,14 @@ const MemberType = ({ memberTypeRef, memberTypes }: MemberTypeProps) => {
     },
     [checked],
   );
+
+  const handleProcessedType = useCallback((type: keyof typeof checked) => {
+    if (type === 'pm') {
+      return type.toUpperCase();
+    } else {
+      return type.charAt(0).toUpperCase() + type.slice(1);
+    }
+  }, []);
 
   useEffect(() => {
     setChecked((prevState) => {
@@ -65,11 +76,7 @@ const MemberType = ({ memberTypeRef, memberTypes }: MemberTypeProps) => {
                 onClick={handleChecked}
                 readOnly
               />
-              <label htmlFor={type}>
-                {type === 'pm'
-                  ? type.toUpperCase()
-                  : type.charAt(0).toUpperCase() + type.slice(1)}
-              </label>
+              <label htmlFor={type}>{handleProcessedType(type)}</label>
             </Type>
           );
         })}
@@ -78,4 +85,4 @@ const MemberType = ({ memberTypeRef, memberTypes }: MemberTypeProps) => {
   );
 };
 
-export default MemberType;
+export default MemberTypeSelector;
