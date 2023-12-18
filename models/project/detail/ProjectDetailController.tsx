@@ -7,7 +7,7 @@ import { ProjectAPIRes, projectFetcher } from '@/apis/projectFetcher';
 import { projectDetailBookmarkStatusKey, projectDetailKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
 import useAuth from '@/hooks/useAuth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { showAlert, hideAlert } from '@/features/alert';
 import { bookmarkAPI } from '@/apis/bookmark';
 import { projectDetailBookmarkStatusFetcher } from '@/apis/projectDetailBookmarkStatusFetcher';
@@ -15,9 +15,6 @@ import { serialize } from '@/middleware/swr/serialize';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { deleteProjectAPI } from '@/apis/deleteProject';
 import { openReport } from '@/features/report';
-import { DeleteIcon, EditSquareIcon } from '@/assets/icons';
-import useTooltip from '@/hooks/useTooltip';
-import { RootState } from '@/store';
 import { loading } from '@/features/loading';
 import { joinProjectAPI } from '@/apis/joinProject';
 import { leaveProjectAPI } from '@/apis/leaveProject';
@@ -29,17 +26,8 @@ const ProjectDetailController = () => {
   const router = useRouter();
   const { nickname: accessUser, authMutate } = useAuth();
   const { mutateTag } = useCachedKeys();
-  const {
-    tooltipAnchorEl,
-    setTooltipAnchorEl,
-    tooltipOpen,
-    handleTooltipOpen,
-    handleTooltipClose,
-  } = useTooltip();
 
   const postId = router.query.id as string;
-
-  const isLoading = useSelector((state: RootState) => state.isLoading.status);
 
   const [isClientRendering, setIsClientRendering] = useState(false);
   const [bookmarkAlertTimeoutId, setBookmarkAlertTimeoutId] =
@@ -182,9 +170,7 @@ const ProjectDetailController = () => {
     setShareAlertTimeoutId(timeoutId);
   }, [dispatch, router, shareAlertTimeoutId]);
 
-  const handleTooltipModify = useCallback(async () => {
-    setTooltipAnchorEl(null);
-
+  const handleModify = useCallback(async () => {
     try {
       const auth = await authMutate();
 
@@ -202,11 +188,9 @@ const ProjectDetailController = () => {
     } catch (error) {
       errorMessage(error);
     }
-  }, [router, postId, authMutate, setTooltipAnchorEl]);
+  }, [router, postId, authMutate]);
 
-  const handleTooltipDelete = useCallback(async () => {
-    setTooltipAnchorEl(null);
-
+  const handleDelete = useCallback(async () => {
     try {
       const auth = await authMutate();
 
@@ -241,9 +225,9 @@ const ProjectDetailController = () => {
     } catch (error) {
       errorMessage(error);
     }
-  }, [postId, router, authMutate, setTooltipAnchorEl, dispatch]);
+  }, [postId, router, authMutate, dispatch]);
 
-  const handleTooltipReport = useCallback(async () => {
+  const handleReport = useCallback(async () => {
     try {
       const auth = await authMutate();
 
@@ -256,7 +240,6 @@ const ProjectDetailController = () => {
       }
 
       if (auth?.success) {
-        setTooltipAnchorEl(null);
         //open report component
         dispatch(
           openReport({
@@ -270,7 +253,7 @@ const ProjectDetailController = () => {
     } catch (error) {
       errorMessage(error);
     }
-  }, [dispatch, router, authMutate, postId, projectDetail, setTooltipAnchorEl]);
+  }, [dispatch, router, authMutate, postId, projectDetail]);
 
   const handleJoinProject = useCallback(async () => {
     const result = confirm('프로젝트에 참가하시겠습니까?');
@@ -392,6 +375,7 @@ const ProjectDetailController = () => {
   }, [bookmarkAlertTimeoutId, shareAlertTimeoutId]);
 
   const props: ProjectDetailViewProps = {
+    isMyPost: projectDetail?.data.writer.nickname === accessUser,
     isRecruitCompleted: handleCheckRecruitComplete(projectDetail?.data),
     isMember: handleCheckMember(projectDetail?.data),
     isClientRendering,
@@ -430,28 +414,9 @@ const ProjectDetailController = () => {
     bookmark: bookmark?.data.bookmark,
     handleBookmark,
     handleShare,
-    handleTooltipOpen,
-    tooltip: {
-      items:
-        projectDetail?.data.writer.nickname === accessUser
-          ? [
-              {
-                text: '수정',
-                icon: <EditSquareIcon />,
-                handler: handleTooltipModify,
-              },
-              {
-                text: '삭제',
-                icon: <DeleteIcon />,
-                handler: handleTooltipDelete,
-              },
-            ]
-          : [{ text: '신고', handler: handleTooltipReport }],
-
-      anchorEl: tooltipAnchorEl,
-      open: tooltipOpen,
-      onClose: handleTooltipClose,
-    },
+    handleModify,
+    handleDelete,
+    handleReport,
     handleJoinProject,
     handleLeaveProject,
   };

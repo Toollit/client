@@ -3,13 +3,13 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import Title from 'components/commons/title';
 import AppLayout from '@/components/appLayout';
-import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
 import Hashtag from '@/components/commons/hashtag';
 import Skeleton from '@/components/commons/skeleton';
 import Report from '@/components/commons/drawer/report';
 import { Button } from '@/components/commons/button';
 import { InnerContainer, ImageWrapper } from '@/styles/commons';
 import BasicTooltip from '@/components/commons/tooltip/basic';
+import EditDrawerButton from '@/components/commons/drawer/edit';
 import {
   ProjectContent,
   ProjectMember,
@@ -77,6 +77,7 @@ interface Content extends Omit<ProjectContent, 'memberTypes'> {
 }
 
 export interface ProjectDetailViewProps {
+  isMyPost: boolean;
   isRecruitCompleted: boolean;
   isMember: boolean;
   isClientRendering: boolean;
@@ -86,13 +87,15 @@ export interface ProjectDetailViewProps {
   bookmark?: boolean;
   handleBookmark: () => void;
   handleShare: () => void;
-  handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  tooltip: TooltipProps;
+  handleModify: () => void;
+  handleDelete: () => void;
+  handleReport: () => void;
   handleJoinProject: () => void;
   handleLeaveProject: () => void;
 }
 
 const ProjectDetailView = ({
+  isMyPost,
   isRecruitCompleted,
   isMember,
   isClientRendering,
@@ -102,8 +105,9 @@ const ProjectDetailView = ({
   bookmark,
   handleBookmark,
   handleShare,
-  handleTooltipOpen,
-  tooltip,
+  handleModify,
+  handleDelete,
+  handleReport,
   handleJoinProject,
   handleLeaveProject,
 }: ProjectDetailViewProps) => {
@@ -161,10 +165,20 @@ const ProjectDetailView = ({
                       <ShareIcon />
                       <span>공유</span>
                     </ShareButton>
-                    <ModifyButton onClick={handleTooltipOpen}>
-                      <MoreIcon width={4} height={3} />
-                    </ModifyButton>
-                    <Tooltip {...tooltip} />
+                    {isMyPost ? (
+                      <EditDrawerButton
+                        icon={<MoreIcon width={4} height={3} />}
+                        option={{ modify: true, delete: true }}
+                        handleModify={handleModify}
+                        handleDelete={handleDelete}
+                      />
+                    ) : (
+                      <EditDrawerButton
+                        icon={<MoreIcon width={4} height={3} />}
+                        option={{ report: true }}
+                        handleReport={handleReport}
+                      />
+                    )}
                   </ButtonContainer>
                 </ProjectContentBottomContainer>
               </ContentContainer>
