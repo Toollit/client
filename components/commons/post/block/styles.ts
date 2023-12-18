@@ -1,10 +1,6 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import {
-  mediaQueryTablet,
-  mediaQueryMobile,
-  mediaQueryLaptop,
-} from '@/styles/mediaQuery';
+import { mediaQueryTablet, mediaQueryLaptop } from '@/styles/mediaQuery';
 
 const Container = styled.div`
   width: 100%;
@@ -137,7 +133,7 @@ const RecruitmentType = styled.div<{
 `;
 
 const Title = styled.h1`
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   padding: 0rem 0.8rem;
   word-wrap: break-word;
 
@@ -146,10 +142,6 @@ const Title = styled.h1`
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-
-  ${mediaQueryMobile} {
-    font-size: 1.4rem;
-  }
 `;
 
 const HashtagContainer = styled.div`
@@ -176,7 +168,7 @@ const MemberBookmarkViewContainer = styled.div`
   align-items: center;
   flex-flow: column-reverse;
 
-  ${mediaQueryMobile} {
+  ${mediaQueryTablet} {
     padding: 1rem 1rem;
     flex-direction: row;
 
