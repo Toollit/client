@@ -19,13 +19,14 @@ const NoticeDetailController = ({}: NoticeDetailControllerProps) => {
   const [notice, setNotice] = useState<Notice>();
 
   useEffect(() => {
+    const postId = router.query.id as string;
+
     for (const key in noticeData) {
       const notice = noticeData[key as Keys];
 
-      const dataOrderId = String(Object.keys(noticeData).indexOf(key) + 1);
+      const noticeId = String(notice.id);
 
-      const postId = router.query.id as string;
-      if (dataOrderId === postId) {
+      if (noticeId === postId) {
         return setNotice(notice);
       }
     }
