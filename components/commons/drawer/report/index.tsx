@@ -162,7 +162,7 @@ const Report = () => {
       <AppLayout
         type='close'
         title='신고하기'
-        onClick={handleClose}
+        handleClose={handleClose}
         fullSize={false}
         footer={false}
       >
