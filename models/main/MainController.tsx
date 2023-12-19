@@ -11,6 +11,7 @@ import {
   projectsBookmarksStatusFetcher,
 } from '@/apis/projectsBookmarksStatusFetcher';
 import { serialize } from '@/middleware/swr/serialize';
+import projectDefaultImage from 'public/static/images/project.jpg';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
@@ -91,27 +92,35 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
       const bookmarks = bookmarksData?.bookmarks;
 
       // bookmark status checking
-      const resultBookmarkStatusCheckProjects = projects?.map((project) => {
+      const bookmarkStatusCheck = projects?.map((project) => {
         return bookmarks?.includes(project.id)
           ? { ...project, bookmark: true }
           : { ...project, bookmark: false };
       });
 
       // member type convert. developer -> Developer, designer -> Designer, pm -> PM, anyone -> Anyone
-      const resultMemberTypeConverter = resultBookmarkStatusCheckProjects?.map(
-        (project) => {
-          return {
-            ...project,
-            memberTypes: project.memberTypes?.map((type) => {
-              return type === 'pm'
-                ? type.toUpperCase()
-                : type.charAt(0).toUpperCase() + type.slice(1);
-            }) as CustomMemberTypes,
-          };
-        },
-      );
+      const MemberTypeConvert = bookmarkStatusCheck?.map((project) => {
+        return {
+          ...project,
+          memberTypes: project.memberTypes?.map((type) => {
+            return type === 'pm'
+              ? type.toUpperCase()
+              : type.charAt(0).toUpperCase() + type.slice(1);
+          }) as CustomMemberTypes,
+        };
+      });
 
-      return resultMemberTypeConverter;
+      const imageFiltering = MemberTypeConvert?.map((project) => {
+        return {
+          ...project,
+          representativeImage:
+            project.representativeImage === 'defaultImage'
+              ? projectDefaultImage
+              : project.representativeImage,
+        };
+      });
+
+      return imageFiltering;
     },
     [],
   );

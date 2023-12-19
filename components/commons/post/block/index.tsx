@@ -2,7 +2,7 @@ import React from 'react';
 import { BookmarkIcon, ViewIcon } from '@/assets/icons';
 import { Project } from '@/apis/projectsFetcher';
 import Hashtag from '@/components/commons/hashtag';
-import projectDefaultImage from 'public/static/images/project.jpg';
+import type { StaticImageData } from 'next/image';
 import {
   Container,
   ImageContainer,
@@ -22,8 +22,10 @@ import {
   ViewIconText,
 } from './styles';
 
-export interface CustomProject extends Omit<Project, 'memberTypes'> {
+export interface CustomProject
+  extends Omit<Project, 'representativeImage' | 'memberTypes'> {
   bookmark: boolean;
+  representativeImage: string | StaticImageData;
   memberTypes: ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 }
 
@@ -36,11 +38,7 @@ const BlockPost = ({ content }: BlockPostProps) => {
     <Container>
       <ImageContainer>
         <ProjectImage
-          src={
-            content.representativeImage === 'defaultImage'
-              ? projectDefaultImage
-              : content.representativeImage
-          }
+          src={content.representativeImage}
           alt='default project image'
           layout='fill'
           priority
@@ -48,9 +46,9 @@ const BlockPost = ({ content }: BlockPostProps) => {
       </ImageContainer>
 
       <RecruitmentTypeContainer>
-        {content.memberTypes?.map((type, index) => {
+        {content.memberTypes.map((type) => {
           return (
-            <RecruitmentType key={`/${type}-${index}`} type={type}>
+            <RecruitmentType key={type} type={type}>
               {type}
             </RecruitmentType>
           );
@@ -61,14 +59,14 @@ const BlockPost = ({ content }: BlockPostProps) => {
 
       <ContentFooterContainer>
         <HashtagContainer>
-          {content.hashtags?.map((hashtag, index) => {
-            return <Hashtag key={`/${hashtag}-${index}`} tagName={hashtag} />;
+          {content.hashtags.map((hashtag) => {
+            return <Hashtag key={hashtag} tagName={hashtag} />;
           })}
         </HashtagContainer>
 
         <MemberBookmarkViewContainer>
           <RecruitCompleteContent>
-            모집완료{' '}
+            모집완료&nbsp;
             <RecruitNumber>
               {content.memberCount} / {content.recruitCount}
             </RecruitNumber>

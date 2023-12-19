@@ -113,10 +113,10 @@ const MainView = ({
         </PostFilterWriteContainer>
 
         <GridContainer container spacing={1}>
-          {projects?.map((project, index) => {
+          {projects?.map((project) => {
             return (
               <Grid
-                key={`/${project.id}`}
+                key={project.id}
                 item
                 xsMobile={6}
                 mobile={6}
