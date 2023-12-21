@@ -6,7 +6,7 @@ import BannerBackground from '@/assets/images/BannerBackground';
 import Bug from '@/assets/images/Bug';
 import NetworkLottieJson from 'public/static/lotties/network.json';
 import LottieAnimation from '@/components/commons/lottie';
-import BlockPost, { CustomProject } from '@/components/commons/post/block';
+import BlockPost, { BlockProject } from '@/components/commons/post/block';
 import Grid from '@mui/material/Grid';
 import Filter from '@/components/commons/filter';
 import Pagination from '@/components/commons/pagination';
@@ -27,13 +27,13 @@ import {
   ThirdSlideNotice,
   BugImage,
   PostFilterWriteContainer,
-  GridContainer,
   PaginationContainer,
   StyledLink,
+  ContentContainer,
 } from './styles';
 
 export interface MainViewProps {
-  projects?: CustomProject[];
+  projects?: BlockProject[];
   handleCreateProject: () => void;
   pagination: {
     totalPage: number;
@@ -112,26 +112,28 @@ const MainView = ({
           />
         </PostFilterWriteContainer>
 
-        <GridContainer container spacing={1}>
-          {projects?.map((project) => {
-            return (
-              <Grid
-                key={project.id}
-                item
-                xsMobile={6}
-                mobile={6}
-                tablet={4}
-                laptop={4}
-              >
-                <Link href={`/project/${project.id}`} passHref>
-                  <StyledLink>
-                    <BlockPost content={project} />
-                  </StyledLink>
-                </Link>
-              </Grid>
-            );
-          })}
-        </GridContainer>
+        <ContentContainer>
+          <Grid container spacing={1}>
+            {projects?.map((project) => {
+              return (
+                <Grid
+                  key={project.id}
+                  item
+                  xsMobile={6}
+                  mobile={6}
+                  tablet={4}
+                  laptop={4}
+                >
+                  <Link href={`/project/${project.id}`} passHref>
+                    <StyledLink>
+                      <BlockPost content={project} />
+                    </StyledLink>
+                  </Link>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </ContentContainer>
 
         <PaginationContainer>
           <Pagination buttons={5} totalPage={pagination.totalPage} />

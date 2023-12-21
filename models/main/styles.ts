@@ -1,6 +1,4 @@
 import styled from '@emotion/styled';
-import Grid from '@mui/material/Grid';
-
 import { mediaQueryTablet } from '@/styles/mediaQuery';
 
 const Banner = styled.div<{ order: 'first' | 'second' | 'third' }>`
@@ -126,7 +124,7 @@ const PostFilterWriteContainer = styled.div`
   padding: 1.5rem 1.5rem 1rem 1.5rem;
 `;
 
-const GridContainer = styled(Grid)`
+const ContentContainer = styled.div`
   padding: 0 1.5rem;
 `;
 
@@ -154,7 +152,7 @@ export {
   ThirdSlideText,
   BugImage,
   PostFilterWriteContainer,
-  GridContainer,
+  ContentContainer,
   PaginationContainer,
   StyledLink,
 };
