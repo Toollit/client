@@ -1,28 +1,29 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { closeDrawer, openDrawer } from '@/features/drawer';
-import { SearchIcon } from '@/assets/icons';
 import ArrowRightAltIcon from '@/assets/icons/ArrowRightAltIcon';
 import Link from 'next/link';
 import { InnerContainer } from '@/styles/commons';
 import {
-  CustomDrawer,
+  MUIDrawer,
   FastLinkContainer,
   Container,
-  SearchIconContainer,
+  SearchIconLayoutContainer,
   SearchInput,
   Description,
   StyledLink,
   LinkContainer,
-  SearchInputContainer,
+  Form,
+  SearchIcon,
 } from './styles';
 
-export default function SearchDrawer() {
-  const dispatch = useDispatch();
-  const searchDrawerOpenState = useSelector(
-    (state: RootState) => state.drawer.search,
-  );
+const SearchDrawer = () => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const searchDrawerOpenState = useAppSelector((state) => state.drawer.search);
+
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const fastLink = useRef<{ href: string; text: string }[]>([
     { href: '/faq', text: '자주 찾는 질문' },
@@ -42,6 +43,19 @@ export default function SearchDrawer() {
     dispatch(closeDrawer({ type: 'search' }));
   };
 
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      const searchText = searchInputRef.current?.value;
+
+      router.push(`/search?q=${searchText}`);
+
+      dispatch(closeDrawer({ type: 'search' }));
+    },
+    [dispatch, router],
+  );
+
   useEffect(() => {
     return () => {
       dispatch(closeDrawer({ type: 'search' }));
@@ -49,19 +63,23 @@ export default function SearchDrawer() {
   }, [dispatch]);
 
   return (
-    <CustomDrawer
+    <MUIDrawer
       anchor={'top'}
       open={searchDrawerOpenState}
       onClose={handleCloseDrawer}
     >
       <Container>
         <InnerContainer>
-          <SearchInputContainer>
-            <SearchInput type='text' placeholder='Getit.kr 검색하기' />
-            <SearchIconContainer>
-              <SearchIcon width={3} height={3} color='#e8e8ed' />
-            </SearchIconContainer>
-          </SearchInputContainer>
+          <Form onSubmit={handleSubmit}>
+            <SearchInput
+              type='text'
+              placeholder='Getit.kr 검색하기'
+              ref={searchInputRef}
+            />
+            <SearchIconLayoutContainer>
+              <SearchIcon />
+            </SearchIconLayoutContainer>
+          </Form>
 
           <Description>빠른 링크</Description>
 
@@ -71,7 +89,9 @@ export default function SearchDrawer() {
                 <LinkContainer key={item.href}>
                   <ArrowRightAltIcon color='#86868b' width={2} height={2} />
                   <Link href={item.href}>
-                    <StyledLink>{item.text}</StyledLink>
+                    <StyledLink onClick={handleCloseDrawer}>
+                      {item.text}
+                    </StyledLink>
                   </Link>
                 </LinkContainer>
               );
@@ -79,6 +99,8 @@ export default function SearchDrawer() {
           </FastLinkContainer>
         </InnerContainer>
       </Container>
-    </CustomDrawer>
+    </MUIDrawer>
   );
-}
+};
+
+export default SearchDrawer;

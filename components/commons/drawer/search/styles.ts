@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import Drawer from '@mui/material/Drawer';
+import { Search } from '@mui/icons-material';
 
-const CustomDrawer = styled(Drawer)`
+const MUIDrawer = styled(Drawer)`
   .MuiDrawer-paper {
     background-color: rgba(232, 232, 237, 0.4);
     background: transparent;
@@ -17,14 +18,25 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const SearchInputContainer = styled.div`
+const Form = styled.form`
   position: relative;
   padding: 6rem 3rem 0rem 3rem;
 `;
 
-const SearchIconContainer = styled.div`
+const SearchIconLayoutContainer = styled.div`
   position: absolute;
   top: 6.5rem;
+`;
+
+const SearchIcon = styled(Search)`
+  width: 3rem;
+  height: 3rem;
+  color: #e8e8ed;
+
+  &.MuiSvgIcon-root {
+    stroke: #000;
+    stroke-width: 0.1;
+  }
 `;
 
 const SearchInput = styled.input`
@@ -65,10 +77,11 @@ const StyledLink = styled.a`
 `;
 
 export {
-  CustomDrawer,
+  MUIDrawer,
   Container,
-  SearchIconContainer,
-  SearchInputContainer,
+  SearchIconLayoutContainer,
+  SearchIcon,
+  Form,
   SearchInput,
   Description,
   FastLinkContainer,
