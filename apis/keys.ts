@@ -47,3 +47,8 @@ export const profileBookmarksKey = (nickname: string, count: number) => {
 export const profileNotificationsKey = (nickname: string) => {
   return `${PROFILE_API_ENDPOINT}/${nickname}?tab=viewNotifications`;
 };
+
+// search page
+export const searchKey = (searchText: string) => {
+  return `/api/search?q=${encodeURIComponent(searchText)}`;
+};
