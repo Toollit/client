@@ -22,7 +22,7 @@ import {
   ViewIconText,
 } from './styles';
 
-export interface CustomProject
+export interface BlockProject
   extends Omit<Project, 'representativeImage' | 'memberTypes'> {
   bookmark: boolean;
   representativeImage: string | StaticImageData;
@@ -30,7 +30,7 @@ export interface CustomProject
 }
 
 interface BlockPostProps {
-  content: CustomProject;
+  content: BlockProject;
 }
 
 const BlockPost = ({ content }: BlockPostProps) => {
