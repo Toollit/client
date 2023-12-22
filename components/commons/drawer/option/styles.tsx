@@ -21,7 +21,7 @@ const CustomMUIStyles = css`
   }
 `;
 
-const CustomDrawerStyles = () => {
+const GlobalStyles = () => {
   return <Global styles={CustomMUIStyles} />;
 };
 
@@ -113,7 +113,7 @@ const CancelButton = styled.button`
 `;
 
 export {
-  CustomDrawerStyles,
+  GlobalStyles,
   OpenButton,
   Container,
   ButtonBox,

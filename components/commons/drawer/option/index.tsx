@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Drawer as MUIDrawer } from '@mui/material';
 import {
-  CustomDrawerStyles,
+  GlobalStyles,
   Container,
   CancelButton,
   ButtonBox,
@@ -76,7 +76,7 @@ const OptionButton = ({
 
   return (
     <div>
-      <CustomDrawerStyles />
+      {open && <GlobalStyles />}
       <React.Fragment>
         <OpenButton onClick={toggleDrawer(true)}>{icon}</OpenButton>
         <MUIDrawer anchor={'bottom'} open={open} onClose={toggleDrawer(false)}>
