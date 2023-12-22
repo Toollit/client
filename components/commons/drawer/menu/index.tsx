@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import { Drawer as MUIDrawer } from '@mui/material';
 import AppLayout from '@/components/appLayout';
 import Link from 'next/link';
 import useAuth from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
 import useLogout from '@/hooks/useLogout';
 import {
-  MenuButton,
+  GlobalStyles,
+  OpenButton,
   MenuIcon,
   Container,
   Icon,
@@ -24,29 +25,22 @@ import {
   LogoutOutlinedIcon,
 } from './styles';
 
-type Anchor = 'top' | 'left' | 'bottom' | 'right';
-
 const Menu = () => {
   const router = useRouter();
   const { nickname } = useAuth();
   const { logOut } = useLogout();
-  const [state, setState] = useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
 
+  const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState<
     { tag: string; icon: React.ReactNode; text: string; url: string }[]
   >([]);
 
   const handleClose = useCallback(() => {
-    setState({ ...state, ['top']: false });
-  }, [state]);
+    setOpen(false);
+  }, []);
 
   const toggleDrawer = useCallback(
-    (anchor: Anchor, open: boolean) =>
+    (open: boolean) =>
       async (event: React.KeyboardEvent | React.MouseEvent) => {
         if (
           event &&
@@ -57,9 +51,9 @@ const Menu = () => {
           return;
         }
 
-        setState({ ...state, [anchor]: open });
+        setOpen(open);
       },
-    [state],
+    [],
   );
 
   const handleAuth = useCallback(
@@ -135,16 +129,12 @@ const Menu = () => {
 
   return (
     <div>
-      <React.Fragment key={'top'}>
-        <MenuButton onClick={toggleDrawer('top', true)}>
+      <React.Fragment>
+        <OpenButton onClick={toggleDrawer(true)}>
           <MenuIcon />
-        </MenuButton>
-        <SwipeableDrawer
-          anchor={'top'}
-          open={state['top']}
-          onClose={toggleDrawer('top', false)}
-          onOpen={toggleDrawer('top', true)}
-        >
+        </OpenButton>
+        <MUIDrawer anchor={'top'} open={open} onClose={toggleDrawer(false)}>
+          <GlobalStyles />
           <AppLayout
             type='close'
             handleClose={handleClose}
@@ -170,7 +160,7 @@ const Menu = () => {
               })}
             </Container>
           </AppLayout>
-        </SwipeableDrawer>
+        </MUIDrawer>
       </React.Fragment>
     </div>
   );
