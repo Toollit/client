@@ -113,6 +113,20 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
       }
 
       const recruitCount = Number(recruitCountRef.current?.value);
+      const members = projectDetail?.data.member.profiles.length;
+
+      if (typeof members === 'undefined') {
+        return;
+      }
+
+      // -1 is writer
+      const memberCount = members - 1;
+
+      if (recruitCount < memberCount) {
+        return alert(
+          `현재 멤버 ${memberCount}명보다 적은 숫자는 입력할 수 없습니다.`,
+        );
+      }
 
       if (1 > recruitCount || 100 < recruitCount || 0 === recruitCount) {
         return alert('모집 인원은 숫자 1~100까지 가능합니다.');
@@ -182,6 +196,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
       dispatch,
       representativeImageFile,
       postId,
+      projectDetail,
     ],
   );
 
