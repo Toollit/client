@@ -76,10 +76,10 @@ const OptionButton = ({
 
   return (
     <div>
-      {open && <GlobalStyles />}
       <React.Fragment>
         <OpenButton onClick={toggleDrawer(true)}>{icon}</OpenButton>
         <MUIDrawer anchor={'bottom'} open={open} onClose={toggleDrawer(false)}>
+          <GlobalStyles />
           <Container
             role='presentation'
             onClick={toggleDrawer(false)}
