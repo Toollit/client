@@ -18,6 +18,10 @@ import {
   NotificationType,
   NotificationDeleteButton,
   MoreIcon,
+  OnlyShowMineNotice,
+  OnlyShowMineNoticeContainer,
+  FakeNoticeContainer,
+  FakeNotice,
 } from './styles';
 
 interface CustomNotification extends Notification {
@@ -31,107 +35,133 @@ export interface NotificationViewProps {
     handleProjectJoinReject: () => void;
     handleDeleteNotification: () => void;
   };
+  isMine: boolean;
 }
 
-const NotificationView = ({ data, each }: NotificationViewProps) => {
+const NotificationView = ({ data, each, isMine }: NotificationViewProps) => {
   return (
     <>
       {data ? (
         <BoxContainer>
           <BoxTitle>알림</BoxTitle>
           <BoxContent>
-            {data.length > 0 ? (
+            {isMine ? (
               <>
-                {data.map((notification) => {
-                  const {
-                    handleProjectJoinApprove,
-                    handleProjectJoinReject,
-                    handleDeleteNotification,
-                  } = each(notification);
+                {data.length > 0 ? (
+                  <>
+                    {data.map((notification) => {
+                      const {
+                        handleProjectJoinApprove,
+                        handleProjectJoinReject,
+                        handleDeleteNotification,
+                      } = each(notification);
 
-                  if (notification.type === 'projectJoinRequest') {
-                    return (
-                      <Content key={notification.id}>
-                        <Source>
-                          <NotificationIcon color='action' />
-                          <Link
-                            href={`/profile/${notification.notificationCreator}`}
-                            passHref
-                          >
-                            <User>{notification.notificationCreator}</User>
-                          </Link>
-                          <Time> • {notification.createdAt}</Time>
-                        </Source>
+                      if (notification.type === 'projectJoinRequest') {
+                        return (
+                          <Content key={notification.id}>
+                            <Source>
+                              <NotificationIcon color='action' />
+                              <Link
+                                href={`/profile/${notification.notificationCreator}`}
+                                passHref
+                              >
+                                <User>{notification.notificationCreator}</User>
+                              </Link>
+                              <Time> • {notification.createdAt}</Time>
+                            </Source>
 
-                        <NotificationType>
-                          {notification.notificationInfo}
-                        </NotificationType>
-                        <Link href={`/project/${notification.projectId}`}>
-                          <a>
-                            <ProjectTitle>
-                              <strong>[프로젝트]</strong>
-                              {notification.projectTitle}
-                            </ProjectTitle>
-                          </a>
-                        </Link>
+                            <NotificationType>
+                              {notification.notificationInfo}
+                            </NotificationType>
+                            <Link href={`/project/${notification.projectId}`}>
+                              <a>
+                                <ProjectTitle>
+                                  <strong>[프로젝트]</strong>
+                                  {notification.projectTitle}
+                                </ProjectTitle>
+                              </a>
+                            </Link>
 
-                        <NotificationController>
-                          <Button
-                            type='submit'
-                            text='수락'
-                            onClick={handleProjectJoinApprove}
-                          />
-                          <Button
-                            type='normal'
-                            text='거절'
-                            onClick={handleProjectJoinReject}
-                          />
-                        </NotificationController>
-                      </Content>
-                    );
-                  } else {
-                    return (
-                      <Content key={notification.id}>
-                        <Source>
-                          <NotificationIcon color='action' />
+                            <NotificationController>
+                              <Button
+                                type='submit'
+                                text='수락'
+                                onClick={handleProjectJoinApprove}
+                              />
+                              <Button
+                                type='normal'
+                                text='거절'
+                                onClick={handleProjectJoinReject}
+                              />
+                            </NotificationController>
+                          </Content>
+                        );
+                      } else {
+                        return (
+                          <Content key={notification.id}>
+                            <Source>
+                              <NotificationIcon color='action' />
 
-                          <Link
-                            href={`/profile/${notification.notificationCreator}`}
-                            passHref
-                          >
-                            <User>{notification.notificationCreator}</User>
-                          </Link>
-                          <Time> • {notification.createdAt}</Time>
-                        </Source>
-                        <NotificationType>
-                          {notification.notificationInfo}
-                        </NotificationType>
+                              <Link
+                                href={`/profile/${notification.notificationCreator}`}
+                                passHref
+                              >
+                                <User>{notification.notificationCreator}</User>
+                              </Link>
+                              <Time> • {notification.createdAt}</Time>
+                            </Source>
+                            <NotificationType>
+                              {notification.notificationInfo}
+                            </NotificationType>
 
-                        <Link href={`/project/${notification.projectId}`}>
-                          <a>
-                            <ProjectTitle>
-                              <strong>[프로젝트]</strong>
-                              {notification.projectTitle}
-                            </ProjectTitle>
-                          </a>
-                        </Link>
+                            <Link href={`/project/${notification.projectId}`}>
+                              <a>
+                                <ProjectTitle>
+                                  <strong>[프로젝트]</strong>
+                                  {notification.projectTitle}
+                                </ProjectTitle>
+                              </a>
+                            </Link>
 
-                        <NotificationDeleteButton>
-                          <OptionButton
-                            icon={<MoreIcon />}
-                            option={{ delete: true }}
-                            handleDelete={handleDeleteNotification}
-                          />
-                        </NotificationDeleteButton>
-                      </Content>
-                    );
-                  }
-                })}
+                            <NotificationDeleteButton>
+                              <OptionButton
+                                icon={<MoreIcon />}
+                                option={{ delete: true }}
+                                handleDelete={handleDeleteNotification}
+                              />
+                            </NotificationDeleteButton>
+                          </Content>
+                        );
+                      }
+                    })}
+                  </>
+                ) : (
+                  <>
+                    <Notice>알림이 없습니다.</Notice>
+                  </>
+                )}
               </>
             ) : (
-              <>
-                <Notice>알림이 없습니다.</Notice>
-              </>
+              <OnlyShowMineNoticeContainer>
+                <FakeNoticeContainer>
+                  <FakeNotice>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Nostrum odit consequatur aperiam est dolorem in et dolor.
+                    Iusto, doloribus temporibus?
+                  </FakeNotice>
+                  <FakeNotice>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Magni, dolor!
+                  </FakeNotice>
+                  <FakeNotice>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Amet placeat, ea praesentium, veritatis enim quia
+                    consequuntur aliquid harum voluptate quaerat, et sit vitae.
+                    Incidunt accusantium reprehenderit hic beatae. Harum, eum?20
+                  </FakeNotice>
+                </FakeNoticeContainer>
+                <OnlyShowMineNotice>본인만 확인 가능합니다.</OnlyShowMineNotice>
+              </OnlyShowMineNoticeContainer>
             )}
           </BoxContent>
         </BoxContainer>

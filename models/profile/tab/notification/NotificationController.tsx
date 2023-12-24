@@ -19,6 +19,7 @@ import useWindowSize from '@/hooks/useWindowSize';
 import { projectJoinApproveAPI } from '@/apis/projectJoinApprove';
 import { projectJoinRejectAPI } from '@/apis/projectJoinReject';
 import { profileNotificationDeleteAPI } from '@/apis/profileNotificationDelete';
+import useAuth from '@/hooks/useAuth';
 
 interface NotificationData {
   isLoaded: boolean;
@@ -40,6 +41,7 @@ const NotificationController = ({
   const dispatch = useAppDispatch();
   const { getCachedData } = useCachedKeys();
   const { isLaptop } = useWindowSize();
+  const { nickname: accessUser } = useAuth();
 
   const [data, setData] = useState<NotificationData>({
     isLoaded: false,
@@ -47,7 +49,10 @@ const NotificationController = ({
   });
 
   const { data: notificationsData, mutate: notificationsMutate } = useSWR(
-    isExistUser && currentTab === 'viewNotifications' && nickname
+    isExistUser &&
+      currentTab === 'viewNotifications' &&
+      nickname &&
+      nickname === accessUser
       ? {
           url: profileNotificationsKey(nickname),
           args: {
@@ -209,6 +214,7 @@ const NotificationController = ({
   const props: NotificationViewProps = {
     data: handleProcessedData(data.data),
     each,
+    isMine: nickname === accessUser,
   };
 
   return <NotificationView {...props} />;
