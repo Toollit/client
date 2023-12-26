@@ -25,6 +25,7 @@ const SearchDrawer = ({ icon }: SearchDrawerProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
+  const searchButtonRef = useRef<HTMLButtonElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const fastLink = useRef<{ href: string; text: string }[]>([
@@ -62,6 +63,10 @@ const SearchDrawer = ({ icon }: SearchDrawerProps) => {
   );
 
   useEffect(() => {
+    searchButtonRef.current?.blur();
+  }, [open]);
+
+  useEffect(() => {
     return () => {
       setOpen(false);
     };
@@ -70,7 +75,9 @@ const SearchDrawer = ({ icon }: SearchDrawerProps) => {
   return (
     <div>
       <React.Fragment>
-        <OpenButton onClick={toggleDrawer(true)}>{icon}</OpenButton>
+        <OpenButton onClick={toggleDrawer(true)} ref={searchButtonRef}>
+          {icon}
+        </OpenButton>
         <MUIDrawer anchor={'top'} open={open} onClose={toggleDrawer(false)}>
           <Container>
             <InnerContainer>
