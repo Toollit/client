@@ -1,14 +1,12 @@
 import React, { useCallback } from 'react';
 import Link from 'next/link';
 import GetitLogo from '@/assets/images/GetitLogo';
-import { closeDrawer, openDrawer } from '@/features/drawer';
-import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { BackButton, CloseButton } from '@/components/commons/button';
-import { RootState } from '@/store';
 import useAuth from '@/hooks/useAuth';
 import { InnerContainer } from '@/styles/commons';
 import Menu from '@/components/commons/drawer/menu';
+import SearchDrawer from '@/components/commons/drawer/search';
 import {
   Container,
   ColumnContainer,
@@ -57,12 +55,7 @@ export type NavProps = Default | None | Close | Back;
 const Nav = <T extends Default | Close | Back | None>(props: T) => {
   const { type } = props;
   const router = useRouter();
-  const dispatch = useDispatch();
-  const { nickname } = useAuth();
-
-  const searchDrawerOpenState = useSelector(
-    (state: RootState) => state.drawer.search,
-  );
+  const { nickname, authMutate } = useAuth();
 
   const handleLogoRoute = useCallback(
     (event: React.MouseEvent) => {
@@ -82,15 +75,9 @@ const Nav = <T extends Default | Close | Back | None>(props: T) => {
     [router],
   );
 
-  const handleSearchDrawer = useCallback(() => {
-    if (searchDrawerOpenState) {
-      return dispatch(closeDrawer({ type: 'search' }));
-    }
-
-    if (!searchDrawerOpenState) {
-      return dispatch(openDrawer({ type: 'search' }));
-    }
-  }, [dispatch, searchDrawerOpenState]);
+  const handleAuthMutate = useCallback(() => {
+    authMutate();
+  }, [authMutate]);
 
   switch (type) {
     case 'default':
@@ -112,14 +99,14 @@ const Nav = <T extends Default | Close | Back | None>(props: T) => {
 
               <ColumnRightContainer>
                 <li>
-                  <SearchIcon onClick={handleSearchDrawer} />
+                  <SearchDrawer icon={<SearchIcon />} />
                 </li>
                 <li>
                   <Link
                     href={nickname ? `/profile/${nickname}` : '/login'}
                     passHref
                   >
-                    <StyledProfileLink>
+                    <StyledProfileLink onClick={handleAuthMutate}>
                       <AccountCircleIcon />
                     </StyledProfileLink>
                   </Link>
