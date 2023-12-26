@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAppDispatch, useAppSelector } from '@/store';
-import { closeDrawer, openDrawer } from '@/features/drawer';
 import ArrowRightAltIcon from '@/assets/icons/ArrowRightAltIcon';
 import Link from 'next/link';
 import { InnerContainer } from '@/styles/commons';
@@ -16,12 +14,16 @@ import {
   LinkContainer,
   Form,
   SearchIcon,
+  OpenButton,
 } from './styles';
 
-const SearchDrawer = () => {
+interface SearchDrawerProps {
+  icon: React.ReactNode;
+}
+
+const SearchDrawer = ({ icon }: SearchDrawerProps) => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const searchDrawerOpenState = useAppSelector((state) => state.drawer.search);
+  const [open, setOpen] = useState(false);
 
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -31,17 +33,20 @@ const SearchDrawer = () => {
     { href: '/contact', text: '1:1 문의' },
   ]);
 
-  const handleCloseDrawer = (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
-      event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' ||
-        (event as React.KeyboardEvent).key === 'Shift')
-    ) {
-      return;
-    }
+  const toggleDrawer = useCallback(
+    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return;
+      }
 
-    dispatch(closeDrawer({ type: 'search' }));
-  };
+      setOpen(open);
+    },
+    [],
+  );
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -51,55 +56,56 @@ const SearchDrawer = () => {
 
       router.push(`/search?q=${searchText}`);
 
-      dispatch(closeDrawer({ type: 'search' }));
+      setOpen(false);
     },
-    [dispatch, router],
+    [router],
   );
 
   useEffect(() => {
     return () => {
-      dispatch(closeDrawer({ type: 'search' }));
+      setOpen(false);
     };
-  }, [dispatch]);
+  }, [toggleDrawer]);
 
   return (
-    <MUIDrawer
-      anchor={'top'}
-      open={searchDrawerOpenState}
-      onClose={handleCloseDrawer}
-    >
-      <Container>
-        <InnerContainer>
-          <Form onSubmit={handleSubmit}>
-            <SearchInput
-              type='text'
-              placeholder='Getit.kr 검색하기'
-              ref={searchInputRef}
-            />
-            <SearchIconLayoutContainer>
-              <SearchIcon />
-            </SearchIconLayoutContainer>
-          </Form>
+    <div>
+      <React.Fragment>
+        <OpenButton onClick={toggleDrawer(true)}>{icon}</OpenButton>
+        <MUIDrawer anchor={'top'} open={open} onClose={toggleDrawer(false)}>
+          <Container>
+            <InnerContainer>
+              <Form onSubmit={handleSubmit}>
+                <SearchInput
+                  type='text'
+                  placeholder='프로젝트 검색'
+                  ref={searchInputRef}
+                />
+                <SearchIconLayoutContainer>
+                  <SearchIcon />
+                </SearchIconLayoutContainer>
+              </Form>
 
-          <Description>빠른 링크</Description>
+              <Description>빠른 링크</Description>
 
-          <FastLinkContainer>
-            {fastLink.current.map((item) => {
-              return (
-                <LinkContainer key={item.href}>
-                  <ArrowRightAltIcon color='#86868b' width={2} height={2} />
-                  <Link href={item.href}>
-                    <StyledLink onClick={handleCloseDrawer}>
-                      {item.text}
-                    </StyledLink>
-                  </Link>
-                </LinkContainer>
-              );
-            })}
-          </FastLinkContainer>
-        </InnerContainer>
-      </Container>
-    </MUIDrawer>
+              <FastLinkContainer>
+                {fastLink.current.map((item) => {
+                  return (
+                    <LinkContainer key={item.href}>
+                      <ArrowRightAltIcon color='#86868b' width={2} height={2} />
+                      <Link href={item.href}>
+                        <StyledLink onClick={toggleDrawer(false)}>
+                          {item.text}
+                        </StyledLink>
+                      </Link>
+                    </LinkContainer>
+                  );
+                })}
+              </FastLinkContainer>
+            </InnerContainer>
+          </Container>
+        </MUIDrawer>
+      </React.Fragment>
+    </div>
   );
 };
 

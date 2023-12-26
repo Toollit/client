@@ -2,6 +2,16 @@ import styled from '@emotion/styled';
 import Drawer from '@mui/material/Drawer';
 import { Search } from '@mui/icons-material';
 
+const OpenButton = styled.button`
+  border: none;
+  width: fit-content;
+  height: fit-content;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const MUIDrawer = styled(Drawer)`
   .MuiDrawer-paper {
     background-color: rgba(232, 232, 237, 0.4);
@@ -77,6 +87,7 @@ const StyledLink = styled.a`
 `;
 
 export {
+  OpenButton,
   MUIDrawer,
   Container,
   SearchIconLayoutContainer,
