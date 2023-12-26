@@ -3,7 +3,6 @@ import Nav, { NavProps } from '@/components/appLayout/nav';
 import Footer from '@/components/appLayout/footer';
 import Alert from '@/components/commons/alert';
 import LoadingCircularProgress from '@/components/commons/loading';
-import SearchDrawer from '@/components/commons/drawer/search';
 import { Container, Content } from './styles';
 
 type AppLayoutProps = NavProps & {
@@ -30,9 +29,6 @@ const AppLayout = (props: AppLayoutProps) => {
 
       {/* Loading bar waiting for a response to a request */}
       <LoadingCircularProgress />
-
-      {/* Drawer that appears when you click the Nav search icon  */}
-      <SearchDrawer />
     </Container>
   );
 };
