@@ -2,6 +2,7 @@ import React from 'react';
 import AppLayout from '@/components/appLayout';
 import { InnerContainer } from '@/styles/commons';
 import Title from '@/components/commons/title';
+import Link from 'next/link';
 import {
   Content,
   FAQFooter,
@@ -243,7 +244,11 @@ const FAQView = ({ handleSearchFAQ, SearchInputRef }: FAQViewProps) => {
         <FAQFooter>
           원하는 답변을 찾지 못하셨나요?
           <br />
-          그럼 <Inquiry>‘문의하기’</Inquiry>를 통해 직접 문의 해주세요.
+          그럼{' '}
+          <Link href={'/contact'}>
+            <Inquiry>‘문의하기’</Inquiry>
+          </Link>
+          를 통해 직접 문의 해주세요.
           <br />
           최대한 빠르게 이메일로 답변드리겠습니다.
         </FAQFooter>

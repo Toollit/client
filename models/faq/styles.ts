@@ -126,7 +126,7 @@ const MUIExpandMoreIcon = styled(ExpandMore)`
   font-size: 2.5rem;
 `;
 
-const Inquiry = styled.span`
+const Inquiry = styled.a`
   font-weight: 600;
   color: ${(props) => props.theme.colors.theme};
   cursor: pointer;

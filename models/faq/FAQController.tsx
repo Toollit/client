@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import FAQView, { FAQViewProps } from './FAQView';
 
 export interface FAQControllerProps {}
