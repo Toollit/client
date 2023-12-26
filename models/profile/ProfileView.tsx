@@ -189,8 +189,8 @@ const ProfileView = ({
                   )}
                 </li>
                 <li>
-                  <Link href='/'>
-                    <a>고객센터</a>
+                  <Link href='/notice'>
+                    <a>공지사항</a>
                   </Link>
                 </li>
               </ul>
@@ -201,12 +201,12 @@ const ProfileView = ({
                   </Link>
                 </li>
                 <li>
-                  <Link href=''>
+                  <Link href='/policy/privacy'>
                     <a>개인정보처리방침</a>
                   </Link>
                 </li>
                 <li>
-                  <Link href=''>
+                  <Link href='/policy/terms-of-service'>
                     <a>이용약관</a>
                   </Link>
                 </li>
