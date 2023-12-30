@@ -69,9 +69,9 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
       }
 
       if (!auth?.success) {
-        const result = confirm('로그인 후 이용 가능합니다.');
+        const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
 
-        if (result) {
+        if (wantsToLogin) {
           return router.push('/login');
         }
       }

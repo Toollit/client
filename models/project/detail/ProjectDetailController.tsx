@@ -268,9 +268,9 @@ const ProjectDetailController = () => {
       const auth = await authMutate();
 
       if (!auth?.success) {
-        const result = confirm('로그인 후 이용 가능합니다.');
+        const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
 
-        if (result) {
+        if (wantsToLogin) {
           router.push('/login');
         }
       }
@@ -312,9 +312,9 @@ const ProjectDetailController = () => {
       }
 
       if (!auth?.success) {
-        const result = confirm('로그인 후 이용 가능합니다.');
+        const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
 
-        if (result) {
+        if (wantsToLogin) {
           router.push('/login');
         }
       }
