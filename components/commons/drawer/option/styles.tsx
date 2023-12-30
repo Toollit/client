@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { Drawer, Box } from '@mui/material';
 import {
   DeleteForeverOutlined,
@@ -40,13 +41,16 @@ const ButtonBox = styled.ul`
 
   button {
     border-bottom: 1px solid ${(props) => props.theme.colors.border.divider};
-    :nth-of-type(1) {
+
+    &:nth-of-type(1) {
       border-top-left-radius: 1.2rem;
       border-top-right-radius: 1.2rem;
     }
-    :nth-last-of-type(1) {
+
+    &:nth-last-of-type(1) {
       border-bottom-left-radius: 1.2rem;
       border-bottom-right-radius: 1.2rem;
+      border-bottom: none;
     }
   }
 `;
@@ -65,22 +69,22 @@ const Button = styled.button`
   border-style: none;
 `;
 
-const DeleteIcon = styled(DeleteForeverOutlined)`
+const commonIconStyles = () => css`
   width: 3rem;
   height: 3rem;
   color: #000;
+`;
+
+const DeleteIcon = styled(DeleteForeverOutlined)`
+  ${commonIconStyles}
 `;
 
 const EditIcon = styled(ModeEditOutlineOutlined)`
-  width: 3rem;
-  height: 3rem;
-  color: #000;
+  ${commonIconStyles}
 `;
 
 const ReportIcon = styled(ErrorOutlineOutlined)`
-  width: 3rem;
-  height: 3rem;
-  color: #000;
+  ${commonIconStyles}
 `;
 
 const Icon = styled.div`
