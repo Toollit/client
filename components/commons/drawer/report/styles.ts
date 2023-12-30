@@ -50,7 +50,7 @@ const ReasonList = styled.ul`
     background: url('/static/icons/radio/radio_button_unchecked_FILL0.svg')
       no-repeat center;
 
-    :checked {
+    &:checked {
       background: url('/static/icons/radio/radio_button_checked_FILL0_theme.svg')
         no-repeat center;
     }

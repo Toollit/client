@@ -3,8 +3,7 @@ import { useRouter } from 'next/router';
 import Dialog from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { closeReport } from '@/features/report';
 import { BottomButton } from '@/components/commons/button';
 import AppLayout from '@/components/appLayout';
@@ -35,15 +34,15 @@ const Transition = forwardRef(function Transition(
 });
 
 const Report = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const isLoading = useSelector((state: RootState) => state.isLoading.status);
-  const open = useSelector((state: RootState) => state.report.open);
-  const postType = useSelector((state: RootState) => state.report.postType);
-  const postId = useSelector((state: RootState) => state.report.postId);
-  const writer = useSelector((state: RootState) => state.report.writer);
-  const title = useSelector((state: RootState) => state.report.title);
+  const isLoading = useAppSelector((state) => state.isLoading.status);
+  const open = useAppSelector((state) => state.report.open);
+  const postType = useAppSelector((state) => state.report.postType);
+  const postId = useAppSelector((state) => state.report.postId);
+  const writer = useAppSelector((state) => state.report.writer);
+  const title = useAppSelector((state) => state.report.title);
 
   const [showTextarea, setShowTextarea] = useState(false);
   const [textCount, setTextCount] = useState(0);
