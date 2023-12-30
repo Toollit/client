@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { css, Global } from '@emotion/react';
+import { css } from '@emotion/react';
 import { Menu } from '@mui/icons-material';
 import {
   AccountCircleOutlined,
@@ -12,18 +12,6 @@ import {
   LiveHelpOutlined,
   LogoutOutlined,
 } from '@mui/icons-material';
-
-const CustomMUIStyles = css`
-  &.MuiPaper-root {
-  }
-
-  &.MuiDrawer-paper {
-  }
-`;
-
-const GlobalStyles = () => {
-  return <Global styles={CustomMUIStyles} />;
-};
 
 const OpenButton = styled.button`
   width: 3.6rem;
@@ -113,7 +101,6 @@ const LogoutOutlinedIcon = styled(LogoutOutlined)`
 `;
 
 export {
-  GlobalStyles,
   OpenButton,
   MenuIcon,
   Container,

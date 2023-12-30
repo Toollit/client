@@ -6,7 +6,6 @@ import useAuth from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
 import useLogout from '@/hooks/useLogout';
 import {
-  GlobalStyles,
   OpenButton,
   MenuIcon,
   Container,
@@ -39,7 +38,7 @@ const Menu = () => {
     setOpen(false);
   }, []);
 
-  const toggleDrawer = useCallback(
+  const handleToggleDrawer = useCallback(
     (open: boolean) =>
       async (event: React.KeyboardEvent | React.MouseEvent) => {
         if (
@@ -82,7 +81,6 @@ const Menu = () => {
       },
       {
         tag: 'project',
-
         icon: <ArticleIcon />,
         text: '내 프로젝트',
         url: nickname ? `/profile/${nickname}?tab=viewProjects` : '/login',
@@ -130,11 +128,14 @@ const Menu = () => {
   return (
     <div>
       <React.Fragment>
-        <OpenButton onClick={toggleDrawer(true)}>
+        <OpenButton onClick={handleToggleDrawer(true)}>
           <MenuIcon />
         </OpenButton>
-        <MUIDrawer anchor={'top'} open={open} onClose={toggleDrawer(false)}>
-          <GlobalStyles />
+        <MUIDrawer
+          anchor={'top'}
+          open={open}
+          onClose={handleToggleDrawer(false)}
+        >
           <AppLayout
             type='close'
             handleClose={handleClose}
