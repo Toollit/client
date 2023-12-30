@@ -1,29 +1,21 @@
 import styled from '@emotion/styled';
-import { css, Global } from '@emotion/react';
-import { Box } from '@mui/material';
+import { Drawer, Box } from '@mui/material';
 import {
   DeleteForeverOutlined,
   ModeEditOutlineOutlined,
   ErrorOutlineOutlined,
 } from '@mui/icons-material';
 
-const CustomMUIStyles = css`
-  &.MuiPaper-root {
+const MUIDrawer = styled(Drawer)`
+  & .MuiDrawer-paper {
+    background-color: transparent;
+    box-shadow: none;
   }
 
-  &.MuiDrawer-paper {
-    background-color: transparent !important;
-    box-shadow: none !important;
-  }
-
-  &.MuiBox-root {
+  & .MuiBox-root {
     background-color: transparent;
   }
 `;
-
-const GlobalStyles = () => {
-  return <Global styles={CustomMUIStyles} />;
-};
 
 const OpenButton = styled.button`
   border: none;
@@ -113,8 +105,8 @@ const CancelButton = styled.button`
 `;
 
 export {
-  GlobalStyles,
   OpenButton,
+  MUIDrawer,
   Container,
   ButtonBox,
   Button,

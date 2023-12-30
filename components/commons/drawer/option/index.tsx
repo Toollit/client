@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Drawer as MUIDrawer } from '@mui/material';
 import {
-  GlobalStyles,
+  OpenButton,
+  MUIDrawer,
   Container,
   CancelButton,
   ButtonBox,
@@ -11,7 +11,6 @@ import {
   DeleteIcon,
   EditIcon,
   ReportIcon,
-  OpenButton,
 } from './styles';
 
 interface Buttons {
@@ -79,7 +78,6 @@ const OptionButton = ({
       <React.Fragment>
         <OpenButton onClick={toggleDrawer(true)}>{icon}</OpenButton>
         <MUIDrawer anchor={'bottom'} open={open} onClose={toggleDrawer(false)}>
-          <GlobalStyles />
           <Container
             role='presentation'
             onClick={toggleDrawer(false)}
