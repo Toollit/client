@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 const BoxContent = styled.ul``;
 
 const Content = styled.li`
-  :hover {
+  &:hover {
     background-color: #f0f0f0;
   }
 

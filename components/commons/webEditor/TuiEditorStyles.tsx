@@ -125,7 +125,7 @@ const TitleInput = styled.input`
   border-radius: ${(props) => props.theme.borderRadius.sharp};
   border: 1px solid ${(props) => props.theme.colors.border.base};
 
-  :focus {
+  &:focus {
     outline: none;
   }
 `;

@@ -48,7 +48,7 @@ const RecruitCountInput = styled.input`
     opacity: 1;
   }
 
-  :focus {
+  &:focus {
     outline: none;
   }
 `;

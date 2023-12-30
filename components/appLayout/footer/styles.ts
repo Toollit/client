@@ -18,7 +18,7 @@ const NoticeArea = styled.div`
     color: #000;
     font-weight: 500;
 
-    :hover {
+    &:hover {
       text-decoration-line: underline;
     }
   }
@@ -49,7 +49,7 @@ const PartnersContainer = styled.div`
       }
     }
 
-    :hover {
+    &:hover {
       text-decoration-line: underline;
     }
   }
@@ -75,7 +75,7 @@ const DeveloperContainer = styled.div`
       }
     }
 
-    :hover {
+    &:hover {
       text-decoration-line: underline;
     }
   }
@@ -116,7 +116,7 @@ const CorpArea = styled.div`
         font-size: 1.3rem;
         color: #000;
 
-        :hover {
+        &:hover {
           text-decoration-line: underline;
         }
       }

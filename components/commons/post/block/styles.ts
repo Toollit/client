@@ -18,7 +18,7 @@ const Container = styled.div`
   cursor: pointer;
 
   ${mediaQueryLaptop} {
-    :hover {
+    &:hover {
       img {
         transform: scale(1.1);
         transition: all 1s ease 0s;

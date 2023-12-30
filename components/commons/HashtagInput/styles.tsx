@@ -17,7 +17,7 @@ const HashtagInputField = styled.input`
   align-items: center;
   padding: 0 1rem;
   height: 4rem;
-  :focus {
+  &:focus {
     outline: none;
   }
 `;

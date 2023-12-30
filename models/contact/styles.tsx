@@ -50,7 +50,7 @@ const MUIOption = styled(MenuItem)`
   }
 
   &.MuiMenuItem-root {
-    :hover {
+    &:hover {
       background-color: #f2f2f2;
     }
   }

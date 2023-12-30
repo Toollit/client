@@ -118,7 +118,7 @@ const UpdatedAt = styled.div`
   background-color: #fff;
 
   /* 모바일 버전에서 수정시간 정보는 hover event가 고정되어도 되는곳이므로 do not add mediaQuery */
-  :hover {
+  &:hover {
     opacity: 0;
   }
 `;
