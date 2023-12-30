@@ -46,7 +46,7 @@ const OptionButton = ({
     report: { icon: <ReportIcon />, text: '신고하기', onClick: handleReport },
   });
 
-  const toggleDrawer = useCallback(
+  const handleToggleDrawer = useCallback(
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
         event.type === 'keydown' &&
@@ -76,12 +76,16 @@ const OptionButton = ({
   return (
     <div>
       <React.Fragment>
-        <OpenButton onClick={toggleDrawer(true)}>{icon}</OpenButton>
-        <MUIDrawer anchor={'bottom'} open={open} onClose={toggleDrawer(false)}>
+        <OpenButton onClick={handleToggleDrawer(true)}>{icon}</OpenButton>
+        <MUIDrawer
+          anchor={'bottom'}
+          open={open}
+          onClose={handleToggleDrawer(false)}
+        >
           <Container
             role='presentation'
-            onClick={toggleDrawer(false)}
-            onKeyDown={toggleDrawer(false)}
+            onClick={handleToggleDrawer(false)}
+            onKeyDown={handleToggleDrawer(false)}
           >
             <ButtonBox>
               {buttons.map((item) => (
