@@ -17,7 +17,7 @@ interface SwipeableTabViewProps {
   children: React.ReactNode[];
 }
 
-const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
+const SwipeableTabViews = ({ tabs, children }: SwipeableTabViewProps) => {
   const dispatch = useAppDispatch();
 
   const { push, query } = useRouter();
@@ -172,4 +172,4 @@ const SwipeableTabView = ({ tabs, children }: SwipeableTabViewProps) => {
   );
 };
 
-export default SwipeableTabView;
+export default SwipeableTabViews;
