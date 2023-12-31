@@ -9,7 +9,11 @@ interface CustomMuiTabsProps {
 
 const CustomMuiTabs = styled(Tabs)<CustomMuiTabsProps>`
   &.MuiTabs-root {
-    width: calc(100vw - 3rem);
+    // The safe-area-inset value is required because of the problem of horizontal scrolling when using mobile in landscape mode.
+    // calc(100% - 3rem) is works the same way
+    width: calc(
+      100vw - 3rem - env(safe-area-inset-right) - env(safe-area-inset-left)
+    );
     margin: 0 auto;
   }
 
@@ -35,7 +39,8 @@ const CustomMuiTab = styled(Tab)`
 `;
 
 const swipeableViewStyles = css`
-  ::-webkit-scrollbar {
+  // Scrollbar is created for each view. Swipe the screen and the scrollbar is displayed for each view block. To make this invisible, I created a scrollbar width of zero.
+  &::-webkit-scrollbar {
     width: 0;
   }
 `;
