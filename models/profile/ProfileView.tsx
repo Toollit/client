@@ -7,7 +7,7 @@ import Skeleton from '@/components/commons/skeleton';
 import Dialog from '@/components/commons/dialog';
 import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
 import { ImageWrapper } from '@/styles/commons';
-import SwipeableTabView from '@/components/commons/swipeableView/swipeableTabViews';
+import SwipeableTabViews from '@/components/commons/swipeableViews/swipeableTabViews';
 import ProjectController from './tab/project/ProjectController';
 import NotificationController from './tab/notification/NotificationController';
 import ProfileFooterLink from './footer/Footer';
@@ -253,7 +253,7 @@ const ProfileView = ({
           )}
 
           {isLaptop !== null && !isLaptop && (
-            <SwipeableTabView tabs={tabs}>
+            <SwipeableTabViews tabs={tabs}>
               <ViewContainer>
                 <ProfileInfoController
                   currentTab={currentTab}
@@ -309,7 +309,7 @@ const ProfileView = ({
                   handleLogInOut={handleLogInOut}
                 />
               </ViewContainer>
-            </SwipeableTabView>
+            </SwipeableTabViews>
           )}
         </ColumnRightContainer>
         <Dialog />
