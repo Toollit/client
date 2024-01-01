@@ -6,8 +6,16 @@ export const projectsKey = (page: number, order: 'new' | 'popularity') => {
   return `/api/post/projects?page=${page}&order=${order ?? 'new'}`;
 };
 
+// get bookmark ids
 export const bookmarksStatusKey = () => {
   return `/api/post/bookmark/bookmarksStatus`;
+};
+
+// check bookmark status for a particular post
+export const bookmarkStatusKey = (postId: string) => {
+  return `/api/post/bookmark/bookmarkStatus/${postId}`;
+
+  return `${PROJECT_DETAIL_API_ENDPOINT}/${postId}/bookmarkStatus`;
 };
 
 // project detail page
@@ -15,10 +23,6 @@ export const PROJECT_DETAIL_API_ENDPOINT = '/api/post/project';
 
 export const projectDetailKey = (postId: string) => {
   return `${PROJECT_DETAIL_API_ENDPOINT}/${postId}`;
-};
-
-export const projectDetailBookmarkStatusKey = (postId: string) => {
-  return `${PROJECT_DETAIL_API_ENDPOINT}/${postId}/bookmarkStatus`;
 };
 
 // profile page

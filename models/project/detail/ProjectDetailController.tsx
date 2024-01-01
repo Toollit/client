@@ -4,13 +4,13 @@ import { changeDateFormat, dateFromNow } from '@/utils/changeDateFormat';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { ProjectAPIRes, projectFetcher } from '@/apis/projectFetcher';
-import { projectDetailBookmarkStatusKey, projectDetailKey } from '@/apis/keys';
+import { bookmarkStatusKey, projectDetailKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
 import useAuth from '@/hooks/useAuth';
 import { useDispatch } from 'react-redux';
 import { showAlert, hideAlert } from '@/features/alert';
 import { bookmarkAPI } from '@/apis/bookmark';
-import { projectDetailBookmarkStatusFetcher } from '@/apis/projectDetailBookmarkStatusFetcher';
+import { bookmarkStatusFetcher } from '@/apis/bookmarkStatusFetcher';
 import { serialize } from '@/middleware/swr/serialize';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { deleteProjectAPI } from '@/apis/deleteProject';
@@ -58,14 +58,14 @@ const ProjectDetailController = () => {
   const { data: bookmark, mutate: bookmarkMutate } = useSWR(
     postId
       ? {
-          url: projectDetailBookmarkStatusKey(postId),
+          url: bookmarkStatusKey(postId),
           args: {
             page: `/project/${postId}`,
             tag: 'projectDetailBookmarkStatus',
           },
         }
       : null,
-    projectDetailBookmarkStatusFetcher,
+    bookmarkStatusFetcher,
     {
       dedupingInterval: 60 * 10 * 1000,
       errorRetryCount: 0,
