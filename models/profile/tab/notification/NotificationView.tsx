@@ -156,8 +156,7 @@ const NotificationView = ({ data, each, isMine }: NotificationViewProps) => {
                   <FakeNotice>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Amet placeat, ea praesentium, veritatis enim quia
-                    consequuntur aliquid harum voluptate quaerat, et sit vitae.
-                    Incidunt accusantium reprehenderit hic beatae. Harum, eum?20
+                    consequuntur aliquid harum
                   </FakeNotice>
                 </FakeNoticeContainer>
                 <OnlyShowMineNotice>본인만 확인 가능합니다.</OnlyShowMineNotice>
