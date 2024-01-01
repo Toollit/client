@@ -2,7 +2,6 @@ import { configureStore, AnyAction } from '@reduxjs/toolkit';
 import { ThunkDispatch } from 'redux-thunk';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import logger from 'redux-logger';
-import userSlice from 'features/user';
 import signUpSlice from '@/features/signUp';
 import drawerSlice from '@/features/drawer';
 import swipeableViewSlice from '@/features/swipeableView';
@@ -18,7 +17,6 @@ const isDev = process.env.NODE_ENV !== 'production';
 const makeStore = () => {
   const store = configureStore({
     reducer: {
-      user: userSlice,
       signUp: signUpSlice,
       drawer: drawerSlice,
       swipeableView: swipeableViewSlice,
