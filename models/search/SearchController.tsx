@@ -42,7 +42,7 @@ const SearchController = ({}: SearchControllerProps) => {
   const { data: bookmarks } = useSWR(
     {
       url: bookmarksStatusKey(),
-      args: { page: '/search', tag: 'projectsBookmarksStatus' },
+      args: { page: '/search', tag: 'bookmarksStatus' },
     },
     bookmarksStatusFetcher,
     {
