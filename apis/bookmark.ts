@@ -15,9 +15,6 @@ export interface BookmarkAPIRes {
 export const bookmarkAPI = async (
   data: BookmarkAPIReq,
 ): Promise<BookmarkAPIRes | undefined> => {
-  const response = await serverInstance.post(
-    '/api/post/project/bookmark',
-    data,
-  );
+  const response = await serverInstance.post('/api/post/bookmark/toggle', data);
   return response.data;
 };
