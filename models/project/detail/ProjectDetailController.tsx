@@ -113,7 +113,7 @@ const ProjectDetailController = () => {
         const status = response?.data.status;
 
         bookmarkMutate();
-        mutateTag({ tag: 'projectsBookmarksStatus' });
+        mutateTag({ tag: 'bookmarksStatus' });
         mutateTag({ tag: 'projects' });
 
         clearTimeout(bookmarkAlertTimeoutId);

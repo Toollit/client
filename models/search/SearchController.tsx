@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { SearchAPIRes, searchFetcher } from '@/apis/searchFetcher';
 import { serialize } from '@/middleware/swr/serialize';
-import { projectsBookmarksStatusKey, searchKey } from '@/apis/keys';
+import { bookmarksStatusKey, searchKey } from '@/apis/keys';
 import projectDefaultImage from 'public/static/images/project.jpg';
 import {
-  ProjectsBookmarkStatusAPIRes,
-  projectsBookmarksStatusFetcher,
-} from '@/apis/projectsBookmarksStatusFetcher';
+  BookmarksStatusAPIRes,
+  bookmarksStatusFetcher,
+} from '@/apis/bookmarksStatusFetcher';
 import { errorMessage } from '@/apis/errorMessage';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
@@ -41,10 +41,10 @@ const SearchController = ({}: SearchControllerProps) => {
 
   const { data: bookmarks } = useSWR(
     {
-      url: projectsBookmarksStatusKey(),
+      url: bookmarksStatusKey(),
       args: { page: '/search', tag: 'projectsBookmarksStatus' },
     },
-    projectsBookmarksStatusFetcher,
+    bookmarksStatusFetcher,
     {
       dedupingInterval: 60 * 10 * 1000,
       errorRetryCount: 0,
@@ -61,7 +61,7 @@ const SearchController = ({}: SearchControllerProps) => {
       bookmarksData,
     }: {
       projectsData?: SearchAPIRes['data'];
-      bookmarksData?: ProjectsBookmarkStatusAPIRes['data'];
+      bookmarksData?: BookmarksStatusAPIRes['data'];
     }) => {
       if (!projectsData && !bookmarksData) {
         return;

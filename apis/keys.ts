@@ -6,8 +6,8 @@ export const projectsKey = (page: number, order: 'new' | 'popularity') => {
   return `/api/post/projects?page=${page}&order=${order ?? 'new'}`;
 };
 
-export const projectsBookmarksStatusKey = () => {
-  return `/api/post/projects/bookmarkStatus`;
+export const bookmarksStatusKey = () => {
+  return `/api/post/bookmark/bookmarksStatus`;
 };
 
 // project detail page

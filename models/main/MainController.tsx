@@ -3,13 +3,13 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import MainView, { MainViewProps } from './MainView';
 import { ProjectsAPIRes, projectsFetcher } from '@/apis/projectsFetcher';
-import { projectsBookmarksStatusKey, projectsKey } from '@/apis/keys';
+import { bookmarksStatusKey, projectsKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
 import useAuth from '@/hooks/useAuth';
 import {
-  ProjectsBookmarkStatusAPIRes,
-  projectsBookmarksStatusFetcher,
-} from '@/apis/projectsBookmarksStatusFetcher';
+  BookmarksStatusAPIRes,
+  bookmarksStatusFetcher,
+} from '@/apis/bookmarksStatusFetcher';
 import { serialize } from '@/middleware/swr/serialize';
 import projectDefaultImage from 'public/static/images/project.jpg';
 
@@ -46,10 +46,10 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
 
   const { data: bookmarks } = useSWR(
     {
-      url: projectsBookmarksStatusKey(),
-      args: { page: '/', tag: 'projectsBookmarksStatus' },
+      url: bookmarksStatusKey(),
+      args: { page: '/', tag: 'bookmarksStatus' },
     },
-    projectsBookmarksStatusFetcher,
+    bookmarksStatusFetcher,
     {
       dedupingInterval: 60 * 10 * 1000,
       errorRetryCount: 0,
@@ -86,7 +86,7 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
       bookmarksData,
     }: {
       projectsData?: ProjectsAPIRes['data'];
-      bookmarksData?: ProjectsBookmarkStatusAPIRes['data'];
+      bookmarksData?: BookmarksStatusAPIRes['data'];
     }) => {
       const projects = projectsData?.projects;
       const bookmarks = bookmarksData?.bookmarks;
