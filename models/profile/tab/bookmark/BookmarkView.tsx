@@ -21,16 +21,15 @@ import {
 
 interface CustomBookmark extends Omit<Project, 'memberTypes'> {
   memberTypes: ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
-}
-
-export interface BookmarkData {
-  bookmarks: CustomBookmark[] | null;
-  total: number;
-  showLoadMore: boolean;
+  bookmark: boolean;
 }
 
 export interface BookmarkViewProps {
-  data: BookmarkData | null;
+  data?: {
+    bookmarks: CustomBookmark[] | null;
+    total: number;
+    showLoadMore: boolean;
+  };
   loadMore: () => void;
 }
 
@@ -43,9 +42,9 @@ const BookmarkView = ({ data, loadMore }: BookmarkViewProps) => {
           <BoxContent>
             {data.total > 0 ? (
               <>
-                {data.bookmarks?.map((project, index) => {
+                {data.bookmarks?.map((project) => {
                   return (
-                    <Content key={`/profile/project/${project.id}`}>
+                    <Content key={project.id}>
                       <Link href={`/project/${project.id}`} passHref>
                         <StyledContentLink>
                           <RecruitmentTypeContainer>
@@ -63,7 +62,7 @@ const BookmarkView = ({ data, loadMore }: BookmarkViewProps) => {
                           <HashtagContainer>
                             {project.hashtags.map((hashtag) => {
                               return (
-                                <Hashtag key={`${hashtag}`} tagName={hashtag} />
+                                <Hashtag key={hashtag} tagName={hashtag} />
                               );
                             })}
                           </HashtagContainer>
@@ -77,7 +76,7 @@ const BookmarkView = ({ data, loadMore }: BookmarkViewProps) => {
                               <BookmarkIcon
                                 width={2.5}
                                 height={2.5}
-                                fill={true}
+                                fill={project.bookmark}
                               />
                               <span>{project.bookmarkCount}</span>
                             </div>

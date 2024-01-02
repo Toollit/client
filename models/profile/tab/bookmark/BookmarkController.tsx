@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import BookmarkView, { BookmarkViewProps } from './BookmarkView';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
-import { profileBookmarksKey } from '@/apis/keys';
+import { bookmarksStatusKey, profileBookmarksKey } from '@/apis/keys';
 import {
   ProfileBookmarksAPIRes,
   profileBookmarksFetcher,
@@ -14,6 +14,10 @@ import { ProfileTab } from '@/models/profile/ProfileController';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
 import { useAppDispatch } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
+import {
+  BookmarksStatusAPIRes,
+  bookmarksStatusFetcher,
+} from '@/apis/bookmarksStatusFetcher';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
@@ -94,27 +98,65 @@ const BookmarkController = ({
     },
   );
 
-  const handleBookmarkDataResponse = useCallback(
-    (data: ProfileBookmarksAPIRes['data'] | null) => {
-      if (!data) {
-        return null;
+  const { data: bookmarksStatusData } = useSWR(
+    isExistUser && currentTab === 'viewBookmarks' && nickname
+      ? {
+          url: bookmarksStatusKey(),
+          args: { page: '/', tag: 'bookmarksStatus' },
+        }
+      : null,
+    bookmarksStatusFetcher,
+    {
+      dedupingInterval: 60 * 10 * 1000,
+      errorRetryCount: 0,
+      onError(err, key, config) {
+        errorMessage(err);
+      },
+      use: [serialize],
+    },
+  );
+
+  const handleProcessedData = useCallback(
+    ({
+      bookmarkProjectsData,
+      bookmarksStatusData,
+    }: {
+      bookmarkProjectsData?: ProfileBookmarksAPIRes['data'];
+      bookmarksStatusData?: BookmarksStatusAPIRes['data'];
+    }) => {
+      if (!bookmarkProjectsData || !bookmarksStatusData) {
+        return;
       }
 
-      const convertedData = data?.bookmarks?.map((project) => {
-        return {
-          ...project,
-          memberTypes: project.memberTypes.map((type) => {
-            return type === 'pm'
-              ? type.toUpperCase()
-              : type.charAt(0).toUpperCase() + type.slice(1);
-          }) as CustomMemberTypes,
-        };
+      const convertedMemberTypes = bookmarkProjectsData?.bookmarks?.map(
+        (project) => {
+          return {
+            ...project,
+            memberTypes: project.memberTypes.map((type) => {
+              return type === 'pm'
+                ? type.toUpperCase()
+                : type.charAt(0).toUpperCase() + type.slice(1);
+            }) as CustomMemberTypes,
+          };
+        },
+      );
+
+      const bookmarks = bookmarksStatusData?.bookmarks;
+
+      // bookmark status checking
+      const bookmarksStatusCheck = convertedMemberTypes?.map((project) => {
+        return bookmarks?.includes(project.id)
+          ? { ...project, bookmark: true }
+          : { ...project, bookmark: false };
       });
 
+      const projects = bookmarksStatusCheck;
+
       return {
-        bookmarks: convertedData,
-        total: data.total,
-        showLoadMore: data.bookmarks?.length !== data.total,
+        bookmarks: projects,
+        total: bookmarkProjectsData.total,
+        showLoadMore:
+          bookmarkProjectsData.bookmarks?.length !== bookmarkProjectsData.total,
       };
     },
     [],
@@ -181,7 +223,10 @@ const BookmarkController = ({
   ]);
 
   const props: BookmarkViewProps = {
-    data: handleBookmarkDataResponse(data.data),
+    data: handleProcessedData({
+      bookmarkProjectsData: profileBookmarksData?.data,
+      bookmarksStatusData: bookmarksStatusData?.data,
+    }),
     loadMore: handleBookmarkLoadMore,
   };
 
