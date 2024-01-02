@@ -25,7 +25,7 @@ const ProjectDetailController = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { nickname: accessUser, authMutate } = useAuth();
-  const { mutateTag } = useCachedKeys();
+  const { mutateTag, mutatePage } = useCachedKeys();
 
   const postId = router.query.id as string;
 
@@ -211,6 +211,8 @@ const ProjectDetailController = () => {
 
             await deleteProjectAPI({ postId });
 
+            mutatePage({ page: '/' });
+
             router.replace('/');
 
             router.events.on('routeChangeComplete', () => {
@@ -225,7 +227,7 @@ const ProjectDetailController = () => {
     } catch (error) {
       errorMessage(error);
     }
-  }, [postId, router, authMutate, dispatch]);
+  }, [postId, router, authMutate, dispatch, mutatePage]);
 
   const handleReport = useCallback(async () => {
     try {
