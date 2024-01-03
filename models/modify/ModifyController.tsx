@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { loading } from '@/features/loading';
 import useTooltip from '@/hooks/useTooltip';
-import { StaticImageData } from 'next/image';
+import { StaticImageData } from "next/legacy/image";
 import projectDefaultImage from 'public/static/images/project.jpg';
 import useWindowSize from '@/hooks/useWindowSize';
 import useCachedKeys from '@/hooks/useCachedKeys';

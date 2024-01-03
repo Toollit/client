@@ -1,7 +1,7 @@
 import { mediaQueryLaptop } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 import { Theme, css } from '@emotion/react';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { ProfileTab } from './ProfileController';
 
 const Container = styled.div`

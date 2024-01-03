@@ -8,7 +8,7 @@ import { Editor } from '@toast-ui/react-editor';
 import { ProjectDetail } from '@/apis/projectFetcher';
 import { Button } from '@/components/commons/button';
 import Label from '@/components/commons/label';
-import Image, { StaticImageData } from 'next/image';
+import Image, { StaticImageData } from "next/legacy/image";
 import { CloseIcon, PlusIcon } from '@/assets/icons';
 import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
 import Skeleton from '@/components/commons/skeleton';

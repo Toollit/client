@@ -2,7 +2,7 @@ import React from 'react';
 import { BookmarkIcon, ViewIcon } from '@/assets/icons';
 import { Project } from '@/apis/projectsFetcher';
 import Hashtag from '@/components/commons/hashtag';
-import type { StaticImageData } from 'next/image';
+import type { StaticImageData } from "next/legacy/image";
 import {
   Container,
   ImageContainer,
