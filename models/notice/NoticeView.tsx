@@ -62,7 +62,7 @@ const NoticeView = ({
                 <tr key={notice.title}>
                   <td>
                     <Link href={`/notice/${notice.id}`}>
-                      <a>{notice.title}</a>
+                      {notice.title}
                     </Link>
                   </td>
                   <td>{notice.date}</td>

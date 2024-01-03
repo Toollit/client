@@ -245,7 +245,7 @@ const FAQView = ({ handleSearchFAQ, SearchInputRef }: FAQViewProps) => {
           원하는 답변을 찾지 못하셨나요?
           <br />
           그럼{' '}
-          <Link href={'/contact'}>
+          <Link href={'/contact'} legacyBehavior>
             <Inquiry>‘문의하기’</Inquiry>
           </Link>
           를 통해 직접 문의 해주세요.

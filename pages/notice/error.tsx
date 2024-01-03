@@ -61,7 +61,7 @@ interface ErrorPageProps {
 const ErrorNotice = ({ statusCode }: ErrorPageProps) => {
   return (
     <Container>
-      <Link href='/'>
+      <Link href='/' legacyBehavior>
         <LogoContainer>
           <GetitLogo width={4} height={4} />
           <LogoText>Getit</LogoText>
@@ -90,7 +90,7 @@ const ErrorNotice = ({ statusCode }: ErrorPageProps) => {
 
         <SubDescription>
           되돌아가기{' '}
-          <Link href='/' passHref>
+          <Link href='/' passHref legacyBehavior>
             <Return>Getit</Return>
           </Link>
           <span> 👈</span>

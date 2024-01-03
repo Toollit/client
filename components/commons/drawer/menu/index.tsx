@@ -147,7 +147,7 @@ const Menu = () => {
             <Container>
               {menu.map((item) => {
                 return (
-                  <Link key={item.text} href={item.url} passHref>
+                  <Link key={item.text} href={item.url} passHref legacyBehavior>
                     <StyledLink
                       onClick={item.tag === 'auth' ? handleAuth : undefined}
                     >

@@ -79,7 +79,7 @@ const ProfileView = ({
       <Container>
         <ColumnLeftContainer role=''>
           <GNBArea>
-            <Link href={'/'} passHref>
+            <Link href={'/'} passHref legacyBehavior>
               <GNBLink>
                 <GetitLogo width={3.2} height={3.2} />
                 <GNBTitle>Getit 프로필</GNBTitle>
@@ -161,7 +161,7 @@ const ProfileView = ({
                         },
                       }}
                     >
-                      <a>{tab.name}</a>
+                      {tab.name}
                     </Link>
                   </li>
                 );
@@ -183,31 +183,31 @@ const ProfileView = ({
                     <Link
                       href={accessUser ? `/profile/${accessUser}` : '/login'}
                       passHref
-                    >
+                      legacyBehavior>
                       <MyProfile>내프로필</MyProfile>
                     </Link>
                   )}
                 </li>
                 <li>
                   <Link href='/notice'>
-                    <a>공지사항</a>
+                    공지사항
                   </Link>
                 </li>
               </ul>
               <ul>
                 <li>
-                  <Link href='/' passHref>
+                  <Link href='/' passHref legacyBehavior>
                     <Logo>Getit</Logo>
                   </Link>
                 </li>
                 <li>
                   <Link href='/policy/privacy'>
-                    <a>개인정보처리방침</a>
+                    개인정보처리방침
                   </Link>
                 </li>
                 <li>
                   <Link href='/policy/terms-of-service'>
-                    <a>이용약관</a>
+                    이용약관
                   </Link>
                 </li>
               </ul>

@@ -88,7 +88,7 @@ const Nav = <T extends Default | Close | Back | None>(props: T) => {
             <ColumnContainer>
               <ColumnLeftContainer>
                 <li>
-                  <Link href='/' passHref>
+                  <Link href='/' passHref legacyBehavior>
                     <StyledLogoLink onClick={handleLogoRoute}>
                       <GetitLogo width={3.2} height={3.2} />
                       <LogoTitle>Getit</LogoTitle>
@@ -105,7 +105,7 @@ const Nav = <T extends Default | Close | Back | None>(props: T) => {
                   <Link
                     href={nickname ? `/profile/${nickname}` : '/login'}
                     passHref
-                  >
+                    legacyBehavior>
                     <StyledProfileLink onClick={handleAuthMutate}>
                       <AccountCircleIcon />
                     </StyledProfileLink>

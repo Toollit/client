@@ -190,43 +190,43 @@ const ProjectDetailView = ({
           <ColumnRightContainer>
             <StickyContainer>
               {writer ? (
-                <Link href={`/profile/${writer.nickname}`}>
-                  <a>
-                    <WriterInfoContainer>
-                      {writer.profileImage ? (
-                        <WriterProfileImage>
-                          <ImageWrapper width={6} height={6}>
-                            <StyledImage
-                              src={writer.profileImage}
-                              alt={`${writer.nickname} profile`}
-                              draggable={false}
-                              priority
-                              layout='fill'
-                            />
-                          </ImageWrapper>
-                        </WriterProfileImage>
-                      ) : (
-                        <AccountCircleIcon
-                          fill={true}
-                          width={8}
-                          height={8}
-                          color='#767678'
-                        />
-                      )}
+                (<Link href={`/profile/${writer.nickname}`}>
 
-                      <WriterInfo>
-                        <Writer>
-                          <div>작성자</div>
-                          <div>{writer.nickname}</div>
-                        </Writer>
-                        <LastLoginAt>
-                          <div>마지막 접속</div>
-                          <div>{writer.lastLoginAt}</div>
-                        </LastLoginAt>
-                      </WriterInfo>
-                    </WriterInfoContainer>
-                  </a>
-                </Link>
+                  <WriterInfoContainer>
+                    {writer.profileImage ? (
+                      <WriterProfileImage>
+                        <ImageWrapper width={6} height={6}>
+                          <StyledImage
+                            src={writer.profileImage}
+                            alt={`${writer.nickname} profile`}
+                            draggable={false}
+                            priority
+                            layout='fill'
+                          />
+                        </ImageWrapper>
+                      </WriterProfileImage>
+                    ) : (
+                      <AccountCircleIcon
+                        fill={true}
+                        width={8}
+                        height={8}
+                        color='#767678'
+                      />
+                    )}
+
+                    <WriterInfo>
+                      <Writer>
+                        <div>작성자</div>
+                        <div>{writer.nickname}</div>
+                      </Writer>
+                      <LastLoginAt>
+                        <div>마지막 접속</div>
+                        <div>{writer.lastLoginAt}</div>
+                      </LastLoginAt>
+                    </WriterInfo>
+                  </WriterInfoContainer>
+
+                </Link>)
               ) : (
                 <Skeleton height={20} />
               )}
@@ -266,28 +266,28 @@ const ProjectDetailView = ({
                         return (
                           <Avatar key={user.nickname}>
                             <Link href={`/profile/${user.nickname}`}>
-                              <a>
-                                <BasicTooltip text={user.nickname}>
-                                  {user.profileImage ? (
-                                    <ImageWrapper width={3.5} height={3.5}>
-                                      <StyledImage
-                                        src={user.profileImage}
-                                        alt={`${user.nickname} profile image`}
-                                        draggable={false}
-                                        priority
-                                        layout='fill'
-                                      />
-                                    </ImageWrapper>
-                                  ) : (
-                                    <AccountCircleIcon
-                                      fill={true}
-                                      width={4.5}
-                                      height={4.5}
-                                      color='#767678'
+
+                              <BasicTooltip text={user.nickname}>
+                                {user.profileImage ? (
+                                  <ImageWrapper width={3.5} height={3.5}>
+                                    <StyledImage
+                                      src={user.profileImage}
+                                      alt={`${user.nickname} profile image`}
+                                      draggable={false}
+                                      priority
+                                      layout='fill'
                                     />
-                                  )}
-                                </BasicTooltip>
-                              </a>
+                                  </ImageWrapper>
+                                ) : (
+                                  <AccountCircleIcon
+                                    fill={true}
+                                    width={4.5}
+                                    height={4.5}
+                                    color='#767678'
+                                  />
+                                )}
+                              </BasicTooltip>
+
                             </Link>
                           </Avatar>
                         );

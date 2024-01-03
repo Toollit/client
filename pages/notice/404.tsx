@@ -51,7 +51,7 @@ const Return = styled.a`
 export default function NotFound() {
   return (
     <Container>
-      <Link href='/' passHref>
+      <Link href='/' passHref legacyBehavior>
         <StyledLink>
           <GetitLogo width={4} height={4} />
           <LogoText>Getit</LogoText>
@@ -82,7 +82,7 @@ export default function NotFound() {
 
       <SubDescription>
         되돌아가기{' '}
-        <Link href='/' passHref>
+        <Link href='/' passHref legacyBehavior>
           <Return>Getit</Return>
         </Link>
         <span> 👈</span>

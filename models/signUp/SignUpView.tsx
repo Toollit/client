@@ -115,17 +115,17 @@ const SignUpView = ({
         <Notice>
           가입하면 쿠키 사용을 포함해{' '}
           <Link href={'/policy/terms-of-service'}>
-            <a>이용약관</a>
+            이용약관
           </Link>{' '}
           및{' '}
           <Link href={'/policy/privacy'}>
-            <a>개인정보 처리방침</a>
+            개인정보 처리방침
           </Link>{' '}
           에 동의하게 됩니다. Getit은 계정을 안전하게 보호하고 광고를 포함한
           맞춤 서비스를 제공하는 등 Getit 개인정보 처리방침에 명시된 목적을 위해
           이메일 주소 정보를 사용할 수 있습니다.{' '}
           <Link href={'/policy/privacy'}>
-            <a>자세히 알아보기.</a>
+            자세히 알아보기.
           </Link>
         </Notice>
       </Form>

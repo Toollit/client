@@ -99,7 +99,7 @@ const SearchDrawer = ({ icon }: SearchDrawerProps) => {
                   return (
                     <LinkContainer key={item.href}>
                       <ArrowRightAltIcon color='#86868b' width={2} height={2} />
-                      <Link href={item.href}>
+                      <Link href={item.href} legacyBehavior>
                         <StyledLink onClick={toggleDrawer(false)}>
                           {item.text}
                         </StyledLink>

@@ -126,7 +126,7 @@ const LoginView = ({
 
         <SignInContainer>
           <SignInInduce>계정이 없으신가요?</SignInInduce>
-          <Link href={'/signUp'} passHref>
+          <Link href={'/signUp'} passHref legacyBehavior>
             <StyledLink>가입하기</StyledLink>
           </Link>
         </SignInContainer>

@@ -24,28 +24,34 @@ const Footer = () => {
       <InnerContainer>
         <NoticeArea>
           <Link href='/notice'>
-            <a>공지사항</a>
+            공지사항
           </Link>
         </NoticeArea>
 
         <AsideArea>
           <PartnersContainer>
             <h3>Partners</h3>
-            <Link href={'#'}>
-              <a onClick={handleServiceUnavailable}>비즈니스 · 광고</a>
+            <Link href={'#'} onClick={handleServiceUnavailable}>
+              비즈니스 · 광고
             </Link>
           </PartnersContainer>
           <DeveloperContainer>
             <h3>Developer</h3>
-            <Link href='https://github.com/seungwonleee'>
-              <a target='_blank' rel='noopener noreferrer'>
+            <Link
+              href='https://github.com/seungwonleee'
+              target='_blank'
+              rel='noopener noreferrer'>
+              
                 Github
-              </a>
+              
             </Link>
-            <Link href='https://seungwon-code.blogspot.com/'>
-              <a target='_blank' rel='noopener noreferrer'>
+            <Link
+              href='https://seungwon-code.blogspot.com/'
+              target='_blank'
+              rel='noopener noreferrer'>
+              
                 Blog
-              </a>
+              
             </Link>
           </DeveloperContainer>
         </AsideArea>
@@ -53,24 +59,24 @@ const Footer = () => {
         <CorpArea>
           <ul>
             <li>
-              <Link href={'#'}>
-                <a onClick={handleServiceUnavailable}>제휴제안</a>
+              <Link href={'#'} onClick={handleServiceUnavailable}>
+                제휴제안
               </Link>
             </li>
             <li>
               <Link href={'/policy/terms-of-service'}>
-                <a>이용약관</a>
+                이용약관
               </Link>
             </li>
             <li>
               <Link href={'/policy/privacy'}>
-                <a>개인정보처리방침</a>
+                개인정보처리방침
               </Link>
             </li>
 
             <li>
               <Link href={'/faq'}>
-                <a>FAQ</a>
+                FAQ
               </Link>
             </li>
             <li>ⓒ Getit Corp.</li>

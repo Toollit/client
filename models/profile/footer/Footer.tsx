@@ -27,33 +27,33 @@ const ProfileFooterLink = ({
             <Link
               href={accessUser ? `/profile/${accessUser}` : '/login'}
               passHref
-            >
+              legacyBehavior>
               <MyProfile>내프로필</MyProfile>
             </Link>
           )}
         </li>
         <li>
           <Link href='/'>
-            <a>고객센터</a>
+            고객센터
           </Link>
         </li>
       </ul>
       <ul>
         <li>
           <Link href={'/policy/terms-of-service'}>
-            <a>이용약관</a>
+            이용약관
           </Link>
         </li>
 
         <li>
           <Link href={'/policy/privacy'}>
-            <a>개인정보처리방침</a>
+            개인정보처리방침
           </Link>
         </li>
       </ul>
       <ul>
         <li>
-          <Link href='/' passHref>
+          <Link href='/' passHref legacyBehavior>
             <Logo>Getit</Logo>
           </Link>
         </li>

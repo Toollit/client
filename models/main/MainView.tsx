@@ -124,7 +124,7 @@ const MainView = ({
                   tablet={4}
                   laptop={4}
                 >
-                  <Link href={`/project/${project.id}`} passHref>
+                  <Link href={`/project/${project.id}`} passHref legacyBehavior>
                     <StyledLink>
                       <BlockPost content={project} />
                     </StyledLink>
