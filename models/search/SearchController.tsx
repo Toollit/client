@@ -63,7 +63,7 @@ const SearchController = ({}: SearchControllerProps) => {
       projectsData?: SearchAPIRes['data'];
       bookmarksData?: BookmarksStatusAPIRes['data'];
     }) => {
-      if (!projectsData && !bookmarksData) {
+      if (!projectsData || !bookmarksData) {
         return;
       }
       const projects = projectsData?.projects;
