@@ -6,6 +6,7 @@ import { close as closeDialog, update as updateValue } from '@/features/dialog';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import BpRadio from '@/components/commons/radio';
+import HashtagInput from '@/components/commons/hashtagInput';
 import {
   CustomDialog,
   CustomDialogTitle,
@@ -16,7 +17,6 @@ import {
   TextCount,
   FormControlLabel,
 } from './styles';
-import HashtagInput from '@/components/commons/hashtagInput';
 
 /**
  * Dialog can only be opened through dispatch.
@@ -125,7 +125,7 @@ const Dialog = () => {
         dispatch(closeDialog());
       }
     },
-    [dispatch, type, category, newValue],
+    [dispatch, type, category, newValue, maxLength],
   );
 
   const handleCheckedMultiSelect = useCallback(
@@ -188,7 +188,6 @@ const Dialog = () => {
             <RadioGroup onChange={handleSelect}>
               {selectList &&
                 selectList.map((item, index) => {
-                  console.log({ checked, item });
                   return (
                     <FormControlLabel
                       key={`${item}-${index}`}
