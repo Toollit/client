@@ -14,8 +14,6 @@ export const bookmarksStatusKey = () => {
 // check bookmark status for a particular post
 export const bookmarkStatusKey = (postId: string) => {
   return `/api/post/bookmark/bookmarkStatus/${postId}`;
-
-  return `${PROJECT_DETAIL_API_ENDPOINT}/${postId}/bookmarkStatus`;
 };
 
 // project detail page
