@@ -3,10 +3,13 @@ import { NotificationsNone, MoreVert } from '@mui/icons-material';
 
 const BoxContent = styled.ul`
   li {
-    :nth-last-of-type(1) {
-      ::after {
+    &:nth-last-of-type(1) {
+      &::after {
         border-bottom: none;
       }
+
+      border-bottom-left-radius: ${(props) => props.theme.borderRadius.base};
+      border-bottom-right-radius: ${(props) => props.theme.borderRadius.base};
     }
   }
 `;
@@ -15,7 +18,7 @@ const Content = styled.li`
   position: relative;
   padding: 2rem 1.5rem 0 1.5rem;
 
-  ::after {
+  &::after {
     content: '';
     display: block;
     padding-top: 3rem;

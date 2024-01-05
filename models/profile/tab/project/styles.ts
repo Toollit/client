@@ -1,14 +1,25 @@
 import { mediaQueryLaptop, mediaQueryTablet } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 
-const BoxContent = styled.ul``;
+const BoxContent = styled.ul`
+  li {
+    &:nth-last-of-type(1) {
+      &::after {
+        border-bottom: none;
+      }
+
+      border-bottom-left-radius: ${(props) => props.theme.borderRadius.base};
+      border-bottom-right-radius: ${(props) => props.theme.borderRadius.base};
+    }
+  }
+`;
 
 const Content = styled.li`
   &:hover {
     background-color: #f0f0f0;
   }
 
-  ::after {
+  &::after {
     content: '';
     display: block;
     padding-top: 1rem;
@@ -30,7 +41,7 @@ const RecruitmentTypeContainer = styled.div`
   display: flex;
   overflow: scroll;
 
-  ::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     display: none;
   }
 `;
@@ -94,7 +105,7 @@ const HashtagContainer = styled.ul`
   margin: 0.8rem 0.5rem;
   display: flex;
   overflow: scroll;
-  ::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     display: none;
   }
 `;
@@ -110,7 +121,7 @@ const SubInfo = styled.div`
     margin-left: 1rem;
     margin: 0 0.3rem;
 
-    :nth-last-of-type(1) {
+    &:nth-last-of-type(1) {
       span {
         color: #3da571;
       }
