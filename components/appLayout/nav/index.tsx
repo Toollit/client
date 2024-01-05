@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import Link from 'next/link';
 import GetitLogo from '@/assets/images/GetitLogo';
 import { useRouter } from 'next/router';
 import { BackButton, CloseButton } from '@/components/commons/button';
@@ -12,14 +11,14 @@ import {
   ColumnContainer,
   ColumnLeftContainer,
   ColumnRightContainer,
-  StyledLogoLink,
+  LogoLink,
   LogoTitle,
   Title,
   DefaultContainer,
   SearchIcon,
   AccountCircleIcon,
   LayoutContainer,
-  StyledProfileLink,
+  ProfileLink,
 } from './styles';
 
 type Default = {
@@ -88,12 +87,10 @@ const Nav = <T extends Default | Close | Back | None>(props: T) => {
             <ColumnContainer>
               <ColumnLeftContainer>
                 <li>
-                  <Link href='/' passHref legacyBehavior>
-                    <StyledLogoLink onClick={handleLogoRoute}>
-                      <GetitLogo width={3.2} height={3.2} />
-                      <LogoTitle>Getit</LogoTitle>
-                    </StyledLogoLink>
-                  </Link>
+                  <LogoLink href='/' onClick={handleLogoRoute}>
+                    <GetitLogo width={3.2} height={3.2} />
+                    <LogoTitle>Getit</LogoTitle>
+                  </LogoLink>
                 </li>
               </ColumnLeftContainer>
 
@@ -102,14 +99,12 @@ const Nav = <T extends Default | Close | Back | None>(props: T) => {
                   <SearchDrawer icon={<SearchIcon />} />
                 </li>
                 <li>
-                  <Link
+                  <ProfileLink
                     href={nickname ? `/profile/${nickname}` : '/login'}
-                    passHref
-                    legacyBehavior>
-                    <StyledProfileLink onClick={handleAuthMutate}>
-                      <AccountCircleIcon />
-                    </StyledProfileLink>
-                  </Link>
+                    onClick={handleAuthMutate}
+                  >
+                    <AccountCircleIcon />
+                  </ProfileLink>
                 </li>
                 <li>
                   <Menu />

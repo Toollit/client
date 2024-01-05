@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { SearchOutlined, AccountCircleOutlined } from '@mui/icons-material';
+import Link from 'next/link';
 
 const DefaultContainer = styled.nav<{ boundary?: boolean }>`
   border-bottom: ${(props) => (props.boundary ? '1px solid #eee' : 'none')};
@@ -64,7 +65,7 @@ const ColumnRightContainer = styled.ul`
   }
 `;
 
-const StyledLogoLink = styled.a`
+const LogoLink = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -121,7 +122,7 @@ const LayoutContainer = styled.div`
   padding: 0 0.8rem;
 `;
 
-const StyledProfileLink = styled.a`
+const ProfileLink = styled(Link)`
   height: 3.2rem;
 `;
 
@@ -131,11 +132,11 @@ export {
   ColumnContainer,
   ColumnLeftContainer,
   ColumnRightContainer,
-  StyledLogoLink,
+  LogoLink,
   LogoTitle,
   Title,
   SearchIcon,
   AccountCircleIcon,
   LayoutContainer,
-  StyledProfileLink,
+  ProfileLink,
 };
