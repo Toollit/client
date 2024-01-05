@@ -8,7 +8,7 @@ import {
   FAQFooter,
   Header,
   InputBox,
-  Inquiry,
+  InquiryLink,
   MUIAccordion,
   MUIAccordionDetails,
   MUIAccordionSummary,
@@ -244,10 +244,7 @@ const FAQView = ({ handleSearchFAQ, SearchInputRef }: FAQViewProps) => {
         <FAQFooter>
           원하는 답변을 찾지 못하셨나요?
           <br />
-          그럼{' '}
-          <Link href={'/contact'} legacyBehavior>
-            <Inquiry>‘문의하기’</Inquiry>
-          </Link>
+          그럼 <InquiryLink href={'/contact'}>‘문의하기’</InquiryLink>
           를 통해 직접 문의 해주세요.
           <br />
           최대한 빠르게 이메일로 답변드리겠습니다.

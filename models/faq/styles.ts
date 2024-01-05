@@ -2,6 +2,7 @@ import { mediaQueryLaptop } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 import { Search, ExpandMore } from '@mui/icons-material';
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import Link from 'next/link';
 
 const Content = styled.div`
   padding: 1.5rem;
@@ -126,7 +127,7 @@ const MUIExpandMoreIcon = styled(ExpandMore)`
   font-size: 2.5rem;
 `;
 
-const Inquiry = styled.a`
+const InquiryLink = styled(Link)`
   font-weight: 600;
   color: ${(props) => props.theme.colors.theme};
   cursor: pointer;
@@ -154,5 +155,5 @@ export {
   MUIAccordionSummary,
   MUIAccordionDetails,
   MUIExpandMoreIcon,
-  Inquiry,
+  InquiryLink,
 };
