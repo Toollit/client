@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import ArrowRightAltIcon from '@/assets/icons/ArrowRightAltIcon';
-import Link from 'next/link';
 import { InnerContainer } from '@/styles/commons';
 import {
   MUIDrawer,
@@ -10,7 +9,7 @@ import {
   SearchIconLayoutContainer,
   SearchInput,
   Description,
-  StyledLink,
+  FastLink,
   LinkContainer,
   Form,
   SearchIcon,
@@ -99,11 +98,9 @@ const SearchDrawer = ({ icon }: SearchDrawerProps) => {
                   return (
                     <LinkContainer key={item.href}>
                       <ArrowRightAltIcon color='#86868b' width={2} height={2} />
-                      <Link href={item.href} legacyBehavior>
-                        <StyledLink onClick={toggleDrawer(false)}>
-                          {item.text}
-                        </StyledLink>
-                      </Link>
+                      <FastLink href={item.href} onClick={toggleDrawer(false)}>
+                        {item.text}
+                      </FastLink>
                     </LinkContainer>
                   );
                 })}

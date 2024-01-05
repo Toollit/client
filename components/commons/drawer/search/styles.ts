@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import Drawer from '@mui/material/Drawer';
 import { Search } from '@mui/icons-material';
+import Link from 'next/link';
 
 const OpenButton = styled.button`
   border: none;
@@ -81,7 +82,7 @@ const LinkContainer = styled.div`
   padding: 0.5rem 0;
 `;
 
-const StyledLink = styled.a`
+const FastLink = styled(Link)`
   font-size: 1.4rem;
   color: #86868b;
 `;
@@ -97,5 +98,5 @@ export {
   Description,
   FastLinkContainer,
   LinkContainer,
-  StyledLink,
+  FastLink,
 };
