@@ -12,6 +12,7 @@ import {
   LiveHelpOutlined,
   LogoutOutlined,
 } from '@mui/icons-material';
+import Link from 'next/link';
 
 const OpenButton = styled.button`
   width: 3.6rem;
@@ -63,7 +64,7 @@ const Text = styled.div`
   padding-left: 1.5rem;
 `;
 
-const StyledLink = styled.a`
+const MenuItemLink = styled(Link)`
   color: #000;
 `;
 
@@ -116,5 +117,5 @@ export {
   AdminPanelSettingsIcon,
   LiveHelpOutlinedIcon,
   LogoutOutlinedIcon,
-  StyledLink,
+  MenuItemLink,
 };

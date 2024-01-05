@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Drawer as MUIDrawer } from '@mui/material';
 import AppLayout from '@/components/appLayout';
-import Link from 'next/link';
 import useAuth from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
 import useLogout from '@/hooks/useLogout';
@@ -12,7 +11,7 @@ import {
   Icon,
   Item,
   Text,
-  StyledLink,
+  MenuItemLink,
   AccountCircleIcon,
   ArticleIcon,
   BookmarkIcon,
@@ -24,15 +23,20 @@ import {
   LogoutOutlinedIcon,
 } from './styles';
 
+interface MenuItem {
+  tag: string;
+  icon: React.ReactNode;
+  text: string;
+  url: string;
+}
+
 const Menu = () => {
   const router = useRouter();
   const { nickname } = useAuth();
   const { logOut } = useLogout();
 
   const [open, setOpen] = useState(false);
-  const [menu, setMenu] = useState<
-    { tag: string; icon: React.ReactNode; text: string; url: string }[]
-  >([]);
+  const [menu, setMenu] = useState<MenuItem[]>([]);
 
   const handleClose = useCallback(() => {
     setOpen(false);
@@ -56,16 +60,21 @@ const Menu = () => {
   );
 
   const handleAuth = useCallback(
-    async (e: React.MouseEvent<HTMLAnchorElement>) => {
+    async (e: React.MouseEvent<HTMLAnchorElement>, menuItem: MenuItem) => {
       e.preventDefault();
-      if (nickname) {
-        await logOut({ replace: '/' });
-        handleClose();
-      }
 
-      if (!nickname) {
-        router.push('/login');
-        handleClose();
+      if (menuItem.tag === 'auth') {
+        if (nickname) {
+          await logOut({ replace: '/' });
+          handleClose();
+        }
+
+        if (!nickname) {
+          router.push('/login');
+          handleClose();
+        }
+      } else {
+        return undefined;
       }
     },
     [router, logOut, nickname, handleClose],
@@ -147,16 +156,16 @@ const Menu = () => {
             <Container>
               {menu.map((item) => {
                 return (
-                  <Link key={item.text} href={item.url} passHref legacyBehavior>
-                    <StyledLink
-                      onClick={item.tag === 'auth' ? handleAuth : undefined}
-                    >
-                      <Item>
-                        <Icon>{item.icon}</Icon>
-                        <Text>{item.text}</Text>
-                      </Item>
-                    </StyledLink>
-                  </Link>
+                  <MenuItemLink
+                    key={item.url}
+                    href={item.url}
+                    onClick={(e) => handleAuth(e, item)}
+                  >
+                    <Item>
+                      <Icon>{item.icon}</Icon>
+                      <Text>{item.text}</Text>
+                    </Item>
+                  </MenuItemLink>
                 );
               })}
             </Container>
