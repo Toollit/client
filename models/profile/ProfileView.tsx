@@ -30,11 +30,11 @@ import {
   FooterLink,
   DividerContainer,
   LogInOut,
-  Logo,
+  LogoLink,
   BlankImage,
   ImageEditBtn,
   ProfileImageSkeletonContainer,
-  MyProfile,
+  MyProfileLink,
   ViewContainer,
   StyledProfileImage,
 } from './styles';
@@ -79,12 +79,10 @@ const ProfileView = ({
       <Container>
         <ColumnLeftContainer role=''>
           <GNBArea>
-            <Link href={'/'} passHref legacyBehavior>
-              <GNBLink>
-                <GetitLogo width={3.2} height={3.2} />
-                <GNBTitle>Getit 프로필</GNBTitle>
-              </GNBLink>
-            </Link>
+            <GNBLink href={'/'}>
+              <GetitLogo width={3.2} height={3.2} />
+              <GNBTitle>Getit 프로필</GNBTitle>
+            </GNBLink>
           </GNBArea>
 
           <ProfileArea>
@@ -180,35 +178,26 @@ const ProfileView = ({
                       {loginState ? '로그아웃' : '로그인'}
                     </LogInOut>
                   ) : (
-                    <Link
+                    <MyProfileLink
                       href={accessUser ? `/profile/${accessUser}` : '/login'}
-                      passHref
-                      legacyBehavior>
-                      <MyProfile>내프로필</MyProfile>
-                    </Link>
+                    >
+                      내프로필
+                    </MyProfileLink>
                   )}
                 </li>
                 <li>
-                  <Link href='/notice'>
-                    공지사항
-                  </Link>
+                  <Link href={'/notice'}>공지사항</Link>
                 </li>
               </ul>
               <ul>
                 <li>
-                  <Link href='/' passHref legacyBehavior>
-                    <Logo>Getit</Logo>
-                  </Link>
+                  <LogoLink href={'/'}>Getit</LogoLink>
                 </li>
                 <li>
-                  <Link href='/policy/privacy'>
-                    개인정보처리방침
-                  </Link>
+                  <Link href={'/policy/privacy'}>개인정보처리방침</Link>
                 </li>
                 <li>
-                  <Link href='/policy/terms-of-service'>
-                    이용약관
-                  </Link>
+                  <Link href={'/policy/terms-of-service'}>이용약관</Link>
                 </li>
               </ul>
             </FooterLink>

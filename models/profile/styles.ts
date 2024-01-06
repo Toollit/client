@@ -1,8 +1,9 @@
 import { mediaQueryLaptop } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 import { Theme, css } from '@emotion/react';
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image';
 import { ProfileTab } from './ProfileController';
+import Link from 'next/link';
 
 const Container = styled.div`
   display: flex;
@@ -52,7 +53,7 @@ const GNBArea = styled.div`
   padding-left: 1.5rem;
 `;
 
-const GNBLink = styled.a`
+const GNBLink = styled(Link)`
   display: flex;
   text-decoration: none;
   color: #000;
@@ -125,7 +126,7 @@ const HeaderLeft = styled.div`
 const TabHighlight = (theme: Theme) => css`
   color: ${theme.colors.black};
 
-  ::after {
+  &::after {
     content: '';
     width: 100%;
     position: absolute;
@@ -141,13 +142,13 @@ const Menu = styled.ul<{ currentTab: ProfileTab }>`
 
   li {
     margin-top: 3rem;
-  }
 
-  li a {
-    font-size: 1.9rem;
-    position: relative;
-    text-decoration: none;
-    color: ${(props) => props.theme.colors.gray};
+    a {
+      font-size: 1.9rem;
+      position: relative;
+      text-decoration: none;
+      color: ${(props) => props.theme.colors.gray};
+    }
   }
 
   ${(props) => {
@@ -193,54 +194,52 @@ const FooterLink = styled.div`
     display: flex;
     position: relative;
     padding-bottom: 1.6rem;
-  }
 
-  li {
-    position: relative;
-    padding-left: 1.4rem;
+    li {
+      position: relative;
+      padding-left: 1.4rem;
 
-    ::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0.6rem;
-      width: 0.1rem;
-      height: 1.1rem;
-      margin-top: -0.55rem;
-      background-color: rgba(146, 146, 148, 0.3);
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0.6rem;
+        width: 0.1rem;
+        height: 1.1rem;
+        margin-top: -0.55rem;
+        background-color: rgba(146, 146, 148, 0.3);
+      }
+
+      &:first-of-type {
+        padding-left: 0;
+
+        &::before {
+          display: none;
+        }
+      }
+
+      a {
+        font-size: 1.4rem;
+        color: ${(props) => props.theme.colors.gray};
+        text-decoration: none;
+      }
     }
-  }
-
-  li:first-of-type {
-    padding-left: 0;
-
-    ::before {
-      display: none;
-    }
-  }
-
-  li a {
-    font-size: 1.4rem;
-    color: ${(props) => props.theme.colors.gray};
-    text-decoration: none;
   }
 `;
 
 const LogInOut = styled.a`
   font-size: 1.4rem;
   color: ${(props) => props.theme.colors.gray};
-
   cursor: pointer;
 `;
 
-const MyProfile = styled.a`
+const MyProfileLink = styled(Link)`
   font-size: 1.4rem;
   color: ${(props) => props.theme.colors.gray};
-
   cursor: pointer;
 `;
 
-const Logo = styled.a`
+const LogoLink = styled(Link)`
   font-weight: 900;
 `;
 
@@ -267,8 +266,8 @@ export {
   FooterLink,
   DividerContainer,
   LogInOut,
-  MyProfile,
-  Logo,
+  MyProfileLink,
+  LogoLink,
   StyledProfileImage,
   BlankImage,
   ImageEditBtn,
