@@ -1,6 +1,5 @@
 import React from 'react';
 import { Project } from '@/apis/profileBookmarksFetcher';
-import Link from 'next/link';
 import Hashtag from '@/components/commons/hashtag';
 import { BookmarkIcon, PersonIcon, ViewIcon } from '@/assets/icons';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
@@ -11,7 +10,7 @@ import {
   HashtagContainer,
   RecruitmentType,
   RecruitmentTypeContainer,
-  StyledContentLink,
+  ContentLink,
   Title,
   SubInfo,
   LoadMoreContainer,
@@ -34,18 +33,18 @@ export interface BookmarkViewProps {
 }
 
 const BookmarkView = ({ data, loadMore }: BookmarkViewProps) => {
-  return <>
-    {data && (
-      <BoxContainer>
-        <BoxTitle>북마크</BoxTitle>
-        <BoxContent>
-          {data.total > 0 ? (
-            <>
-              {data.bookmarks?.map((project) => {
-                return (
-                  <Content key={project.id}>
-                    <Link href={`/project/${project.id}`} passHref legacyBehavior>
-                      <StyledContentLink>
+  return (
+    <>
+      {data && (
+        <BoxContainer>
+          <BoxTitle>북마크</BoxTitle>
+          <BoxContent>
+            {data.total > 0 ? (
+              <>
+                {data.bookmarks?.map((project) => {
+                  return (
+                    <Content key={project.id}>
+                      <ContentLink href={`/project/${project.id}`}>
                         <RecruitmentTypeContainer>
                           {project.memberTypes.map((type) => {
                             return (
@@ -60,9 +59,7 @@ const BookmarkView = ({ data, loadMore }: BookmarkViewProps) => {
 
                         <HashtagContainer>
                           {project.hashtags.map((hashtag) => {
-                            return (
-                              <Hashtag key={hashtag} tagName={hashtag} />
-                            );
+                            return <Hashtag key={hashtag} tagName={hashtag} />;
                           })}
                         </HashtagContainer>
 
@@ -84,35 +81,35 @@ const BookmarkView = ({ data, loadMore }: BookmarkViewProps) => {
                             <span>{`${project.memberCount} / ${project.recruitCount}`}</span>
                           </div>
                         </SubInfo>
-                      </StyledContentLink>
-                    </Link>
-                  </Content>
-                );
-              })}
+                      </ContentLink>
+                    </Content>
+                  );
+                })}
 
-              {data.showLoadMore && (
-                <LoadMoreContainer>
-                  <LoadMoreButton onClick={loadMore}>더보기</LoadMoreButton>
-                </LoadMoreContainer>
-              )}
-            </>
-          ) : (
-            <>
-              <Notice>북마크한 프로젝트가 없습니다.</Notice>
-            </>
-          )}
-        </BoxContent>
-      </BoxContainer>
-    )}
-    {!data && (
-      <>
-        <Skeleton height={20} bottom={3} />
-        <Skeleton height={20} bottom={3} />
-        <Skeleton height={20} bottom={3} />
-        <Skeleton height={20} bottom={3} />
-      </>
-    )}
-  </>;
+                {data.showLoadMore && (
+                  <LoadMoreContainer>
+                    <LoadMoreButton onClick={loadMore}>더보기</LoadMoreButton>
+                  </LoadMoreContainer>
+                )}
+              </>
+            ) : (
+              <>
+                <Notice>북마크한 프로젝트가 없습니다.</Notice>
+              </>
+            )}
+          </BoxContent>
+        </BoxContainer>
+      )}
+      {!data && (
+        <>
+          <Skeleton height={20} bottom={3} />
+          <Skeleton height={20} bottom={3} />
+          <Skeleton height={20} bottom={3} />
+          <Skeleton height={20} bottom={3} />
+        </>
+      )}
+    </>
+  );
 };
 
 export default BookmarkView;

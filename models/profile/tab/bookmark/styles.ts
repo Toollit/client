@@ -1,5 +1,6 @@
 import { mediaQueryLaptop, mediaQueryTablet } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 
 const BoxContent = styled.ul`
   li {
@@ -29,7 +30,7 @@ const Content = styled.li`
   }
 `;
 
-const StyledContentLink = styled.a`
+const ContentLink = styled(Link)`
   display: block;
   text-decoration: none;
   color: #000;
@@ -162,7 +163,7 @@ export {
   Title,
   LoadMoreContainer,
   LoadMoreButton,
-  StyledContentLink,
+  ContentLink,
   Notice,
   SubInfo,
 };
