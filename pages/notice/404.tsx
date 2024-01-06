@@ -9,7 +9,7 @@ const Container = styled.div`
   padding: 3rem;
 `;
 
-const StyledLink = styled.a`
+const LogoLink = styled(Link)`
   display: flex;
   color: #000;
   width: fit-content;
@@ -44,19 +44,17 @@ const SubDescription = styled.p`
   padding-bottom: 4rem;
 `;
 
-const Return = styled.a`
+const ReturnLink = styled(Link)`
   color: ${(props) => props.theme.colors.theme};
 `;
 
 export default function NotFound() {
   return (
     <Container>
-      <Link href='/' passHref legacyBehavior>
-        <StyledLink>
-          <GetitLogo width={4} height={4} />
-          <LogoText>Getit</LogoText>
-        </StyledLink>
-      </Link>
+      <LogoLink href={'/'}>
+        <GetitLogo width={4} height={4} />
+        <LogoText>Getit</LogoText>
+      </LogoLink>
 
       <Title>
         죄송합니다.
@@ -81,10 +79,7 @@ export default function NotFound() {
       <Description>감사합니다.</Description>
 
       <SubDescription>
-        되돌아가기{' '}
-        <Link href='/' passHref legacyBehavior>
-          <Return>Getit</Return>
-        </Link>
+        되돌아가기 <ReturnLink href={'/'}>Getit</ReturnLink>
         <span> 👈</span>
       </SubDescription>
     </Container>

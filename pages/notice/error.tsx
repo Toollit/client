@@ -8,7 +8,7 @@ const Container = styled.div`
   margin: 3.6rem auto 0 auto;
 `;
 
-const LogoContainer = styled.div`
+const LogoLink = styled(Link)`
   display: flex;
   margin-left: 2.5rem;
   width: fit-content;
@@ -50,7 +50,7 @@ const ErrorCode = styled.h2`
   color: #444444;
 `;
 
-const Return = styled.a`
+const ReturnLink = styled(Link)`
   color: ${(props) => props.theme.colors.theme};
 `;
 
@@ -61,12 +61,10 @@ interface ErrorPageProps {
 const ErrorNotice = ({ statusCode }: ErrorPageProps) => {
   return (
     <Container>
-      <Link href='/' legacyBehavior>
-        <LogoContainer>
-          <GetitLogo width={4} height={4} />
-          <LogoText>Getit</LogoText>
-        </LogoContainer>
-      </Link>
+      <LogoLink href={'/'}>
+        <GetitLogo width={4} height={4} />
+        <LogoText>Getit</LogoText>
+      </LogoLink>
       <ContentContainer>
         <Title>
           죄송합니다.
@@ -89,10 +87,7 @@ const ErrorNotice = ({ statusCode }: ErrorPageProps) => {
         <ErrorCode>Error Code: {statusCode ? 'SSEC' : 'CSEC'}</ErrorCode>
 
         <SubDescription>
-          되돌아가기{' '}
-          <Link href='/' passHref legacyBehavior>
-            <Return>Getit</Return>
-          </Link>
+          되돌아가기 <ReturnLink href='/'>Getit</ReturnLink>
           <span> 👈</span>
         </SubDescription>
       </ContentContainer>
