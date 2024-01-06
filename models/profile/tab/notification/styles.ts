@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { NotificationsNone, MoreVert } from '@mui/icons-material';
+import Link from 'next/link';
 
 const BoxContent = styled.ul`
   li {
@@ -40,7 +41,7 @@ const NotificationIcon = styled(NotificationsNone)`
   margin-right: 0.5rem;
 `;
 
-const User = styled.a`
+const UserLink = styled(Link)`
   color: #000;
   text-decoration: underline;
   margin-right: 0.5rem;
@@ -133,7 +134,7 @@ export {
   Content,
   Source,
   NotificationIcon,
-  User,
+  UserLink,
   Time,
   NotificationType,
   ProjectTitle,
