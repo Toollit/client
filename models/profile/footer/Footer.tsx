@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { LogInOut, MyProfile, Container, Logo } from './FooterStyles';
+import { LogInOut, MyProfileLink, Container, LogoLink } from './styles';
 
 interface ProfileFooterLink {
   me: boolean;
@@ -24,38 +24,29 @@ const ProfileFooterLink = ({
               {loginState ? '로그아웃' : '로그인'}
             </LogInOut>
           ) : (
-            <Link
+            <MyProfileLink
               href={accessUser ? `/profile/${accessUser}` : '/login'}
-              passHref
-              legacyBehavior>
-              <MyProfile>내프로필</MyProfile>
-            </Link>
+            >
+              내프로필
+            </MyProfileLink>
           )}
         </li>
         <li>
-          <Link href='/'>
-            고객센터
-          </Link>
+          <Link href={'/'}>고객센터</Link>
         </li>
       </ul>
       <ul>
         <li>
-          <Link href={'/policy/terms-of-service'}>
-            이용약관
-          </Link>
+          <Link href={'/policy/terms-of-service'}>이용약관</Link>
         </li>
 
         <li>
-          <Link href={'/policy/privacy'}>
-            개인정보처리방침
-          </Link>
+          <Link href={'/policy/privacy'}>개인정보처리방침</Link>
         </li>
       </ul>
       <ul>
         <li>
-          <Link href='/' passHref legacyBehavior>
-            <Logo>Getit</Logo>
-          </Link>
+          <LogoLink href={'/'}>Getit</LogoLink>
         </li>
       </ul>
     </Container>
