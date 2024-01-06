@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import AppLayout from '@/components/appLayout';
 import BannerPerson from '@/assets/images/BannerPerson';
 import BannerBackground from '@/assets/images/BannerBackground';
@@ -28,7 +27,7 @@ import {
   BugImage,
   PostFilterWriteContainer,
   PaginationContainer,
-  StyledLink,
+  ProjectDetailLink,
   ContentContainer,
 } from './styles';
 
@@ -124,11 +123,9 @@ const MainView = ({
                   tablet={4}
                   laptop={4}
                 >
-                  <Link href={`/project/${project.id}`} passHref legacyBehavior>
-                    <StyledLink>
-                      <BlockPost content={project} />
-                    </StyledLink>
-                  </Link>
+                  <ProjectDetailLink href={`/project/${project.id}`}>
+                    <BlockPost content={project} />
+                  </ProjectDetailLink>
                 </Grid>
               );
             })}

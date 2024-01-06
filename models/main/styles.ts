@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { mediaQueryTablet } from '@/styles/mediaQuery';
+import Link from 'next/link';
 
 const Banner = styled.div<{ order: 'first' | 'second' | 'third' }>`
   position: relative;
@@ -133,8 +134,7 @@ const PaginationContainer = styled.div`
   padding-bottom: 8rem;
 `;
 
-// 게시글 목록 관련
-const StyledLink = styled.a`
+const ProjectDetailLink = styled(Link)`
   text-decoration: none;
   color: #000;
 `;
@@ -154,5 +154,5 @@ export {
   PostFilterWriteContainer,
   ContentContainer,
   PaginationContainer,
-  StyledLink,
+  ProjectDetailLink,
 };
