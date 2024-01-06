@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import AppLayout from '@/components/appLayout';
 import { Button } from '@/components/commons/button';
 import Title from '@/components/commons/title';
@@ -11,7 +10,7 @@ import {
   InputContainer,
   SignInInduce,
   SignInInduceContainer,
-  StyledLink,
+  SignUpLink,
   SubmitButtonContainer,
   TitleContainer,
 } from './styles';
@@ -66,9 +65,7 @@ const PwInquiryView = ({
 
         <SignInInduceContainer>
           <SignInInduce>계정이 없으신가요?</SignInInduce>
-          <Link href={'/signUp'} passHref legacyBehavior>
-            <StyledLink>가입하기</StyledLink>
-          </Link>
+          <SignUpLink href={'/signUp'}>가입하기</SignUpLink>
         </SignInInduceContainer>
       </Form>
     </AppLayout>

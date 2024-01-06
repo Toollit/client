@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Link from 'next/link';
 
 const Form = styled.form`
   flex: 1 1 auto; // For content height 100%
@@ -44,7 +45,7 @@ const SignInInduce = styled.span`
   font-size: 1.5rem;
 `;
 
-const StyledLink = styled.a`
+const SignUpLink = styled(Link)`
   color: ${(props) => props.theme.colors.theme};
   margin-left: 1rem;
   font-size: 1.5rem;
@@ -60,5 +61,5 @@ export {
   SubmitButtonContainer,
   SignInInduceContainer,
   SignInInduce,
-  StyledLink,
+  SignUpLink,
 };
