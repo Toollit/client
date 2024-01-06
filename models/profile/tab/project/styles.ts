@@ -1,5 +1,6 @@
 import { mediaQueryLaptop, mediaQueryTablet } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 
 const BoxContent = styled.ul`
   li {
@@ -29,7 +30,7 @@ const Content = styled.li`
   }
 `;
 
-const StyledContentLink = styled.a`
+const ContentLink = styled(Link)`
   display: block;
   text-decoration: none;
   color: #000;
@@ -154,7 +155,7 @@ const Notice = styled.p`
   padding: 4rem 2rem;
 `;
 
-const StyledLink = styled.a`
+const ProjectCreateLink = styled(Link)`
   display: inline-block;
   font-size: 1.4rem;
   padding: 2rem;
@@ -170,8 +171,8 @@ export {
   Title,
   LoadMoreContainer,
   LoadMoreButton,
-  StyledContentLink,
+  ContentLink,
   Notice,
-  StyledLink,
+  ProjectCreateLink,
   SubInfo,
 };
