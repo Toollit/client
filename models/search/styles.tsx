@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import Link from 'next/link';
 
 const Header = styled.div`
   padding: 2rem 1.5rem;
@@ -19,7 +20,7 @@ const ContentContainer = styled.div`
   margin-bottom: 15rem;
 `;
 
-const StyledLink = styled.a`
+const ProjectDetailLink = styled(Link)`
   text-decoration: none;
   color: #000;
 `;
@@ -30,4 +31,10 @@ const SkeletonContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-export { Header, SubTitle, ContentContainer, StyledLink, SkeletonContainer };
+export {
+  Header,
+  SubTitle,
+  ContentContainer,
+  ProjectDetailLink,
+  SkeletonContainer,
+};

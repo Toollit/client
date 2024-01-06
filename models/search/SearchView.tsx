@@ -3,14 +3,13 @@ import AppLayout from '@/components/appLayout';
 import { InnerContainer } from '@/styles/commons';
 import Title from '@/components/commons/title';
 import BlockPost, { BlockProject } from '@/components/commons/post/block';
-import Link from 'next/link';
 import Grid from '@mui/material/Grid';
 import Skeleton from '@/components/commons/skeleton';
 import {
   ContentContainer,
   Header,
   SkeletonContainer,
-  StyledLink,
+  ProjectDetailLink,
   SubTitle,
 } from './styles';
 
@@ -43,11 +42,9 @@ const SearchView = ({ searchText, data }: SearchViewProps) => {
                     tablet={4}
                     laptop={4}
                   >
-                    <Link href={`/project/${project.id}`} passHref legacyBehavior>
-                      <StyledLink>
-                        <BlockPost content={project} />
-                      </StyledLink>
-                    </Link>
+                    <ProjectDetailLink href={`/project/${project.id}`}>
+                      <BlockPost content={project} />
+                    </ProjectDetailLink>
                   </Grid>
                 );
               })}
