@@ -1,3 +1,5 @@
+const s3Url = process.env.NEXT_PUBLIC_S3_URL;
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
@@ -14,7 +16,7 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
-    domains: ['getit-s3.s3.ap-northeast-2.amazonaws.com'],
+    domains: [s3Url],
   },
 };
 
