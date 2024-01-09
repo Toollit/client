@@ -5,12 +5,13 @@ import GetitLogo from '@/assets/images/GetitLogo';
 const Container = styled.div`
   width: 100%;
   max-width: 56rem;
-  margin: 3.6rem auto 0 auto;
+  margin: 0 auto;
+  padding: 3rem;
 `;
 
 const LogoLink = styled(Link)`
   display: flex;
-  margin-left: 2.5rem;
+  color: #000;
   width: fit-content;
   cursor: pointer;
 `;
@@ -20,18 +21,16 @@ const LogoText = styled.h1`
   margin-left: 1rem;
 `;
 
-const ContentContainer = styled.div`
-  margin: 3rem 3rem 0 3rem;
-`;
 const Title = styled.h2`
   font-size: 1.4rem;
   color: #444444;
+  padding-top: 3rem;
 `;
 
 const Description = styled.p`
   font-size: 1.2rem;
   color: #444444;
-  margin-top: 1rem;
+  padding-top: 1rem;
 `;
 
 const EmphasizeText = styled.span`
@@ -40,14 +39,9 @@ const EmphasizeText = styled.span`
 
 const SubDescription = styled.p`
   font-size: 1.2rem;
-  margin-top: 2rem;
   font-weight: 500;
-`;
-
-const ErrorCode = styled.h2`
-  margin-top: 2rem;
-  font-size: 1.4rem;
-  color: #444444;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
 `;
 
 const ReturnLink = styled(Link)`
@@ -65,32 +59,25 @@ const ErrorNotice = ({ statusCode }: ErrorPageProps) => {
         <GetitLogo width={4} height={4} />
         <LogoText>Getit</LogoText>
       </LogoLink>
-      <ContentContainer>
-        <Title>
-          죄송합니다.
-          <br />
-          현재 서비스 연결상태가 좋지않습니다. 잠시 후 다시 시도해 주세요.
-        </Title>
 
-        <Description>
-          문제가 지속될 경우{' '}
-          <EmphasizeText>getit.help.contact@gmail.com</EmphasizeText>으로
-          알려주시면 친절하게 안내해 드리겠습니다.
-        </Description>
+      <Title>
+        죄송합니다.
+        <br />
+        현재 서비스 연결상태가 좋지않습니다. 잠시 후 다시 시도해 주세요.
+      </Title>
 
-        <Description>감사합니다.</Description>
+      <Description>
+        문제가 지속될 경우{' '}
+        <EmphasizeText>getit.help.contact@gmail.com</EmphasizeText>으로
+        알려주시면 친절하게 안내해 드리겠습니다.
+      </Description>
 
-        {/* Error code:
-            - SSEC(server side error code)
-            - CSEC(client side error code)
-        */}
-        <ErrorCode>Error Code: {statusCode ? 'SSEC' : 'CSEC'}</ErrorCode>
+      <Description>감사합니다.</Description>
 
-        <SubDescription>
-          되돌아가기 <ReturnLink href='/'>Getit</ReturnLink>
-          <span> 👈</span>
-        </SubDescription>
-      </ContentContainer>
+      <SubDescription>
+        되돌아가기 <ReturnLink href='/'>Getit</ReturnLink>
+        <span> 👈</span>
+      </SubDescription>
     </Container>
   );
 };
