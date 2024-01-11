@@ -127,7 +127,7 @@ const BookmarkController = ({
       if (!bookmarkProjectsData || !bookmarksStatusData) {
         return;
       }
-
+      // member type convert. developer -> Developer, designer -> Designer, pm -> PM, anyone -> Anyone
       const convertedMemberTypes = bookmarkProjectsData?.bookmarks?.map(
         (project) => {
           return {
@@ -143,7 +143,6 @@ const BookmarkController = ({
 
       const bookmarks = bookmarksStatusData?.bookmarks;
 
-      // bookmark status checking
       const bookmarksStatusCheck = convertedMemberTypes?.map((project) => {
         return bookmarks?.includes(project.id)
           ? { ...project, bookmark: true }

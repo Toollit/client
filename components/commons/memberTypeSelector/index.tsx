@@ -42,7 +42,7 @@ const MemberTypeSelector = ({
     [checked],
   );
 
-  const handleProcessedType = useCallback((type: keyof typeof checked) => {
+  const handleConvertMemberTypes = useCallback((type: keyof typeof checked) => {
     if (type === 'pm') {
       return type.toUpperCase();
     } else {
@@ -76,7 +76,7 @@ const MemberTypeSelector = ({
                 onClick={handleChecked}
                 readOnly
               />
-              <label htmlFor={type}>{handleProcessedType(type)}</label>
+              <label htmlFor={type}>{handleConvertMemberTypes(type)}</label>
             </Type>
           );
         })}

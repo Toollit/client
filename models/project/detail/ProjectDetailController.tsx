@@ -76,15 +76,15 @@ const ProjectDetailController = () => {
     },
   );
 
-  const handleMemberTypes = useCallback(
+  const handleConvertMemberTypes = useCallback(
     (memberTypes: ProjectAPIRes['data']['content']['memberTypes']) => {
-      const dataConverter = memberTypes.map((type) => {
+      const convertedMemberTypes = memberTypes.map((type) => {
         return type === 'pm'
           ? type.toUpperCase()
           : type.charAt(0).toUpperCase() + type.slice(1);
       }) as CustomMemberTypes;
 
-      return dataConverter;
+      return convertedMemberTypes;
     },
     [],
   );
@@ -405,7 +405,7 @@ const ProjectDetailController = () => {
             format: 'YYMMDD_hhmm',
           }),
           hashtags: projectDetail.data.content.hashtags,
-          memberTypes: handleMemberTypes(
+          memberTypes: handleConvertMemberTypes(
             projectDetail.data.content.memberTypes,
           ),
           recruitCount: projectDetail.data.content.recruitCount,

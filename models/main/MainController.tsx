@@ -91,15 +91,14 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
       const projects = projectsData?.projects;
       const bookmarks = bookmarksData?.bookmarks;
 
-      // bookmark status checking
-      const bookmarkStatusCheck = projects?.map((project) => {
+      const bookmarksStatusCheck = projects?.map((project) => {
         return bookmarks?.includes(project.id)
           ? { ...project, bookmark: true }
           : { ...project, bookmark: false };
       });
 
       // member type convert. developer -> Developer, designer -> Designer, pm -> PM, anyone -> Anyone
-      const MemberTypeConvert = bookmarkStatusCheck?.map((project) => {
+      const convertedMemberTypes = bookmarksStatusCheck?.map((project) => {
         return {
           ...project,
           memberTypes: project.memberTypes?.map((type) => {
@@ -110,7 +109,7 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
         };
       });
 
-      const imageFiltering = MemberTypeConvert?.map((project) => {
+      const imageFiltering = convertedMemberTypes?.map((project) => {
         return {
           ...project,
           representativeImage:

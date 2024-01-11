@@ -100,7 +100,8 @@ const ProjectController = ({
         return null;
       }
 
-      const convertedData = data?.projects.map((project) => {
+      // member type convert. developer -> Developer, designer -> Designer, pm -> PM, anyone -> Anyone
+      const convertedMemberTypes = data?.projects.map((project) => {
         return {
           ...project,
           memberTypes: project.memberTypes.map((type) => {
@@ -112,7 +113,7 @@ const ProjectController = ({
       });
 
       return {
-        projects: convertedData,
+        projects: convertedMemberTypes,
         total: data.total,
         showLoadMore: data.projects.length !== data.total,
       };
