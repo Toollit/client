@@ -40,7 +40,7 @@ const EmailAuthView = ({
     >
       <Form onSubmit={handleSubmit}>
         <TitleContainer>
-          <Title text='Getit 이메일 계정 인증' />
+          <Title text='Toollit 이메일 계정 인증' />
         </TitleContainer>
 
         <AuthCodeInputContainer>

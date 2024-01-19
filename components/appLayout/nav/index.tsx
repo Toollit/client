@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import GetitLogo from '@/assets/images/GetitLogo';
+import ToollitLogo from '@/assets/images/ToollitLogo';
 import { useRouter } from 'next/router';
 import { BackButton, CloseButton } from '@/components/commons/button';
 import useAuth from '@/hooks/useAuth';
@@ -88,8 +88,8 @@ const Nav = <T extends Default | Close | Back | None>(props: T) => {
               <ColumnLeftContainer>
                 <li>
                   <LogoLink href='/' onClick={handleLogoRoute}>
-                    <GetitLogo width={3.2} height={3.2} />
-                    <LogoTitle>Getit</LogoTitle>
+                    <ToollitLogo width={3.2} height={3.2} />
+                    <LogoTitle>Toollit</LogoTitle>
                   </LogoLink>
                 </li>
               </ColumnLeftContainer>

@@ -30,7 +30,7 @@ const NoticeDetailView = ({ data }: NoticeDetailViewProps) => {
           <Title text='공지사항' />
           <SubTitle>
             <p>
-              Getit 서비스 <span>이용</span> 및 <span>업데이트 소식</span>을
+              Toollit 서비스 <span>이용</span> 및 <span>업데이트 소식</span>을
               알려드립니다!
             </p>
           </SubTitle>

@@ -23,9 +23,7 @@ const Footer = () => {
     <Container>
       <InnerContainer>
         <NoticeArea>
-          <Link href='/notice'>
-            공지사항
-          </Link>
+          <Link href='/notice'>공지사항</Link>
         </NoticeArea>
 
         <AsideArea>
@@ -40,18 +38,16 @@ const Footer = () => {
             <Link
               href='https://github.com/seungwonleee'
               target='_blank'
-              rel='noopener noreferrer'>
-              
-                Github
-              
+              rel='noopener noreferrer'
+            >
+              Github
             </Link>
             <Link
               href='https://seungwon-code.blogspot.com/'
               target='_blank'
-              rel='noopener noreferrer'>
-              
-                Blog
-              
+              rel='noopener noreferrer'
+            >
+              Blog
             </Link>
           </DeveloperContainer>
         </AsideArea>
@@ -64,22 +60,16 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link href={'/policy/terms-of-service'}>
-                이용약관
-              </Link>
+              <Link href={'/policy/terms-of-service'}>이용약관</Link>
             </li>
             <li>
-              <Link href={'/policy/privacy'}>
-                개인정보처리방침
-              </Link>
+              <Link href={'/policy/privacy'}>개인정보처리방침</Link>
             </li>
 
             <li>
-              <Link href={'/faq'}>
-                FAQ
-              </Link>
+              <Link href={'/faq'}>FAQ</Link>
             </li>
-            <li>ⓒ Getit Corp.</li>
+            <li>ⓒ Toollit Corp.</li>
           </ul>
         </CorpArea>
       </InnerContainer>

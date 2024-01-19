@@ -46,7 +46,7 @@ const ProfileFooterLink = ({
       </ul>
       <ul>
         <li>
-          <LogoLink href={'/'}>Getit</LogoLink>
+          <LogoLink href={'/'}>Toollit</LogoLink>
         </li>
       </ul>
     </Container>

@@ -45,7 +45,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Getit</title>
+        <title>Toollit</title>
         <meta name='viewport' content='viewport-fit=cover' />
         <meta
           name='description'
@@ -61,7 +61,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           name='keywords'
           content='프로젝트, 모집, 모임, IT, 커뮤니티, 플랫폼, project'
         />
-        <meta property='og:title' content='Getit' />
+        <meta property='og:title' content='Toollit' />
         <meta
           property='og:description'
           content='IT 프로젝트 모집 커뮤니티 플랫폼. 당신이 부러워하는 유니콘 스타트업도 작은 모임에서 시작됐다.' // TODO 지역에따라 한글 또는 영어로 나오게 수정하기

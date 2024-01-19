@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import GetitLogo from '@/assets/images/GetitLogo';
+import ToollitLogo from '@/assets/images/ToollitLogo';
 
 const Container = styled.div`
   width: 100%;
@@ -56,8 +56,8 @@ const ErrorNotice = ({ statusCode }: ErrorPageProps) => {
   return (
     <Container>
       <LogoLink href={'/'}>
-        <GetitLogo width={4} height={4} />
-        <LogoText>Getit</LogoText>
+        <ToollitLogo width={4} height={4} />
+        <LogoText>Toollit</LogoText>
       </LogoLink>
 
       <Title>
@@ -68,14 +68,14 @@ const ErrorNotice = ({ statusCode }: ErrorPageProps) => {
 
       <Description>
         문제가 지속될 경우{' '}
-        <EmphasizeText>getit.help.contact@gmail.com</EmphasizeText>으로
-        알려주시면 친절하게 안내해 드리겠습니다.
+        <EmphasizeText>contact.toollit@gmail.com</EmphasizeText>으로 알려주시면
+        친절하게 안내해 드리겠습니다.
       </Description>
 
       <Description>감사합니다.</Description>
 
       <SubDescription>
-        되돌아가기 <ReturnLink href='/'>Getit</ReturnLink>
+        되돌아가기 <ReturnLink href='/'>Toollit</ReturnLink>
         <span> 👈</span>
       </SubDescription>
     </Container>

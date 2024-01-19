@@ -20,7 +20,7 @@ const PrivacyView = ({ handleClose }: PrivacyViewProps) => {
             <strong>개인정보처리방침</strong>
           </h2>
           <p>
-            Getit (이하 &quot;회사&quot;)는 개인정보를 소중하게 생각하고
+            Toollit (이하 &quot;회사&quot;)는 개인정보를 소중하게 생각하고
             개인정보를 보호하기 위하여 최선을 다하고 있습니다.
             &quot;회사&quot;는 본 개인정보처리방침을 통하여 이용자가 제공하는
             개인정보가 어떠한 용도와 방식으로 이용되고 있으며 개인정보보호를
@@ -696,9 +696,9 @@ const PrivacyView = ({ handleClose }: PrivacyViewProps) => {
           </p>
           <ul>
             <li>이 름: 이승원&nbsp;</li>
-            <li>소 속: Getit&nbsp;</li>
+            <li>소 속: Toollit&nbsp;</li>
             {/* <li>연락처: 010-0000-0000&nbsp;</li> */}
-            <li>E-mail: getit.help.contact@gmail.com&nbsp;</li>
+            <li>E-mail: contact.toollit@gmail.com&nbsp;</li>
           </ul>
           <p>&nbsp;</p>
           <p>

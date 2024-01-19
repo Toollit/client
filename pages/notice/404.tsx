@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import GetitLogo from '@/assets/images/GetitLogo';
+import ToollitLogo from '@/assets/images/ToollitLogo';
 
 const Container = styled.div`
   width: 100%;
@@ -52,8 +52,8 @@ export default function NotFound() {
   return (
     <Container>
       <LogoLink href={'/'}>
-        <GetitLogo width={4} height={4} />
-        <LogoText>Getit</LogoText>
+        <ToollitLogo width={4} height={4} />
+        <LogoText>Toollit</LogoText>
       </LogoLink>
 
       <Title>
@@ -72,14 +72,14 @@ export default function NotFound() {
       </Description>
 
       <Description>
-        관련 문의사항은 <EmphasizeText>Getit 고객센터</EmphasizeText>에
+        관련 문의사항은 <EmphasizeText>Toollit 고객센터</EmphasizeText>에
         알려주시면 친절하게 안내해 드리겠습니다.
       </Description>
 
       <Description>감사합니다.</Description>
 
       <SubDescription>
-        되돌아가기 <ReturnLink href={'/'}>Getit</ReturnLink>
+        되돌아가기 <ReturnLink href={'/'}>Toollit</ReturnLink>
         <span> 👈</span>
       </SubDescription>
     </Container>

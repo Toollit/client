@@ -41,7 +41,7 @@ const PwInquiryView = ({
     >
       <Form onSubmit={handleSubmit}>
         <TitleContainer>
-          <Title text='Getit 계정 찾기' />
+          <Title text='Toollit 계정 찾기' />
         </TitleContainer>
 
         <EmailInputContainer>

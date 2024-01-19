@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import GetitLogo from '@/assets/images/GetitLogo';
+import ToollitLogo from '@/assets/images/ToollitLogo';
 import { AccountCircleIcon, EditCircleIcon } from '@/assets/icons';
 import Divider from '@/components/commons/divider';
 import Skeleton from '@/components/commons/skeleton';
@@ -80,8 +80,8 @@ const ProfileView = ({
         <ColumnLeftContainer role=''>
           <GNBArea>
             <GNBLink href={'/'}>
-              <GetitLogo width={3.2} height={3.2} />
-              <GNBTitle>Getit 프로필</GNBTitle>
+              <ToollitLogo width={3.2} height={3.2} />
+              <GNBTitle>Toollit 프로필</GNBTitle>
             </GNBLink>
           </GNBArea>
 
@@ -191,7 +191,7 @@ const ProfileView = ({
               </ul>
               <ul>
                 <li>
-                  <LogoLink href={'/'}>Getit</LogoLink>
+                  <LogoLink href={'/'}>Toollit</LogoLink>
                 </li>
                 <li>
                   <Link href={'/policy/privacy'}>개인정보처리방침</Link>

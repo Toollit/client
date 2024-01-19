@@ -44,7 +44,7 @@ const ResetPasswordView = ({
     <AppLayout type='none' footer={false}>
       <Form onSubmit={handleSubmit}>
         <TitleContainer>
-          <Title text='Getit 비밀번호 재설정' />
+          <Title text='Toollit 비밀번호 재설정' />
         </TitleContainer>
 
         <PasswordSettingsContainer>

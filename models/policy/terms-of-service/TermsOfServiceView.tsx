@@ -22,10 +22,10 @@ const TermsOfServiceView = ({ handleClose }: TermsOfServiceViewProps) => {
           <strong>제1조. 목적</strong>
         </p>
         <p>
-          이 이용약관(이하 &rdquo;본 약관&rdquo;이라 합니다)은 Getit(이하
-          &rdquo;회사&rdquo;라 합니다)이 제공하는 Getit(getit.kr) 및 Getit 관련
-          제반 서비스를 이용자가 이용함에 있어 회사와 이용자 간의 권리, 의무 및
-          책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
+          이 이용약관(이하 &rdquo;본 약관&rdquo;이라 합니다)은 Toollit(이하
+          &rdquo;회사&rdquo;라 합니다)이 제공하는 Toollit(toollit.com) 및
+          Toollit 관련 제반 서비스를 이용자가 이용함에 있어 회사와 이용자 간의
+          권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
         </p>
         <p>&nbsp;</p>
         <p>
@@ -36,10 +36,10 @@ const TermsOfServiceView = ({ handleClose }: TermsOfServiceViewProps) => {
         </p>
         <p style={{ paddingLeft: '8rem' }}>
           a.&nbsp; &nbsp;&ldquo;서비스&rdquo;라 함은 회사가 운영하는
-          http://www.getit.kr 및 어플리케이션(이하 &ldquo;사이트 등&rdquo;이라
-          합니다)을 포함하여 구현되는 단말기와 상관없이 이용자가 이용할 수 있는
-          Getit 서비스 및 Getit 관련 제반 서비스를 의미합니다. 서비스의 자세한
-          내용은 제7조에서 정하는 바에 따릅니다.
+          https://www.toollit.com 및 어플리케이션(이하 &ldquo;사이트
+          등&rdquo;이라 합니다)을 포함하여 구현되는 단말기와 상관없이 이용자가
+          이용할 수 있는 Toollit 서비스 및 Toollit 관련 제반 서비스를
+          의미합니다. 서비스의 자세한 내용은 제7조에서 정하는 바에 따릅니다.
         </p>
         <p style={{ paddingLeft: '8rem' }}>
           b.&nbsp; &nbsp;&ldquo;회원&rdquo;이란 &ldquo;회사&rdquo;의 서비스에

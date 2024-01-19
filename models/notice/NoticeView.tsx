@@ -35,7 +35,7 @@ const NoticeView = ({
         <Header>
           <Title text='공지사항' />
           <SubTitle>
-            Getit 서비스 <span>이용</span> 및 <span>업데이트 소식</span>을
+            Toollit 서비스 <span>이용</span> 및 <span>업데이트 소식</span>을
             알려드립니다!
           </SubTitle>
         </Header>
@@ -61,9 +61,7 @@ const NoticeView = ({
               {data.map((notice) => (
                 <tr key={notice.title}>
                   <td>
-                    <Link href={`/notice/${notice.id}`}>
-                      {notice.title}
-                    </Link>
+                    <Link href={`/notice/${notice.id}`}>{notice.title}</Link>
                   </td>
                   <td>{notice.date}</td>
                 </tr>

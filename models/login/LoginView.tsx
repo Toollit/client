@@ -56,7 +56,7 @@ const LoginView = ({
     >
       <Form onSubmit={handleSubmit}>
         <TitleContainer>
-          <Title text='Getit 로그인' />
+          <Title text='Toollit 로그인' />
         </TitleContainer>
 
         <SocialLoginButtonContainer>
