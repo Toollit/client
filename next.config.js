@@ -22,6 +22,8 @@ const nextConfig = {
   images: {
     domains: [s3Url],
   },
+  // For docker
+  output: 'standalone',
 };
 
 module.exports = withBundleAnalyzer(nextConfig);
