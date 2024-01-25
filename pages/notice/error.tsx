@@ -68,8 +68,8 @@ const ErrorNotice = ({ statusCode }: ErrorPageProps) => {
 
       <Description>
         문제가 지속될 경우{' '}
-        <EmphasizeText>contact.toollit@gmail.com</EmphasizeText>으로 알려주시면
-        친절하게 안내해 드리겠습니다.
+        <EmphasizeText>{process.env.NEXT_PUBLIC_CONTACT_EMAIL}</EmphasizeText>
+        으로 알려주시면 친절하게 안내해 드리겠습니다.
       </Description>
 
       <Description>감사합니다.</Description>

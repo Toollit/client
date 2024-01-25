@@ -698,7 +698,7 @@ const PrivacyView = ({ handleClose }: PrivacyViewProps) => {
             <li>이 름: 이승원&nbsp;</li>
             <li>소 속: Toollit&nbsp;</li>
             {/* <li>연락처: 010-0000-0000&nbsp;</li> */}
-            <li>E-mail: contact.toollit@gmail.com&nbsp;</li>
+            <li>E-mail: {process.env.NEXT_PUBLIC_CONTACT_EMAIL}&nbsp;</li>
           </ul>
           <p>&nbsp;</p>
           <p>
