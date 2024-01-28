@@ -23,6 +23,7 @@ const styles = css`
   }
 
   a {
+    color: #000;
     cursor: pointer;
     text-decoration: none;
 
