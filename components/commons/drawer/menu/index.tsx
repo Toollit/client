@@ -4,6 +4,7 @@ import AppLayout from '@/components/appLayout';
 import useAuth from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
 import useLogout from '@/hooks/useLogout';
+import Link from 'next/link';
 import {
   OpenButton,
   MenuIcon,
@@ -11,7 +12,6 @@ import {
   Icon,
   Item,
   Text,
-  MenuItemLink,
   AccountCircleIcon,
   ArticleIcon,
   BookmarkIcon,
@@ -21,6 +21,7 @@ import {
   AdminPanelSettingsIcon,
   LiveHelpOutlinedIcon,
   LogoutOutlinedIcon,
+  StyledList,
 } from './styles';
 
 interface MenuItem {
@@ -28,6 +29,7 @@ interface MenuItem {
   icon: React.ReactNode;
   text: string;
   url: string;
+  handler?: () => void;
 }
 
 const Menu = () => {
@@ -59,26 +61,17 @@ const Menu = () => {
     [],
   );
 
-  const handleAuth = useCallback(
-    async (e: React.MouseEvent<HTMLAnchorElement>, menuItem: MenuItem) => {
-      e.preventDefault();
+  const handleUserSession = useCallback(async () => {
+    if (nickname) {
+      await logOut({ push: '/' });
+      handleClose();
+    }
 
-      if (menuItem.tag === 'auth') {
-        if (nickname) {
-          await logOut({ replace: '/' });
-          handleClose();
-        }
-
-        if (!nickname) {
-          router.push('/login');
-          handleClose();
-        }
-      } else {
-        return undefined;
-      }
-    },
-    [router, logOut, nickname, handleClose],
-  );
+    if (!nickname) {
+      router.push('/login');
+      handleClose();
+    }
+  }, [router, logOut, nickname, handleClose]);
 
   useEffect(() => {
     setMenu([
@@ -130,9 +123,10 @@ const Menu = () => {
         icon: <LogoutOutlinedIcon />,
         text: nickname ? '로그아웃' : '로그인',
         url: nickname ? '#' : '/login',
+        handler: handleUserSession,
       },
     ]);
-  }, [nickname]);
+  }, [nickname, handleUserSession]);
 
   return (
     <div>
@@ -154,20 +148,20 @@ const Menu = () => {
             footer={false}
           >
             <Container>
-              {menu.map((item) => {
-                return (
-                  <MenuItemLink
-                    key={item.url}
-                    href={item.url}
-                    onClick={(e) => handleAuth(e, item)}
-                  >
-                    <Item>
-                      <Icon>{item.icon}</Icon>
-                      <Text>{item.text}</Text>
-                    </Item>
-                  </MenuItemLink>
-                );
-              })}
+              <ul>
+                {menu.map((item) => {
+                  return (
+                    <StyledList key={item.tag}>
+                      <Link href={item.url} onClick={item.handler}>
+                        <Item>
+                          <Icon>{item.icon}</Icon>
+                          <Text>{item.text}</Text>
+                        </Item>
+                      </Link>
+                    </StyledList>
+                  );
+                })}
+              </ul>
             </Container>
           </AppLayout>
         </MUIDrawer>

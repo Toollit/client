@@ -12,7 +12,6 @@ import {
   LiveHelpOutlined,
   LogoutOutlined,
 } from '@mui/icons-material';
-import Link from 'next/link';
 
 const OpenButton = styled.button`
   width: 3.6rem;
@@ -42,11 +41,14 @@ const Container = styled.div`
   min-height: ${(props) => `calc(100vh - ${props.theme.layout.navHeight} )`};
 `;
 
+const StyledList = styled.li`
+  border-bottom: 2px solid #eee;
+`;
+
 const Item = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  border-bottom: 2px solid #eee;
   padding: 0 1.5rem;
   cursor: pointer;
 `;
@@ -62,10 +64,6 @@ const Text = styled.div`
   line-height: 8rem;
   font-size: 1.4rem;
   padding-left: 1.5rem;
-`;
-
-const MenuItemLink = styled(Link)`
-  color: #000;
 `;
 
 const commonIconStyles = () => css`
@@ -104,6 +102,7 @@ const LogoutOutlinedIcon = styled(LogoutOutlined)`
 export {
   OpenButton,
   MenuIcon,
+  StyledList,
   Container,
   Item,
   Icon,
@@ -117,5 +116,4 @@ export {
   AdminPanelSettingsIcon,
   LiveHelpOutlinedIcon,
   LogoutOutlinedIcon,
-  MenuItemLink,
 };
