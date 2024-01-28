@@ -63,7 +63,7 @@ const GNBTitle = styled.h1`
   font-size: 2.2rem;
   padding-left: 0.5rem;
   color: #000;
-  font-weight: 400;
+  font-weight: 600;
 `;
 
 const ProfileArea = styled.div`
