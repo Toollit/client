@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { Menu } from '@mui/icons-material';
 import {
   AccountCircleOutlined,
   ArticleOutlined,
@@ -11,6 +10,7 @@ import {
   AdminPanelSettingsOutlined,
   LiveHelpOutlined,
   LogoutOutlined,
+  Menu,
 } from '@mui/icons-material';
 
 const OpenButton = styled.button`
@@ -39,6 +39,7 @@ const Container = styled.div`
   width: 100%;
   margin: 0 auto;
   min-height: ${(props) => `calc(100vh - ${props.theme.layout.navHeight} )`};
+  padding-bottom: env(safe-area-inset-bottom);
 `;
 
 const StyledList = styled.li`

@@ -44,22 +44,9 @@ const Menu = () => {
     setOpen(false);
   }, []);
 
-  const handleToggleDrawer = useCallback(
-    (open: boolean) =>
-      async (event: React.KeyboardEvent | React.MouseEvent) => {
-        if (
-          event &&
-          event.type === 'keydown' &&
-          ((event as React.KeyboardEvent).key === 'Tab' ||
-            (event as React.KeyboardEvent).key === 'Shift')
-        ) {
-          return;
-        }
-
-        setOpen(open);
-      },
-    [],
-  );
+  const handleOpen = useCallback(() => {
+    setOpen(true);
+  }, []);
 
   const handleUserSession = useCallback(async () => {
     if (nickname) {
@@ -131,14 +118,10 @@ const Menu = () => {
   return (
     <div>
       <React.Fragment>
-        <OpenButton onClick={handleToggleDrawer(true)}>
+        <OpenButton onClick={handleOpen}>
           <MenuIcon />
         </OpenButton>
-        <MUIDrawer
-          anchor={'top'}
-          open={open}
-          onClose={handleToggleDrawer(false)}
-        >
+        <MUIDrawer anchor={'top'} open={open}>
           <AppLayout
             type='close'
             handleClose={handleClose}
