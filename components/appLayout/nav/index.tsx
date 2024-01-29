@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import { BackButton, CloseButton } from '@/components/commons/button';
 import useAuth from '@/hooks/useAuth';
 import { InnerContainer } from '@/styles/commons';
-import Menu from '@/components/commons/drawer/menu';
 import SearchDrawer from '@/components/commons/drawer/search';
+import Link from 'next/link';
 import {
   Container,
   ColumnContainer,
@@ -19,6 +19,7 @@ import {
   AccountCircleIcon,
   LayoutContainer,
   ProfileLink,
+  MenuIcon,
 } from './styles';
 
 type Default = {
@@ -107,7 +108,9 @@ const Nav = <T extends Default | Close | Back | None>(props: T) => {
                   </ProfileLink>
                 </li>
                 <li>
-                  <Menu />
+                  <Link href={'/menu'}>
+                    <MenuIcon />
+                  </Link>
                 </li>
               </ColumnRightContainer>
             </ColumnContainer>

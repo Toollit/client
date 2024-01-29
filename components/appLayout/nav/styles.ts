@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
-import { SearchOutlined, AccountCircleOutlined } from '@mui/icons-material';
+import {
+  SearchOutlined,
+  AccountCircleOutlined,
+  Menu,
+} from '@mui/icons-material';
 import Link from 'next/link';
 
 const DefaultContainer = styled.nav<{ boundary?: boolean }>`
@@ -126,6 +130,17 @@ const ProfileLink = styled(Link)`
   height: 3.2rem;
 `;
 
+const MenuIcon = styled(Menu)`
+  width: 3.2rem;
+  height: 3.2rem;
+  color: #000;
+
+  &.MuiSvgIcon-root {
+    stroke: #fff;
+    stroke-width: 1;
+  }
+`;
+
 export {
   DefaultContainer,
   Container,
@@ -139,4 +154,5 @@ export {
   AccountCircleIcon,
   LayoutContainer,
   ProfileLink,
+  MenuIcon,
 };
