@@ -1,4 +1,5 @@
 const s3Url = process.env.NEXT_PUBLIC_S3_URL;
+const prod = process.env.NODE_ENV === 'production';
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -13,11 +14,19 @@ const nextConfig = {
       issuer: /\.[jt]sx?$/,
       use: ['@svgr/webpack'],
     });
-    return config;
+
+    return {
+      ...config,
+      mode: prod ? 'production' : 'development',
+      devtool: prod ? 'hidden-source-map' : 'eval-source-map',
+    };
   },
   swcMinify: true,
   compiler: {
-    styledComponents: true,
+    emotion: {
+      autoLabel: 'dev-only',
+    },
+    removeConsole: prod ? true : false,
   },
   images: {
     domains: [s3Url],
