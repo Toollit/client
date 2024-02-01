@@ -18,7 +18,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "sourceMap": false
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "swiper.d.ts"],
   "exclude": ["node_modules"]
