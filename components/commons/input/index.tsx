@@ -17,6 +17,7 @@ interface InputProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   focus?: boolean;
   enterSubmit?: boolean;
+  autoComplete?: string;
 }
 
 type InputRef = React.ForwardedRef<HTMLInputElement>;
@@ -40,6 +41,7 @@ const CustomInput = (
     onChange,
     focus = false,
     enterSubmit = false,
+    autoComplete = 'off',
   }: InputProps,
   ref: InputRef,
 ) => {
@@ -55,6 +57,7 @@ const CustomInput = (
       }}
       focus={focus}
       inputMode={inputMode}
+      autoComplete={autoComplete}
     />
   );
 };
