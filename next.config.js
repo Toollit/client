@@ -9,16 +9,20 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = {
   reactStrictMode: false,
   webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/i,
-      issuer: /\.[jt]sx?$/,
-      use: ['@svgr/webpack'],
-    });
-
     return {
       ...config,
       mode: prod ? 'production' : 'development',
       devtool: prod ? 'hidden-source-map' : 'eval-source-map',
+      module: {
+        rules: [
+          ...config.module.rules,
+          {
+            test: /\.svg$/i,
+            issuer: /\.[jt]sx?$/,
+            use: ['@svgr/webpack'],
+          },
+        ],
+      },
     };
   },
   swcMinify: true,
