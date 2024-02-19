@@ -1,5 +1,5 @@
 import React from 'react';
-import BannerPersonImg from 'public/static/images/BannerPerson.svg';
+import BannerPersonImg from 'public/static/images/bannerPerson.svg';
 import { SVGContainer } from '@/styles/commons';
 
 const BannerPerson = () => {
