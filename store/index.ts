@@ -3,7 +3,6 @@ import { ThunkDispatch } from 'redux-thunk';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import logger from 'redux-logger';
 import signUpSlice from '@/features/signUp';
-import drawerSlice from '@/features/drawer';
 import swipeableViewSlice from '@/features/swipeableView';
 import dialogSlice from '@/features/dialog';
 import paginationSlice from '@/features/pagination';
@@ -18,7 +17,6 @@ const makeStore = () => {
   const store = configureStore({
     reducer: {
       signUp: signUpSlice,
-      drawer: drawerSlice,
       swipeableView: swipeableViewSlice,
       dialog: dialogSlice,
       pagination: paginationSlice,
