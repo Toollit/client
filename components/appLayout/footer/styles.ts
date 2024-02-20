@@ -81,6 +81,33 @@ const DeveloperContainer = styled.div`
   }
 `;
 
+const ContactContainer = styled.div`
+  display: flex;
+  margin-top: 1rem;
+
+  h3 {
+    min-width: 11rem;
+    font-size: 1.3rem;
+  }
+
+  a {
+    font-size: 1.3rem;
+    color: #000;
+
+    :not(:nth-of-type(1)) {
+      ::before {
+        content: '|';
+        margin: 0 2rem;
+        color: #d3d5d7;
+      }
+    }
+
+    &:hover {
+      text-decoration-line: underline;
+    }
+  }
+`;
+
 const CorpArea = styled.div`
   padding: 2.5rem 1.5rem 2.5rem 1.5rem;
 
@@ -130,5 +157,6 @@ export {
   AsideArea,
   PartnersContainer,
   DeveloperContainer,
+  ContactContainer,
   CorpArea,
 };

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { InnerContainer } from '@/styles/commons';
 import {
   AsideArea,
+  ContactContainer,
   Container,
   CorpArea,
   DeveloperContainer,
@@ -50,6 +51,16 @@ const Footer = () => {
               Blog
             </Link>
           </DeveloperContainer>
+          <ContactContainer>
+            <h3>Contact</h3>
+            <Link
+              href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              {process.env.NEXT_PUBLIC_CONTACT_EMAIL}
+            </Link>
+          </ContactContainer>
         </AsideArea>
 
         <CorpArea>
