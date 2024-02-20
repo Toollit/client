@@ -1,10 +1,10 @@
 import React from 'react';
 import AppLayout from '@/components/appLayout';
 import { GoogleIcon, GithubIcon } from '@/assets/icons';
-import { Button } from '@/components/commons/button';
-import Title from '@/components/commons/title';
-import Divider from '@/components/commons/divider';
-import Input from '@/components/commons/input';
+import { Button } from '@/components/button';
+import Title from '@/components/title';
+import Divider from '@/components/divider';
+import Input from '@/components/input';
 import {
   DividerContainer,
   Form,

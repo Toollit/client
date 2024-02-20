@@ -5,8 +5,8 @@ import { RootState } from '@/store';
 import { close as closeDialog, update as updateValue } from '@/features/dialog';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
-import BpRadio from '@/components/commons/radio';
-import HashtagInput from '@/components/commons/hashtagInput';
+import BpRadio from '@/components/radio';
+import HashtagInput from '@/components/hashtagInput';
 import {
   CustomDialog,
   CustomDialogTitle,

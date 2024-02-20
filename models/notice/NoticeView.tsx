@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Notice } from './NoticeController';
 import AppLayout from '@/components/appLayout';
 import { InnerContainer } from '@/styles/commons';
-import Title from '@/components/commons/title';
+import Title from '@/components/title';
 import {
   Content,
   Header,

@@ -5,7 +5,7 @@ import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { closeReport } from '@/features/report';
-import { BottomButton } from '@/components/commons/button';
+import { BottomButton } from '@/components/button';
 import AppLayout from '@/components/appLayout';
 import { reportAPI } from '@/apis/report';
 import { errorMessage } from '@/apis/errorMessage';

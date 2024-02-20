@@ -1,18 +1,18 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import AppLayout from '@/components/appLayout';
-import Title from '@/components/commons/title';
-import HashtagInput from '@/components/commons/hashtagInput';
-import MemberTypeSelector from '@/components/commons/memberTypeSelector';
+import Title from '@/components/title';
+import HashtagInput from '@/components/hashtagInput';
+import MemberTypeSelector from '@/components/memberTypeSelector';
 import { Editor } from '@toast-ui/react-editor';
 import { ProjectDetail } from '@/apis/projectFetcher';
-import { Button } from '@/components/commons/button';
-import Label from '@/components/commons/label';
-import Image, { StaticImageData } from "next/legacy/image";
+import { Button } from '@/components/button';
+import Label from '@/components/label';
+import Image, { StaticImageData } from 'next/legacy/image';
 import { CloseIcon, PlusIcon } from '@/assets/icons';
-import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
-import Skeleton from '@/components/commons/skeleton';
-import { BottomButton } from '@/components/commons/button';
+import Tooltip, { TooltipProps } from '@/components/tooltip';
+import Skeleton from '@/components/skeleton';
+import { BottomButton } from '@/components/button';
 import { InnerContainer } from '@/styles/commons';
 
 import {
@@ -33,7 +33,7 @@ import {
 } from './styles';
 
 const DynamicTuiEditor = dynamic(
-  () => import('../../components/commons/webEditor/TuiEditor'),
+  () => import('../../components/webEditor/TuiEditor'),
   {
     loading: () => (
       <>

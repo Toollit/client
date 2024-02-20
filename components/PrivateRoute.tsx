@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import useAuth from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
-import LoadingCircularProgress from '@/components/commons/loading';
+import LoadingCircularProgress from '@/components/loading';
 
 interface PrivateRouteProps {
   children: React.ReactNode;

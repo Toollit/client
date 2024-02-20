@@ -1,20 +1,20 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import AppLayout from '@/components/appLayout';
-import Title from '@/components/commons/title';
-import HashtagInput from '@/components/commons/hashtagInput';
-import MemberTypeSelector from '@/components/commons/memberTypeSelector';
+import Title from '@/components/title';
+import HashtagInput from '@/components/hashtagInput';
+import MemberTypeSelector from '@/components/memberTypeSelector';
 import { Editor } from '@toast-ui/react-editor';
-import Label from '@/components/commons/label';
-import { Button } from '@/components/commons/button';
-import Image from "next/legacy/image";
+import Label from '@/components/label';
+import { Button } from '@/components/button';
+import Image from 'next/legacy/image';
 import PlusIcon from '@/assets/icons/PlusIcon';
 import { CloseIcon } from '@/assets/icons';
-import Tooltip, { TooltipProps } from '@/components/commons/tooltip';
-import { StaticImageData } from "next/legacy/image";
-import Skeleton from '@/components/commons/skeleton';
+import Tooltip, { TooltipProps } from '@/components/tooltip';
+import { StaticImageData } from 'next/legacy/image';
+import Skeleton from '@/components/skeleton';
 import { InnerContainer } from '@/styles/commons';
-import { BottomButton } from '@/components/commons/button';
+import { BottomButton } from '@/components/button';
 
 import {
   Form,
@@ -34,7 +34,7 @@ import {
 } from './styles';
 
 const DynamicTuiEditor = dynamic(
-  () => import('../../../components/commons/webEditor/TuiEditor'),
+  () => import('../../../components/webEditor/TuiEditor'),
   {
     loading: () => (
       <>

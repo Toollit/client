@@ -1,10 +1,10 @@
 import React from 'react';
 import { PersonIcon, MailIcon } from '@/assets/icons';
-import Hashtag from '@/components/commons/hashtag';
-import { EditButton } from '@/components/commons/button';
+import Hashtag from '@/components/hashtag';
+import { EditButton } from '@/components/button';
 import { MyProfile, UserProfile } from '@/apis/profileInfoFetcher';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
-import Skeleton from '@/components/commons/skeleton';
+import Skeleton from '@/components/skeleton';
 import {
   BoxContent,
   ContentContainer,

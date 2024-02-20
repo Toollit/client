@@ -1,8 +1,8 @@
 import React from 'react';
 import AppLayout from '@/components/appLayout';
-import Input from '@/components/commons/input';
-import Title from '@/components/commons/title';
-import { Button } from '@/components/commons/button';
+import Input from '@/components/input';
+import Title from '@/components/title';
+import { Button } from '@/components/button';
 import {
   Form,
   TitleContainer,

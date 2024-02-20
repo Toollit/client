@@ -1,15 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import Title from 'components/commons/title';
+import Title from '@/components/title';
 import AppLayout from '@/components/appLayout';
-import Hashtag from '@/components/commons/hashtag';
-import Skeleton from '@/components/commons/skeleton';
-import Report from '@/components/commons/drawer/report';
-import { Button } from '@/components/commons/button';
+import Hashtag from '@/components/hashtag';
+import Skeleton from '@/components/skeleton';
+import Report from '@/components/drawer/report';
+import { Button } from '@/components/button';
 import { InnerContainer, ImageWrapper } from '@/styles/commons';
-import BasicTooltip from '@/components/commons/tooltip/basic';
-import OptionButton from '@/components/commons/drawer/option';
+import BasicTooltip from '@/components/tooltip/basic';
+import OptionButton from '@/components/drawer/option';
 import {
   ProjectContent,
   ProjectMember,
@@ -56,7 +56,7 @@ import {
 } from './styles';
 
 const DynamicTuiViewer = dynamic(
-  () => import('../../../components/commons/webEditor/TuiViewer'),
+  () => import('../../../components/webEditor/TuiViewer'),
   {
     loading: () => (
       <>
@@ -190,8 +190,7 @@ const ProjectDetailView = ({
           <ColumnRightContainer>
             <StickyContainer>
               {writer ? (
-                (<Link href={`/profile/${writer.nickname}`}>
-
+                <Link href={`/profile/${writer.nickname}`}>
                   <WriterInfoContainer>
                     {writer.profileImage ? (
                       <WriterProfileImage>
@@ -225,8 +224,7 @@ const ProjectDetailView = ({
                       </LastLoginAt>
                     </WriterInfo>
                   </WriterInfoContainer>
-
-                </Link>)
+                </Link>
               ) : (
                 <Skeleton height={20} />
               )}
@@ -266,7 +264,6 @@ const ProjectDetailView = ({
                         return (
                           <Avatar key={user.nickname}>
                             <Link href={`/profile/${user.nickname}`}>
-
                               <BasicTooltip text={user.nickname}>
                                 {user.profileImage ? (
                                   <ImageWrapper width={3.5} height={3.5}>
@@ -287,7 +284,6 @@ const ProjectDetailView = ({
                                   />
                                 )}
                               </BasicTooltip>
-
                             </Link>
                           </Avatar>
                         );

@@ -1,7 +1,7 @@
 import React from 'react';
 import AppLayout from '@/components/appLayout';
 import { InnerContainer } from '@/styles/commons';
-import Title from '@/components/commons/title';
+import Title from '@/components/title';
 import Link from 'next/link';
 import {
   Content,

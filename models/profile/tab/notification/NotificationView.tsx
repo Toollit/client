@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { Notification } from '@/apis/profileNotificationsFetcher';
-import { Button } from '@/components/commons/button';
-import Skeleton from '@/components/commons/skeleton';
+import { Button } from '@/components/button';
+import Skeleton from '@/components/skeleton';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
-import OptionButton from '@/components/commons/drawer/option';
+import OptionButton from '@/components/drawer/option';
 import {
   BoxContent,
   Content,

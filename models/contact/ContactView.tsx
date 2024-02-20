@@ -12,10 +12,10 @@ import {
 } from './styles';
 import AppLayout from '@/components/appLayout';
 import { InnerContainer } from '@/styles/commons';
-import Title from '@/components/commons/title';
-import Input from '@/components/commons/input';
-import Label from '@/components/commons/label';
-import { Button } from '@/components/commons/button';
+import Title from '@/components/title';
+import Input from '@/components/input';
+import Label from '@/components/label';
+import { Button } from '@/components/button';
 import { SelectChangeEvent } from '@mui/material';
 
 export interface ContactViewProps {

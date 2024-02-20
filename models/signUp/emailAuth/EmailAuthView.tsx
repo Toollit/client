@@ -1,8 +1,8 @@
 import React from 'react';
 import AppLayout from '@/components/appLayout';
-import { Button } from '@/components/commons/button';
-import Title from '@/components/commons/title';
-import Input from '@/components/commons/input';
+import { Button } from '@/components/button';
+import Title from '@/components/title';
+import Input from '@/components/input';
 import {
   Form,
   AuthCodeInputContainer,

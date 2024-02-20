@@ -1,10 +1,10 @@
 import React from 'react';
 import AppLayout from '@/components/appLayout';
 import { InnerContainer } from '@/styles/commons';
-import Title from '@/components/commons/title';
-import BlockPost, { BlockProject } from '@/components/commons/post/block';
+import Title from '@/components/title';
+import BlockPost, { BlockProject } from '@/components/post/block';
 import Grid from '@mui/material/Grid';
-import Skeleton from '@/components/commons/skeleton';
+import Skeleton from '@/components/skeleton';
 import {
   ContentContainer,
   Header,

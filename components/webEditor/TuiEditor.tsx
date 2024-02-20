@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import path from 'path';
-import Label from '@/components/commons/label';
+import Label from '@/components/label';
 import { ProjectDetail } from '@/apis/projectFetcher';
 import { Editor } from '@toast-ui/react-editor';
 import { HookMap } from '@toast-ui/editor';

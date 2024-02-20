@@ -1,8 +1,8 @@
 import React from 'react';
 import Nav, { NavProps } from '@/components/appLayout/nav';
 import Footer from '@/components/appLayout/footer';
-import Alert from '@/components/commons/alert';
-import LoadingCircularProgress from '@/components/commons/loading';
+import Alert from '@/components/alert';
+import LoadingCircularProgress from '@/components/loading';
 import { Container, Content } from './styles';
 
 type AppLayoutProps = NavProps & {

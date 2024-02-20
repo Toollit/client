@@ -1,9 +1,9 @@
 import React from 'react';
 import { Project } from '@/apis/profileBookmarksFetcher';
-import Hashtag from '@/components/commons/hashtag';
+import Hashtag from '@/components/hashtag';
 import { BookmarkIcon, PersonIcon, ViewIcon } from '@/assets/icons';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
-import Skeleton from '@/components/commons/skeleton';
+import Skeleton from '@/components/skeleton';
 import {
   BoxContent,
   Content,

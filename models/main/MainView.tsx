@@ -4,15 +4,15 @@ import BannerPerson from '@/assets/images/BannerPerson';
 import BannerBackground from '@/assets/images/BannerBackground';
 import Bug from '@/assets/images/Bug';
 import NetworkLottieJson from 'public/static/lotties/network.json';
-import LottieAnimation from '@/components/commons/lottie';
-import BlockPost, { BlockProject } from '@/components/commons/post/block';
+import LottieAnimation from '@/components/lottie';
+import BlockPost, { BlockProject } from '@/components/post/block';
 import Grid from '@mui/material/Grid';
-import Filter from '@/components/commons/filter';
-import Pagination from '@/components/commons/pagination';
-import { Button } from '@/components/commons/button';
+import Filter from '@/components/filter';
+import Pagination from '@/components/pagination';
+import { Button } from '@/components/button';
 import { InnerContainer } from '@/styles/commons';
-import Swiper from '@/components/commons/swiper/webComponent/container';
-import SwiperSlide from '@/components/commons/swiper/webComponent/slide';
+import Swiper from '@/components/swiper/webComponent/container';
+import SwiperSlide from '@/components/swiper/webComponent/slide';
 import {
   Banner,
   FirstSlideText,

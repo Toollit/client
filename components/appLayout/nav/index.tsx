@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import ToollitLogo from '@/assets/images/ToollitLogo';
 import { useRouter } from 'next/router';
-import { BackButton, CloseButton } from '@/components/commons/button';
+import { BackButton, CloseButton } from '@/components/button';
 import useAuth from '@/hooks/useAuth';
 import { InnerContainer } from '@/styles/commons';
-import SearchDrawer from '@/components/commons/drawer/search';
+import SearchDrawer from '@/components/drawer/search';
 import Link from 'next/link';
 import {
   Container,

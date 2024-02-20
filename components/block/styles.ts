@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { BlockProps } from './';
+import { BlockProps } from '.';
 
 const Container = styled.div<BlockProps>`
   padding-left: ${(props) =>
