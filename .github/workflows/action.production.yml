@@ -21,11 +21,11 @@ jobs:
         run: node -v
 
       - name: Install Dependencies
-        working-directory: ./client
+        working-directory: .
         run: npm install --legacy-peer-deps
 
       - name: Generate Environment Variables File for Production
-        working-directory: ./client
+        working-directory: .
 
         run: |
           echo "NEXT_PUBLIC_SERVER_API_HOST=$NEXT_PUBLIC_SERVER_API_HOST" >> .env
@@ -40,7 +40,7 @@ jobs:
           NEXT_PUBLIC_CONTACT_EMAIL: ${{ secrets.NEXT_PUBLIC_CONTACT_EMAIL_PRODUCTION }}
 
       - name: Build
-        working-directory: ./client
+        working-directory: .
         run: npm run build
         env:
           CI: false
@@ -49,11 +49,11 @@ jobs:
         uses: montudor/action-zip@v1
 
       - name: Build source code to zip file
-        working-directory: ./client
+        working-directory: .
         run: zip -qq -r build.zip build
         shell: bash
 
       - name: Build zip file check
-        working-directory: ./client
+        working-directory: .
         run: |
           ls
