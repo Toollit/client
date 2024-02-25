@@ -1,3 +1,4 @@
+const path = require('path');
 const s3Url = process.env.NEXT_PUBLIC_S3_URL;
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -9,6 +10,10 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = {
   reactStrictMode: false,
   webpack(config) {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.join(__dirname, '/'),
+    };
     return {
       ...config,
       mode: isDev ? 'development' : 'production',
