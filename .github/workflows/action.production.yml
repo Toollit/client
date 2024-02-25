@@ -20,9 +20,9 @@ jobs:
       - name: Check Node version
         run: node -v
 
-      - name: Install Dependencies
-        working-directory: .
-        run: npm install --legacy-peer-deps
+      # - name: Install Dependencies
+      #   working-directory: .
+      #   run: npm install --legacy-peer-deps
 
       - name: Generate Environment Variables File for Production
         working-directory: .
@@ -41,7 +41,7 @@ jobs:
 
       - name: Build
         working-directory: .
-        run: npm run build
+        run: npm install --production=false --legacy-peer-deps && npm run build && npm ci
         env:
           CI: false
 
