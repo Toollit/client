@@ -1,0 +1,59 @@
+name: GitHub Actions
+run-name: ${{ github.actor }} executed GitHub Actions.
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04.3
+    steps:
+      - name: Checkout repository source code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.9.0'
+
+      - name: Check Node version
+        run: node -v
+
+      - name: Install Dependencies
+        working-directory: ./client
+        run: npm install --legacy-peer-deps
+
+      - name: Generate Environment Variables File for Production
+        working-directory: ./client
+
+        run: |
+          echo "NEXT_PUBLIC_SERVER_API_HOST=$NEXT_PUBLIC_SERVER_API_HOST" >> .env
+          echo "NEXT_PUBLIC_CLIENT_HOST=$NEXT_PUBLIC_CLIENT_HOST" >> .env
+          echo "NEXT_PUBLIC_S3_URL=$NEXT_PUBLIC_S3_URL" >> .env
+          echo "NEXT_PUBLIC_CONTACT_EMAIL=$NEXT_PUBLIC_CONTACT_EMAIL" >> .env
+
+        env:
+          NEXT_PUBLIC_SERVER_API_HOST: ${{ secrets.NEXT_PUBLIC_SERVER_API_HOST_STAGING }}
+          NEXT_PUBLIC_CLIENT_HOST: ${{ secrets.NEXT_PUBLIC_CLIENT_HOST_STAGING }}
+          NEXT_PUBLIC_S3_URL: ${{ secrets.NEXT_PUBLIC_S3_URL_STAGING }}
+          NEXT_PUBLIC_CONTACT_EMAIL: ${{ secrets.NEXT_PUBLIC_CONTACT_EMAIL_STAGING }}
+
+      - name: Build
+        working-directory: ./client
+        run: npm run build
+        env:
+          CI: false
+
+      - name: Install zip
+        uses: montudor/action-zip@v1
+
+      - name: Build source code to zip file
+        working-directory: ./client
+        run: zip -qq -r build.zip build
+        shell: bash
+
+      - name: Build zip file check
+        working-directory: ./client
+        run: |
+          ls
