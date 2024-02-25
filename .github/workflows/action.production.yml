@@ -22,7 +22,7 @@ jobs:
 
       - name: Install Dependencies
         working-directory: .
-        run: npm install --legacy-peer-deps
+        run: npm install --production=false --legacy-peer-deps
 
       - name: Generate Environment Variables File for Production
         working-directory: .
