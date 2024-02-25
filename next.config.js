@@ -1,5 +1,3 @@
-import path from 'path';
-
 const s3Url = process.env.NEXT_PUBLIC_S3_URL;
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -24,11 +22,6 @@ const nextConfig = {
             use: ['@svgr/webpack'],
           },
         ],
-      },
-      resolve: {
-        alias: {
-          '@': path.join(__dirname, '.'),
-        },
       },
     };
   },
