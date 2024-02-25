@@ -1,5 +1,5 @@
 const s3Url = process.env.NEXT_PUBLIC_S3_URL;
-const prod = process.env.NODE_ENV === 'production';
+const isDev = process.env.NODE_ENV !== 'production';
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -11,8 +11,8 @@ const nextConfig = {
   webpack(config) {
     return {
       ...config,
-      mode: prod ? 'production' : 'development',
-      devtool: prod ? 'hidden-source-map' : 'eval-source-map',
+      mode: isDev ? 'development' : 'production',
+      devtool: isDev ? 'eval-source-map' : 'hidden-source-map',
       module: {
         rules: [
           ...config.module.rules,
@@ -30,7 +30,7 @@ const nextConfig = {
     emotion: {
       autoLabel: 'dev-only',
     },
-    removeConsole: prod ? true : false,
+    removeConsole: isDev ? false : true,
   },
   images: {
     domains: [s3Url],
