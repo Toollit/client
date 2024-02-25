@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowBackIcon } from 'assets/icons';
+import { ArrowBackIcon } from '@/assets/icons';
 import { Button } from './styles';
 import useCheckUserAgent from '@/hooks/useCheckUserAgent';
 

@@ -23,6 +23,11 @@ const nextConfig = {
           },
         ],
       },
+      resolve: {
+        alias: {
+          '@': '.',
+        },
+      },
     };
   },
   swcMinify: true,
