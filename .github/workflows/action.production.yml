@@ -50,22 +50,14 @@ jobs:
         run: |
           ls
 
-      - name: Zipping the directory current into build.zip
-      - uses: montudor/action-zip@v1
-        with:
-          args: zip -qq -r build.zip ./
+      - name: Install zip
+        uses: montudor/action-zip@v1
+
+      - name: Zip output
+        run: zip -qq -r build.zip *
+        working-directory: .
 
       - name: Build zip file check
-        working-directory: .
-        run: |
-          ls
-
-      - name: Unzipping build.zip file
-      - uses: montudor/action-zip@v1
-        with:
-          args: unzip -qq build.zip -d ./
-
-      - name: Unzipping file check
         working-directory: .
         run: |
           ls
