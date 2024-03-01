@@ -6,7 +6,7 @@ on:
       - production
 
 jobs:
-  build and zip:
+  build_and_zip:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository source code
@@ -70,7 +70,7 @@ jobs:
 
   upload:
     runs-on: ubuntu-22.04
-    needs: build and zip
+    needs: build_and_zip
     steps:
       - name: download zip artifact
         uses: actions/download-artifact@v4
