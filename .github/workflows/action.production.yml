@@ -55,7 +55,7 @@ jobs:
 
       - name: Zip output
         working-directory: .
-        run: zip -qq -r build.zip ./* .next
+        run: zip -qq -r build.zip ./* .next -x 'node_modules/*'
 
       - name: Build zip file check
         working-directory: .
