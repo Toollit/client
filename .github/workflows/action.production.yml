@@ -6,7 +6,7 @@ on:
       - production
 
 jobs:
-  build:
+  build and zip:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository source code
@@ -48,32 +48,14 @@ jobs:
       - name: Build result check
         working-directory: .
         run: |
-          ls
-
-      - name: upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: .
-
-  zip:
-    runs-on: ubuntu-22.04
-    needs: build
-    steps:
-      - name: download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-
-      - name: Display structure of downloaded files
-        run: ls -R
+          ls -a
 
       - name: Install zip
         uses: montudor/action-zip@v1
 
       - name: Zip output
-        run: zip -qq -r build.zip *
         working-directory: .
+        run: zip -qq -r build.zip *
 
       - name: Build zip file check
         working-directory: .
@@ -88,7 +70,7 @@ jobs:
 
   upload:
     runs-on: ubuntu-22.04
-    needs: zip
+    needs: build and zip
     steps:
       - name: download zip artifact
         uses: actions/download-artifact@v4
