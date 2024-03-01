@@ -55,7 +55,7 @@ jobs:
 
       - name: Zip output
         working-directory: .
-        run: zip -qq -r build.zip *
+        run: zip -qq -r build.zip ./*
 
       - name: Build zip file check
         working-directory: .
@@ -68,7 +68,7 @@ jobs:
           name: zip
           path: ./build.zip
 
-  upload:
+  upload_aws_s3:
     runs-on: ubuntu-22.04
     needs: build_and_zip
     steps:
