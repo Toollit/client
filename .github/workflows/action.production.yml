@@ -55,7 +55,7 @@ jobs:
 
       - name: Zip output
         working-directory: .
-        run: zip -qq -r build.zip ./*
+        run: zip -qq -r build.zip ./* .next
 
       - name: Build zip file check
         working-directory: .
