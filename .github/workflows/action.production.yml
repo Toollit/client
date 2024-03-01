@@ -50,6 +50,10 @@ jobs:
         run: |
           ls
 
+  zip:
+    runs-on: ubuntu-22.04
+    needs: build
+    steps:
       - name: Install zip
         uses: montudor/action-zip@v1
 
@@ -62,6 +66,10 @@ jobs:
         run: |
           ls
 
+  upload:
+    runs-on: ubuntu-22.04
+    needs: zip
+    steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
