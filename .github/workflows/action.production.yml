@@ -107,6 +107,6 @@ jobs:
         working-directory: .
         run: aws deploy create-deployment
           --application-name ${{ secrets.AWS_APPLICATION_NAME }}
-          --deployment-config-name CodeDeployDefault.OneAtATime
+          --deployment-config-name CodeDeployDefault.AllAtOnce
           --deployment-group-name ${{ secrets.AWS_DEPLOYMENT_GROUP_NAME }}
           --s3-location bucket=${{ secrets.AWS_BUILD_ZIP_BUCKET }},key=build.zip,bundleType=zip
