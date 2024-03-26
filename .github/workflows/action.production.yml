@@ -1,112 +1,55 @@
 name: GitHub Actions
-run-name: ${{ github.actor }} executed GitHub Actions.
+run-name: ${{ github.actor }} executed GitHub Actions
 on:
   push:
     branches:
       - production
 
 jobs:
-  build_and_zip:
+  build_and_upload_images:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository source code
         uses: actions/checkout@v4
 
-      - name: Install Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.9.0'
+          node-version: '20.11.1'
 
-      - name: Check Node version
-        run: node -v
-
-      - name: Install Dependencies
-        working-directory: .
-        run: npm install --legacy-peer-deps
-
-      - name: Generate Environment Variables File for Production
-        working-directory: .
-
+      - name: Docker login
         run: |
-          echo "NEXT_PUBLIC_SERVER_API_HOST=$NEXT_PUBLIC_SERVER_API_HOST" >> .env
-          echo "NEXT_PUBLIC_CLIENT_HOST=$NEXT_PUBLIC_CLIENT_HOST" >> .env
-          echo "NEXT_PUBLIC_S3_URL=$NEXT_PUBLIC_S3_URL" >> .env
-          echo "NEXT_PUBLIC_CONTACT_EMAIL=$NEXT_PUBLIC_CONTACT_EMAIL" >> .env
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-        env:
-          NEXT_PUBLIC_SERVER_API_HOST: ${{ secrets.NEXT_PUBLIC_SERVER_API_HOST_PRODUCTION }}
-          NEXT_PUBLIC_CLIENT_HOST: ${{ secrets.NEXT_PUBLIC_CLIENT_HOST_PRODUCTION }}
-          NEXT_PUBLIC_S3_URL: ${{ secrets.NEXT_PUBLIC_S3_URL_PRODUCTION }}
-          NEXT_PUBLIC_CONTACT_EMAIL: ${{ secrets.NEXT_PUBLIC_CONTACT_EMAIL_PRODUCTION }}
-
-      - name: Build
-        working-directory: .
-        run: npm run build
-        env:
-          CI: false
-
-      - name: Build result check
-        working-directory: .
+      - name: App build and push docker image
         run: |
-          ls -a
+          docker build -t toollit-client-app .
+          docker tag toollit-client-app:latest ${{ secrets.DOCKER_TOOLLIT_REPO_NAME }}/toollit-client-app:latest
+          docker push ${{ secrets.DOCKER_TOOLLIT_REPO_NAME }}/toollit-client-app:latest
 
-      - name: Install zip
-        uses: montudor/action-zip@v1
-
-      - name: Zip output
-        working-directory: .
-        run: zip -qq -r build.zip ./* .next -x 'node_modules/*'
-
-      - name: Build zip file check
-        working-directory: .
+      - name: Nginx build and push docker image
         run: |
-          ls
+          docker build -t toollit-client-nginx ./nginx
+          docker tag toollit-client-nginx:latest ${{ secrets.DOCKER_TOOLLIT_REPO_NAME }}/toollit-client-nginx:latest
+          docker push ${{ secrets.DOCKER_TOOLLIT_REPO_NAME }}/toollit-client-nginx:latest
 
-      - name: upload zip artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: zip
-          path: ./build.zip
-
-  upload_aws_s3:
+  ec2_deploy_images:
     runs-on: ubuntu-22.04
-    needs: build_and_zip
+    needs: build_and_upload_images
     steps:
-      - name: download zip artifact
-        uses: actions/download-artifact@v4
+      - name: SSH into EC2 instance and deploy
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          name: zip
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Upload to S3
-        working-directory: ./client
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: |
-          aws s3 cp --region ${{ secrets.AWS_REGION }} ./build.zip s3://${{ secrets.AWS_BUILD_ZIP_BUCKET }}/build.zip
-
-  deploy_aws_ec2:
-    runs-on: ubuntu-22.04
-    needs: upload_aws_s3
-    steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: deploy with AWS CodeDeploy
-        working-directory: .
-        run: aws deploy create-deployment
-          --application-name ${{ secrets.AWS_APPLICATION_NAME }}
-          --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name ${{ secrets.AWS_DEPLOYMENT_GROUP_NAME }}
-          --s3-location bucket=${{ secrets.AWS_BUILD_ZIP_BUCKET }},key=build.zip,bundleType=zip
+          host: ${{ secrets.AWS_EC2_HOST }}
+          username: ${{ secrets.AWS_EC2_USERNAME }}
+          key: ${{ secrets.AWS_EC2_SSH_KEY }}
+          port: ${{ secrets.AWS_SSH_PORT }}
+          script: |
+            cd app && pwd
+            git checkout production
+            git stash
+            git pull origin production
+            git stash drop
+            sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            sudo chmod +x init-letsencrypt.sh
+            sudo ./init-letsencrypt.sh
