@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
 import { RootState } from '@/store';
 import { emailAuth } from '@/features/signUp';
+import { getParameterStore } from '@/utils/awsParameterStore';
 
 const LoginController = () => {
   const router = useRouter();
@@ -87,12 +88,16 @@ const LoginController = () => {
   );
 
   const handleSocialLogin = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
+    async (event: React.MouseEvent<HTMLButtonElement>) => {
       if (!event) return;
 
       const loginType = event.currentTarget.name as 'google' | 'github';
 
-      const baseURL = process.env.NEXT_PUBLIC_SERVER_API_HOST;
+      const NEXT_PUBLIC_SERVER_API_HOST = await getParameterStore({
+        key: 'NEXT_PUBLIC_SERVER_API_HOST',
+      }).catch((err) => errorMessage(err));
+
+      const baseURL = NEXT_PUBLIC_SERVER_API_HOST;
 
       // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
       clearCache();
