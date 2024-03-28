@@ -93,20 +93,26 @@ const LoginController = () => {
 
       const loginType = event.currentTarget.name as 'google' | 'github';
 
-      const NEXT_PUBLIC_SERVER_API_HOST = await getParameterStore({
-        key: 'NEXT_PUBLIC_SERVER_API_HOST',
-      }).catch((err) => errorMessage(err));
+      try {
+        const NEXT_PUBLIC_SERVER_API_HOST = await getParameterStore({
+          key: 'NEXT_PUBLIC_SERVER_API_HOST',
+        });
 
-      const baseURL = NEXT_PUBLIC_SERVER_API_HOST;
+        const baseURL = NEXT_PUBLIC_SERVER_API_HOST;
 
-      // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
-      clearCache();
+        console.log('baseURL check ===>', baseURL);
 
-      if (loginType === 'google') {
-        return window.location.replace(`${baseURL}/api/user/login/google`);
-      }
-      if (loginType === 'github') {
-        return window.location.replace(`${baseURL}/api/user/login/github`);
+        // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
+        clearCache();
+
+        if (loginType === 'google') {
+          return window.location.replace(`${baseURL}/api/user/login/google`);
+        }
+        if (loginType === 'github') {
+          return window.location.replace(`${baseURL}/api/user/login/github`);
+        }
+      } catch (error) {
+        errorMessage(error);
       }
     },
     [clearCache],
