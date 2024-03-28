@@ -98,13 +98,13 @@ const LoginController = () => {
       clearCache();
 
       if (loginType === 'google') {
-        return router.push(`${baseURL}/api/user/login/google`);
+        return window.location.replace(`${baseURL}/api/user/login/google`);
       }
       if (loginType === 'github') {
-        return router.push(`${baseURL}/api/user/login/github`);
+        return window.location.replace(`${baseURL}/api/user/login/github`);
       }
     },
-    [router, clearCache],
+    [clearCache],
   );
 
   const handleEmail = useCallback(
