@@ -28,6 +28,9 @@ jobs:
             --build-arg NEXT_PUBLIC_CLIENT_HOST=${{ secrets.NEXT_PUBLIC_CLIENT_HOST }} \
             --build-arg NEXT_PUBLIC_S3_URL=${{ secrets.NEXT_PUBLIC_S3_URL }} \
             --build-arg NEXT_PUBLIC_CONTACT_EMAIL=${{ secrets.NEXT_PUBLIC_CONTACT_EMAIL }} \
+            --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+            --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+            --build-arg AWS_REGION=${{ secrets.AWS_REGION }} \
             -t toollit-client-app .
           docker tag toollit-client-app:latest ${{ secrets.DOCKER_TOOLLIT_REPO_NAME }}/toollit-client-app:latest
           docker push ${{ secrets.DOCKER_TOOLLIT_REPO_NAME }}/toollit-client-app:latest
