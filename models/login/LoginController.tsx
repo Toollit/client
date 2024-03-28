@@ -94,11 +94,11 @@ const LoginController = () => {
       const loginType = event.currentTarget.name as 'google' | 'github';
 
       try {
-        const NEXT_PUBLIC_SERVER_API_HOST = await getParameterStore({
-          key: 'NEXT_PUBLIC_SERVER_API_HOST',
-        });
+        // const NEXT_PUBLIC_SERVER_API_HOST = await getParameterStore({
+        //   key: 'NEXT_PUBLIC_SERVER_API_HOST',
+        // });
 
-        const baseURL = NEXT_PUBLIC_SERVER_API_HOST;
+        const baseURL = process.env.NEXT_PUBLIC_SERVER_API_HOST;
 
         console.log('baseURL check ===>', baseURL);
 
