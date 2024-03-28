@@ -30,7 +30,7 @@ const nextConfig = {
     emotion: {
       autoLabel: 'dev-only',
     },
-    removeConsole: isDev ? false : true,
+    // removeConsole: isDev ? false : true,
   },
   images: {
     domains: [s3Url],
