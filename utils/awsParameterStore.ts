@@ -57,6 +57,7 @@ const getParameterStore = async ({ key }: ParameterKey) => {
 
     return value;
   } catch (err) {
+    alert(err);
     console.error('getParameterStore error =>', err);
     return '';
   }
