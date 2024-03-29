@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
 import { RootState } from '@/store';
 import { emailAuth } from '@/features/signUp';
-import { getParameterStore } from '@/utils/awsParameterStore';
 
 const LoginController = () => {
   const router = useRouter();
@@ -88,31 +87,21 @@ const LoginController = () => {
   );
 
   const handleSocialLogin = useCallback(
-    async (event: React.MouseEvent<HTMLButtonElement>) => {
+    (event: React.MouseEvent<HTMLButtonElement>) => {
       if (!event) return;
 
       const loginType = event.currentTarget.name as 'google' | 'github';
 
-      try {
-        // const NEXT_PUBLIC_SERVER_API_HOST = await getParameterStore({
-        //   key: 'NEXT_PUBLIC_SERVER_API_HOST',
-        // });
+      const baseURL = process.env.NEXT_PUBLIC_SERVER_API_HOST;
 
-        const baseURL = process.env.NEXT_PUBLIC_SERVER_API_HOST;
+      // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
+      clearCache();
 
-        console.log('baseURL check ===>', baseURL);
-
-        // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
-        clearCache();
-
-        if (loginType === 'google') {
-          return window.location.replace(`${baseURL}/api/user/login/google`);
-        }
-        if (loginType === 'github') {
-          return window.location.replace(`${baseURL}/api/user/login/github`);
-        }
-      } catch (error) {
-        errorMessage(error);
+      if (loginType === 'google') {
+        return window.location.replace(`${baseURL}/api/user/login/google`);
+      }
+      if (loginType === 'github') {
+        return window.location.replace(`${baseURL}/api/user/login/github`);
       }
     },
     [clearCache],
