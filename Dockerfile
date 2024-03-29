@@ -15,6 +15,8 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
+# Install PM2
+RUN npm install pm2 -g
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -76,4 +78,5 @@ ENV HOSTNAME "0.0.0.0"
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD ["node", "server.js"]
+# CMD ["node", "server.js"] // default settings
+CMD ["pm2-runtime", "server.js"]
