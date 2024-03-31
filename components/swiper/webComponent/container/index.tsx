@@ -106,8 +106,16 @@ const Swiper = ({ children }: SwiperProps) => {
         ref={swiperRef}
         autoplay={true}
         effect='fade'
+        pagination={true}
         pagination-type='fraction'
         loop={true}
+        style={{
+          position: 'relative',
+          maxWidth: '102.4rem',
+          width: '100%',
+          margin: '0 auto',
+          height: '36rem',
+        }}
       >
         {children}
       </swiper-container>

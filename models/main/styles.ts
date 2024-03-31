@@ -3,14 +3,11 @@ import { mediaQueryTablet } from '@/styles/mediaQuery';
 import Link from 'next/link';
 
 const Banner = styled.div<{ order: 'first' | 'second' | 'third' }>`
-  position: relative;
+  position: absolute;
   max-width: 102.4rem;
   width: 100%;
-  display: flex;
-  margin: 0 auto;
   height: 36rem;
-  background-color: ${(props) => {
-    let order = props.order;
+  background-color: ${({ order }) => {
     switch (order) {
       case 'first':
         return '#f2f2f2';
@@ -18,6 +15,19 @@ const Banner = styled.div<{ order: 'first' | 'second' | 'third' }>`
         return '#9BC1F8';
       case 'third':
         return '#151515';
+      default:
+        break;
+    }
+  }};
+  // To resolve all screen overlap issues during first rendering, fix overlap issues with z-index
+  z-index: ${({ order }) => {
+    switch (order) {
+      case 'first':
+        return 2;
+      case 'second':
+        return 1;
+      case 'third':
+        return 0;
       default:
         break;
     }
@@ -57,9 +67,13 @@ const FirstSlideSubhead = styled.div`
 const SecondSlideText = styled.div`
   margin: 3rem auto 0 2rem;
   font-size: 2rem;
+  font-weight: 500;
+  z-index: 1000;
 
   ${mediaQueryTablet} {
-    margin: auto 0 auto 2rem;
+    position: absolute;
+    top: 8rem;
+    left: 3rem;
   }
 `;
 
