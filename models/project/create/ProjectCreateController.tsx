@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
 import useTooltip from '@/hooks/useTooltip';
 import projectDefaultImage from 'public/static/images/project.jpg';
-import { StaticImageData } from "next/legacy/image";
+import { StaticImageData } from 'next/legacy/image';
 import { RootState } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 
@@ -108,16 +108,19 @@ const ProjectCreateController = () => {
 
         const response = await createProjectAPI(formData);
 
-        mutatePage({ page: '/' });
-        mutatePage({ page: '/profile' });
+        // Lambda image resizing time delay
+        setTimeout(() => {
+          mutatePage({ page: '/' });
+          mutatePage({ page: '/profile' });
 
-        const postId = response?.data.postId;
-        // Use replace instead of push because decided to back out so can't access that page again
-        router.replace(`/project/${postId}`);
+          const postId = response?.data.postId;
+          // Use replace instead of push because decided to back out so can't access that page again
+          router.replace(`/project/${postId}`);
 
-        router.events.on('routeChangeComplete', () => {
-          dispatch(loading({ status: false }));
-        });
+          router.events.on('routeChangeComplete', () => {
+            dispatch(loading({ status: false }));
+          });
+        }, 2000);
       } catch (error) {
         dispatch(loading({ status: false }));
         errorMessage(error);
