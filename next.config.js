@@ -1,4 +1,5 @@
 const s3Url = process.env.NEXT_PUBLIC_S3_URL;
+const s3ResizedUrl = process.env.NEXT_PUBLIC_S3_RESIZED_URL;
 const isDev = process.env.NODE_ENV !== 'production';
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -33,7 +34,7 @@ const nextConfig = {
     removeConsole: isDev ? false : true,
   },
   images: {
-    domains: [s3Url],
+    domains: [s3Url, s3ResizedUrl],
   },
   // For docker
   output: 'standalone',
