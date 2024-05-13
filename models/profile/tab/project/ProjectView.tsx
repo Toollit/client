@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Hashtag from '@/components/hashtag';
 import { BookmarkIcon, PersonIcon, ViewIcon } from '@/assets/icons';
 import { Project } from '@/apis/profileProjectsFetcher';
@@ -29,12 +29,12 @@ export interface ProjectViewData {
   showLoadMore: boolean;
 }
 
-export interface ProjectViewProps {
+export interface ViewProps {
   data: ProjectViewData | null;
   loadMore: () => void;
 }
 
-const ProjectView = ({ data, loadMore }: ProjectViewProps) => {
+const ProjectView: FC<ViewProps> = ({ data, loadMore }) => {
   return (
     <>
       {data && (

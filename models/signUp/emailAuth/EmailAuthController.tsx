@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { RootState } from 'store';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
-import EmailAuthView, { EmailAuthViewProps } from './EmailAuthView';
+import EmailAuthView, { ViewProps } from './EmailAuthView';
 import { emailAuth } from '@/features/signUp';
 import useTimer from '@/hooks/useTimer';
 import { errorMessage } from '@/apis/errorMessage';
@@ -12,7 +12,9 @@ import { loading } from '@/features/loading';
 import { SignUpAPIReq, signUpAPI } from '@/apis/signUp';
 import useAuth from '@/hooks/useAuth';
 
-const EmailAuthController = () => {
+export interface ControllerProps {}
+
+const EmailAuthController: FC<ControllerProps> = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { authMutate } = useAuth();
@@ -131,7 +133,7 @@ const EmailAuthController = () => {
     }
   }, [email, password, dispatch, router]);
 
-  const props: EmailAuthViewProps = {
+  const props: ViewProps = {
     handleClose,
     authCode,
     handleChangeAuthCode,

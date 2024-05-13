@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import NoticeDetailView, { NoticeDetailViewProps } from './NoticeDetailView';
+import React, { FC, useEffect, useState } from 'react';
+import NoticeDetailView, { ViewProps } from './NoticeDetailView';
 import { useRouter } from 'next/router';
 import noticeData from '../noticeData.json';
 
@@ -12,9 +12,9 @@ export interface Notice {
 
 type Keys = keyof typeof noticeData;
 
-export interface NoticeDetailControllerProps {}
+export interface ControllerProps {}
 
-const NoticeDetailController = ({}: NoticeDetailControllerProps) => {
+const NoticeDetailController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const [notice, setNotice] = useState<Notice>();
 
@@ -32,7 +32,7 @@ const NoticeDetailController = ({}: NoticeDetailControllerProps) => {
     }
   }, [router]);
 
-  const props: NoticeDetailViewProps = {
+  const props: ViewProps = {
     data: notice,
   };
 

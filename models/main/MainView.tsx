@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import AppLayout from '@/components/appLayout';
 import BannerPerson from '@/assets/images/BannerPerson';
 import BannerBackground from '@/assets/images/BannerBackground';
@@ -31,7 +31,7 @@ import {
   ContentContainer,
 } from './styles';
 
-export interface MainViewProps {
+export interface ViewProps {
   projects?: BlockProject[];
   handleCreateProject: () => void;
   pagination: {
@@ -39,11 +39,11 @@ export interface MainViewProps {
   };
 }
 
-const MainView = ({
+const MainView: FC<ViewProps> = ({
   projects,
   handleCreateProject,
   pagination,
-}: MainViewProps) => {
+}) => {
   return (
     <AppLayout type='default'>
       {/* Banner */}

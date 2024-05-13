@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import PrivacyView, { PrivacyViewProps } from './PrivacyView';
+import PrivacyView, { ViewProps } from './PrivacyView';
 import { useRouter } from 'next/router';
 
 const PrivacyController = () => {
@@ -9,7 +9,7 @@ const PrivacyController = () => {
     router.back();
   }, [router]);
 
-  const props: PrivacyViewProps = {
+  const props: ViewProps = {
     handleClose,
   };
 

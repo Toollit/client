@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Container } from './styles';
 
-export interface DeleteAccountConfirmViewProps {}
+export interface ViewProps {}
 
-const DeleteAccountConfirmView = ({}: DeleteAccountConfirmViewProps) => {
+const DeleteAccountConfirmView: FC<ViewProps> = ({}) => {
   return (
     <Container>
       <div>Processing...</div>

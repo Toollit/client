@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import AppLayout from '@/components/appLayout';
 import { Button } from '@/components/button';
 import Title from '@/components/title';
@@ -12,7 +12,7 @@ import {
   SubmitButtonContainer,
 } from './styles';
 
-export interface EmailAuthViewProps {
+export interface ViewProps {
   handleClose: () => void;
   authCode: string | null;
   handleChangeAuthCode: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -22,7 +22,7 @@ export interface EmailAuthViewProps {
   authCodeInputRef: React.ForwardedRef<HTMLInputElement>;
 }
 
-const EmailAuthView = ({
+const EmailAuthView: FC<ViewProps> = ({
   handleClose,
   authCode,
   handleChangeAuthCode,
@@ -30,7 +30,7 @@ const EmailAuthView = ({
   timer,
   isTimerLeft,
   authCodeInputRef,
-}: EmailAuthViewProps) => {
+}) => {
   return (
     <AppLayout
       type='close'

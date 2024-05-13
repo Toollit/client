@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import Title from '@/components/title';
@@ -76,7 +76,7 @@ interface Content extends Omit<ProjectContent, 'memberTypes'> {
   memberTypes: ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 }
 
-export interface ProjectDetailViewProps {
+export interface ViewProps {
   isMyPost: boolean;
   isRecruitCompleted: boolean;
   isMember: boolean;
@@ -94,7 +94,7 @@ export interface ProjectDetailViewProps {
   handleLeaveProject: () => void;
 }
 
-const ProjectDetailView = ({
+const ProjectDetailView: FC<ViewProps> = ({
   isMyPost,
   isRecruitCompleted,
   isMember,
@@ -110,7 +110,7 @@ const ProjectDetailView = ({
   handleReport,
   handleJoinProject,
   handleLeaveProject,
-}: ProjectDetailViewProps) => {
+}) => {
   return (
     <AppLayout type='default'>
       <InnerContainer>

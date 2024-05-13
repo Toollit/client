@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 import AppLayout from '@/components/appLayout';
 import Link from 'next/link';
 import { Container, Icon, Item, Text, StyledList } from './styles';
 import { MenuItem } from './MenuController';
 
-export interface MenuViewProps {
+export interface ViewProps {
   handleClose: () => void;
   menu: MenuItem[];
 }
 
-const MenuView = ({ handleClose, menu }: MenuViewProps) => {
+const MenuView: FC<ViewProps> = ({ handleClose, menu }) => {
   return (
     <AppLayout
       type='close'

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Link from 'next/link';
 import ToollitLogo from '@/assets/images/ToollitLogo';
 import { AccountCircleIcon, EditCircleIcon } from '@/assets/icons';
@@ -39,7 +39,7 @@ import {
   StyledProfileImage,
 } from './styles';
 
-export interface ProfileViewProps {
+export interface ViewProps {
   isProfileImageLoading: boolean;
   isLaptop: boolean | null;
   isExistUser?: boolean;
@@ -57,7 +57,7 @@ export interface ProfileViewProps {
   tooltip: TooltipProps;
 }
 
-const ProfileView = ({
+const ProfileView: FC<ViewProps> = ({
   isProfileImageLoading,
   isLaptop,
   isExistUser,
@@ -73,7 +73,7 @@ const ProfileView = ({
   handleChangeProfileImg,
   handleTooltipOpen,
   tooltip,
-}: ProfileViewProps) => {
+}) => {
   return (
     <AppLayout type='none' footer={false}>
       <Container>

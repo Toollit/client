@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import NoticeView, { NoticeViewProps } from './NoticeView';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import NoticeView, { ViewProps } from './NoticeView';
 import noticeData from './noticeData.json';
 
 export interface Notice {
@@ -11,9 +11,9 @@ export interface Notice {
 
 type Keys = keyof typeof noticeData;
 
-export interface NoticeControllerProps {}
+export interface ControllerProps {}
 
-const NoticeController = ({}: NoticeControllerProps) => {
+const NoticeController: FC<ControllerProps> = ({}) => {
   const [notices, setNotices] = useState<Notice[]>([]);
 
   const SearchInputRef = useRef<HTMLInputElement>(null);
@@ -34,7 +34,7 @@ const NoticeController = ({}: NoticeControllerProps) => {
     }
   }, []);
 
-  const props: NoticeViewProps = {
+  const props: ViewProps = {
     handleSearchNotice,
     SearchInputRef,
     data: notices,

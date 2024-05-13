@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import AppLayout from '@/components/appLayout';
 import { InnerContainer } from '@/styles/commons';
 import Title from '@/components/title';
@@ -15,20 +15,19 @@ import {
   SubTitle,
 } from './styles';
 
-export interface DeleteAccountViewProps {
+export interface ViewProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   deleteAgree: boolean;
   handleDeleteAgree: () => void;
   isFormValid: boolean;
 }
 
-const DeleteAccountView = ({
+const DeleteAccountView: FC<ViewProps> = ({
   handleSubmit,
   deleteAgree,
   handleDeleteAgree,
-
   isFormValid,
-}: DeleteAccountViewProps) => {
+}) => {
   return (
     <AppLayout type='default'>
       <InnerContainer>

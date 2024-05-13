@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import SignUpView, { SignUpViewProps } from './SignUpView';
+import SignUpView, { ViewProps } from './SignUpView';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { emailAuth } from '@/features/signUp';
@@ -9,7 +9,9 @@ import { errorMessage } from '@/apis/errorMessage';
 import { RootState } from '@/store';
 import { loading } from '@/features/loading';
 
-const SignUpController = () => {
+export interface ControllerProps {}
+
+const SignUpController: FC<ControllerProps> = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -154,7 +156,7 @@ const SignUpController = () => {
     dispatch(emailAuth(data));
   }, [dispatch]);
 
-  const props: SignUpViewProps = {
+  const props: ViewProps = {
     handleClose,
     email,
     onChangeEmail,

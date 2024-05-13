@@ -1,5 +1,5 @@
-import React, { useCallback, useRef, useState } from 'react';
-import ContactView, { ContactViewProps } from './ContactView';
+import React, { FC, useCallback, useRef, useState } from 'react';
+import ContactView, { ViewProps } from './ContactView';
 import useAuth from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/errorMessage';
@@ -8,9 +8,9 @@ import { contactAPI } from '@/apis/contact';
 import { useAppDispatch } from '@/store';
 import { loading } from '@/features/loading';
 
-export interface ContactControllerProps {}
+export interface ControllerProps {}
 
-const ContactController = ({}: ContactControllerProps) => {
+const ContactController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { authMutate } = useAuth();
@@ -107,7 +107,7 @@ const ContactController = ({}: ContactControllerProps) => {
     [],
   );
 
-  const props: ContactViewProps = {
+  const props: ViewProps = {
     options: contactTypeOptionsRef.current,
     handleSubmit,
     title,

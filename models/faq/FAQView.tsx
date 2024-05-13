@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import AppLayout from '@/components/appLayout';
 import { InnerContainer } from '@/styles/commons';
 import Title from '@/components/title';
@@ -22,12 +22,12 @@ import {
   TableTitle,
 } from './styles';
 
-export interface FAQViewProps {
+export interface ViewProps {
   handleSearchFAQ: (e: React.KeyboardEvent<HTMLFormElement>) => void;
   SearchInputRef: React.RefObject<HTMLInputElement>;
 }
 
-const FAQView = ({ handleSearchFAQ, SearchInputRef }: FAQViewProps) => {
+const FAQView: FC<ViewProps> = ({ handleSearchFAQ, SearchInputRef }) => {
   return (
     <AppLayout type='default'>
       <InnerContainer>

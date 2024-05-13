@@ -1,7 +1,5 @@
 import React, { useCallback } from 'react';
-import TermsOfServiceView, {
-  TermsOfServiceViewProps,
-} from './TermsOfServiceView';
+import TermsOfServiceView, { ViewProps } from './TermsOfServiceView';
 import { useRouter } from 'next/router';
 
 const TermsOfServiceController = () => {
@@ -11,7 +9,7 @@ const TermsOfServiceController = () => {
     router.back();
   }, [router]);
 
-  const props: TermsOfServiceViewProps = {
+  const props: ViewProps = {
     handleClose,
   };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import AppLayout from 'components/appLayout';
 import { Button } from '@/components/button';
 import Title from '@/components/title';
@@ -14,7 +14,7 @@ import {
   TitleContainer,
 } from './styles';
 
-export interface SignUpViewProps {
+export interface ViewProps {
   handleClose: () => void;
   email: string | null;
   onChangeEmail: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -32,7 +32,7 @@ export interface SignUpViewProps {
   passwordCheckInputRef: React.ForwardedRef<HTMLInputElement>;
 }
 
-const SignUpView = ({
+const SignUpView: FC<ViewProps> = ({
   handleClose,
   email,
   onChangeEmail,
@@ -48,7 +48,7 @@ const SignUpView = ({
   emailInputRef,
   passwordInputRef,
   passwordCheckInputRef,
-}: SignUpViewProps) => {
+}) => {
   return (
     <AppLayout
       type='close'

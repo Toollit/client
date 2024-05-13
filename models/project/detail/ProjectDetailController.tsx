@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import ProjectDetailView, { ProjectDetailViewProps } from './ProjectDetailView';
+import React, { useEffect, useState, useCallback, FC } from 'react';
+import ProjectDetailView, { ViewProps } from './ProjectDetailView';
 import { changeDateFormat, dateFromNow } from '@/utils/changeDateFormat';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
@@ -21,7 +21,9 @@ import { leaveProjectAPI } from '@/apis/leaveProject';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
-const ProjectDetailController = () => {
+export interface ControllerProps {}
+
+const ProjectDetailController: FC<ControllerProps> = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { nickname: accessUser, authMutate } = useAuth();
@@ -376,7 +378,7 @@ const ProjectDetailController = () => {
     };
   }, [bookmarkAlertTimeoutId, shareAlertTimeoutId]);
 
-  const props: ProjectDetailViewProps = {
+  const props: ViewProps = {
     isMyPost: projectDetail?.data.writer.nickname === accessUser,
     isRecruitCompleted: handleCheckRecruitComplete(projectDetail?.data),
     isMember: handleCheckMember(projectDetail?.data),

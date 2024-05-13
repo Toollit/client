@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
   ButtonContainer,
   ContentContainer,
@@ -18,7 +18,7 @@ import Label from '@/components/label';
 import { Button } from '@/components/button';
 import { SelectChangeEvent } from '@mui/material';
 
-export interface ContactViewProps {
+export interface ViewProps {
   options: string[];
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   title: string;
@@ -30,7 +30,7 @@ export interface ContactViewProps {
   handleContent: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const ContactView = ({
+const ContactView: FC<ViewProps> = ({
   options,
   handleSubmit,
   title,
@@ -40,7 +40,7 @@ const ContactView = ({
   handleTitle,
   handleType,
   handleContent,
-}: ContactViewProps) => {
+}) => {
   return (
     <AppLayout type='default'>
       <InnerContainer>

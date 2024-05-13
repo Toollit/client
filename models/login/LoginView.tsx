@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import AppLayout from '@/components/appLayout';
 import { GoogleIcon, GithubIcon } from '@/assets/icons';
 import { Button } from '@/components/button';
@@ -20,7 +20,7 @@ import {
   IdPasswordInputContainer,
 } from './styles';
 
-export interface LoginViewProps {
+export interface ViewProps {
   handleClose: () => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   email: string;
@@ -34,7 +34,7 @@ export interface LoginViewProps {
   handleSocialLogin: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const LoginView = ({
+const LoginView: FC<ViewProps> = ({
   handleClose,
   handleSubmit,
   email,
@@ -46,7 +46,7 @@ const LoginView = ({
   isFormValid,
   handlePwInquiryRouting,
   handleSocialLogin,
-}: LoginViewProps) => {
+}) => {
   return (
     <AppLayout
       type='close'

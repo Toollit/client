@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import AppLayout from '@/components/appLayout';
 import { InnerContainer } from '@/styles/commons';
 import Title from '@/components/title';
@@ -13,12 +13,12 @@ import {
   SubTitle,
 } from './styles';
 
-export interface SearchViewProps {
+export interface ViewProps {
   searchText?: string;
   data?: BlockProject[];
 }
 
-const SearchView = ({ searchText, data }: SearchViewProps) => {
+const SearchView: FC<ViewProps> = ({ searchText, data }) => {
   return (
     <AppLayout type='default'>
       <InnerContainer>

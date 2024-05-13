@@ -1,15 +1,17 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { pwInquiryAPI } from '@/apis/pwInquiry';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { useRouter } from 'next/router';
-import PwInquiryView, { PwInquiryViewProps } from './PwInquiryView';
+import PwInquiryView, { ViewProps } from './PwInquiryView';
 import { errorMessage } from '@/apis/errorMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
 import { RootState } from '@/store';
 import PrivateRoute from '@/components/PrivateRoute';
 
-const PwInquiryController = () => {
+export interface ControllerProps {}
+
+const PwInquiryController: FC<ControllerProps> = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -80,7 +82,7 @@ const PwInquiryController = () => {
     setEmailInvalidError(false);
   }, [email]);
 
-  const props: PwInquiryViewProps = {
+  const props: ViewProps = {
     handleClose,
     email,
     onChangeEmail,

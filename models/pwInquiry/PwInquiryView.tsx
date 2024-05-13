@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import AppLayout from '@/components/appLayout';
 import { Button } from '@/components/button';
 import Title from '@/components/title';
@@ -15,7 +15,7 @@ import {
   TitleContainer,
 } from './styles';
 
-export interface PwInquiryViewProps {
+export interface ViewProps {
   handleClose: () => void;
   email: string | null;
   onChangeEmail: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -24,14 +24,14 @@ export interface PwInquiryViewProps {
   inputRef: React.ForwardedRef<HTMLInputElement>;
 }
 
-const PwInquiryView = ({
+const PwInquiryView: FC<ViewProps> = ({
   handleClose,
   email,
   onChangeEmail,
   emailInvalidError,
   handleSubmit,
   inputRef,
-}: PwInquiryViewProps) => {
+}) => {
   return (
     <AppLayout
       type='close'

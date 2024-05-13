@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import ProfileInfoView, { ProfileInfoViewProps } from './ProfileInfoView';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import ProfileInfoView, { ViewProps } from './ProfileInfoView';
 import {
   ProfileInfoAPIRes,
   profileInfoFetcher,
@@ -25,17 +25,17 @@ interface ProfileInfoData {
   data: ProfileInfoAPIRes['data'] | null;
 }
 
-export interface ProfileInfoControllerProps {
+export interface ControllerProps {
   currentTab: ProfileTab;
   isExistUser?: boolean;
   nickname: string;
 }
 
-const ProfileInfoController = ({
+const ProfileInfoController: FC<ControllerProps> = ({
   currentTab,
   isExistUser,
   nickname,
-}: ProfileInfoControllerProps) => {
+}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { nickname: accessUser, authMutate } = useAuth();
@@ -368,7 +368,7 @@ const ProfileInfoController = ({
     }
   }, [dispatch, data, profileInfoData, nickname, getCachedData]);
 
-  const props: ProfileInfoViewProps = {
+  const props: ViewProps = {
     me: nickname === accessUser,
     data: handleProfileInfoDataResponse(data.data),
     editBtnHandler: handleProfileInfoEditBtn,

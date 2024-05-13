@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import dynamic from 'next/dynamic';
 import AppLayout from '@/components/appLayout';
 import Title from '@/components/title';
@@ -47,7 +47,7 @@ const DynamicTuiEditor = dynamic(
   },
 );
 
-export interface ModifyViewProps {
+export interface ViewProps {
   isFooterVisible: boolean;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   editor: {
@@ -76,7 +76,7 @@ export interface ModifyViewProps {
   recruitCount?: number;
 }
 
-const ModifyView = ({
+const ModifyView: FC<ViewProps> = ({
   isFooterVisible,
   handleSubmit,
   editor,
@@ -93,7 +93,7 @@ const ModifyView = ({
   memberTypes,
   recruitCount,
   tooltip,
-}: ModifyViewProps) => {
+}) => {
   return (
     <AppLayout type='default' footer={isFooterVisible}>
       <InnerContainer>

@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import NicknameView, { NicknameViewProps } from './NicknameView';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import NicknameView, { ViewProps } from './NicknameView';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
@@ -10,9 +10,9 @@ import { updateSettingsNicknameAPI } from '@/apis/updateSettingsNickname';
 import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
 
-export interface NicknameControllerProps {}
+export interface ControllerProps {}
 
-const NicknameController = ({}: NicknameControllerProps) => {
+const NicknameController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { isAuthenticated, authMutate } = useAuth();
@@ -115,7 +115,7 @@ const NicknameController = ({}: NicknameControllerProps) => {
     }
   }, [dispatch, router, isAuthenticated]);
 
-  const props: NicknameViewProps = {
+  const props: ViewProps = {
     handleClose,
     handleSubmit,
     nickname,

@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import DeleteAccountView, { DeleteAccountViewProps } from './DeleteAccountView';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import DeleteAccountView, { ViewProps } from './DeleteAccountView';
 import { deleteAccountAPI } from '@/apis/deleteAccount';
 import { errorMessage } from '@/apis/errorMessage';
 import { useRouter } from 'next/router';
@@ -8,9 +8,9 @@ import { loading } from '@/features/loading';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import PrivateRoute from '@/components/PrivateRoute';
 
-export interface DeleteAccountControllerProps {}
+export interface ControllerProps {}
 
-const DeleteAccountController = ({}: DeleteAccountControllerProps) => {
+const DeleteAccountController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { clearCache } = useCachedKeys();
@@ -60,7 +60,7 @@ const DeleteAccountController = ({}: DeleteAccountControllerProps) => {
     }
   }, [deleteAgree]);
 
-  const props: DeleteAccountViewProps = {
+  const props: ViewProps = {
     handleSubmit,
     deleteAgree,
     handleDeleteAgree,

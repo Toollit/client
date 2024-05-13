@@ -1,6 +1,6 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { FC, useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import ProjectCreateView, { ProjectCreateViewProps } from './ProjectCreateView';
+import ProjectCreateView, { ViewProps } from './ProjectCreateView';
 import { CreateProjectData, createProjectAPI } from '@/apis/createProject';
 import useEditorContent from '@/hooks/useEditorContent';
 import { errorMessage } from '@/apis/errorMessage';
@@ -14,7 +14,9 @@ import { StaticImageData } from 'next/legacy/image';
 import { RootState } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 
-const ProjectCreateController = () => {
+export interface ControllerProps {}
+
+const ProjectCreateController: FC<ControllerProps> = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { mutateTag, mutatePage } = useCachedKeys();
@@ -190,7 +192,7 @@ const ProjectCreateController = () => {
     setRepresentativeImageFile(null);
   }, []);
 
-  const props: ProjectCreateViewProps = {
+  const props: ViewProps = {
     isFooterVisible: isLaptop ? true : false,
     handleSubmit,
     editor: {

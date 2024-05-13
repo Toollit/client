@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import SearchView, { SearchViewProps } from './SearchView';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import SearchView, { ViewProps } from './SearchView';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { SearchAPIRes, searchFetcher } from '@/apis/searchFetcher';
@@ -14,9 +14,9 @@ import { errorMessage } from '@/apis/errorMessage';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
-export interface SearchControllerProps {}
+export interface ControllerProps {}
 
-const SearchController = ({}: SearchControllerProps) => {
+const SearchController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const [searchText, setSearchText] = useState<string | undefined>('');
   const { q } = router.query;
@@ -110,7 +110,7 @@ const SearchController = ({}: SearchControllerProps) => {
     setSearchText(q);
   }, [router, q]);
 
-  const props: SearchViewProps = {
+  const props: ViewProps = {
     searchText,
     data: handleProcessData({
       projectsData: projects?.data,

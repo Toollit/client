@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Link from 'next/link';
 import { Notice } from './NoticeController';
 import AppLayout from '@/components/appLayout';
@@ -18,17 +18,17 @@ import {
   TableTitle,
 } from './styles';
 
-export interface NoticeViewProps {
+export interface ViewProps {
   handleSearchNotice: (e: React.KeyboardEvent<HTMLFormElement>) => void;
   SearchInputRef: React.RefObject<HTMLInputElement>;
   data: Notice[];
 }
 
-const NoticeView = ({
+const NoticeView: FC<ViewProps> = ({
   handleSearchNotice,
   SearchInputRef,
   data,
-}: NoticeViewProps) => {
+}) => {
   return (
     <AppLayout type='default'>
       <InnerContainer>

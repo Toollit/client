@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { PersonIcon, MailIcon } from '@/assets/icons';
 import Hashtag from '@/components/hashtag';
 import { EditButton } from '@/components/button';
@@ -27,19 +27,19 @@ interface CustomUserProfile extends Omit<UserProfile, 'skills'> {
 
 export type ProfileInfoData = CustomMyProfile | CustomUserProfile;
 
-export interface ProfileInfoViewProps {
+export interface ViewProps {
   me: boolean;
   data?: ProfileInfoData | null;
   editBtnHandler: (category: string) => void;
   handleDeleteAccount: () => void; //TODO 함수명 일치시키기 editBtnHandler 다르잖아!!!
 }
 
-const ProfileInfoView = ({
+const ProfileInfoView: FC<ViewProps> = ({
   me,
   data,
   editBtnHandler,
   handleDeleteAccount,
-}: ProfileInfoViewProps) => {
+}) => {
   return (
     <>
       {data && (

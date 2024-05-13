@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { FC } from 'react';
 import AppLayout from '@/components/appLayout';
 import { Container } from './styles';
 
-export interface TermsOfServiceViewProps {
+export interface ViewProps {
   handleClose: () => void;
 }
 
-const TermsOfServiceView = ({ handleClose }: TermsOfServiceViewProps) => {
+const TermsOfServiceView: FC<ViewProps> = ({ handleClose }) => {
   return (
     <AppLayout
       type='close'

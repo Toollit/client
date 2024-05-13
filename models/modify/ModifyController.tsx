@@ -1,5 +1,5 @@
-import React, { useCallback, useRef, useState } from 'react';
-import ModifyView, { ModifyViewProps } from './ModifyView';
+import React, { FC, useCallback, useRef, useState } from 'react';
+import ModifyView, { ViewProps } from './ModifyView';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/errorMessage';
@@ -13,16 +13,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { loading } from '@/features/loading';
 import useTooltip from '@/hooks/useTooltip';
-import { StaticImageData } from "next/legacy/image";
+import { StaticImageData } from 'next/legacy/image';
 import projectDefaultImage from 'public/static/images/project.jpg';
 import useWindowSize from '@/hooks/useWindowSize';
 import useCachedKeys from '@/hooks/useCachedKeys';
 
-interface ModifyControllerProps {
+interface ControllerProps {
   postId: string;
 }
 
-const ModifyController = ({ postId }: ModifyControllerProps) => {
+const ModifyController: FC<ControllerProps> = ({ postId }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { titleRef, editorRef, handleData } = useEditorContent();
@@ -251,7 +251,7 @@ const ModifyController = ({ postId }: ModifyControllerProps) => {
     setRepresentativeImageFile(null);
   }, []);
 
-  const props: ModifyViewProps = {
+  const props: ViewProps = {
     isFooterVisible: isLaptop ? true : false,
     handleSubmit,
     editor: {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import dynamic from 'next/dynamic';
 import AppLayout from '@/components/appLayout';
 import Title from '@/components/title';
@@ -48,7 +48,7 @@ const DynamicTuiEditor = dynamic(
   },
 );
 
-export interface ProjectCreateViewProps {
+export interface ViewProps {
   isFooterVisible: boolean;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   editor: {
@@ -73,7 +73,7 @@ export interface ProjectCreateViewProps {
   tooltip: TooltipProps;
 }
 
-const ProjectCreateView = ({
+const ProjectCreateView: FC<ViewProps> = ({
   isFooterVisible,
   handleSubmit,
   editor,
@@ -87,7 +87,7 @@ const ProjectCreateView = ({
   handleDeleteRepresentativePreviewImage,
   handleTooltipOpen,
   tooltip,
-}: ProjectCreateViewProps) => {
+}) => {
   return (
     <AppLayout type='default' footer={isFooterVisible}>
       <InnerContainer>

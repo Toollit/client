@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import MainView, { MainViewProps } from './MainView';
+import MainView, { ViewProps } from './MainView';
 import { ProjectsAPIRes, projectsFetcher } from '@/apis/projectsFetcher';
 import { bookmarksStatusKey, projectsKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
@@ -15,12 +15,15 @@ import projectDefaultImage from 'public/static/images/project.jpg';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
-interface Props {
+interface ControllerProps {
   pageNumber: number;
   postOrder: 'new' | 'popularity';
 }
 
-const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
+const MainController: FC<ControllerProps> = ({
+  pageNumber = 1,
+  postOrder = 'new',
+}) => {
   const router = useRouter();
   const { authMutate } = useAuth();
 
@@ -160,7 +163,7 @@ const MainController = ({ pageNumber = 1, postOrder = 'new' }: Props) => {
     setOrder(orderQuery);
   }, [router, page, order]);
 
-  const props: MainViewProps = {
+  const props: ViewProps = {
     projects: handleProcessData({
       projectsData: projects?.data,
       bookmarksData: bookmarks?.data,

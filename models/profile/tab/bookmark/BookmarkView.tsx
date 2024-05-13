@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Project } from '@/apis/profileBookmarksFetcher';
 import Hashtag from '@/components/hashtag';
 import { BookmarkIcon, PersonIcon, ViewIcon } from '@/assets/icons';
@@ -23,7 +23,7 @@ interface CustomBookmark extends Omit<Project, 'memberTypes'> {
   bookmark: boolean;
 }
 
-export interface BookmarkViewProps {
+export interface ViewProps {
   data?: {
     bookmarks: CustomBookmark[] | null;
     total: number;
@@ -32,7 +32,7 @@ export interface BookmarkViewProps {
   loadMore: () => void;
 }
 
-const BookmarkView = ({ data, loadMore }: BookmarkViewProps) => {
+const BookmarkView: FC<ViewProps> = ({ data, loadMore }) => {
   return (
     <>
       {data && (

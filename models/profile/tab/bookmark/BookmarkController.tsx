@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import BookmarkView, { BookmarkViewProps } from './BookmarkView';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import BookmarkView, { ViewProps } from './BookmarkView';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { bookmarksStatusKey, profileBookmarksKey } from '@/apis/keys';
@@ -26,17 +26,17 @@ interface BookmarkData {
   data: ProfileBookmarksAPIRes['data'] | null;
 }
 
-export interface BookmarkControllerProps {
+export interface ControllerProps {
   currentTab: ProfileTab;
   isExistUser?: boolean;
   nickname: string;
 }
 
-const BookmarkController = ({
+const BookmarkController: FC<ControllerProps> = ({
   currentTab,
   isExistUser,
   nickname,
-}: BookmarkControllerProps) => {
+}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { getCachedData } = useCachedKeys();
@@ -221,7 +221,7 @@ const BookmarkController = ({
     getCachedData,
   ]);
 
-  const props: BookmarkViewProps = {
+  const props: ViewProps = {
     data: handleProcessedData({
       bookmarkProjectsData: profileBookmarksData?.data,
       bookmarksStatusData: bookmarksStatusData?.data,

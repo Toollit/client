@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import ProfileView, { ProfileViewProps } from './ProfileView';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import ProfileView, { ViewProps } from './ProfileView';
 import useSWR, { Cache } from 'swr';
 import { profileImageKey, userExistCheckKey } from '@/apis/keys';
 import { useRouter } from 'next/router';
@@ -29,7 +29,9 @@ export type ProfileTab =
   | 'viewNotifications'
   | undefined;
 
-const ProfileController = () => {
+export interface ControllerProps {}
+
+const ProfileController: FC<ControllerProps> = () => {
   const router = useRouter();
   const { logOut } = useLogout();
   const { nickname: accessUser, authMutate } = useAuth();
@@ -229,7 +231,7 @@ const ProfileController = () => {
     }
   }, [router]);
 
-  const props: ProfileViewProps = {
+  const props: ViewProps = {
     isProfileImageLoading,
     isLaptop,
     isExistUser: userExistCheckData?.data.existUser,

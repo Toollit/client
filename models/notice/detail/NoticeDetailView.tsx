@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
   Content,
   Header,
@@ -18,11 +18,11 @@ import { InnerContainer } from '@/styles/commons';
 import Title from '@/components/title';
 import Link from 'next/link';
 
-export interface NoticeDetailViewProps {
+export interface ViewProps {
   data?: Notice;
 }
 
-const NoticeDetailView = ({ data }: NoticeDetailViewProps) => {
+const NoticeDetailView: FC<ViewProps> = ({ data }) => {
   return (
     <AppLayout type='default'>
       <InnerContainer>

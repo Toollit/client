@@ -1,9 +1,9 @@
-import React, { useCallback, useRef } from 'react';
-import FAQView, { FAQViewProps } from './FAQView';
+import React, { FC, useCallback, useRef } from 'react';
+import FAQView, { ViewProps } from './FAQView';
 
-export interface FAQControllerProps {}
+export interface ControllerProps {}
 
-const FAQController = ({}: FAQControllerProps) => {
+const FAQController: FC<ControllerProps> = ({}) => {
   const SearchInputRef = useRef<HTMLInputElement>(null);
 
   const handleSearchFAQ = useCallback(
@@ -15,7 +15,7 @@ const FAQController = ({}: FAQControllerProps) => {
     [],
   );
 
-  const props: FAQViewProps = {
+  const props: ViewProps = {
     handleSearchFAQ,
     SearchInputRef,
   };

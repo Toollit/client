@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import MenuView, { MenuViewProps } from './MenuView';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import MenuView, { ViewProps } from './MenuView';
 import { useRouter } from 'next/router';
 import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
@@ -23,9 +23,9 @@ export interface MenuItem {
   handler?: () => void;
 }
 
-export interface MenuControllerProps {}
+export interface ControllerProps {}
 
-const MenuController = ({}: MenuControllerProps) => {
+const MenuController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const { nickname } = useAuth();
   const { logOut } = useLogout();
@@ -101,7 +101,7 @@ const MenuController = ({}: MenuControllerProps) => {
     ]);
   }, [nickname, handleUserSession]);
 
-  const props: MenuViewProps = {
+  const props: ViewProps = {
     handleClose,
     menu,
   };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import AppLayout from '@/components/appLayout';
 import Input from '@/components/input';
 import Title from '@/components/title';
@@ -11,7 +11,7 @@ import {
   SubmitButtonContainer,
 } from './styles';
 
-export interface NicknameViewProps {
+export interface ViewProps {
   handleClose: () => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   nickname: string;
@@ -19,13 +19,13 @@ export interface NicknameViewProps {
   nicknameInputRef: React.ForwardedRef<HTMLInputElement>;
 }
 
-const NicknameView = ({
+const NicknameView: FC<ViewProps> = ({
   handleClose,
   handleSubmit,
   nickname,
   handleNickname,
   nicknameInputRef,
-}: NicknameViewProps) => {
+}) => {
   return (
     <AppLayout
       type='close'

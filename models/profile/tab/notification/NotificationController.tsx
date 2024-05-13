@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import NotificationView, { NotificationViewProps } from './NotificationView';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import NotificationView, { ViewProps } from './NotificationView';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { profileNotificationsKey } from '@/apis/keys';
@@ -26,17 +26,17 @@ interface NotificationData {
   data: ProfileNotificationsAPIRes['data'];
 }
 
-export interface NotificationControllerProps {
+export interface ControllerProps {
   currentTab: ProfileTab;
   isExistUser?: boolean;
   nickname: string;
 }
 
-const NotificationController = ({
+const NotificationController: FC<ControllerProps> = ({
   currentTab,
   isExistUser,
   nickname,
-}: NotificationControllerProps) => {
+}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { getCachedData } = useCachedKeys();
@@ -211,7 +211,7 @@ const NotificationController = ({
     }
   }, [dispatch, data, notificationsData, nickname, getCachedData]);
 
-  const props: NotificationViewProps = {
+  const props: ViewProps = {
     data: handleProcessedData(data.data),
     each,
     isMine: nickname === accessUser,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Link from 'next/link';
 import { Notification } from '@/apis/profileNotificationsFetcher';
 import { Button } from '@/components/button';
@@ -28,7 +28,7 @@ interface CustomNotification extends Notification {
   notificationInfo?: string;
 }
 
-export interface NotificationViewProps {
+export interface ViewProps {
   data?: CustomNotification[];
   each: (data: Notification) => {
     handleProjectJoinApprove: () => void;
@@ -38,7 +38,7 @@ export interface NotificationViewProps {
   isMine: boolean;
 }
 
-const NotificationView = ({ data, each, isMine }: NotificationViewProps) => {
+const NotificationView: FC<ViewProps> = ({ data, each, isMine }) => {
   return (
     <>
       {data ? (

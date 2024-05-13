@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import AppLayout from 'components/appLayout';
 import { Button } from '@/components/button';
 import Title from '@/components/title';
@@ -13,7 +13,7 @@ import {
   SubmitButtonContainer,
 } from './styles';
 
-export interface ResetPasswordViewProps {
+export interface ViewProps {
   newPassword: string;
   onChangeNewPassword: (event: React.ChangeEvent<HTMLInputElement>) => void;
   newPasswordInvalidError: boolean;
@@ -28,7 +28,7 @@ export interface ResetPasswordViewProps {
   doubleCheckPasswordRef: React.ForwardedRef<HTMLInputElement>;
 }
 
-const ResetPasswordView = ({
+const ResetPasswordView: FC<ViewProps> = ({
   newPassword,
   onChangeNewPassword,
   newPasswordInvalidError,
@@ -39,7 +39,7 @@ const ResetPasswordView = ({
   handleLogout,
   passwordRef,
   doubleCheckPasswordRef,
-}: ResetPasswordViewProps) => {
+}) => {
   return (
     <AppLayout type='none' footer={false}>
       <Form onSubmit={handleSubmit}>

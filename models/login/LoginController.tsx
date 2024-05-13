@@ -1,6 +1,6 @@
-import React, { useCallback, useState, useRef, useEffect } from 'react';
+import React, { useCallback, useState, useRef, useEffect, FC } from 'react';
 import { useRouter } from 'next/router';
-import LoginView, { LoginViewProps } from './LoginView';
+import LoginView, { ViewProps } from './LoginView';
 import { emailLoginAPI } from '@/apis/emailLogin';
 import { errorMessage } from '@/apis/errorMessage';
 import PrivateRoute from '@/components/PrivateRoute';
@@ -10,7 +10,9 @@ import { loading } from '@/features/loading';
 import { RootState } from '@/store';
 import { emailAuth } from '@/features/signUp';
 
-const LoginController = () => {
+export interface ControllerProps {}
+
+const LoginController: FC<ControllerProps> = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { clearCache } = useCachedKeys();
@@ -169,7 +171,7 @@ const LoginController = () => {
     dispatch(emailAuth(data));
   }, [dispatch]);
 
-  const props: LoginViewProps = {
+  const props: ViewProps = {
     handleClose,
     handleSubmit,
     email,

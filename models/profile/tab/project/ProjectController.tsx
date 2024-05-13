@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import ProjectView, { ProjectViewProps } from './ProjectView';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import ProjectView, { ViewProps } from './ProjectView';
 import useSWR from 'swr';
 import { profileProjectsKey } from '@/apis/keys';
 import {
@@ -22,17 +22,17 @@ interface ProjectData {
   data: ProfileProjectsAPIRes['data'] | null;
 }
 
-export interface ProjectControllerProps {
+export interface ControllerProps {
   currentTab: ProfileTab;
   isExistUser?: boolean;
   nickname: string;
 }
 
-const ProjectController = ({
+const ProjectController: FC<ControllerProps> = ({
   currentTab,
   isExistUser,
   nickname,
-}: ProjectControllerProps) => {
+}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { getCachedData } = useCachedKeys();
@@ -180,7 +180,7 @@ const ProjectController = ({
     getCachedData,
   ]);
 
-  const props: ProjectViewProps = {
+  const props: ViewProps = {
     data: handleProjectDataResponse(data.data),
     loadMore: handleProjectLoadMore,
   };

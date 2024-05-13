@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState, useRef } from 'react';
+import React, { useCallback, useEffect, useState, useRef, FC } from 'react';
 import { useRouter } from 'next/router';
-import ResetPasswordView, { ResetPasswordViewProps } from './ResetPasswordView';
+import ResetPasswordView, { ViewProps } from './ResetPasswordView';
 import { resetPasswordAPI } from '@/apis/resetPassword';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { errorMessage } from '@/apis/errorMessage';
@@ -11,7 +11,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { loading } from '@/features/loading';
 
-const ResetPasswordController = () => {
+export interface ControllerProps {}
+
+const ResetPasswordController: FC<ControllerProps> = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { data: userAuthInfo } = useAuth();
@@ -122,7 +124,7 @@ const ResetPasswordController = () => {
     }
   }, [userAuthInfo, router]);
 
-  const props: ResetPasswordViewProps = {
+  const props: ViewProps = {
     newPassword: newPassword ?? '',
     onChangeNewPassword,
     newPasswordInvalidError,
