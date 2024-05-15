@@ -96,11 +96,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       const auth = await authMutate();
 
       if (!auth?.success) {
-        const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
-
-        if (wantsToLogin) {
-          return router.push('/login');
-        }
+        return router.push('/login');
       }
 
       if (auth?.success) {
@@ -177,11 +173,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       const auth = await authMutate();
 
       if (!auth?.success) {
-        const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
-
-        if (wantsToLogin) {
-          return router.push('/login');
-        }
+        return router.push('/login');
       }
 
       if (auth?.success) {
@@ -197,11 +189,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       const auth = await authMutate();
 
       if (!auth?.success) {
-        const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
-
-        if (wantsToLogin) {
-          return router.push('/login');
-        }
+        return router.push('/login');
       }
 
       if (auth?.success) {
@@ -236,11 +224,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       const auth = await authMutate();
 
       if (!auth?.success) {
-        const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
-
-        if (wantsToLogin) {
-          return router.push('/login');
-        }
+        return router.push('/login');
       }
 
       if (auth?.success) {
@@ -272,11 +256,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       const auth = await authMutate();
 
       if (!auth?.success) {
-        const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
-
-        if (wantsToLogin) {
-          router.push('/login');
-        }
+        router.push('/login');
       }
 
       if (auth?.success) {
@@ -316,11 +296,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       }
 
       if (!auth?.success) {
-        const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
-
-        if (wantsToLogin) {
-          router.push('/login');
-        }
+        router.push('/login');
       }
 
       dispatch(loading({ status: false }));
