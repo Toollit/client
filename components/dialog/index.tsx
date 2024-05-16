@@ -1,17 +1,16 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DialogActions, DialogContent } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { close as closeDialog, update as updateValue } from '@/features/dialog';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import BpRadio from '@/components/radio';
 import HashtagInput from '@/components/hashtagInput';
 import {
-  CustomDialog,
-  CustomDialogTitle,
-  CustomDialogCancelButton,
-  CustomDialogCompleteButton,
+  DialogBox,
+  Title,
+  CancelButton,
+  CompleteButton,
   Input,
   Textarea,
   TextCount,
@@ -22,18 +21,16 @@ import {
  * Dialog can only be opened through dispatch.
  */
 const Dialog = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const open = useSelector((state: RootState) => state.dialog.open);
-  const type = useSelector((state: RootState) => state.dialog.type);
-  const category = useSelector((state: RootState) => state.dialog.category);
-  const title = useSelector((state: RootState) => state.dialog.title);
-  const value = useSelector((state: RootState) => state.dialog.value);
-  const placeholder = useSelector(
-    (state: RootState) => state.dialog.placeholder,
-  );
-  const maxLength = useSelector((state: RootState) => state.dialog.maxLength);
-  const selectList = useSelector((state: RootState) => state.dialog.selectList);
+  const open = useAppSelector((state) => state.dialog.open);
+  const type = useAppSelector((state) => state.dialog.type);
+  const category = useAppSelector((state) => state.dialog.category);
+  const title = useAppSelector((state) => state.dialog.title);
+  const value = useAppSelector((state) => state.dialog.value);
+  const placeholder = useAppSelector((state) => state.dialog.placeholder);
+  const maxLength = useAppSelector((state) => state.dialog.maxLength);
+  const selectList = useAppSelector((state) => state.dialog.selectList);
 
   const [newValue, setNewValue] = useState('');
   const [checked, setChecked] = useState<string>('');
@@ -89,7 +86,6 @@ const Dialog = () => {
     [checkedList],
   );
 
-  // handle dialog button
   const handleDialog = useCallback(
     (event: React.MouseEvent) => {
       // 완료 - 'true', 취소 - 'false', 그 외 - null
@@ -150,8 +146,8 @@ const Dialog = () => {
   }, [open, value, type]);
 
   return (
-    <CustomDialog open={open} onClose={handleDialog}>
-      <CustomDialogTitle>{title}</CustomDialogTitle>
+    <DialogBox open={open} onClose={handleDialog}>
+      <Title>{title}</Title>
       <DialogContent>
         {type === 'standard' && (
           <>
@@ -231,14 +227,14 @@ const Dialog = () => {
       </DialogContent>
 
       <DialogActions>
-        <CustomDialogCancelButton data-edit={false} onClick={handleDialog}>
+        <CancelButton data-edit={false} onClick={handleDialog}>
           취소
-        </CustomDialogCancelButton>
-        <CustomDialogCompleteButton data-edit={true} onClick={handleDialog}>
+        </CancelButton>
+        <CompleteButton data-edit={true} onClick={handleDialog}>
           완료
-        </CustomDialogCompleteButton>
+        </CompleteButton>
       </DialogActions>
-    </CustomDialog>
+    </DialogBox>
   );
 };
 

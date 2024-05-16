@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 import {
-  Dialog,
-  DialogTitle,
-  Button,
+  Dialog as MUIDialog,
+  DialogTitle as MUIDialogTitle,
+  Button as MUIButton,
   FormControlLabel as MUIFormControlLabel,
 } from '@mui/material';
 
-const CustomDialog = styled(Dialog)`
+const DialogBox = styled(MUIDialog)`
   & .MuiDialog-paper {
     min-height: 20rem;
     width: 50rem;
@@ -34,16 +34,16 @@ const CustomDialog = styled(Dialog)`
   } */
 `;
 
-const CustomDialogTitle = styled(DialogTitle)`
+const Title = styled(MUIDialogTitle)`
   font-size: 1.6rem;
 `;
 
-const CustomDialogCancelButton = styled(Button)`
+const CancelButton = styled(MUIButton)`
   font-size: 1.4rem;
   color: #000;
 `;
 
-const CustomDialogCompleteButton = styled(Button)`
+const CompleteButton = styled(MUIButton)`
   font-size: 1.4rem;
   color: ${(props) => props.theme.colors.theme};
 `;
@@ -79,10 +79,10 @@ const FormControlLabel = styled(MUIFormControlLabel)`
 `;
 
 export {
-  CustomDialog,
-  CustomDialogTitle,
-  CustomDialogCancelButton,
-  CustomDialogCompleteButton,
+  DialogBox,
+  Title,
+  CancelButton,
+  CompleteButton,
   Input,
   Textarea,
   TextCount,
