@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { CloseIcon } from '@/assets/icons';
 import { Button } from './styles';
 import useCheckUserAgent from '@/hooks/useCheckUserAgent';
 
-interface CloseButtonProps {
+interface Props {
   handleClose: () => void;
 }
 
-const CloseButton = ({ handleClose }: CloseButtonProps) => {
+const CloseButton: FC<Props> = ({ handleClose }) => {
   const { isMobile } = useCheckUserAgent();
 
   return (

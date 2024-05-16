@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Container, Button } from './styles';
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
   onClick?: (event: React.MouseEvent) => void;
 }
 
-const BottomButton = ({ text, disabled = false, onClick }: Props) => {
+const BottomButton: FC<Props> = ({ text, disabled = false, onClick }) => {
   return (
     <Container>
       <Button onClick={onClick} disabled={disabled}>

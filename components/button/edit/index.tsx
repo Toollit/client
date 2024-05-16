@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Button } from './styles';
 
-interface EditBtnProps {
+interface Props {
   text: string;
   category: string;
   onClick: (category: string) => void;
@@ -13,8 +13,7 @@ interface EditBtnProps {
  * @props category - update data category
  * @props onClick - edit button handler
  */
-
-const EditButton = ({ text, category, onClick }: EditBtnProps) => {
+const EditButton: FC<Props> = ({ text, category, onClick }: Props) => {
   return <Button onClick={() => onClick(category)}>{text}</Button>;
 };
 

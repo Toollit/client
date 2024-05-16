@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import useCheckUserAgent from '@/hooks/useCheckUserAgent';
 import {
   NormalButton,
@@ -19,7 +19,7 @@ interface Props {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const Button = ({
+const Button: FC<Props> = ({
   type,
   shape = 'round',
   width,
@@ -28,7 +28,7 @@ const Button = ({
   text,
   icon,
   onClick,
-}: Props) => {
+}) => {
   const { isMobile } = useCheckUserAgent();
 
   switch (type) {

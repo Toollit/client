@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { ArrowBackIcon } from '@/assets/icons';
 import { Button } from './styles';
 import useCheckUserAgent from '@/hooks/useCheckUserAgent';
 
-interface BackButtonProps {
+interface Props {
   handleBack: () => void;
 }
 
-const BackButton = ({ handleBack }: BackButtonProps) => {
+const BackButton: FC<Props> = ({ handleBack }) => {
   const { isMobile } = useCheckUserAgent();
 
   return (
