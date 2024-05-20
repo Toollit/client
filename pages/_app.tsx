@@ -64,10 +64,13 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta property='og:title' content='Toollit' />
         <meta
           property='og:description'
-          content='IT 프로젝트 모집 커뮤니티 플랫폼. 당신이 부러워하는 유니콘 스타트업도 작은 모임에서 시작됐다.' // TODO 지역에따라 한글 또는 영어로 나오게 수정하기
+          content='IT 프로젝트 모집 커뮤니티 플랫폼. 당신이 부러워하는 유니콘 스타트업도 작은 모임에서 시작됐다.'
         />
-        <meta property='og:image' content='/favicon.ico' />
-        {/* TODO 작성하기 <meta property="og:url" content="your_page_url" />  */}
+        <meta
+          property='og:image'
+          content='/public/static/images/ToollitLogo.svg'
+        />
+        <meta property='og:url' content='https://toollit.com' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <MUIThemeProvider theme={MUITheme}>
