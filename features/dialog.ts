@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-export interface DialogState {
+interface InitialState {
   open: boolean;
   page: string;
   type: 'standard' | 'multiline' | 'select' | 'multiSelect' | 'hashtag' | null;
@@ -14,16 +14,28 @@ export interface DialogState {
   update: { category: string; newValue: string } | null;
 }
 
-const initialState: DialogState = {
-  open: false, // dialog open
-  page: '', // dialog open page or update page
-  type: null, // dialog type
-  category: '', // update data category
-  title: '', // dialog title
-  value: '', // dialog value
+/**
+ * @property {boolean} open - dialog open state
+ * @property {string} page - page where you currently open the dialog
+ * @property {string|null} type - type of dialog
+ * @property {string} category - category of update data
+ * @property {string} title - title of the dialog
+ * @property {string} value - value in the dialog
+ * @property {string} placeholder - placeholder for input field
+ * @property {number | null} maxLength - maximum length for the input field
+ * @property {Array | null} selectList - required if dialog type is 'select' or 'multiSelect'
+ * @property {any | null} update - opened the dialog to update the information
+ */
+const initialState: InitialState = {
+  open: false,
+  page: '',
+  type: null,
+  category: '',
+  title: '',
+  value: '',
   placeholder: '',
   maxLength: null,
-  selectList: null, //  selectList required if dialog type is 'select' or 'multiSelect'
+  selectList: null,
   update: null,
 };
 
@@ -33,7 +45,7 @@ const dialogSlice = createSlice({
   reducers: {
     open: (
       state,
-      action: PayloadAction<Omit<DialogState, 'open' | 'update'>>,
+      action: PayloadAction<Omit<InitialState, 'open' | 'update'>>,
     ) => {
       const {
         page,
@@ -67,7 +79,7 @@ const dialogSlice = createSlice({
       state.selectList = null;
       state.update = null;
     },
-    update: (state, action: PayloadAction<Pick<DialogState, 'update'>>) => {
+    update: (state, action: PayloadAction<Pick<InitialState, 'update'>>) => {
       const { update } = action.payload;
 
       if (update !== null) {

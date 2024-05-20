@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-export interface PaginationState {
+interface InitialState {
   page: number;
   totalPage: number;
 }
 
-const initialState: PaginationState = {
+const initialState: InitialState = {
   page: 1,
   totalPage: 1,
 };
@@ -15,17 +15,14 @@ const paginationSlice = createSlice({
   name: 'pagination',
   initialState,
   reducers: {
-    updatePage: (
-      state,
-      action: PayloadAction<Pick<PaginationState, 'page'>>,
-    ) => {
+    updatePage: (state, action: PayloadAction<Pick<InitialState, 'page'>>) => {
       const { page } = action.payload;
       state.page = page;
     },
 
     updateTotalPage: (
       state,
-      action: PayloadAction<Pick<PaginationState, 'totalPage'>>,
+      action: PayloadAction<Pick<InitialState, 'totalPage'>>,
     ) => {
       const { totalPage } = action.payload;
       state.totalPage = totalPage;

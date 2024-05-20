@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-export interface PostOrderState {
+interface InitialState {
   order: 'new' | 'popularity';
 }
 
-const initialState: PostOrderState = {
+const initialState: InitialState = {
   order: 'new',
 };
 
@@ -13,7 +13,7 @@ const postOrderSlice = createSlice({
   name: 'postOrder',
   initialState,
   reducers: {
-    updatePostOrder: (state, action: PayloadAction<PostOrderState>) => {
+    updatePostOrder: (state, action: PayloadAction<InitialState>) => {
       const { order } = action.payload;
       state.order = order;
     },

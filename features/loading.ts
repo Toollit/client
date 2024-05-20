@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-export interface LoadingState {
+interface InitialState {
   status: boolean;
 }
 
-const initialState: LoadingState = {
+const initialState: InitialState = {
   status: false,
 };
 
@@ -13,7 +13,7 @@ const loadingSlice = createSlice({
   name: 'loading',
   initialState,
   reducers: {
-    loading: (state, action: PayloadAction<LoadingState>) => {
+    loading: (state, action: PayloadAction<InitialState>) => {
       const { status } = action.payload;
 
       state.status = status;

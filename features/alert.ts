@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-export interface AlertState {
+interface InitialState {
   show: boolean;
   type: 'error' | 'warning' | 'info' | 'success' | null;
   text: string;
 }
 
-const initialState: AlertState = {
+const initialState: InitialState = {
   show: false,
   type: null,
   text: '',
@@ -17,7 +17,7 @@ const alertSlice = createSlice({
   name: 'alert',
   initialState,
   reducers: {
-    showAlert: (state, action: PayloadAction<Omit<AlertState, 'show'>>) => {
+    showAlert: (state, action: PayloadAction<Omit<InitialState, 'show'>>) => {
       const { type, text } = action.payload;
       state.show = true;
       state.type = type;

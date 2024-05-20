@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-export interface SignUpState {
+interface InitialState {
   email: string;
   password: string;
 }
 
-const initialState: SignUpState = {
+const initialState: InitialState = {
   email: '',
   password: '',
 };
@@ -15,7 +15,7 @@ const signUpSlice = createSlice({
   name: 'signup',
   initialState,
   reducers: {
-    emailAuth: (state, action: PayloadAction<SignUpState>) => {
+    emailAuth: (state, action: PayloadAction<InitialState>) => {
       const { email, password } = action.payload;
       state.email = email;
       state.password = password;
