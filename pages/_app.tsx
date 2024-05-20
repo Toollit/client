@@ -68,7 +68,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <meta
           property='og:image'
-          content='/public/static/images/ToollitLogo.svg'
+          content='https://toollit-image-bucket.s3.ap-northeast-2.amazonaws.com/logo/Toollit.png'
         />
         <meta property='og:url' content='https://toollit.com' />
         <link rel='icon' href='/favicon.ico' />
