@@ -10,13 +10,23 @@ interface PageProps {
   fallback: {
     [key: string]: ProjectDetail;
   };
+  title: string;
+  representativeImage: string;
 }
 
-const Project: NextPage<PageProps> = ({ fallback }) => {
+const Project: NextPage<PageProps> = ({
+  fallback,
+  title,
+  representativeImage,
+}) => {
   return (
     <SWRConfig value={{ fallback }}>
       <Head>
         <title>프로젝트</title>
+        <meta property='og:title' content='Toollit 프로젝트' />
+        <meta property='og:description' content={title} />
+        <meta property='og:image' content={representativeImage} />
+        <meta property='og:url' content='https://toollit.com' />
       </Head>
       <ProjectDetailController />
     </SWRConfig>
@@ -35,11 +45,24 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
     const projectDetail = await projectFetcher({ url: apiEndpoint });
 
+    if (!projectDetail) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/404',
+        },
+      };
+    }
+
+    const { title, representativeImage } = projectDetail?.data.content;
+
     return {
       props: {
         fallback: {
           [key]: projectDetail,
         },
+        title,
+        representativeImage,
       },
     };
   }
