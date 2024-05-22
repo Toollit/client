@@ -23,10 +23,10 @@ const Project: NextPage<PageProps> = ({
     <SWRConfig value={{ fallback }}>
       <Head>
         <title>프로젝트</title>
-        <meta property='og:title' content='Toollit 프로젝트' />
-        <meta property='og:description' content={title} />
-        <meta property='og:image' content={representativeImage} />
-        <meta property='og:url' content='https://toollit.com' />
+        <meta property='og:title' content='Toollit 프로젝트' key='title' />
+        <meta property='og:description' content={title} key='description' />
+        <meta property='og:image' content={representativeImage} key='image' />
+        <meta property='og:url' content='https://toollit.com' key='url' />
       </Head>
       <ProjectDetailController />
     </SWRConfig>
