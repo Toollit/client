@@ -10,12 +10,14 @@ interface PageProps {
   fallback: {
     [key: string]: ProjectDetail;
   };
+  id: number;
   title: string;
   representativeImage: string;
 }
 
 const Project: NextPage<PageProps> = ({
   fallback,
+  id,
   title,
   representativeImage,
 }) => {
@@ -26,7 +28,11 @@ const Project: NextPage<PageProps> = ({
         <meta property='og:title' content='Toollit 프로젝트' key='title' />
         <meta property='og:description' content={title} key='description' />
         <meta property='og:image' content={representativeImage} key='image' />
-        <meta property='og:url' content='https://toollit.com' key='url' />
+        <meta
+          property='og:url'
+          content={`https://toollit.com/project/${id}`}
+          key='url'
+        />
       </Head>
       <ProjectDetailController />
     </SWRConfig>
