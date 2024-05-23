@@ -3,6 +3,7 @@ import { SWRConfig } from 'swr';
 import { projectsFetcher, Project } from '@/apis/projectsFetcher';
 import MainController from 'models/main/MainController';
 import { projectsKey } from '@/apis/keys';
+import Head from 'next/head';
 interface PageProps {
   fallback: {
     [key: string]: Project[];
@@ -14,6 +15,21 @@ interface PageProps {
 const Home: NextPage<PageProps> = ({ fallback, pageNumber, postOrder }) => {
   return (
     <SWRConfig value={{ fallback }}>
+      <Head>
+        <title>프로젝트</title>
+        <meta property='og:title' content='Toollit' key='title' />
+        <meta
+          property='og:description'
+          content='IT 프로젝트 모집 커뮤니티 플랫폼. 당신이 부러워하는 유니콘 스타트업도 작은 모임에서 시작됐다.'
+          key='description'
+        />
+        <meta
+          property='og:image'
+          content='https://toollit-image-bucket.s3.ap-northeast-2.amazonaws.com/logo/Toollit.png'
+          key='image'
+        />
+        <meta property='og:url' content='https://toollit.com' key='url' />
+      </Head>
       <MainController pageNumber={pageNumber} postOrder={postOrder} />
     </SWRConfig>
   );

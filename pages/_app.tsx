@@ -61,18 +61,6 @@ function MyApp({ Component, pageProps }: AppProps) {
           name='keywords'
           content='프로젝트, 모집, 모임, IT, 커뮤니티, 플랫폼, project'
         />
-        <meta property='og:title' content='Toollit' key='title' />
-        <meta
-          property='og:description'
-          content='IT 프로젝트 모집 커뮤니티 플랫폼. 당신이 부러워하는 유니콘 스타트업도 작은 모임에서 시작됐다.'
-          key='description'
-        />
-        <meta
-          property='og:image'
-          content='https://toollit-image-bucket.s3.ap-northeast-2.amazonaws.com/logo/Toollit.png'
-          key='image'
-        />
-        <meta property='og:url' content='https://toollit.com' key='url' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <MUIThemeProvider theme={MUITheme}>
