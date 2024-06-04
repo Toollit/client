@@ -1,8 +1,20 @@
 services:
-  app:
+  blue:
+    container_name: blue
     image: seungwoncode/toollit-client-app:latest
     ports:
-      - '3000:3000'
+      - '3001:3000'
+
+  green:
+    container_name: green
+    image: seungwoncode/toollit-client-app:latest
+    ports:
+      - '3002:3000'
+
+  # app:
+  #   image: seungwoncode/toollit-client-app:latest
+  #   ports:
+  #     - '3000:3000'
 
   nginx:
     image: seungwoncode/toollit-client-nginx:latest
