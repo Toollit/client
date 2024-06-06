@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import type { AppProps } from 'next/app';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { SWRDevTools } from 'swr-devtools';
 import { Provider } from 'react-redux';
@@ -14,33 +13,12 @@ import EmotionTheme from 'styles/theme';
 import usePathHistory from '@/hooks/usePathHistory';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const router = useRouter();
-  const { data: userAuthInfo, nickname, isAuthenticated } = useAuth();
+  useAuth();
   usePathHistory({ saveAction: true });
 
   useEffect(() => {
     window.history.scrollRestoration = 'manual';
   }, []);
-
-  useEffect(() => {
-    // Check who logged in with a temporary password
-    if (userAuthInfo?.needResetPassword === true) {
-      // Prevent infinite routing loop
-      if (router.pathname !== '/resetPassword') {
-        router.replace('/resetPassword');
-      }
-    }
-  }, [router, userAuthInfo]);
-
-  useEffect(() => {
-    // Check whether nickname is set or not
-    if (isAuthenticated && nickname === null) {
-      // Prevent infinite routing loop
-      if (router.pathname !== '/signUp/settings/nickname') {
-        router.replace('/signUp/settings/nickname');
-      }
-    }
-  }, [router, nickname, isAuthenticated]);
 
   return (
     <>
