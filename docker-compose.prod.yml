@@ -17,6 +17,7 @@ services:
   #     - '3000:3000'
 
   nginx:
+    container_name: nginx
     image: seungwoncode/toollit-client-nginx:latest
     restart: always
     volumes:
@@ -28,6 +29,7 @@ services:
     command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
 
   certbot:
+    container_name: certbot
     image: certbot/certbot
     restart: always
     volumes:
