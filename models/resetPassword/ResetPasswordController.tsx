@@ -16,7 +16,7 @@ export interface ControllerProps {}
 const ResetPasswordController: FC<ControllerProps> = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { data: userAuthInfo } = useAuth();
+  const { user } = useAuth();
   const { logOut } = useLogout();
 
   const isLoading = useSelector((state: RootState) => state.isLoading.status);
@@ -119,10 +119,10 @@ const ResetPasswordController: FC<ControllerProps> = () => {
   }, [doubleCheckPassword]);
 
   useEffect(() => {
-    if (userAuthInfo?.needResetPassword === false) {
+    if (user?.needResetPassword === false) {
       router.replace('/');
     }
-  }, [userAuthInfo, router]);
+  }, [user, router]);
 
   const props: ViewProps = {
     newPassword: newPassword ?? '',

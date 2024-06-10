@@ -26,18 +26,16 @@ const useAuth = () => {
   const authUserNickname = response?.data.nickname;
   const isAuthenticated = response?.success;
   const nickname = authUserNickname ? authUserNickname : null;
-  const data = response?.data ? response.data : null;
-
-  const userAuthInfo = data;
+  const user = response?.data;
 
   const handleTemporaryPasswordUser = useCallback(() => {
-    if (userAuthInfo?.needResetPassword === true) {
+    if (user?.needResetPassword === true) {
       // Prevent infinite routing loop
       if (router.pathname !== '/resetPassword') {
         router.replace('/resetPassword');
       }
     }
-  }, [router, userAuthInfo]);
+  }, [router, user]);
 
   const handleInitialNicknameSetup = useCallback(() => {
     if (isAuthenticated && nickname === null) {
@@ -53,7 +51,7 @@ const useAuth = () => {
     handleInitialNicknameSetup();
   }, [handleTemporaryPasswordUser, handleInitialNicknameSetup]);
 
-  return { isLoading, isAuthenticated, nickname, data, authMutate };
+  return { isLoading, isAuthenticated, nickname, user, authMutate };
 };
 
 export default useAuth;
