@@ -38,7 +38,7 @@ const ProfileInfoController: FC<ControllerProps> = ({
 }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { nickname: accessUser, authMutate } = useAuth();
+  const { user, authMutate } = useAuth();
   const { getCachedData } = useCachedKeys();
   const { isLaptop } = useWindowSize();
 
@@ -369,7 +369,7 @@ const ProfileInfoController: FC<ControllerProps> = ({
   }, [dispatch, data, profileInfoData, nickname, getCachedData]);
 
   const props: ViewProps = {
-    me: nickname === accessUser,
+    me: nickname === user?.nickname,
     data: handleProfileInfoDataResponse(data.data),
     editBtnHandler: handleProfileInfoEditBtn,
     handleDeleteAccount,

@@ -34,7 +34,7 @@ interface MenuItem {
 
 const Menu = () => {
   const router = useRouter();
-  const { nickname } = useAuth();
+  const { user } = useAuth();
   const { logOut } = useLogout();
 
   const [open, setOpen] = useState(false);
@@ -49,16 +49,16 @@ const Menu = () => {
   }, []);
 
   const handleUserSession = useCallback(async () => {
-    if (nickname) {
+    if (user?.nickname) {
       await logOut({ push: '/' });
       handleClose();
     }
 
-    if (!nickname) {
+    if (!user?.nickname) {
       router.push('/login');
       handleClose();
     }
-  }, [router, logOut, nickname, handleClose]);
+  }, [router, logOut, user, handleClose]);
 
   useEffect(() => {
     setMenu([
@@ -66,25 +66,31 @@ const Menu = () => {
         tag: 'profile',
         icon: <AccountCircleIcon />,
         text: '내 프로필',
-        url: nickname ? `/profile/${nickname}` : '/login',
+        url: user?.nickname ? `/profile/${user?.nickname}` : '/login',
       },
       {
         tag: 'project',
         icon: <ArticleIcon />,
         text: '내 프로젝트',
-        url: nickname ? `/profile/${nickname}?tab=viewProjects` : '/login',
+        url: user?.nickname
+          ? `/profile/${user?.nickname}?tab=viewProjects`
+          : '/login',
       },
       {
         tag: 'bookmark',
         icon: <BookmarkIcon />,
         text: '내 북마크',
-        url: nickname ? `/profile/${nickname}?tab=viewBookmarks` : '/login',
+        url: user?.nickname
+          ? `/profile/${user?.nickname}?tab=viewBookmarks`
+          : '/login',
       },
       {
         tag: 'notification',
         icon: <NotificationsIcon />,
         text: '알림',
-        url: nickname ? `/profile/${nickname}?tab=viewNotifications` : '/login',
+        url: user?.nickname
+          ? `/profile/${user?.nickname}?tab=viewNotifications`
+          : '/login',
       },
       {
         tag: 'notice',
@@ -108,12 +114,12 @@ const Menu = () => {
       {
         tag: 'auth',
         icon: <LogoutOutlinedIcon />,
-        text: nickname ? '로그아웃' : '로그인',
-        url: nickname ? '#' : '/login',
+        text: user?.nickname ? '로그아웃' : '로그인',
+        url: user?.nickname ? '#' : '/login',
         handler: handleUserSession,
       },
     ]);
-  }, [nickname, handleUserSession]);
+  }, [user, handleUserSession]);
 
   return (
     <div>

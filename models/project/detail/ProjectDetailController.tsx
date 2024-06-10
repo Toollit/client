@@ -26,7 +26,7 @@ export interface ControllerProps {}
 const ProjectDetailController: FC<ControllerProps> = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { nickname: accessUser, authMutate } = useAuth();
+  const { user, authMutate } = useAuth();
   const { mutateTag, mutatePage } = useCachedKeys();
 
   const postId = router.query.id as string;
@@ -309,10 +309,10 @@ const ProjectDetailController: FC<ControllerProps> = () => {
   const handleCheckMember = useCallback(
     (data?: ProjectAPIRes['data']) => {
       const founded = data?.member.profiles.find(
-        (profile) => profile.nickname === accessUser,
+        (profile) => profile.nickname === user?.nickname,
       );
 
-      const isMyPost = data?.writer.nickname === accessUser;
+      const isMyPost = data?.writer.nickname === user?.nickname;
 
       if (isMyPost) {
         // project owner. show join text
@@ -327,7 +327,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
         }
       }
     },
-    [accessUser],
+    [user],
   );
 
   const handleCheckRecruitComplete = useCallback(
@@ -355,7 +355,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
   }, [bookmarkAlertTimeoutId, shareAlertTimeoutId]);
 
   const props: ViewProps = {
-    isMyPost: projectDetail?.data.writer.nickname === accessUser,
+    isMyPost: projectDetail?.data.writer.nickname === user?.nickname,
     isRecruitCompleted: handleCheckRecruitComplete(projectDetail?.data),
     isMember: handleCheckMember(projectDetail?.data),
     isClientRendering,

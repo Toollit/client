@@ -55,7 +55,7 @@ export type NavProps = Default | None | Close | Back;
 const Nav = <T extends Default | Close | Back | None>(props: T) => {
   const { type } = props;
   const router = useRouter();
-  const { nickname, authMutate } = useAuth();
+  const { user, authMutate } = useAuth();
 
   const handleLogoRoute = useCallback(
     (event: React.MouseEvent) => {
@@ -101,7 +101,9 @@ const Nav = <T extends Default | Close | Back | None>(props: T) => {
                 </li>
                 <li>
                   <ProfileLink
-                    href={nickname ? `/profile/${nickname}` : '/login'}
+                    href={
+                      user?.nickname ? `/profile/${user?.nickname}` : '/login'
+                    }
                     onClick={handleAuthMutate}
                   >
                     <AccountCircleIcon />

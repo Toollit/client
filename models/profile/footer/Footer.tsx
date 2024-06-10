@@ -4,7 +4,7 @@ import { LogInOut, MyProfileLink, Container, LogoLink } from './styles';
 
 interface ProfileFooterLink {
   me: boolean;
-  accessUser: string | null;
+  accessUser?: string | null;
   loginState?: string | null;
   handleLogInOut: () => void;
 }

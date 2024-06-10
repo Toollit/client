@@ -43,7 +43,7 @@ export interface ViewProps {
   isProfileImageLoading: boolean;
   isLaptop: boolean | null;
   isExistUser?: boolean;
-  accessUser: string | null;
+  accessUser?: string | null;
   me: boolean;
   loginState?: string | null;
   tabs: { name: string; query: string }[];

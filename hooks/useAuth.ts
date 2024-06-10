@@ -23,9 +23,7 @@ const useAuth = () => {
     },
   );
 
-  const authUserNickname = response?.data.nickname;
   const isAuthenticated = response?.success;
-  const nickname = authUserNickname ? authUserNickname : null;
   const user = response?.data;
 
   const handleTemporaryPasswordUser = useCallback(() => {
@@ -38,20 +36,20 @@ const useAuth = () => {
   }, [router, user]);
 
   const handleInitialNicknameSetup = useCallback(() => {
-    if (isAuthenticated && nickname === null) {
+    if (isAuthenticated && user?.nickname === null) {
       // Prevent infinite routing loop
       if (router.pathname !== '/signUp/settings/nickname') {
         router.replace('/signUp/settings/nickname');
       }
     }
-  }, [router, nickname, isAuthenticated]);
+  }, [router, user, isAuthenticated]);
 
   useEffect(() => {
     handleTemporaryPasswordUser();
     handleInitialNicknameSetup();
   }, [handleTemporaryPasswordUser, handleInitialNicknameSetup]);
 
-  return { isLoading, isAuthenticated, nickname, user, authMutate };
+  return { isLoading, isAuthenticated, user, authMutate };
 };
 
 export default useAuth;

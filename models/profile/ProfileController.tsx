@@ -34,7 +34,7 @@ export interface ControllerProps {}
 const ProfileController: FC<ControllerProps> = () => {
   const router = useRouter();
   const { logOut } = useLogout();
-  const { nickname: accessUser, authMutate } = useAuth();
+  const { user, authMutate } = useAuth();
   const {
     tooltipAnchorEl,
     setTooltipAnchorEl,
@@ -108,7 +108,7 @@ const ProfileController: FC<ControllerProps> = () => {
   );
 
   const handleLogInOut = useCallback(async () => {
-    const isLoggedIn = accessUser;
+    const isLoggedIn = user?.nickname;
 
     if (isLoggedIn) {
       return await logOut({ push: '/' });
@@ -117,7 +117,7 @@ const ProfileController: FC<ControllerProps> = () => {
     if (!isLoggedIn) {
       return router.push('/login');
     }
-  }, [router, accessUser, logOut]);
+  }, [router, user, logOut]);
 
   const handleTooltipModify = useCallback(() => {
     setTooltipAnchorEl(null);
@@ -224,7 +224,7 @@ const ProfileController: FC<ControllerProps> = () => {
 
   // useEffect for troubleshooting nickname undefined upon reload or tab movement
   useEffect(() => {
-    const nickname = router.query.nickname as string | undefined;
+    const nickname = router.query.nickname;
 
     if (nickname !== undefined && typeof nickname === 'string') {
       setNickname(nickname);
@@ -235,9 +235,9 @@ const ProfileController: FC<ControllerProps> = () => {
     isProfileImageLoading,
     isLaptop,
     isExistUser: userExistCheckData?.data.existUser,
-    accessUser,
-    me: nickname === accessUser,
-    loginState: accessUser,
+    accessUser: user?.nickname,
+    me: nickname === user?.nickname,
+    loginState: user?.nickname,
     tabs: tabs.current,
     currentTab,
     profileImageData: profileImageData?.data?.profileImage,

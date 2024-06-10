@@ -41,7 +41,7 @@ const NotificationController: FC<ControllerProps> = ({
   const dispatch = useAppDispatch();
   const { getCachedData } = useCachedKeys();
   const { isLaptop } = useWindowSize();
-  const { nickname: accessUser } = useAuth();
+  const { user } = useAuth();
 
   const [data, setData] = useState<NotificationData>({
     isLoaded: false,
@@ -52,7 +52,7 @@ const NotificationController: FC<ControllerProps> = ({
     isExistUser &&
       currentTab === 'viewNotifications' &&
       nickname &&
-      nickname === accessUser
+      nickname === user?.nickname
       ? {
           url: profileNotificationsKey(nickname),
           args: {
@@ -214,7 +214,7 @@ const NotificationController: FC<ControllerProps> = ({
   const props: ViewProps = {
     data: handleProcessedData(data.data),
     each,
-    isMine: nickname === accessUser,
+    isMine: nickname === user?.nickname,
   };
 
   return <NotificationView {...props} />;
