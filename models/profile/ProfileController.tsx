@@ -135,8 +135,8 @@ const ProfileController: FC<ControllerProps> = () => {
       });
 
       profileImageMutate();
-    } catch (error) {
-      errorMessage(error);
+    } catch (err) {
+      errorMessage(err);
     }
   }, [profileImageMutate, setTooltipAnchorEl]);
 
@@ -157,8 +157,8 @@ const ProfileController: FC<ControllerProps> = () => {
         });
 
         profileImageMutate();
-      } catch (error) {
-        errorMessage(error);
+      } catch (err) {
+        errorMessage(err);
       }
     },
     [profileImageMutate],
@@ -235,9 +235,9 @@ const ProfileController: FC<ControllerProps> = () => {
     isProfileImageLoading,
     isLaptop,
     isExistUser: userExistCheckData?.data.existUser,
-    accessUser: user?.nickname,
-    me: nickname === user?.nickname,
-    loginState: user?.nickname,
+    userNickname: user?.nickname,
+    isMyProfile: nickname === user?.nickname,
+    isLogin: user?.nickname,
     tabs: tabs.current,
     currentTab,
     profileImageData: profileImageData?.data?.profileImage,

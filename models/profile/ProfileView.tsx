@@ -43,9 +43,9 @@ export interface ViewProps {
   isProfileImageLoading: boolean;
   isLaptop: boolean | null;
   isExistUser?: boolean;
-  accessUser?: string | null;
-  me: boolean;
-  loginState?: string | null;
+  userNickname?: string | null;
+  isMyProfile: boolean;
+  isLogin?: string | null;
   tabs: { name: string; query: string }[];
   currentTab: ProfileTab;
   profileImageData?: string | null;
@@ -61,9 +61,9 @@ const ProfileView: FC<ViewProps> = ({
   isProfileImageLoading,
   isLaptop,
   isExistUser,
-  accessUser,
-  me,
-  loginState,
+  userNickname,
+  isMyProfile,
+  isLogin,
   tabs,
   currentTab,
   profileImageData,
@@ -121,7 +121,7 @@ const ProfileView: FC<ViewProps> = ({
             )}
 
             {/* Change profile image button */}
-            {me && (
+            {isMyProfile && (
               <>
                 <input
                   hidden
@@ -173,13 +173,15 @@ const ProfileView: FC<ViewProps> = ({
             <FooterLink>
               <ul>
                 <li>
-                  {me ? (
+                  {isMyProfile ? (
                     <LogInOut onClick={handleLogInOut}>
-                      {loginState ? '로그아웃' : '로그인'}
+                      {isLogin ? '로그아웃' : '로그인'}
                     </LogInOut>
                   ) : (
                     <MyProfileLink
-                      href={accessUser ? `/profile/${accessUser}` : '/login'}
+                      href={
+                        userNickname ? `/profile/${userNickname}` : '/login'
+                      }
                     >
                       내프로필
                     </MyProfileLink>
@@ -250,9 +252,9 @@ const ProfileView: FC<ViewProps> = ({
                   nickname={nickname}
                 />
                 <ProfileFooterLink
-                  me={me}
-                  accessUser={accessUser}
-                  loginState={loginState}
+                  isMyProfile={isMyProfile}
+                  userNickname={userNickname}
+                  isLogin={isLogin}
                   handleLogInOut={handleLogInOut}
                 />
               </ViewContainer>
@@ -264,9 +266,9 @@ const ProfileView: FC<ViewProps> = ({
                   nickname={nickname}
                 />
                 <ProfileFooterLink
-                  me={me}
-                  accessUser={accessUser}
-                  loginState={loginState}
+                  isMyProfile={isMyProfile}
+                  userNickname={userNickname}
+                  isLogin={isLogin}
                   handleLogInOut={handleLogInOut}
                 />
               </ViewContainer>
@@ -278,9 +280,9 @@ const ProfileView: FC<ViewProps> = ({
                   nickname={nickname}
                 />
                 <ProfileFooterLink
-                  me={me}
-                  accessUser={accessUser}
-                  loginState={loginState}
+                  isMyProfile={isMyProfile}
+                  userNickname={userNickname}
+                  isLogin={isLogin}
                   handleLogInOut={handleLogInOut}
                 />
               </ViewContainer>
@@ -292,9 +294,9 @@ const ProfileView: FC<ViewProps> = ({
                   nickname={nickname}
                 />
                 <ProfileFooterLink
-                  me={me}
-                  accessUser={accessUser}
-                  loginState={loginState}
+                  isMyProfile={isMyProfile}
+                  userNickname={userNickname}
+                  isLogin={isLogin}
                   handleLogInOut={handleLogInOut}
                 />
               </ViewContainer>

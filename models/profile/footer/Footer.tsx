@@ -3,29 +3,29 @@ import Link from 'next/link';
 import { LogInOut, MyProfileLink, Container, LogoLink } from './styles';
 
 interface ProfileFooterLink {
-  me: boolean;
-  accessUser?: string | null;
-  loginState?: string | null;
+  isMyProfile: boolean;
+  userNickname?: string | null;
+  isLogin?: string | null;
   handleLogInOut: () => void;
 }
 
 const ProfileFooterLink = ({
-  me,
-  accessUser,
-  loginState,
+  isMyProfile,
+  userNickname,
+  isLogin,
   handleLogInOut,
 }: ProfileFooterLink) => {
   return (
     <Container>
       <ul>
         <li>
-          {me ? (
+          {isMyProfile ? (
             <LogInOut onClick={handleLogInOut}>
-              {loginState ? '로그아웃' : '로그인'}
+              {isLogin ? '로그아웃' : '로그인'}
             </LogInOut>
           ) : (
             <MyProfileLink
-              href={accessUser ? `/profile/${accessUser}` : '/login'}
+              href={userNickname ? `/profile/${userNickname}` : '/login'}
             >
               내프로필
             </MyProfileLink>
