@@ -2,24 +2,27 @@ services:
   blue:
     container_name: blue
     image: seungwoncode/toollit-client-app:latest
+    restart: unless-stopped
     ports:
       - '3001:3000'
 
   green:
     container_name: green
     image: seungwoncode/toollit-client-app:latest
+    restart: unless-stopped
     ports:
       - '3002:3000'
 
   # app:
   #   image: seungwoncode/toollit-client-app:latest
+  #   restart: unless-stopped
   #   ports:
   #     - '3000:3000'
 
   nginx:
     container_name: nginx
     image: seungwoncode/toollit-client-nginx:latest
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
@@ -31,7 +34,7 @@ services:
   certbot:
     container_name: certbot
     image: certbot/certbot
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
