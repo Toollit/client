@@ -2,20 +2,20 @@
   "controller template": {
     "prefix": "controller",
     "body": [
-      "import React  from 'react';",
-      "import ${1:${TM_FILENAME_BASE/Controller/View/g}}, { ${2:${TM_FILENAME_BASE/Controller/ViewProps/g}} } from './${3:${TM_FILENAME_BASE/Controller/View/g}}';",
+      "import React, { FC } from 'react';",
+      "import ${1:${TM_FILENAME_BASE/Controller/View/g}}, { ViewProps } from './${2:${TM_FILENAME_BASE/Controller/View/g}}';",
       "",
-      "export interface ${4:${TM_FILENAME_BASE}}Props {}",
+      "export interface ControllerProps {}",
       "",
-      "const ${5:${TM_FILENAME_BASE}} = ({}:${6:${TM_FILENAME_BASE}}Props) => {",
+      "const ${3:${TM_FILENAME_BASE}}: FC<ControllerProps> = ({}) => {",
       "",
-      "const props: ${7:${TM_FILENAME_BASE/Controller/ViewProps/g}} = {}",
+      "const props: ViewProps = {}",
       "",
-      "  return <${8:${TM_FILENAME_BASE/Controller/View/g}} {...props}/>",
+      "  return <${4:${TM_FILENAME_BASE/Controller/View/g}} {...props}/>",
       "}",
       "",
-      "export default ${9:${TM_FILENAME_BASE}};"
+      "export default ${5:${TM_FILENAME_BASE}};"
     ],
-    "description": "controller template"
+    "description": "controller component template"
   }
 }

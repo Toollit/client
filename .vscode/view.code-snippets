@@ -2,18 +2,18 @@
   "view template": {
     "prefix": "view",
     "body": [
-      "import React  from 'react';",
+      "import React, { FC } from 'react';",
       "import {} from './styles';",
       "",
-      "export interface ${1:${TM_FILENAME_BASE}}Props {}",
+      "export interface ViewProps {}",
       "",
-      "const ${2:${TM_FILENAME_BASE}} = ({}:${3:${TM_FILENAME_BASE}}Props) => {",
+      "const ${1:${TM_FILENAME_BASE}}: FC<ViewProps> = ({}) => {",
       "",
-      "  return <div>${4:${TM_FILENAME_BASE}}</div>",
+      "  return <div>${2:${TM_FILENAME_BASE}}</div>",
       "}",
       "",
-      "export default ${5:${TM_FILENAME_BASE}};"
+      "export default ${3:${TM_FILENAME_BASE}};"
     ],
-    "description": "view template"
+    "description": "view component template"
   }
 }
