@@ -16,7 +16,7 @@ const NicknameController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { isAuthenticated, authMutate } = useAuth();
-  const { logOut } = useLogout();
+  const { logout } = useLogout();
 
   const isLoading = useSelector((state: RootState) => state.isLoading.status);
 
@@ -35,14 +35,14 @@ const NicknameController: FC<ControllerProps> = ({}) => {
 
     if (isAuthenticated) {
       try {
-        await logOut({ replace: '/login' });
+        await logout({ replace: '/login' });
       } catch (error) {
         errorMessage(error);
       }
     } else {
       router.replace('/signUp');
     }
-  }, [router, isAuthenticated, logOut]);
+  }, [router, isAuthenticated, logout]);
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {

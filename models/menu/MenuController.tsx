@@ -28,7 +28,7 @@ export interface ControllerProps {}
 const MenuController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const { user } = useAuth();
-  const { logOut } = useLogout();
+  const { logout } = useLogout();
 
   const [menu, setMenu] = useState<MenuItem[]>([]);
 
@@ -38,13 +38,13 @@ const MenuController: FC<ControllerProps> = ({}) => {
 
   const handleUserSession = useCallback(async () => {
     if (user?.nickname) {
-      await logOut({ push: '/' });
+      await logout({ push: '/' });
     }
 
     if (!user?.nickname) {
       router.push('/login');
     }
-  }, [router, logOut, user]);
+  }, [router, logout, user]);
 
   useEffect(() => {
     setMenu([

@@ -17,7 +17,7 @@ const ResetPasswordController: FC<ControllerProps> = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { user } = useAuth();
-  const { logOut } = useLogout();
+  const { logout } = useLogout();
 
   const isLoading = useSelector((state: RootState) => state.isLoading.status);
 
@@ -84,7 +84,7 @@ const ResetPasswordController: FC<ControllerProps> = () => {
           '비밀번호 변경이 완료되었습니다. 새로운 비밀번호로 다시 로그인해주세요.',
         );
 
-        await logOut({ replace: '/login' });
+        await logout({ replace: '/login' });
 
         router.events.on('routeChangeComplete', () => {
           dispatch(loading({ status: false }));
@@ -99,7 +99,7 @@ const ResetPasswordController: FC<ControllerProps> = () => {
       checkPasswordMatch,
       newPassword,
       doubleCheckPassword,
-      logOut,
+      logout,
       dispatch,
       isLoading,
       router,
@@ -107,8 +107,8 @@ const ResetPasswordController: FC<ControllerProps> = () => {
   );
 
   const handleLogout = useCallback(async () => {
-    await logOut({ replace: '/' });
-  }, [logOut]);
+    await logout({ replace: '/' });
+  }, [logout]);
 
   useEffect(() => {
     setNewPasswordInvalidError(false);

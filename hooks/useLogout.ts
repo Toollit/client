@@ -22,7 +22,7 @@ const useLogout = () => {
 
   const { clearCache } = useCachedKeys();
 
-  const logOut = useCallback(
+  const logout = useCallback(
     async ({ push, replace }: LogOut) => {
       try {
         dispatch(loading({ status: true }));
@@ -50,7 +50,7 @@ const useLogout = () => {
     [router, clearCache, dispatch],
   );
 
-  return { logOut };
+  return { logout };
 };
 
 export default useLogout;

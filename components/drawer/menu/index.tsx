@@ -35,7 +35,7 @@ interface MenuItem {
 const Menu = () => {
   const router = useRouter();
   const { user } = useAuth();
-  const { logOut } = useLogout();
+  const { logout } = useLogout();
 
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState<MenuItem[]>([]);
@@ -50,7 +50,7 @@ const Menu = () => {
 
   const handleUserSession = useCallback(async () => {
     if (user?.nickname) {
-      await logOut({ push: '/' });
+      await logout({ push: '/' });
       handleClose();
     }
 
@@ -58,7 +58,7 @@ const Menu = () => {
       router.push('/login');
       handleClose();
     }
-  }, [router, logOut, user, handleClose]);
+  }, [router, logout, user, handleClose]);
 
   useEffect(() => {
     setMenu([
