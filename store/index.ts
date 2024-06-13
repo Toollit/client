@@ -10,6 +10,7 @@ import postOrderSlice from '@/features/order';
 import isLoadingSlice from '@/features/loading';
 import alertSlice from '@/features/alert';
 import reportSlice from '@/features/report';
+import profileSlice from '@/features/profile';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -24,6 +25,7 @@ const makeStore = () => {
       isLoading: isLoadingSlice,
       alert: alertSlice,
       report: reportSlice,
+      profile: profileSlice,
     },
     middleware: (getDefaultMiddleware) =>
       isDev ? [...getDefaultMiddleware(), logger] : [...getDefaultMiddleware()],
