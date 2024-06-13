@@ -26,8 +26,8 @@ export const projectDetailKey = (postId: string) => {
 // profile page
 const PROFILE_API_ENDPOINT = '/api/user/profile';
 
-export const userExistCheckKey = (nickname: string) => {
-  return `${PROFILE_API_ENDPOINT}/${nickname}/existCheck`;
+export const userRegisteredCheckKey = (nickname: string) => {
+  return `${PROFILE_API_ENDPOINT}/${nickname}/registeredCheck`;
 };
 
 export const profileImageKey = (nickname: string) => {
