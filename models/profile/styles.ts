@@ -137,7 +137,7 @@ const TabHighlight = (theme: Theme) => css`
   }
 `;
 
-const Menu = styled.ul<{ currentTab: ProfileTab }>`
+const Menu = styled.ul<{ tab: ProfileTab }>`
   padding: 4rem 3.9rem;
 
   li {
@@ -152,7 +152,7 @@ const Menu = styled.ul<{ currentTab: ProfileTab }>`
   }
 
   ${(props) => {
-    switch (props.currentTab) {
+    switch (props.tab) {
       case 'viewProfile':
         return css`
           li:nth-of-type(1) a {
@@ -227,7 +227,7 @@ const FooterLink = styled.div`
   }
 `;
 
-const LogInOut = styled.a`
+const SignInOut = styled.a`
   font-size: 1.4rem;
   color: ${(props) => props.theme.colors.gray};
   cursor: pointer;
@@ -265,7 +265,7 @@ export {
   Menu,
   FooterLink,
   DividerContainer,
-  LogInOut,
+  SignInOut,
   MyProfileLink,
   LogoLink,
   StyledProfileImage,

@@ -10,7 +10,7 @@ import { ImageWrapper } from '@/styles/commons';
 import SwipeableTabViews from '@/components/swipeableViews/swipeableTabViews';
 import ProjectController from './tab/project/ProjectController';
 import NotificationController from './tab/notification/NotificationController';
-import ProfileFooterLink from './footer/Footer';
+import FooterController from './footer/FooterController';
 import BookmarkController from './tab/bookmark/BookmarkController';
 import ProfileInfoController from './tab/profile/ProfileInfoController';
 import { ProfileTab } from './ProfileController';
@@ -29,7 +29,7 @@ import {
   Menu,
   FooterLink,
   DividerContainer,
-  LogInOut,
+  SignInOut,
   LogoLink,
   BlankImage,
   ImageEditBtn,
@@ -42,37 +42,51 @@ import {
 export interface ViewProps {
   isProfileImageLoading: boolean;
   isLaptop: boolean | null;
-  isExistUser?: boolean;
-  userNickname?: string | null;
   isMyProfile: boolean;
-  isLogin?: string | null;
+  signInOutText: string;
+  handleSignInOut: () => void;
+  myProfileLink: string;
+  noticeLink: string;
+  privacyLink: string;
+  termsOfServiceLink: string;
+  logoLink: string;
   tabs: { name: string; query: string }[];
-  currentTab: ProfileTab;
+  tab: ProfileTab;
   profileImageData?: string | null;
   nickname: string;
-  handleLogInOut: () => void;
   profileImgRef: React.RefObject<HTMLInputElement>;
   handleChangeProfileImg: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
   tooltip: TooltipProps;
+  isViewProfileTab: boolean;
+  isViewProjectsTab: boolean;
+  isBookmarksTab: boolean;
+  isNotificationsTab: boolean;
 }
 
 const ProfileView: FC<ViewProps> = ({
   isProfileImageLoading,
   isLaptop,
-  isExistUser,
-  userNickname,
   isMyProfile,
-  isLogin,
+  signInOutText,
+  myProfileLink,
+  noticeLink,
+  privacyLink,
+  termsOfServiceLink,
+  logoLink,
   tabs,
-  currentTab,
+  tab,
   profileImageData,
   nickname,
-  handleLogInOut,
+  handleSignInOut,
   profileImgRef,
   handleChangeProfileImg,
   handleTooltipOpen,
   tooltip,
+  isViewProfileTab,
+  isViewProjectsTab,
+  isBookmarksTab,
+  isNotificationsTab,
 }) => {
   return (
     <AppLayout type='none' footer={false}>
@@ -147,7 +161,7 @@ const ProfileView: FC<ViewProps> = ({
           </ProfileArea>
 
           <HeaderLeft>
-            <Menu currentTab={currentTab} role='menu'>
+            <Menu tab={tab} role='menu'>
               {tabs.map((tab, index) => {
                 return (
                   <li key={tab.name}>
@@ -174,32 +188,26 @@ const ProfileView: FC<ViewProps> = ({
               <ul>
                 <li>
                   {isMyProfile ? (
-                    <LogInOut onClick={handleLogInOut}>
-                      {isLogin ? '로그아웃' : '로그인'}
-                    </LogInOut>
+                    <SignInOut onClick={handleSignInOut}>
+                      {signInOutText}
+                    </SignInOut>
                   ) : (
-                    <MyProfileLink
-                      href={
-                        userNickname ? `/profile/${userNickname}` : '/login'
-                      }
-                    >
-                      내프로필
-                    </MyProfileLink>
+                    <MyProfileLink href={myProfileLink}>내프로필</MyProfileLink>
                   )}
                 </li>
                 <li>
-                  <Link href={'/notice'}>공지사항</Link>
+                  <Link href={noticeLink}>공지사항</Link>
                 </li>
               </ul>
               <ul>
                 <li>
-                  <LogoLink href={'/'}>Toollit</LogoLink>
+                  <LogoLink href={logoLink}>Toollit</LogoLink>
                 </li>
                 <li>
-                  <Link href={'/policy/privacy'}>개인정보처리방침</Link>
+                  <Link href={privacyLink}>개인정보처리방침</Link>
                 </li>
                 <li>
-                  <Link href={'/policy/terms-of-service'}>이용약관</Link>
+                  <Link href={termsOfServiceLink}>이용약관</Link>
                 </li>
               </ul>
             </FooterLink>
@@ -207,98 +215,35 @@ const ProfileView: FC<ViewProps> = ({
         </ColumnLeftContainer>
 
         <ColumnRightContainer>
-          {isLaptop !== null && isLaptop && (
+          {isLaptop && (
             <>
-              {currentTab === 'viewProfile' && (
-                <ProfileInfoController
-                  currentTab={currentTab}
-                  isExistUser={isExistUser}
-                  nickname={nickname}
-                />
-              )}
-
-              {currentTab === 'viewProjects' && (
-                <ProjectController
-                  currentTab={currentTab}
-                  isExistUser={isExistUser}
-                  nickname={nickname}
-                />
-              )}
-
-              {currentTab === 'viewBookmarks' && (
-                <BookmarkController
-                  currentTab={currentTab}
-                  isExistUser={isExistUser}
-                  nickname={nickname}
-                />
-              )}
-
-              {currentTab === 'viewNotifications' && (
-                <NotificationController
-                  currentTab={currentTab}
-                  isExistUser={isExistUser}
-                  nickname={nickname}
-                />
-              )}
+              {isViewProfileTab && <ProfileInfoController />}
+              {isViewProjectsTab && <ProjectController />}
+              {isBookmarksTab && <BookmarkController />}
+              {isNotificationsTab && <NotificationController />}
             </>
           )}
 
-          {isLaptop !== null && !isLaptop && (
+          {!isLaptop && (
             <SwipeableTabViews tabs={tabs}>
               <ViewContainer>
-                <ProfileInfoController
-                  currentTab={currentTab}
-                  isExistUser={isExistUser}
-                  nickname={nickname}
-                />
-                <ProfileFooterLink
-                  isMyProfile={isMyProfile}
-                  userNickname={userNickname}
-                  isLogin={isLogin}
-                  handleLogInOut={handleLogInOut}
-                />
+                <ProfileInfoController />
+                <FooterController />
               </ViewContainer>
 
               <ViewContainer>
-                <ProjectController
-                  currentTab={currentTab}
-                  isExistUser={isExistUser}
-                  nickname={nickname}
-                />
-                <ProfileFooterLink
-                  isMyProfile={isMyProfile}
-                  userNickname={userNickname}
-                  isLogin={isLogin}
-                  handleLogInOut={handleLogInOut}
-                />
+                <ProjectController />
+                <FooterController />
               </ViewContainer>
 
               <ViewContainer>
-                <BookmarkController
-                  currentTab={currentTab}
-                  isExistUser={isExistUser}
-                  nickname={nickname}
-                />
-                <ProfileFooterLink
-                  isMyProfile={isMyProfile}
-                  userNickname={userNickname}
-                  isLogin={isLogin}
-                  handleLogInOut={handleLogInOut}
-                />
+                <BookmarkController />
+                <FooterController />
               </ViewContainer>
 
               <ViewContainer>
-                <NotificationController
-                  currentTab={currentTab}
-                  isExistUser={isExistUser}
-                  nickname={nickname}
-                />
-                <ProfileFooterLink
-                  isMyProfile={isMyProfile}
-                  userNickname={userNickname}
-                  isLogin={isLogin}
-                  handleLogInOut={handleLogInOut}
-                />
+                <NotificationController />
+                <FooterController />
               </ViewContainer>
             </SwipeableTabViews>
           )}

@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import ProfileView, { ViewProps } from './ProfileView';
 import useSWR, { Cache } from 'swr';
-import { profileImageKey, userExistCheckKey } from '@/apis/keys';
+import { profileImageKey, userRegisteredCheckKey } from '@/apis/keys';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/errorMessage';
 import { updateProfileAPI } from '@/apis/updateProfile';
@@ -11,9 +11,15 @@ import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
 import { serialize } from '@/middleware/swr/serialize';
 import useTooltip from '@/hooks/useTooltip';
-import { userExistCheckFetcher } from '@/apis/userExistCheckFetcher';
+import { userRegisteredCheckFetcher } from '@/apis/userRegisteredCheckFetcher';
 import useWindowSize from '@/hooks/useWindowSize';
 import useCachedKeys from '@/hooks/useCachedKeys';
+import { useAppDispatch, useAppSelector } from '@/store';
+import {
+  updateProfileRegisteredUserStatus,
+  updateProfileUserNickname,
+  updateProfileTab,
+} from '@/features/profile';
 
 interface CachedData<T> {
   cache: Cache<T | undefined>;
@@ -26,15 +32,15 @@ export type ProfileTab =
   | 'viewProfile'
   | 'viewProjects'
   | 'viewBookmarks'
-  | 'viewNotifications'
-  | undefined;
+  | 'viewNotifications';
 
 export interface ControllerProps {}
 
 const ProfileController: FC<ControllerProps> = () => {
   const router = useRouter();
-  const { logOut } = useLogout();
-  const { user, authMutate } = useAuth();
+  const dispatch = useAppDispatch();
+  const { logout } = useLogout();
+  const { user } = useAuth();
   const {
     tooltipAnchorEl,
     setTooltipAnchorEl,
@@ -44,9 +50,10 @@ const ProfileController: FC<ControllerProps> = () => {
   } = useTooltip();
   const { isLaptop } = useWindowSize();
   const { clearCache } = useCachedKeys();
-
-  const [nickname, setNickname] = useState('');
-  const [currentTab, setCurrentTab] = useState<ProfileTab>();
+  const profileUserNickname = useAppSelector(
+    (state) => state.profile.userNickname,
+  );
+  const tab = useAppSelector((state) => state.profile.tab);
 
   const tabs = useRef([
     { name: '프로필', query: 'viewProfile' },
@@ -58,22 +65,28 @@ const ProfileController: FC<ControllerProps> = () => {
   const profileImgRef = useRef<HTMLInputElement>(null);
 
   // User exist check fetcher
-  const { data: userExistCheckData } = useSWR(
-    nickname && {
-      url: userExistCheckKey(nickname),
+  const { data: userRegisteredCheckData } = useSWR(
+    profileUserNickname && {
+      url: userRegisteredCheckKey(profileUserNickname),
       args: {
         page: '/profile',
-        tag: 'userExistCheck',
+        tag: 'userRegisteredCheck',
       },
     },
-    userExistCheckFetcher,
+    userRegisteredCheckFetcher,
     {
       dedupingInterval: 1000 * 60 * 10,
       revalidateOnFocus: false,
       shouldRetryOnError: false,
       onError(err, key, config) {
+        dispatch(
+          updateProfileRegisteredUserStatus({ isRegisteredUser: false }),
+        );
         router.replace('/');
         errorMessage(err);
+      },
+      onSuccess(data, key, config) {
+        dispatch(updateProfileRegisteredUserStatus({ isRegisteredUser: true }));
       },
       use: [serialize],
     },
@@ -85,9 +98,9 @@ const ProfileController: FC<ControllerProps> = () => {
     mutate: profileImageMutate,
     isLoading: isProfileImageLoading,
   } = useSWR(
-    userExistCheckData?.data.existUser && nickname && currentTab
+    userRegisteredCheckData?.data.registeredUser && profileUserNickname && tab
       ? {
-          url: profileImageKey(nickname),
+          url: profileImageKey(profileUserNickname),
           args: {
             page: '/profile',
             tag: 'profileImage',
@@ -107,17 +120,17 @@ const ProfileController: FC<ControllerProps> = () => {
     },
   );
 
-  const handleLogInOut = useCallback(async () => {
+  const handleSignInOut = useCallback(async () => {
     const isLoggedIn = user?.nickname;
 
     if (isLoggedIn) {
-      return await logOut({ push: '/' });
+      return await logout({ push: '/' });
     }
 
     if (!isLoggedIn) {
       return router.push('/login');
     }
-  }, [router, user, logOut]);
+  }, [router, user, logout]);
 
   const handleTooltipModify = useCallback(() => {
     setTooltipAnchorEl(null);
@@ -180,69 +193,55 @@ const ProfileController: FC<ControllerProps> = () => {
   useEffect(() => {
     return () => {
       clearCache();
+      dispatch(updateProfileRegisteredUserStatus({ isRegisteredUser: false }));
     };
-  }, [clearCache]);
-
-  // Create to resolve cases where the currentTab is not set or is set strangely when loading a page
-  useEffect(() => {
-    const nickname = router.query.nickname as string | undefined;
-    const currentTab = router.query.tab as
-      | 'viewProfile'
-      | 'viewProjects'
-      | 'viewBookmarks'
-      | 'viewNotifications'
-      | undefined;
-
-    if (nickname && currentTab === undefined) {
-      (async () => {
-        return router.replace({
-          pathname: `/profile/${nickname}`,
-          query: { tab: 'viewProfile' },
-        });
-      })();
-    }
-
-    if (
-      nickname &&
-      !(
-        currentTab === 'viewProfile' ||
-        currentTab === 'viewProjects' ||
-        currentTab === 'viewBookmarks' ||
-        currentTab === 'viewNotifications'
-      )
-    ) {
-      (async () => {
-        return router.replace({
-          pathname: `/profile/${nickname}`,
-          query: { tab: 'viewProfile' },
-        });
-      })();
-    } else {
-      setCurrentTab(currentTab);
-    }
-  }, [router, authMutate]);
+  }, [clearCache, dispatch]);
 
   // useEffect for troubleshooting nickname undefined upon reload or tab movement
   useEffect(() => {
     const nickname = router.query.nickname;
+    const currentTab = router.query.tab;
 
-    if (nickname !== undefined && typeof nickname === 'string') {
-      setNickname(nickname);
+    if (typeof nickname === 'string' && nickname) {
+      dispatch(updateProfileUserNickname({ userNickname: nickname }));
+
+      if (
+        !(
+          currentTab === 'viewProfile' ||
+          currentTab === 'viewProjects' ||
+          currentTab === 'viewBookmarks' ||
+          currentTab === 'viewNotifications'
+        )
+      ) {
+        (async () => {
+          router.replace({
+            pathname: `/profile/${nickname}`,
+            query: { tab: 'viewProfile' },
+          });
+
+          dispatch(updateProfileTab({ tab: 'viewProfile' }));
+        })();
+      } else {
+        dispatch(updateProfileTab({ tab: currentTab }));
+      }
     }
-  }, [router]);
+  }, [router, dispatch]);
 
   const props: ViewProps = {
     isProfileImageLoading,
-    isLaptop,
-    isExistUser: userExistCheckData?.data.existUser,
-    userNickname: user?.nickname,
-    isMyProfile: nickname === user?.nickname,
-    isLogin: user?.nickname,
-    tabs: tabs.current,
-    currentTab,
     profileImageData: profileImageData?.data?.profileImage,
-    nickname,
-    handleLogInOut,
+    isLaptop: isLaptop ? true : false,
+    isMyProfile: profileUserNickname === user?.nickname,
+    handleSignInOut,
+    signInOutText: user?.nickname ? '로그아웃' : '로그인',
+    myProfileLink: user?.nickname ? `/profile/${user.nickname}` : '/login',
+    noticeLink: '/notice',
+    privacyLink: '/policy/privacy',
+    termsOfServiceLink: '/policy/terms-of-service',
+    logoLink: '/',
+    tabs: tabs.current,
+    tab,
+    nickname: profileUserNickname,
     profileImgRef,
     handleChangeProfileImg,
     handleTooltipOpen,
@@ -261,6 +260,10 @@ const ProfileController: FC<ControllerProps> = () => {
       open: tooltipOpen,
       onClose: handleTooltipClose,
     },
+    isViewProfileTab: tab === 'viewProfile',
+    isViewProjectsTab: tab === 'viewProjects',
+    isBookmarksTab: tab === 'viewBookmarks',
+    isNotificationsTab: tab === 'viewNotifications',
   };
 
   return <ProfileView {...props} />;
