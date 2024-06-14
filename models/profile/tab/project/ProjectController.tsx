@@ -12,7 +12,7 @@ import { serialize } from '@/middleware/swr/serialize';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { ProfileTab } from '@/models/profile/ProfileController';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
@@ -22,21 +22,21 @@ interface ProjectData {
   data: ProfileProjectsAPIRes['data'] | null;
 }
 
-export interface ControllerProps {
-  currentTab: ProfileTab;
-  isExistUser?: boolean;
-  nickname: string;
-}
+interface ControllerProps {}
 
-const ProjectController: FC<ControllerProps> = ({
-  currentTab,
-  isExistUser,
-  nickname,
-}) => {
+const ProjectController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { getCachedData } = useCachedKeys();
   const { isLaptop } = useWindowSize();
+
+  const isRegisteredUser = useAppSelector(
+    (state) => state.profile.isRegisteredUser,
+  );
+  const profileUserNickname = useAppSelector(
+    (state) => state.profile.userNickname,
+  );
+  const tab = useAppSelector((state) => state.profile.tab);
 
   const [data, setData] = useState<ProjectData>({
     isLoaded: false,
@@ -46,9 +46,9 @@ const ProjectController: FC<ControllerProps> = ({
 
   const { data: profileProjectsData, mutate: profileProjectsDataMutate } =
     useSWR(
-      isExistUser && currentTab === 'viewProjects' && nickname
+      isRegisteredUser && tab === 'viewProjects' && profileUserNickname
         ? {
-            url: profileProjectsKey(nickname, projectPostCount),
+            url: profileProjectsKey(profileUserNickname, projectPostCount),
             args: {
               page: '/profile',
               tag: `profileProjects?count=${projectPostCount}`,
@@ -157,13 +157,14 @@ const ProjectController: FC<ControllerProps> = ({
 
   // 프로필 페이지 특정 탭에 있다가 다른 페이지 다녀온 경우 캐싱 된 데이터가 존재하는 경우 state 업데이트
   useEffect(() => {
-    if (!nickname) {
+    if (!profileUserNickname) {
       return;
     }
 
-    const profileProjectsCachedData = getCachedData({
-      tag: `profileProjects?count=${projectPostCount}`,
-    }) as ProfileProjectsAPIRes['data'];
+    const profileProjectsCachedData: ProfileProjectsAPIRes['data'] =
+      getCachedData({
+        tag: `profileProjects?count=${projectPostCount}`,
+      });
 
     if (!data.isLoaded && profileProjectsCachedData) {
       setData({
@@ -175,7 +176,7 @@ const ProjectController: FC<ControllerProps> = ({
     dispatch,
     data,
     profileProjectsData,
-    nickname,
+    profileUserNickname,
     projectPostCount,
     getCachedData,
   ]);

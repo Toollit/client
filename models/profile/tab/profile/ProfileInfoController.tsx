@@ -12,7 +12,7 @@ import { serialize } from '@/middleware/swr/serialize';
 import { changeDateFormat } from '@/utils/changeDateFormat';
 import { useSelector } from 'react-redux';
 import { open as openDialog, close as closeDialog } from '@/features/dialog';
-import { RootState, useAppDispatch } from '@/store';
+import { RootState, useAppDispatch, useAppSelector } from '@/store';
 import { updateProfileAPI } from '@/apis/updateProfile';
 import useAuth from '@/hooks/useAuth';
 import useCachedKeys from '@/hooks/useCachedKeys';
@@ -25,17 +25,9 @@ interface ProfileInfoData {
   data: ProfileInfoAPIRes['data'] | null;
 }
 
-export interface ControllerProps {
-  currentTab: ProfileTab;
-  isExistUser?: boolean;
-  nickname: string;
-}
+interface ControllerProps {}
 
-const ProfileInfoController: FC<ControllerProps> = ({
-  currentTab,
-  isExistUser,
-  nickname,
-}) => {
+const ProfileInfoController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { user, authMutate } = useAuth();
@@ -50,18 +42,26 @@ const ProfileInfoController: FC<ControllerProps> = ({
     (state: RootState) => state.dialog.update?.newValue,
   );
 
+  const isRegisteredUser = useAppSelector(
+    (state) => state.profile.isRegisteredUser,
+  );
+  const profileUserNickname = useAppSelector(
+    (state) => state.profile.userNickname,
+  );
+  const tab = useAppSelector((state) => state.profile.tab);
+
   const [data, setData] = useState<ProfileInfoData>({
     isLoaded: false,
     data: null,
   });
 
   const { data: profileInfoData, mutate: profileInfoDataMutate } = useSWR(
-    isExistUser && currentTab === 'viewProfile' && nickname
+    isRegisteredUser && tab === 'viewProfile' && profileUserNickname
       ? {
-          url: profileInfoKey(nickname),
+          url: profileInfoKey(profileUserNickname),
           args: {
             page: '/profile',
-            tag: `profileInfo/${nickname}`,
+            tag: `profileInfo/${profileUserNickname}`,
           },
         }
       : null,
@@ -352,13 +352,13 @@ const ProfileInfoController: FC<ControllerProps> = ({
 
   // 프로필 페이지 특정 탭에 있다가 다른 페이지 다녀온 경우 캐싱 된 데이터가 존재하는 경우 state 업데이트
   useEffect(() => {
-    if (!nickname) {
+    if (!profileUserNickname) {
       return;
     }
 
-    const profileInfoCachedData = getCachedData({
-      tag: `profileInfo/${nickname}`,
-    }) as ProfileInfoAPIRes['data'];
+    const profileInfoCachedData: ProfileInfoAPIRes['data'] = getCachedData({
+      tag: `profileInfo/${profileUserNickname}`,
+    });
 
     if (!data.isLoaded && profileInfoCachedData) {
       setData({
@@ -366,10 +366,10 @@ const ProfileInfoController: FC<ControllerProps> = ({
         data: profileInfoCachedData,
       });
     }
-  }, [dispatch, data, profileInfoData, nickname, getCachedData]);
+  }, [dispatch, data, profileInfoData, profileUserNickname, getCachedData]);
 
   const props: ViewProps = {
-    me: nickname === user?.nickname,
+    isMyProfile: profileUserNickname === user?.nickname,
     data: handleProfileInfoDataResponse(data.data),
     editBtnHandler: handleProfileInfoEditBtn,
     handleDeleteAccount,

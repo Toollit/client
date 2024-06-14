@@ -28,14 +28,14 @@ interface CustomUserProfile extends Omit<UserProfile, 'skills'> {
 export type ProfileInfoData = CustomMyProfile | CustomUserProfile;
 
 export interface ViewProps {
-  me: boolean;
+  isMyProfile: boolean;
   data?: ProfileInfoData | null;
   editBtnHandler: (category: string) => void;
   handleDeleteAccount: () => void; //TODO 함수명 일치시키기 editBtnHandler 다르잖아!!!
 }
 
 const ProfileInfoView: FC<ViewProps> = ({
-  me,
+  isMyProfile,
   data,
   editBtnHandler,
   handleDeleteAccount,
@@ -54,7 +54,7 @@ const ProfileInfoView: FC<ViewProps> = ({
                   <Info>{data?.nickname}</Info>
                 </Content>
 
-                {me && (
+                {isMyProfile && (
                   <EditButton
                     text={'닉네임수정'}
                     category={'nickname'}
@@ -63,7 +63,7 @@ const ProfileInfoView: FC<ViewProps> = ({
                 )}
               </ContentContainer>
 
-              {me && (
+              {isMyProfile && (
                 <ContentContainer>
                   <Content>
                     <MailIcon />
@@ -72,7 +72,7 @@ const ProfileInfoView: FC<ViewProps> = ({
                 </ContentContainer>
               )}
 
-              {me && (
+              {isMyProfile && (
                 <ContentContainer>
                   <Content>
                     <InfoCategory>가입방법:</InfoCategory>
@@ -105,7 +105,7 @@ const ProfileInfoView: FC<ViewProps> = ({
             <IntroduceContentContainer>
               <Info>{data?.introduce ?? '작성된 내용이 없습니다.'}</Info>
 
-              {me && (
+              {isMyProfile && (
                 <EditButton
                   text={'수정'}
                   category={'introduce'}
@@ -125,7 +125,7 @@ const ProfileInfoView: FC<ViewProps> = ({
                   <Info>{data?.onOffline ?? '작성된 내용이 없습니다.'}</Info>
                 </Content>
 
-                {me && (
+                {isMyProfile && (
                   <EditButton
                     text={'수정'}
                     category={'onOffline'}
@@ -140,7 +140,7 @@ const ProfileInfoView: FC<ViewProps> = ({
                   <Info>{data?.place ?? '작성된 내용이 없습니다.'}</Info>
                 </Content>
 
-                {me && (
+                {isMyProfile && (
                   <EditButton
                     text={'수정'}
                     category={'place'}
@@ -154,7 +154,7 @@ const ProfileInfoView: FC<ViewProps> = ({
                   <Info>{data?.contactTime ?? '작성된 내용이 없습니다.'}</Info>
                 </Content>
 
-                {me && (
+                {isMyProfile && (
                   <EditButton
                     text={'수정'}
                     category={'contactTime'}
@@ -168,7 +168,7 @@ const ProfileInfoView: FC<ViewProps> = ({
                   <Info>{data?.interests ?? '작성된 내용이 없습니다.'}</Info>
                 </Content>
 
-                {me && (
+                {isMyProfile && (
                   <EditButton
                     text={'수정'}
                     category={'interests'}
@@ -182,7 +182,7 @@ const ProfileInfoView: FC<ViewProps> = ({
                   <Info>{data?.career ?? '작성된 내용이 없습니다.'}</Info>
                 </Content>
 
-                {me && (
+                {isMyProfile && (
                   <EditButton
                     text={'수정'}
                     category={'career'}
@@ -210,7 +210,7 @@ const ProfileInfoView: FC<ViewProps> = ({
                     })}
               </HashtagContainer>
 
-              {me && (
+              {isMyProfile && (
                 <EditButton
                   text={'수정'}
                   category={'skills'}
@@ -220,7 +220,7 @@ const ProfileInfoView: FC<ViewProps> = ({
             </ProgramSkillContainer>
           </BoxContainer>
 
-          {me && (
+          {isMyProfile && (
             <DeleteAccount>
               <span onClick={handleDeleteAccount}>탈퇴하기</span>
             </DeleteAccount>

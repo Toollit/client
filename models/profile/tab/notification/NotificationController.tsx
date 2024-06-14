@@ -14,7 +14,7 @@ import useCachedKeys from '@/hooks/useCachedKeys';
 import { dateFromNow } from '@/utils/changeDateFormat';
 import { ProfileTab } from '@/models/profile/ProfileController';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 import { projectJoinApproveAPI } from '@/apis/projectJoinApprove';
 import { projectJoinRejectAPI } from '@/apis/projectJoinReject';
@@ -26,22 +26,22 @@ interface NotificationData {
   data: ProfileNotificationsAPIRes['data'];
 }
 
-export interface ControllerProps {
-  currentTab: ProfileTab;
-  isExistUser?: boolean;
-  nickname: string;
-}
+interface ControllerProps {}
 
-const NotificationController: FC<ControllerProps> = ({
-  currentTab,
-  isExistUser,
-  nickname,
-}) => {
+const NotificationController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { getCachedData } = useCachedKeys();
   const { isLaptop } = useWindowSize();
   const { user } = useAuth();
+
+  const isRegisteredUser = useAppSelector(
+    (state) => state.profile.isRegisteredUser,
+  );
+  const profileUserNickname = useAppSelector(
+    (state) => state.profile.userNickname,
+  );
+  const tab = useAppSelector((state) => state.profile.tab);
 
   const [data, setData] = useState<NotificationData>({
     isLoaded: false,
@@ -49,12 +49,12 @@ const NotificationController: FC<ControllerProps> = ({
   });
 
   const { data: notificationsData, mutate: notificationsMutate } = useSWR(
-    isExistUser &&
-      currentTab === 'viewNotifications' &&
-      nickname &&
-      nickname === user?.nickname
+    isRegisteredUser &&
+      tab === 'viewNotifications' &&
+      profileUserNickname &&
+      profileUserNickname === user?.nickname
       ? {
-          url: profileNotificationsKey(nickname),
+          url: profileNotificationsKey(profileUserNickname),
           args: {
             page: '/profile',
             tag: `profileNotifications`,
@@ -195,13 +195,14 @@ const NotificationController: FC<ControllerProps> = ({
 
   // 프로필 페이지 특정 탭에 있다가 다른 페이지 다녀온 경우 캐싱 된 데이터가 존재하는 경우 state 업데이트
   useEffect(() => {
-    if (!nickname) {
+    if (!profileUserNickname) {
       return;
     }
 
-    const profileNotificationsCachedData = getCachedData({
-      tag: 'profileNotifications',
-    }) as ProfileNotificationsAPIRes['data'];
+    const profileNotificationsCachedData: ProfileNotificationsAPIRes['data'] =
+      getCachedData({
+        tag: 'profileNotifications',
+      });
 
     if (!data.isLoaded && profileNotificationsCachedData) {
       setData({
@@ -209,12 +210,12 @@ const NotificationController: FC<ControllerProps> = ({
         data: profileNotificationsCachedData,
       });
     }
-  }, [dispatch, data, notificationsData, nickname, getCachedData]);
+  }, [dispatch, data, notificationsData, profileUserNickname, getCachedData]);
 
   const props: ViewProps = {
     data: handleProcessedData(data.data),
     each,
-    isMine: nickname === user?.nickname,
+    isMine: profileUserNickname === user?.nickname,
   };
 
   return <NotificationView {...props} />;
