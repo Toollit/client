@@ -2,11 +2,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface InitialState {
+  isRegisteredUser: boolean;
   userNickname: string;
   tab: 'viewProfile' | 'viewProjects' | 'viewBookmarks' | 'viewNotifications';
 }
 
 const initialState: InitialState = {
+  isRegisteredUser: false,
   userNickname: '',
   tab: 'viewProfile',
 };
@@ -15,7 +17,14 @@ const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    updateProfileUser: (
+    updateProfileRegisteredUserStatus: (
+      state,
+      action: PayloadAction<Pick<InitialState, 'isRegisteredUser'>>,
+    ) => {
+      const { isRegisteredUser } = action.payload;
+      state.isRegisteredUser = isRegisteredUser;
+    },
+    updateProfileUserNickname: (
       state,
       action: PayloadAction<Pick<InitialState, 'userNickname'>>,
     ) => {
@@ -33,6 +42,10 @@ const profileSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { updateProfileUser, updateProfileTab } = profileSlice.actions;
+export const {
+  updateProfileRegisteredUserStatus,
+  updateProfileUserNickname,
+  updateProfileTab,
+} = profileSlice.actions;
 
 export default profileSlice.reducer;
