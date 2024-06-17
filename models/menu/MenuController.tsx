@@ -42,7 +42,7 @@ const MenuController: FC<ControllerProps> = ({}) => {
     }
 
     if (!user?.nickname) {
-      router.push('/login');
+      router.push('/signin');
     }
   }, [router, logout, user]);
 
@@ -52,7 +52,7 @@ const MenuController: FC<ControllerProps> = ({}) => {
         tag: 'profile',
         icon: <AccountCircleIcon />,
         text: '내 프로필',
-        url: user?.nickname ? `/profile/${user?.nickname}` : '/login',
+        url: user?.nickname ? `/profile/${user?.nickname}` : '/signin',
       },
       {
         tag: 'project',
@@ -60,7 +60,7 @@ const MenuController: FC<ControllerProps> = ({}) => {
         text: '내 프로젝트',
         url: user?.nickname
           ? `/profile/${user?.nickname}?tab=viewProjects`
-          : '/login',
+          : '/signin',
       },
       {
         tag: 'bookmark',
@@ -68,7 +68,7 @@ const MenuController: FC<ControllerProps> = ({}) => {
         text: '내 북마크',
         url: user?.nickname
           ? `/profile/${user?.nickname}?tab=viewBookmarks`
-          : '/login',
+          : '/signin',
       },
       {
         tag: 'notification',
@@ -76,7 +76,7 @@ const MenuController: FC<ControllerProps> = ({}) => {
         text: '알림',
         url: user?.nickname
           ? `/profile/${user?.nickname}?tab=viewNotifications`
-          : '/login',
+          : '/signin',
       },
       {
         tag: 'notice',
@@ -101,7 +101,7 @@ const MenuController: FC<ControllerProps> = ({}) => {
         tag: 'auth',
         icon: <LogoutOutlinedIcon />,
         text: user?.nickname ? '로그아웃' : '로그인',
-        url: user?.nickname ? '#' : '/login',
+        url: user?.nickname ? '#' : '/signin',
         handler: handleUserSession,
       },
     ]);

@@ -31,7 +31,7 @@ const SignUpController: FC<ControllerProps> = () => {
   const passwordCheckInputRef = useRef<HTMLInputElement>(null);
 
   const handleClose = useCallback(() => {
-    router.push('/login');
+    router.push('/signin');
   }, [router]);
 
   const checkEmailFormatValidate = useCallback(() => {

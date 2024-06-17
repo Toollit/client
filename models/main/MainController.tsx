@@ -72,7 +72,7 @@ const MainController: FC<ControllerProps> = ({
       }
 
       if (!auth?.success) {
-        return router.push('/login');
+        return router.push('/signin');
       }
     } catch (error) {
       errorMessage(error);

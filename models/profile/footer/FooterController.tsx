@@ -24,7 +24,7 @@ const FooterController: FC<ControllerProps> = ({}) => {
     }
 
     if (!isLoggedIn) {
-      return router.push('/login');
+      return router.push('/signin');
     }
   }, [router, user, logout]);
 
@@ -32,7 +32,7 @@ const FooterController: FC<ControllerProps> = ({}) => {
     isMyProfile: profileUserNickname === user?.nickname,
     handleSignInOut,
     signInOutText: user?.nickname ? '로그아웃' : '로그인',
-    myProfileLink: user?.nickname ? `/profile/${user.nickname}` : '/login',
+    myProfileLink: user?.nickname ? `/profile/${user.nickname}` : '/signin',
     noticeLink: '/notice',
     privacyLink: '/policy/privacy',
     termsOfServiceLink: '/policy/terms-of-service',

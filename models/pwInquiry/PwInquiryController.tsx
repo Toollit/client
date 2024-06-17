@@ -63,7 +63,7 @@ const PwInquiryController: FC<ControllerProps> = () => {
 
         alert('해당 이메일로 임시 비밀번호를 발급했습니다.');
 
-        router.push('/login');
+        router.push('/signin');
 
         router.events.on('routeChangeComplete', () => {
           dispatch(loading({ status: false }));

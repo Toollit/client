@@ -96,7 +96,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       const auth = await authMutate();
 
       if (!auth?.success) {
-        return router.push('/login');
+        return router.push('/signin');
       }
 
       if (auth?.success) {
@@ -173,7 +173,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       const auth = await authMutate();
 
       if (!auth?.success) {
-        return router.push('/login');
+        return router.push('/signin');
       }
 
       if (auth?.success) {
@@ -189,7 +189,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       const auth = await authMutate();
 
       if (!auth?.success) {
-        return router.push('/login');
+        return router.push('/signin');
       }
 
       if (auth?.success) {
@@ -224,7 +224,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       const auth = await authMutate();
 
       if (!auth?.success) {
-        return router.push('/login');
+        return router.push('/signin');
       }
 
       if (auth?.success) {
@@ -256,7 +256,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       const auth = await authMutate();
 
       if (!auth?.success) {
-        router.push('/login');
+        router.push('/signin');
       }
 
       if (auth?.success) {
@@ -296,7 +296,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       }
 
       if (!auth?.success) {
-        router.push('/login');
+        router.push('/signin');
       }
 
       dispatch(loading({ status: false }));

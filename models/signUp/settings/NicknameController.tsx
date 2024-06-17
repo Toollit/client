@@ -35,7 +35,7 @@ const NicknameController: FC<ControllerProps> = ({}) => {
 
     if (isAuthenticated) {
       try {
-        await logout({ replace: '/login' });
+        await logout({ replace: '/signin' });
       } catch (error) {
         errorMessage(error);
       }
@@ -50,7 +50,7 @@ const NicknameController: FC<ControllerProps> = ({}) => {
 
       if (isAuthenticated === false) {
         alert('비정상적인 접근입니다.');
-        return router.replace('login');
+        return router.replace('/signin');
       }
 
       const onlyNoSpaceEnglishNumber = /^[a-zA-Z0-9]+$/;
@@ -111,7 +111,7 @@ const NicknameController: FC<ControllerProps> = ({}) => {
     if (isAuthenticated === false) {
       alert('비정상적인 접근입니다.');
 
-      router.replace('/login');
+      router.replace('/signin');
     }
   }, [dispatch, router, isAuthenticated]);
 

@@ -56,7 +56,7 @@ const ContactController: FC<ControllerProps> = ({}) => {
           const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
 
           if (wantsToLogin) {
-            return router.push('/login');
+            return router.push('/signin');
           }
         }
 

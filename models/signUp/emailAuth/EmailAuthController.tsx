@@ -129,7 +129,7 @@ const EmailAuthController: FC<ControllerProps> = () => {
     if (!email || !password) {
       alert('비정상적인 접근입니다.');
 
-      router.replace('/login');
+      router.replace('/signin');
     }
   }, [email, password, dispatch, router]);
 

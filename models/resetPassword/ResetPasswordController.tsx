@@ -84,7 +84,7 @@ const ResetPasswordController: FC<ControllerProps> = () => {
           '비밀번호 변경이 완료되었습니다. 새로운 비밀번호로 다시 로그인해주세요.',
         );
 
-        await logout({ replace: '/login' });
+        await logout({ replace: '/signin' });
 
         router.events.on('routeChangeComplete', () => {
           dispatch(loading({ status: false }));
