@@ -88,21 +88,21 @@ const SigninController: FC<ControllerProps> = () => {
     [email, password, router, clearCache, dispatch, isLoading],
   );
 
-  const handleSocialLogin = useCallback(
+  const handleSocialSignin = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       if (!event) return;
 
-      const loginType = event.currentTarget.name as 'google' | 'github';
+      const signinType = event.currentTarget.name as 'google' | 'github';
 
       const baseURL = process.env.NEXT_PUBLIC_SERVER_API_HOST;
 
       // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
       clearCache();
 
-      if (loginType === 'google') {
+      if (signinType === 'google') {
         return window.location.replace(`${baseURL}/api/user/signin/google`);
       }
-      if (loginType === 'github') {
+      if (signinType === 'github') {
         return window.location.replace(`${baseURL}/api/user/signin/github`);
       }
     },
@@ -182,7 +182,7 @@ const SigninController: FC<ControllerProps> = () => {
     showPasswordInput,
     isFormValid,
     handlePwInquiryRouting,
-    handleSocialLogin,
+    handleSocialSignin,
   };
 
   return (

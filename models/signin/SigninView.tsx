@@ -14,7 +14,7 @@ import {
   SearchPasswordButtonContainer,
   SignInContainer,
   SignInInduce,
-  SocialLoginButtonContainer,
+  SocialSigninButtonContainer,
   SignUpLink,
   TitleContainer,
   IdPasswordInputContainer,
@@ -31,10 +31,10 @@ export interface ViewProps {
   showPasswordInput: boolean;
   isFormValid: boolean;
   handlePwInquiryRouting: () => void;
-  handleSocialLogin: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  handleSocialSignin: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const LoginView: FC<ViewProps> = ({
+const SigninView: FC<ViewProps> = ({
   handleClose,
   handleSubmit,
   email,
@@ -45,7 +45,7 @@ const LoginView: FC<ViewProps> = ({
   showPasswordInput,
   isFormValid,
   handlePwInquiryRouting,
-  handleSocialLogin,
+  handleSocialSignin,
 }) => {
   return (
     <AppLayout
@@ -59,13 +59,13 @@ const LoginView: FC<ViewProps> = ({
           <Title text='Toollit 로그인' />
         </TitleContainer>
 
-        <SocialLoginButtonContainer>
+        <SocialSigninButtonContainer>
           <Button
             type='normal'
             text='Google 계정으로 로그인'
             icon={<GoogleIcon width={3.5} height={3.5} />}
             name='google'
-            onClick={handleSocialLogin}
+            onClick={handleSocialSignin}
           />
 
           <Button
@@ -73,9 +73,9 @@ const LoginView: FC<ViewProps> = ({
             text='Github 계정으로 로그인'
             icon={<GithubIcon width={3.5} height={3.5} />}
             name='github'
-            onClick={handleSocialLogin}
+            onClick={handleSocialSignin}
           />
-        </SocialLoginButtonContainer>
+        </SocialSigninButtonContainer>
 
         <DividerContainer>
           <Divider type='text' text='또는' />
@@ -132,4 +132,4 @@ const LoginView: FC<ViewProps> = ({
   );
 };
 
-export default LoginView;
+export default SigninView;

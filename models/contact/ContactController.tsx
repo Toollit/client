@@ -53,9 +53,9 @@ const ContactController: FC<ControllerProps> = ({}) => {
         if (!auth?.success) {
           dispatch(loading({ status: false }));
 
-          const wantsToLogin = confirm('로그인 후 이용 가능합니다.');
+          const wantsToSignin = confirm('로그인 후 이용 가능합니다.');
 
-          if (wantsToLogin) {
+          if (wantsToSignin) {
             return router.push('/signin');
           }
         }

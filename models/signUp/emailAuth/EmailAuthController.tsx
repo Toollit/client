@@ -70,7 +70,7 @@ const EmailAuthController: FC<ControllerProps> = () => {
           password,
           signUpType: 'email',
         };
-        // automatic login when sign up success
+        // automatic signin when sign up success
         await signUpAPI(data);
         await authMutate();
 

@@ -23,7 +23,7 @@ const TitleContainer = styled.div`
   padding: 0 1.5rem;
 `;
 
-const SocialLoginButtonContainer = styled.div`
+const SocialSigninButtonContainer = styled.div`
   padding: 0.5rem 1.5rem;
 
   button {
@@ -99,7 +99,7 @@ const SignUpLink = styled(Link)`
 export {
   Form,
   TitleContainer,
-  SocialLoginButtonContainer,
+  SocialSigninButtonContainer,
   DividerContainer,
   IdPasswordInputContainer,
   InputContainer,

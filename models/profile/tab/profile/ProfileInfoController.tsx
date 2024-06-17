@@ -145,7 +145,7 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
         return null;
       }
 
-      // login user data
+      // signin user data
       if ('email' in data) {
         return {
           ...data,
@@ -161,7 +161,7 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
         };
       }
 
-      // not login user data
+      // not signin user data
       return {
         ...data,
         createdAt: changeDateFormat({

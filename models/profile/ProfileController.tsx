@@ -121,13 +121,13 @@ const ProfileController: FC<ControllerProps> = () => {
   );
 
   const handleSignInOut = useCallback(async () => {
-    const isLoggedIn = user?.nickname;
+    const isSignedIn = user?.nickname;
 
-    if (isLoggedIn) {
+    if (isSignedIn) {
       return await logout({ push: '/' });
     }
 
-    if (!isLoggedIn) {
+    if (!isSignedIn) {
       return router.push('/signin');
     }
   }, [router, user, logout]);
