@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useRef, useEffect, FC } from 'react';
 import { useRouter } from 'next/router';
-import LoginView, { ViewProps } from './LoginView';
-import { emailLoginAPI } from '@/apis/emailLogin';
+import LoginView, { ViewProps } from './SIgninView';
+import { emailSigninAPI } from '@/apis/emailSignin';
 import { errorMessage } from '@/apis/errorMessage';
 import PrivateRoute from '@/components/PrivateRoute';
 import useCachedKeys from '@/hooks/useCachedKeys';
@@ -12,7 +12,7 @@ import { emailAuth } from '@/features/signUp';
 
 export interface ControllerProps {}
 
-const LoginController: FC<ControllerProps> = () => {
+const SigninController: FC<ControllerProps> = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { clearCache } = useCachedKeys();
@@ -64,7 +64,7 @@ const LoginController: FC<ControllerProps> = () => {
 
         const data = { email, password };
 
-        const response = await emailLoginAPI(data);
+        const response = await emailSigninAPI(data);
 
         // All keys revalidate when logging in, logging out, because information may not be updated properly on certain pages
         clearCache();
@@ -192,4 +192,4 @@ const LoginController: FC<ControllerProps> = () => {
   );
 };
 
-export default LoginController;
+export default SigninController;

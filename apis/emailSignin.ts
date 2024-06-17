@@ -1,11 +1,11 @@
 import { serverInstance } from './axios';
 
-export interface EmailLoginAPIReq {
+export interface EmailSigninAPIReq {
   email: string;
   password: string;
 }
 
-export interface EmailLoginAPIRes {
+export interface EmailSigninAPIRes {
   success: boolean;
   message: string | null;
   data: {
@@ -14,11 +14,11 @@ export interface EmailLoginAPIRes {
   };
 }
 
-export const emailLoginAPI = async ({
+export const emailSigninAPI = async ({
   email,
   password,
-}: EmailLoginAPIReq): Promise<EmailLoginAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/user/login/email', {
+}: EmailSigninAPIReq): Promise<EmailSigninAPIRes | undefined> => {
+  const response = await serverInstance.post('/api/user/signin/email', {
     email,
     password,
   });
