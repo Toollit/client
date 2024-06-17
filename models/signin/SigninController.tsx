@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useRef, useEffect, FC } from 'react';
 import { useRouter } from 'next/router';
-import SigninView, { ViewProps } from './aView';
+import SigninView, { ViewProps } from './SigninView';
 import { emailSigninAPI } from '@/apis/emailSignin';
 import { errorMessage } from '@/apis/errorMessage';
 import PrivateRoute from '@/components/PrivateRoute';
