@@ -43,7 +43,7 @@ import {
   WriterInfoContainer,
   WriterProfileImage,
   Writer,
-  LastLoginAt,
+  LastSigninAt,
   StyledImage,
   ProjectMembersContainer,
   Members,
@@ -218,10 +218,10 @@ const ProjectDetailView: FC<ViewProps> = ({
                         <div>작성자</div>
                         <div>{writer.nickname}</div>
                       </Writer>
-                      <LastLoginAt>
+                      <LastSigninAt>
                         <div>마지막 접속</div>
-                        <div>{writer.lastLoginAt}</div>
-                      </LastLoginAt>
+                        <div>{writer.lastSigninAt}</div>
+                      </LastSigninAt>
                     </WriterInfo>
                   </WriterInfoContainer>
                 </Link>

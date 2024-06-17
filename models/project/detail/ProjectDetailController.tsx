@@ -362,8 +362,8 @@ const ProjectDetailController: FC<ControllerProps> = () => {
     writer: projectDetail
       ? {
           nickname: projectDetail.data.writer.nickname,
-          lastLoginAt: dateFromNow({
-            date: projectDetail.data.writer.lastLoginAt,
+          lastSigninAt: dateFromNow({
+            date: projectDetail.data.writer.lastSigninAt,
           }),
           profileImage: projectDetail.data.writer.profileImage,
         }

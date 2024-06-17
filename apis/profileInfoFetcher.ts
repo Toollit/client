@@ -6,7 +6,7 @@ export interface MyProfile {
   nickname: string;
   signUpType: 'google' | 'github' | 'email';
   createdAt: string;
-  lastLoginAt: string;
+  lastSigninAt: string;
   introduce: string | null;
   onOffline: string | null;
   place: string | null;
@@ -19,7 +19,7 @@ export interface MyProfile {
 export interface UserProfile {
   nickname: string;
   createdAt: string;
-  lastLoginAt: string;
+  lastSigninAt: string;
   introduce: string | null;
   onOffline: string | null;
   place: string | null;

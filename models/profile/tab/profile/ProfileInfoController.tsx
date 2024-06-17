@@ -153,8 +153,8 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
             date: data.createdAt,
             format: 'YYMMDD_hhmmss',
           }),
-          lastLoginAt: changeDateFormat({
-            date: data.lastLoginAt,
+          lastSigninAt: changeDateFormat({
+            date: data.lastSigninAt,
             format: 'YYMMDD_hhmmss',
           }),
           skills: data.skills ? [...data.skills.split(',')] : [],
@@ -168,8 +168,8 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
           date: data.createdAt,
           format: 'YYMMDD',
         }),
-        lastLoginAt: changeDateFormat({
-          date: data.lastLoginAt,
+        lastSigninAt: changeDateFormat({
+          date: data.lastSigninAt,
           format: 'YYMMDD_hhmmss',
         }),
         skills: data.skills ? [...data.skills.split(',')] : [],

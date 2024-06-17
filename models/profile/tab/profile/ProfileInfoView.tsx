@@ -93,7 +93,7 @@ const ProfileInfoView: FC<ViewProps> = ({
               <ContentContainer>
                 <Content>
                   <InfoCategory>최종접속일:</InfoCategory>
-                  <Info>{data?.lastLoginAt}</Info>
+                  <Info>{data?.lastSigninAt}</Info>
                 </Content>
               </ContentContainer>
             </BoxContent>

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image';
 import { mediaQueryLaptop, mediaQueryTablet } from '@/styles/mediaQuery';
 
 const Container = styled.div`
@@ -229,7 +229,7 @@ const Writer = styled.div`
   }
 `;
 
-const LastLoginAt = styled.div`
+const LastSigninAt = styled.div`
   display: flex;
   font-size: 1.2rem;
   color: #868e96;
@@ -312,7 +312,7 @@ export {
   WriterInfo,
   WriterInfoContainer,
   Writer,
-  LastLoginAt,
+  LastSigninAt,
   StyledImage,
   ProjectMembersContainer,
   MembersContainer,

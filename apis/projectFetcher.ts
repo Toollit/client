@@ -3,7 +3,7 @@ import { FetcherParams } from './types';
 
 export interface ProjectWriter {
   nickname: string;
-  lastLoginAt: string;
+  lastSigninAt: string;
   profileImage: string | null;
 }
 
