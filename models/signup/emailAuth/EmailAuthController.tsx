@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import { RootState } from 'store';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import EmailAuthView, { ViewProps } from './EmailAuthView';
-import { emailAuth } from '@/features/signUp';
+import { emailAuth } from '@/features/signup';
 import useTimer from '@/hooks/useTimer';
 import { errorMessage } from '@/apis/errorMessage';
 import { emailVerifyAPI } from '@/apis/emailVerify';
 import { loading } from '@/features/loading';
-import { SignUpAPIReq, signUpAPI } from '@/apis/signUp';
+import { SignupAPIReq, signupAPI } from '@/apis/signup';
 import useAuth from '@/hooks/useAuth';
 
 export interface ControllerProps {}
@@ -20,8 +20,8 @@ const EmailAuthController: FC<ControllerProps> = () => {
   const { authMutate } = useAuth();
 
   const isLoading = useSelector((state: RootState) => state.isLoading.status);
-  const email = useSelector((state: RootState) => state.signUp.email);
-  const password = useSelector((state: RootState) => state.signUp.password);
+  const email = useSelector((state: RootState) => state.signup.email);
+  const password = useSelector((state: RootState) => state.signup.password);
 
   const [authCode, handleChangeAuthCode] = useNoSpaceInput('');
 
@@ -33,7 +33,7 @@ const EmailAuthController: FC<ControllerProps> = () => {
   const authCodeInputRef = useRef<HTMLInputElement>(null);
 
   const handleClose = useCallback(() => {
-    router.replace('/signUp');
+    router.replace('/signup');
   }, [router]);
 
   const handleSubmit = useCallback(
@@ -65,18 +65,18 @@ const EmailAuthController: FC<ControllerProps> = () => {
 
         await emailVerifyAPI({ email, authCode });
 
-        const data: SignUpAPIReq = {
+        const data: SignupAPIReq = {
           email,
           password,
-          signUpType: 'email',
+          signupType: 'email',
         };
         // automatic signin when sign up success
-        await signUpAPI(data);
+        await signupAPI(data);
         await authMutate();
 
         alert('인증에 성공했습니다.');
 
-        router.replace('/signUp/settings/nickname');
+        router.replace('/signup/settings/nickname');
 
         router.events.on('routeChangeComplete', () => {
           dispatch(loading({ status: false }));

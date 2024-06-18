@@ -4,7 +4,7 @@ import { FetcherParams } from './types';
 export interface MyProfile {
   email: string;
   nickname: string;
-  signUpType: 'google' | 'github' | 'email';
+  signupType: 'google' | 'github' | 'email';
   createdAt: string;
   lastSigninAt: string;
   introduce: string | null;

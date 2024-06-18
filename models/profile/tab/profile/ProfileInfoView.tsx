@@ -77,7 +77,7 @@ const ProfileInfoView: FC<ViewProps> = ({
                   <Content>
                     <InfoCategory>가입방법:</InfoCategory>
                     <Info>
-                      {data && 'signUpType' in data && data?.signUpType}
+                      {data && 'signupType' in data && data?.signupType}
                     </Info>
                   </Content>
                 </ContentContainer>

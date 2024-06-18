@@ -2,7 +2,7 @@ import { configureStore, AnyAction } from '@reduxjs/toolkit';
 import { ThunkDispatch } from 'redux-thunk';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import logger from 'redux-logger';
-import signUpSlice from '@/features/signUp';
+import signupSlice from '@/features/signup';
 import swipeableViewSlice from '@/features/swipeableView';
 import dialogSlice from '@/features/dialog';
 import paginationSlice from '@/features/pagination';
@@ -17,7 +17,7 @@ const isDev = process.env.NODE_ENV !== 'production';
 const makeStore = () => {
   const store = configureStore({
     reducer: {
-      signUp: signUpSlice,
+      signup: signupSlice,
       swipeableView: swipeableViewSlice,
       dialog: dialogSlice,
       pagination: paginationSlice,

@@ -38,8 +38,8 @@ const useAuth = () => {
   const handleInitialNicknameSetup = useCallback(() => {
     if (isAuthenticated && user?.nickname === null) {
       // Prevent infinite routing loop
-      if (router.pathname !== '/signUp/settings/nickname') {
-        router.replace('/signUp/settings/nickname');
+      if (router.pathname !== '/signup/settings/nickname') {
+        router.replace('/signup/settings/nickname');
       }
     }
   }, [router, user, isAuthenticated]);

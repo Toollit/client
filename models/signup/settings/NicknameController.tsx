@@ -40,7 +40,7 @@ const NicknameController: FC<ControllerProps> = ({}) => {
         errorMessage(error);
       }
     } else {
-      router.replace('/signUp');
+      router.replace('/signup');
     }
   }, [router, isAuthenticated, logout]);
 

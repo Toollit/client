@@ -10,7 +10,7 @@ import {
   InputContainer,
   SignInInduce,
   SignInInduceContainer,
-  SignUpLink,
+  SignupLink,
   SubmitButtonContainer,
   TitleContainer,
 } from './styles';
@@ -65,7 +65,7 @@ const PwInquiryView: FC<ViewProps> = ({
 
         <SignInInduceContainer>
           <SignInInduce>계정이 없으신가요?</SignInInduce>
-          <SignUpLink href={'/signUp'}>가입하기</SignUpLink>
+          <SignupLink href={'/signup'}>가입하기</SignupLink>
         </SignInInduceContainer>
       </Form>
     </AppLayout>

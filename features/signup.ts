@@ -11,7 +11,7 @@ const initialState: InitialState = {
   password: '',
 };
 
-const signUpSlice = createSlice({
+const signupSlice = createSlice({
   name: 'signup',
   initialState,
   reducers: {
@@ -24,6 +24,6 @@ const signUpSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { emailAuth } = signUpSlice.actions;
+export const { emailAuth } = signupSlice.actions;
 
-export default signUpSlice.reducer;
+export default signupSlice.reducer;

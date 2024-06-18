@@ -45,7 +45,7 @@ const SignInInduce = styled.span`
   font-size: 1.5rem;
 `;
 
-const SignUpLink = styled(Link)`
+const SignupLink = styled(Link)`
   color: ${(props) => props.theme.colors.theme};
   margin-left: 1rem;
   font-size: 1.5rem;
@@ -61,5 +61,5 @@ export {
   SubmitButtonContainer,
   SignInInduceContainer,
   SignInInduce,
-  SignUpLink,
+  SignupLink,
 };

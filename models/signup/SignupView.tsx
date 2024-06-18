@@ -32,7 +32,7 @@ export interface ViewProps {
   passwordCheckInputRef: React.ForwardedRef<HTMLInputElement>;
 }
 
-const SignUpView: FC<ViewProps> = ({
+const SignupView: FC<ViewProps> = ({
   handleClose,
   email,
   onChangeEmail,
@@ -126,4 +126,4 @@ const SignUpView: FC<ViewProps> = ({
   );
 };
 
-export default SignUpView;
+export default SignupView;

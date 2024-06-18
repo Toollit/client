@@ -1,5 +1,5 @@
 import React from 'react';
-import NicknameController from '@/models/a/settings/NicknameController';
+import NicknameController from '@/models/signup/settings/NicknameController';
 
 const Nickname = () => {
   return <NicknameController />;

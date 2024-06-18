@@ -8,7 +8,7 @@ import useCachedKeys from '@/hooks/useCachedKeys';
 import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
 import { RootState } from '@/store';
-import { emailAuth } from '@/features/signUp';
+import { emailAuth } from '@/features/signup';
 
 export interface ControllerProps {}
 
@@ -161,7 +161,7 @@ const SigninController: FC<ControllerProps> = () => {
     }
 
     if (firstTime === 'true') {
-      router.replace(`/signUp/settings/nickname`);
+      router.replace(`signup/settings/nickname`);
     }
   }, [router]);
 

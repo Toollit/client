@@ -13,7 +13,7 @@ export const updateSettingsNicknameAPI = async (
   data: UpdateSettingsNicknameAPIReq,
 ): Promise<UpdateSettingsNicknameAPIRes | undefined> => {
   const response = await serverInstance.post(
-    '/api/user/signUp/settings/update/nickname',
+    '/api/user/signup/settings/update/nickname',
     data,
   );
   return response.data;

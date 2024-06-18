@@ -1,9 +1,9 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import SignUpView, { ViewProps } from './aView';
+import SignupView, { ViewProps } from './SignupView';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { emailAuth } from '@/features/signUp';
+import { emailAuth } from '@/features/signup';
 import { emailIssueAuthCodeAPI } from '@/apis/emailIssueAuthCode';
 import { errorMessage } from '@/apis/errorMessage';
 import { RootState } from '@/store';
@@ -11,7 +11,7 @@ import { loading } from '@/features/loading';
 
 export interface ControllerProps {}
 
-const SignUpController: FC<ControllerProps> = () => {
+const SignupController: FC<ControllerProps> = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -108,7 +108,7 @@ const SignUpController: FC<ControllerProps> = () => {
 
         await emailIssueAuthCodeAPI({ email });
 
-        router.push('/signUp/emailAuth');
+        router.push('/signup/emailAuth');
 
         router.events.on('routeChangeComplete', () => {
           dispatch(loading({ status: false }));
@@ -173,7 +173,7 @@ const SignUpController: FC<ControllerProps> = () => {
     passwordInputRef,
     passwordCheckInputRef,
   };
-  return <SignUpView {...props} />;
+  return <SignupView {...props} />;
 };
 
-export default SignUpController;
+export default SignupController;
