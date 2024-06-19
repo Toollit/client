@@ -2,20 +2,19 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import SignupView, { ViewProps } from './SignupView';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
-import { useDispatch, useSelector } from 'react-redux';
 import { emailAuth } from '@/features/signup';
 import { emailIssueAuthCodeAPI } from '@/apis/emailIssueAuthCode';
 import { errorMessage } from '@/apis/errorMessage';
-import { RootState } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { loading } from '@/features/loading';
 
 export interface ControllerProps {}
 
 const SignupController: FC<ControllerProps> = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const isLoading = useSelector((state: RootState) => state.isLoading.status);
+  const isLoading = useAppSelector((state) => state.isLoading.status);
 
   const [email, onChangeEmail] = useNoSpaceInput('');
   const [emailInvalidError, setEmailInvalidError] = useState(false);

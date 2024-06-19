@@ -10,9 +10,8 @@ import { profileInfoKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
 import { serialize } from '@/middleware/swr/serialize';
 import { changeDateFormat } from '@/utils/changeDateFormat';
-import { useSelector } from 'react-redux';
 import { open as openDialog, close as closeDialog } from '@/features/dialog';
-import { RootState, useAppDispatch, useAppSelector } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { updateProfileAPI } from '@/apis/updateProfile';
 import useAuth from '@/hooks/useAuth';
 import useCachedKeys from '@/hooks/useCachedKeys';
@@ -34,12 +33,12 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
   const { getCachedData } = useCachedKeys();
   const { isLaptop } = useWindowSize();
 
-  const updatePage = useSelector((state: RootState) => state.dialog.page);
-  const updateCategory = useSelector(
-    (state: RootState) => state.dialog.update?.category,
+  const updatePage = useAppSelector((state) => state.dialog.page);
+  const updateCategory = useAppSelector(
+    (state) => state.dialog.update?.category,
   );
-  const updateNewValue = useSelector(
-    (state: RootState) => state.dialog.update?.newValue,
+  const updateNewValue = useAppSelector(
+    (state) => state.dialog.update?.newValue,
   );
 
   const isRegisteredUser = useAppSelector(

@@ -7,19 +7,18 @@ import { errorMessage } from '@/apis/errorMessage';
 import useAuth from '@/hooks/useAuth';
 import PrivateRoute from '@/components/PrivateRoute';
 import useLogout from '@/hooks/useLogout';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { loading } from '@/features/loading';
 
 export interface ControllerProps {}
 
 const ResetPasswordController: FC<ControllerProps> = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const { user } = useAuth();
   const { logout } = useLogout();
 
-  const isLoading = useSelector((state: RootState) => state.isLoading.status);
+  const isLoading = useAppSelector((state) => state.isLoading.status);
 
   const [newPassword, onChangeNewPassword] = useNoSpaceInput('');
   const [newPasswordInvalidError, setNewPasswordInvalidError] = useState(false);

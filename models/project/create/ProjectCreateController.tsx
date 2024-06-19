@@ -6,19 +6,18 @@ import useEditorContent from '@/hooks/useEditorContent';
 import { errorMessage } from '@/apis/errorMessage';
 import PrivateRoute from '@/components/PrivateRoute';
 import useCachedKeys from '@/hooks/useCachedKeys';
-import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
 import useTooltip from '@/hooks/useTooltip';
 import projectDefaultImage from 'public/static/images/project.jpg';
 import { StaticImageData } from 'next/legacy/image';
-import { RootState } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 
 export interface ControllerProps {}
 
 const ProjectCreateController: FC<ControllerProps> = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { mutateTag, mutatePage } = useCachedKeys();
   const { titleRef, editorRef, handleData } = useEditorContent();
   const {
@@ -30,7 +29,7 @@ const ProjectCreateController: FC<ControllerProps> = () => {
   } = useTooltip();
   const { isLaptop } = useWindowSize();
 
-  const isLoading = useSelector((state: RootState) => state.isLoading.status);
+  const isLoading = useAppSelector((state) => state.isLoading.status);
 
   const hashtagRef = useRef<string[]>([]);
   const memberTypeRef = useRef<('developer' | 'designer' | 'pm' | 'anyone')[]>(

@@ -1,10 +1,9 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import NicknameView, { ViewProps } from './NicknameView';
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
 import { errorMessage } from '@/apis/errorMessage';
-import { RootState } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { DuplicateCheckNicknameAPI } from '@/apis/duplicateCheckNickname';
 import { updateSettingsNicknameAPI } from '@/apis/updateSettingsNickname';
 import useAuth from '@/hooks/useAuth';
@@ -14,11 +13,11 @@ export interface ControllerProps {}
 
 const NicknameController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { isAuthenticated, authMutate } = useAuth();
   const { logout } = useLogout();
 
-  const isLoading = useSelector((state: RootState) => state.isLoading.status);
+  const isLoading = useAppSelector((state) => state.isLoading.status);
 
   const [nickname, setNickname] = useState('');
 

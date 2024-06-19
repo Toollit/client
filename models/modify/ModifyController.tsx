@@ -9,8 +9,7 @@ import useEditorContent from '@/hooks/useEditorContent';
 import { UpdateProjectData, updateProjectAPI } from '@/apis/updateProject';
 import PrivateRoute from '@/components/PrivateRoute';
 import { serialize } from '@/middleware/swr/serialize';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { loading } from '@/features/loading';
 import useTooltip from '@/hooks/useTooltip';
 import { StaticImageData } from 'next/legacy/image';
@@ -24,7 +23,7 @@ interface ControllerProps {
 
 const ModifyController: FC<ControllerProps> = ({ postId }) => {
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { titleRef, editorRef, handleData } = useEditorContent();
   const {
     tooltipAnchorEl,
@@ -36,7 +35,7 @@ const ModifyController: FC<ControllerProps> = ({ postId }) => {
   const { isLaptop } = useWindowSize();
   const { mutatePage } = useCachedKeys();
 
-  const isLoading = useSelector((state: RootState) => state.isLoading.status);
+  const isLoading = useAppSelector((state) => state.isLoading.status);
 
   const [representativePreviewImage, setRepresentativePreviewImage] = useState<
     StaticImageData | string | null

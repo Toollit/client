@@ -5,19 +5,18 @@ import { emailSigninAPI } from '@/apis/emailSignin';
 import { errorMessage } from '@/apis/errorMessage';
 import PrivateRoute from '@/components/PrivateRoute';
 import useCachedKeys from '@/hooks/useCachedKeys';
-import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
-import { RootState } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { emailAuth } from '@/features/signup';
 
 export interface ControllerProps {}
 
 const SigninController: FC<ControllerProps> = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { clearCache } = useCachedKeys();
 
-  const isLoading = useSelector((state: RootState) => state.isLoading.status);
+  const isLoading = useAppSelector((state) => state.isLoading.status);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

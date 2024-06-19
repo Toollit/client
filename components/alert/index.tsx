@@ -1,13 +1,11 @@
 import React from 'react';
 import { Alert as MUIAlert } from '@mui/material';
 import { Container, Category, Content } from './styles';
-import { useSelector } from 'react-redux';
-
-import { RootState } from '@/store';
+import { useAppSelector } from '@/store';
 
 const Alert = () => {
-  const type = useSelector((state: RootState) => state.alert.type);
-  const text = useSelector((state: RootState) => state.alert.text);
+  const type = useAppSelector((state) => state.alert.type);
+  const text = useAppSelector((state) => state.alert.text);
 
   switch (type) {
     case 'error':

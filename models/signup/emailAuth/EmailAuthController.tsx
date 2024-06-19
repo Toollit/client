@@ -1,7 +1,6 @@
 import React, { FC, useCallback, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { RootState } from 'store';
+import { useAppDispatch, useAppSelector } from 'store';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import EmailAuthView, { ViewProps } from './EmailAuthView';
 import { emailAuth } from '@/features/signup';
@@ -16,12 +15,12 @@ export interface ControllerProps {}
 
 const EmailAuthController: FC<ControllerProps> = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { authMutate } = useAuth();
 
-  const isLoading = useSelector((state: RootState) => state.isLoading.status);
-  const email = useSelector((state: RootState) => state.signup.email);
-  const password = useSelector((state: RootState) => state.signup.password);
+  const isLoading = useAppSelector((state) => state.isLoading.status);
+  const email = useAppSelector((state) => state.signup.email);
+  const password = useAppSelector((state) => state.signup.password);
 
   const [authCode, handleChangeAuthCode] = useNoSpaceInput('');
 

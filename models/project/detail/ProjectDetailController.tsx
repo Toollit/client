@@ -7,7 +7,6 @@ import { ProjectAPIRes, projectFetcher } from '@/apis/projectFetcher';
 import { bookmarkStatusKey, projectDetailKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
 import useAuth from '@/hooks/useAuth';
-import { useDispatch } from 'react-redux';
 import { showAlert, hideAlert } from '@/features/alert';
 import { bookmarkAPI } from '@/apis/bookmark';
 import { bookmarkStatusFetcher } from '@/apis/bookmarkStatusFetcher';
@@ -18,13 +17,14 @@ import { openReport } from '@/features/report';
 import { loading } from '@/features/loading';
 import { joinProjectAPI } from '@/apis/joinProject';
 import { leaveProjectAPI } from '@/apis/leaveProject';
+import { useAppDispatch } from '@/store';
 
 type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
 export interface ControllerProps {}
 
 const ProjectDetailController: FC<ControllerProps> = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const { user, authMutate } = useAuth();
   const { mutateTag, mutatePage } = useCachedKeys();

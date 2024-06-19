@@ -4,11 +4,10 @@ import CircularProgress, {
   circularProgressClasses,
   CircularProgressProps,
 } from '@mui/material/CircularProgress';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { useAppSelector } from '@/store';
 
 export default function LoadingCircularProgress(props: CircularProgressProps) {
-  const isLoading = useSelector((state: RootState) => state.isLoading.status);
+  const isLoading = useAppSelector((state) => state.isLoading.status);
 
   if (isLoading) {
     return (

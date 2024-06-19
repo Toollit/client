@@ -4,18 +4,17 @@ import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { useRouter } from 'next/router';
 import PwInquiryView, { ViewProps } from './PwInquiryView';
 import { errorMessage } from '@/apis/errorMessage';
-import { useDispatch, useSelector } from 'react-redux';
 import { loading } from '@/features/loading';
-import { RootState } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import PrivateRoute from '@/components/PrivateRoute';
 
 export interface ControllerProps {}
 
 const PwInquiryController: FC<ControllerProps> = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const isLoading = useSelector((state: RootState) => state.isLoading.status);
+  const isLoading = useAppSelector((state) => state.isLoading.status);
 
   const [email, onChangeEmail] = useNoSpaceInput('');
   const [emailInvalidError, setEmailInvalidError] = useState(false);
