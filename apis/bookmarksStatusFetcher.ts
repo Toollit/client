@@ -7,7 +7,7 @@ export interface BookmarksStatusAPIRes {
   success: boolean;
   message: string | null;
   data: {
-    bookmarks: number[];
+    bookmarkIds: number[];
   };
 }
 
