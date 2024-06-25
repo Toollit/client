@@ -1,7 +1,6 @@
 import { mediaQueryLaptop } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 import { Theme, css } from '@emotion/react';
-import Image from 'next/legacy/image';
 import { ProfileTab } from './ProfileController';
 import Link from 'next/link';
 
@@ -70,49 +69,6 @@ const ProfileArea = styled.div`
   padding: 1.2rem 2rem;
   text-align: center;
   position: relative;
-`;
-
-const BlankImage = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const ProfileImageContainer = styled.div`
-  position: relative;
-  height: 15rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const StyledProfileImage = styled(Image)`
-  border-radius: 25rem;
-`;
-
-const ImageEditBtn = styled.button`
-  border: 1px solid #fff;
-  border-radius: 50rem;
-  background-color: #fff;
-  width: 3.68rem;
-  height: 3.68rem;
-  position: absolute;
-  bottom: 4.5rem;
-  left: calc((100% / 2) + 2.5rem);
-  cursor: pointer;
-`;
-
-const ProfileImageSkeletonContainer = styled.div`
-  position: relative;
-  height: 15rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const UserNickname = styled.div`
-  font-size: 1.4rem;
 `;
 
 const HeaderLeft = styled.div`
@@ -259,8 +215,6 @@ export {
   GNBLink,
   GNBTitle,
   ProfileArea,
-  UserNickname,
-  ProfileImageContainer,
   HeaderLeft,
   Menu,
   FooterLink,
@@ -268,9 +222,5 @@ export {
   SignInOut,
   MyProfileLink,
   LogoLink,
-  StyledProfileImage,
-  BlankImage,
-  ImageEditBtn,
-  ProfileImageSkeletonContainer,
   ViewContainer,
 };
