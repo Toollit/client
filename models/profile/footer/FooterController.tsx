@@ -1,9 +1,8 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import FooterView, { ViewProps } from './FooterView';
 import { useRouter } from 'next/router';
 import useLogout from '@/hooks/useLogout';
 import useAuth from '@/hooks/useAuth';
-import { useAppSelector } from '@/store';
 
 export interface ControllerProps {}
 
@@ -12,9 +11,7 @@ const FooterController: FC<ControllerProps> = ({}) => {
   const { logout } = useLogout();
   const { user } = useAuth();
 
-  const profileUserNickname = useAppSelector(
-    (state) => state.profile.userNickname,
-  );
+  const [nickname, setNickname] = useState('');
 
   const handleSignInOut = useCallback(async () => {
     const isSignedIn = user?.nickname;
@@ -28,8 +25,16 @@ const FooterController: FC<ControllerProps> = ({}) => {
     }
   }, [router, user, logout]);
 
+  useEffect(() => {
+    const nickname = router.query.nickname;
+
+    if (typeof nickname === 'string' && nickname) {
+      setNickname(nickname);
+    }
+  }, [router]);
+
   const props: ViewProps = {
-    isMyProfile: profileUserNickname === user?.nickname,
+    isMyProfile: nickname === user?.nickname,
     handleSignInOut,
     signInOutText: user?.nickname ? '로그아웃' : '로그인',
     myProfileLink: user?.nickname ? `/profile/${user.nickname}` : '/signin',
