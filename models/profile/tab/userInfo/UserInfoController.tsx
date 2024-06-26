@@ -1,36 +1,24 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import ProfileInfoView, { ViewProps } from './ProfileInfoView';
-import {
-  ProfileInfoAPIRes,
-  profileInfoFetcher,
-} from '@/apis/profileInfoFetcher';
+import ProfileInfoView, { ViewProps } from './UserInfoView';
+import { ProfileInfoAPIRes } from '@/apis/profileInfoFetcher';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
-import { profileInfoKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
-import { serialize } from '@/middleware/swr/serialize';
 import { changeDateFormat } from '@/utils/changeDateFormat';
 import { open as openDialog, close as closeDialog } from '@/features/dialog';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { updateProfileAPI } from '@/apis/updateProfile';
 import useAuth from '@/hooks/useAuth';
-import useCachedKeys from '@/hooks/useCachedKeys';
-import { ProfileTab } from '@/models/profile/ProfileController';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
 import useWindowSize from '@/hooks/useWindowSize';
-
-interface ProfileInfoData {
-  isLoaded: boolean;
-  data: ProfileInfoAPIRes['data'] | null;
-}
+import useUserRegisteredCheckSWR from '@/hooks/useSWR/useUserRegisteredCheckSWR';
+import useUserInfoSWR from '@/hooks/useSWR/useUserInfoSWR';
 
 interface ControllerProps {}
 
-const ProfileInfoController: FC<ControllerProps> = ({}) => {
+const UserInfoController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { user, authMutate } = useAuth();
-  const { getCachedData } = useCachedKeys();
   const { isLaptop } = useWindowSize();
 
   const updatePage = useAppSelector((state) => state.dialog.page);
@@ -41,44 +29,10 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
     (state) => state.dialog.update?.newValue,
   );
 
-  const isRegisteredUser = useAppSelector(
-    (state) => state.profile.isRegisteredUser,
-  );
-  const profileUserNickname = useAppSelector(
-    (state) => state.profile.userNickname,
-  );
-  const tab = useAppSelector((state) => state.profile.tab);
+  const [nickname, setNickname] = useState('');
 
-  const [data, setData] = useState<ProfileInfoData>({
-    isLoaded: false,
-    data: null,
-  });
-
-  const { data: profileInfoData, mutate: profileInfoDataMutate } = useSWR(
-    isRegisteredUser && tab === 'viewProfile' && profileUserNickname
-      ? {
-          url: profileInfoKey(profileUserNickname),
-          args: {
-            page: '/profile',
-            tag: `profileInfo/${profileUserNickname}`,
-          },
-        }
-      : null,
-    profileInfoFetcher,
-    {
-      dedupingInterval: 1000 * 60 * 10,
-      revalidateOnFocus: false,
-      shouldRetryOnError: false,
-      onError(err, key, config) {
-        router.replace('/');
-        errorMessage(err);
-      },
-      onSuccess(res, key, config) {
-        setData({ isLoaded: true, data: res?.data });
-      },
-      use: [serialize],
-    },
-  );
+  const { isRegisteredUser } = useUserRegisteredCheckSWR(nickname);
+  const { userInfo, isLoading, userInfoMutate } = useUserInfoSWR(nickname);
 
   const handleUpdateProfile = useCallback(async () => {
     // empty string('') value can come from updateNewValue. so write null and undefined explicitly
@@ -102,7 +56,7 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
         // If revalidate immediately. It will make an api request with the previous nickname value, resulting in an error. It should be handled asynchronously.
         setTimeout(() => {
           authMutate();
-          profileInfoDataMutate();
+          userInfoMutate();
         }, 100);
 
         return dispatch(closeDialog());
@@ -122,7 +76,7 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
           data: updateNewValue,
         });
 
-        profileInfoDataMutate();
+        userInfoMutate();
 
         return dispatch(closeDialog());
       }
@@ -135,13 +89,13 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
     updateCategory,
     updateNewValue,
     authMutate,
-    profileInfoDataMutate,
+    userInfoMutate,
   ]);
 
-  const handleProfileInfoDataResponse = useCallback(
-    (data: ProfileInfoAPIRes['data'] | null) => {
+  const handleProcessUserInfo = useCallback(
+    (data: ProfileInfoAPIRes['data']) => {
       if (!data) {
-        return null;
+        return;
       }
 
       // signin user data
@@ -179,7 +133,7 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
 
   const handleProfileInfoEditBtn = useCallback(
     (category: string) => {
-      if (!(profileInfoData?.data && 'email' in profileInfoData.data)) {
+      if (!(userInfo && 'email' in userInfo)) {
         return;
       }
 
@@ -191,7 +145,7 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
               type: 'standard',
               category: 'nickname',
               title: '닉네임',
-              value: profileInfoData?.data?.nickname ?? '',
+              value: userInfo?.nickname ?? '',
               // placeholder: '',
               maxLength: 20,
             }),
@@ -204,7 +158,7 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
               type: 'multiline',
               category: 'introduce',
               title: '자기소개',
-              value: profileInfoData?.data?.introduce ?? '',
+              value: userInfo?.introduce ?? '',
               maxLength: 1000,
             }),
           );
@@ -216,7 +170,7 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
               type: 'select',
               category: 'onOffline',
               title: '온/오프라인',
-              value: profileInfoData?.data?.onOffline ?? '',
+              value: userInfo?.onOffline ?? '',
               selectList: [
                 '온라인 가능',
                 '오프라인 가능',
@@ -232,7 +186,7 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
               type: 'standard',
               category: 'place',
               title: '모임장소',
-              value: profileInfoData?.data?.place ?? '',
+              value: userInfo?.place ?? '',
               placeholder: 'ex) 서울특별시 종로구, 상관없음',
               maxLength: 30,
             }),
@@ -245,7 +199,7 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
               type: 'standard',
               category: 'contactTime',
               title: '모임시간',
-              value: profileInfoData?.data?.contactTime ?? '',
+              value: userInfo?.contactTime ?? '',
               placeholder: 'ex) 평일 9시~18시, 화요일 20시 이후',
               maxLength: 30,
             }),
@@ -258,7 +212,7 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
               type: 'multiSelect',
               category: 'interests',
               title: '관심분야 (다중선택가능)',
-              value: profileInfoData?.data?.interests ?? '',
+              value: userInfo?.interests ?? '',
               selectList: [
                 '인공지능',
                 '가상현실(VR)',
@@ -295,7 +249,7 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
               type: 'standard',
               category: 'career',
               title: '경력사항',
-              value: profileInfoData?.data?.career ?? '',
+              value: userInfo?.career ?? '',
               placeholder: 'ex) 3년차 개발자, 1년차 디자이너, 학생',
               maxLength: 30,
             }),
@@ -308,7 +262,7 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
               type: 'hashtag',
               category: 'skills',
               title: '사용 프로그램 또는 기술',
-              value: profileInfoData?.data?.skills ?? '',
+              value: userInfo?.skills ?? '',
               maxLength: 30,
             }),
           );
@@ -318,7 +272,7 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
           break;
       }
     },
-    [dispatch, profileInfoData],
+    [dispatch, userInfo],
   );
 
   const handleDeleteAccount = useCallback(async () => {
@@ -347,29 +301,20 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
     if (isLaptop !== null && !isLaptop) {
       dispatch(updateSwipeableViewHeight(true));
     }
-  }, [data, dispatch, isLaptop]);
+  }, [dispatch, isLaptop]);
 
-  // 프로필 페이지 특정 탭에 있다가 다른 페이지 다녀온 경우 캐싱 된 데이터가 존재하는 경우 state 업데이트
   useEffect(() => {
-    if (!profileUserNickname) {
-      return;
-    }
+    const nickname = router.query.nickname;
 
-    const profileInfoCachedData: ProfileInfoAPIRes['data'] = getCachedData({
-      tag: `profileInfo/${profileUserNickname}`,
-    });
-
-    if (!data.isLoaded && profileInfoCachedData) {
-      setData({
-        isLoaded: true,
-        data: profileInfoCachedData,
-      });
+    if (typeof nickname === 'string' && nickname) {
+      setNickname(nickname);
     }
-  }, [dispatch, data, profileInfoData, profileUserNickname, getCachedData]);
+  }, [router, dispatch]);
 
   const props: ViewProps = {
-    isMyProfile: profileUserNickname === user?.nickname,
-    data: handleProfileInfoDataResponse(data.data),
+    isLoading,
+    isMyProfile: nickname === user?.nickname,
+    data: handleProcessUserInfo(userInfo),
     editBtnHandler: handleProfileInfoEditBtn,
     handleDeleteAccount,
   };
@@ -377,4 +322,4 @@ const ProfileInfoController: FC<ControllerProps> = ({}) => {
   return <ProfileInfoView {...props} />;
 };
 
-export default ProfileInfoController;
+export default UserInfoController;

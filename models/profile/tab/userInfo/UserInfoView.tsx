@@ -28,13 +28,15 @@ interface CustomUserProfile extends Omit<UserProfile, 'skills'> {
 export type ProfileInfoData = CustomMyProfile | CustomUserProfile;
 
 export interface ViewProps {
+  isLoading: boolean;
   isMyProfile: boolean;
   data?: ProfileInfoData | null;
   editBtnHandler: (category: string) => void;
   handleDeleteAccount: () => void; //TODO 함수명 일치시키기 editBtnHandler 다르잖아!!!
 }
 
-const ProfileInfoView: FC<ViewProps> = ({
+const UserInfoView: FC<ViewProps> = ({
+  isLoading,
   isMyProfile,
   data,
   editBtnHandler,
@@ -42,7 +44,7 @@ const ProfileInfoView: FC<ViewProps> = ({
 }) => {
   return (
     <>
-      {data && (
+      {!isLoading && (
         <>
           {/* Profile info box */}
           <BoxContainer marginBottom={'3rem'}>
@@ -240,4 +242,4 @@ const ProfileInfoView: FC<ViewProps> = ({
   );
 };
 
-export default ProfileInfoView;
+export default UserInfoView;
