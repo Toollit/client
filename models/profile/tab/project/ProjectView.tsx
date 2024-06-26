@@ -30,20 +30,27 @@ export interface ProjectViewData {
 }
 
 export interface ViewProps {
-  data: ProjectViewData | null;
+  projects?: CustomProject[];
+  projectsTotalCount?: number;
   loadMore: () => void;
+  showLoadMore: boolean;
 }
 
-const ProjectView: FC<ViewProps> = ({ data, loadMore }) => {
+const ProjectView: FC<ViewProps> = ({
+  projects,
+  projectsTotalCount,
+  loadMore,
+  showLoadMore,
+}) => {
   return (
     <>
-      {data && (
+      {projects && (
         <BoxContainer>
           <BoxTitle>프로젝트</BoxTitle>
           <BoxContent>
-            {data.total > 0 ? (
+            {projectsTotalCount && projectsTotalCount > 0 ? (
               <>
-                {data.projects?.map((project, index) => {
+                {projects.map((project, index) => {
                   return (
                     <Content key={`/profile/project/${project.id}`}>
                       <ContentLink href={`/project/${project.id}`}>
@@ -86,7 +93,7 @@ const ProjectView: FC<ViewProps> = ({ data, loadMore }) => {
                   );
                 })}
 
-                {data.showLoadMore && (
+                {showLoadMore && (
                   <LoadMoreContainer>
                     <LoadMoreButton onClick={loadMore}>더보기</LoadMoreButton>
                   </LoadMoreContainer>
@@ -102,7 +109,7 @@ const ProjectView: FC<ViewProps> = ({ data, loadMore }) => {
         </BoxContainer>
       )}
 
-      {!data && (
+      {!projects && (
         <>
           <Skeleton height={20} bottom={3} />
           <Skeleton height={20} bottom={3} />
