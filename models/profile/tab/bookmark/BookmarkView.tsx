@@ -24,29 +24,32 @@ interface CustomBookmark extends Omit<Project, 'memberTypes'> {
 }
 
 export interface ViewProps {
-  data?: {
-    bookmarks: CustomBookmark[] | null;
-    total: number;
-    showLoadMore: boolean;
-  };
+  bookmarks?: CustomBookmark[];
+  bookmarksTotalCount?: number;
   loadMore: () => void;
+  showLoadMore: boolean;
 }
 
-const BookmarkView: FC<ViewProps> = ({ data, loadMore }) => {
+const BookmarkView: FC<ViewProps> = ({
+  bookmarks,
+  bookmarksTotalCount,
+  loadMore,
+  showLoadMore,
+}) => {
   return (
     <>
-      {data && (
+      {bookmarks && (
         <BoxContainer>
           <BoxTitle>북마크</BoxTitle>
           <BoxContent>
-            {data.total > 0 ? (
+            {bookmarksTotalCount && bookmarksTotalCount > 0 ? (
               <>
-                {data.bookmarks?.map((project) => {
+                {bookmarks.map((bookmark) => {
                   return (
-                    <Content key={project.id}>
-                      <ContentLink href={`/project/${project.id}`}>
+                    <Content key={bookmark.id}>
+                      <ContentLink href={`/project/${bookmark.id}`}>
                         <RecruitmentTypeContainer>
-                          {project.memberTypes.map((type) => {
+                          {bookmark.memberTypes.map((type) => {
                             return (
                               <RecruitmentType key={type} type={type}>
                                 {type}
@@ -55,10 +58,10 @@ const BookmarkView: FC<ViewProps> = ({ data, loadMore }) => {
                           })}
                         </RecruitmentTypeContainer>
 
-                        <Title>{project.title}</Title>
+                        <Title>{bookmark.title}</Title>
 
                         <HashtagContainer>
-                          {project.hashtags.map((hashtag) => {
+                          {bookmark.hashtags.map((hashtag) => {
                             return <Hashtag key={hashtag} tagName={hashtag} />;
                           })}
                         </HashtagContainer>
@@ -66,19 +69,19 @@ const BookmarkView: FC<ViewProps> = ({ data, loadMore }) => {
                         <SubInfo>
                           <div>
                             <ViewIcon width={2.5} height={2.5} />
-                            <span>{project.views}</span>
+                            <span>{bookmark.views}</span>
                           </div>
                           <div>
                             <BookmarkIcon
                               width={2.5}
                               height={2.5}
-                              fill={project.bookmark}
+                              fill={bookmark.bookmark}
                             />
-                            <span>{project.bookmarkCount}</span>
+                            <span>{bookmark.bookmarkCount}</span>
                           </div>
                           <div>
                             <PersonIcon width={2.5} height={2.5} />
-                            <span>{`${project.memberCount} / ${project.recruitCount}`}</span>
+                            <span>{`${bookmark.memberCount} / ${bookmark.recruitCount}`}</span>
                           </div>
                         </SubInfo>
                       </ContentLink>
@@ -86,7 +89,7 @@ const BookmarkView: FC<ViewProps> = ({ data, loadMore }) => {
                   );
                 })}
 
-                {data.showLoadMore && (
+                {showLoadMore && (
                   <LoadMoreContainer>
                     <LoadMoreButton onClick={loadMore}>더보기</LoadMoreButton>
                   </LoadMoreContainer>
@@ -100,7 +103,7 @@ const BookmarkView: FC<ViewProps> = ({ data, loadMore }) => {
           </BoxContent>
         </BoxContainer>
       )}
-      {!data && (
+      {!bookmarks && (
         <>
           <Skeleton height={20} bottom={3} />
           <Skeleton height={20} bottom={3} />
