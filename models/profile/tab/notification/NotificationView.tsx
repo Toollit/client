@@ -35,17 +35,17 @@ export interface ViewProps {
     handleProjectJoinReject: () => void;
     handleDeleteNotification: () => void;
   };
-  isMine: boolean;
+  isMyProfile: boolean;
 }
 
-const NotificationView: FC<ViewProps> = ({ data, each, isMine }) => {
+const NotificationView: FC<ViewProps> = ({ data, each, isMyProfile }) => {
   return (
     <>
       {data ? (
         <BoxContainer>
           <BoxTitle>알림</BoxTitle>
           <BoxContent>
-            {isMine ? (
+            {isMyProfile ? (
               <>
                 {data.length > 0 ? (
                   <>

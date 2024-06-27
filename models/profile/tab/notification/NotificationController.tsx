@@ -1,83 +1,30 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import NotificationView, { ViewProps } from './NotificationView';
-import useSWR from 'swr';
 import { useRouter } from 'next/router';
-import { profileNotificationsKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
-import { serialize } from '@/middleware/swr/serialize';
-import {
-  Notification,
-  ProfileNotificationsAPIRes,
-  profileNotificationsFetcher,
-} from '@/apis/profileNotificationsFetcher';
-import useCachedKeys from '@/hooks/useCachedKeys';
+import { Notification } from '@/apis/profileNotificationsFetcher';
 import { dateFromNow } from '@/utils/changeDateFormat';
-import { ProfileTab } from '@/models/profile/ProfileController';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
-import { useAppDispatch, useAppSelector } from '@/store';
+import { useAppDispatch } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 import { projectJoinApproveAPI } from '@/apis/projectJoinApprove';
 import { projectJoinRejectAPI } from '@/apis/projectJoinReject';
 import { profileNotificationDeleteAPI } from '@/apis/profileNotificationDelete';
 import useAuth from '@/hooks/useAuth';
-
-interface NotificationData {
-  isLoaded: boolean;
-  data: ProfileNotificationsAPIRes['data'];
-}
+import useMyNotificationsSWR from '@/hooks/useSWR/useMyNotificationsSWR';
 
 interface ControllerProps {}
 
 const NotificationController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { getCachedData } = useCachedKeys();
   const { isLaptop } = useWindowSize();
   const { user } = useAuth();
 
-  const isRegisteredUser = useAppSelector(
-    (state) => state.profile.isRegisteredUser,
-  );
-  const profileUserNickname = useAppSelector(
-    (state) => state.profile.userNickname,
-  );
-  const tab = useAppSelector((state) => state.profile.tab);
-
-  const [data, setData] = useState<NotificationData>({
-    isLoaded: false,
-    data: { notifications: [], total: 0 },
-  });
-
-  const { data: notificationsData, mutate: notificationsMutate } = useSWR(
-    isRegisteredUser &&
-      tab === 'viewNotifications' &&
-      profileUserNickname &&
-      profileUserNickname === user?.nickname
-      ? {
-          url: profileNotificationsKey(profileUserNickname),
-          args: {
-            page: '/profile',
-            tag: `profileNotifications`,
-          },
-        }
-      : null,
-    profileNotificationsFetcher,
-    {
-      dedupingInterval: 1000 * 60 * 10,
-      revalidateOnFocus: false,
-      shouldRetryOnError: false,
-      onError(err, key, config) {
-        errorMessage(err);
-        router.back();
-      },
-      onSuccess(res, key, config) {
-        setData({
-          isLoaded: true,
-          data: res?.data,
-        });
-      },
-      use: [serialize],
-    },
+  const [nickname, setNickname] = useState('');
+  const { notifications, notificationsMutate } = useMyNotificationsSWR(
+    nickname === user?.nickname,
+    nickname,
   );
 
   const handleDeleteNotification = useCallback(
@@ -99,36 +46,36 @@ const NotificationController: FC<ControllerProps> = ({}) => {
     [notificationsMutate],
   );
 
-  const handleProcessedData = useCallback(
-    (data: ProfileNotificationsAPIRes['data']) => {
-      const convertedData = data?.notifications.map((notification) => {
-        const notificationInfo = () => {
-          switch (notification.type) {
-            case 'projectJoinRequest':
-              return '프로젝트 참가 신청이 도착했어요!';
-            case 'projectJoinApprove':
-              return '프로젝트 참가 신청이 승인됐어요!';
-            case 'projectJoinReject':
-              return '프로젝트 참가 신청이 거절됐어요!';
-            case 'projectLeave':
-              return '프로젝트에서 탈퇴했어요!';
-            default:
-              break;
-          }
-        };
+  const handleProcessedData = useCallback((notifications?: Notification[]) => {
+    if (!notifications) {
+      return;
+    }
+    const convertedData = notifications.map((notification) => {
+      const notificationInfo = () => {
+        switch (notification.type) {
+          case 'projectJoinRequest':
+            return '프로젝트 참가 신청이 도착했어요!';
+          case 'projectJoinApprove':
+            return '프로젝트 참가 신청이 승인됐어요!';
+          case 'projectJoinReject':
+            return '프로젝트 참가 신청이 거절됐어요!';
+          case 'projectLeave':
+            return '프로젝트에서 탈퇴했어요!';
+          default:
+            break;
+        }
+      };
 
-        return {
-          ...notification,
-          notificationInfo: notificationInfo(),
-          nickname: notification.notificationCreator ?? '',
-          createdAt: dateFromNow({ date: notification.createdAt }),
-        };
-      });
+      return {
+        ...notification,
+        notificationInfo: notificationInfo(),
+        nickname: notification.notificationCreator ?? '',
+        createdAt: dateFromNow({ date: notification.createdAt }),
+      };
+    });
 
-      return convertedData;
-    },
-    [],
-  );
+    return convertedData;
+  }, []);
 
   const handleProjectJoinApprove = useCallback(
     async (notificationId: number) => {
@@ -191,31 +138,20 @@ const NotificationController: FC<ControllerProps> = ({}) => {
     if (isLaptop !== null && !isLaptop) {
       dispatch(updateSwipeableViewHeight(true));
     }
-  }, [data, dispatch, isLaptop]);
+  }, [dispatch, isLaptop]);
 
-  // 프로필 페이지 특정 탭에 있다가 다른 페이지 다녀온 경우 캐싱 된 데이터가 존재하는 경우 state 업데이트
   useEffect(() => {
-    if (!profileUserNickname) {
-      return;
-    }
+    const nickname = router.query.nickname;
 
-    const profileNotificationsCachedData: ProfileNotificationsAPIRes['data'] =
-      getCachedData({
-        tag: 'profileNotifications',
-      });
-
-    if (!data.isLoaded && profileNotificationsCachedData) {
-      setData({
-        isLoaded: true,
-        data: profileNotificationsCachedData,
-      });
+    if (typeof nickname === 'string' && nickname) {
+      setNickname(nickname);
     }
-  }, [dispatch, data, notificationsData, profileUserNickname, getCachedData]);
+  }, [router, dispatch]);
 
   const props: ViewProps = {
-    data: handleProcessedData(data.data),
+    data: handleProcessedData(notifications),
     each,
-    isMine: profileUserNickname === user?.nickname,
+    isMyProfile: nickname === user?.nickname,
   };
 
   return <NotificationView {...props} />;
