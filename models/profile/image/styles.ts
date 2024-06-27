@@ -2,13 +2,18 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import Image from 'next/legacy/image';
 
-const ProfileImageSkeletonContainer = styled.div`
+const ImageSkeletonLayoutContainer = styled.div`
   position: relative;
   height: 15rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const NicknameSkeletonLayoutContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const UserNickname = styled.div`
@@ -46,7 +51,8 @@ const ImageEditBtn = styled.button`
 `;
 
 export {
-  ProfileImageSkeletonContainer,
+  ImageSkeletonLayoutContainer,
+  NicknameSkeletonLayoutContainer,
   UserNickname,
   BlankImage,
   ProfileImageContainer,

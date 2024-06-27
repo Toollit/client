@@ -1,13 +1,10 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import ImageView, { ViewProps } from './ImageView';
-import useUserRegisteredCheckSWR from '@/hooks/useSWR/useUserRegisteredCheckSWR';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
-import { profileImageKey } from '@/apis/keys';
-import { profileImageFetcher } from '@/apis/profileImageFetcher';
-import { errorMessage } from '@/apis/errorMessage';
-import { serialize } from '@/middleware/swr/serialize';
 import useAuth from '@/hooks/useAuth';
+import useUserRegisteredCheckSWR from '@/hooks/useSWR/useUserRegisteredCheckSWR';
+import useUserImageSWR from '@/hooks/useSWR/useUserImageSWR';
+import { errorMessage } from '@/apis/errorMessage';
 import useTooltip from '@/hooks/useTooltip';
 import { updateProfileAPI } from '@/apis/updateProfile';
 
@@ -15,7 +12,6 @@ export interface ControllerProps {}
 
 const ImageController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
-
   const {
     tooltipAnchorEl,
     setTooltipAnchorEl,
@@ -23,46 +19,21 @@ const ImageController: FC<ControllerProps> = ({}) => {
     handleTooltipOpen,
     handleTooltipClose,
   } = useTooltip();
-
-  const [nickname, setNickname] = useState('');
   const { user } = useAuth();
 
-  const profileImgRef = useRef<HTMLInputElement>(null);
+  const profileImageRef = useRef<HTMLInputElement>(null);
+
+  const [nickname, setNickname] = useState('');
 
   const { isRegisteredUser } = useUserRegisteredCheckSWR(nickname);
 
-  // Profile image fetcher
-  const {
-    data: profileImageData,
-    mutate: profileImageMutate,
-    isLoading: isProfileImageLoading,
-  } = useSWR(
-    nickname
-      ? {
-          url: profileImageKey(nickname),
-          args: {
-            page: '/profile',
-            tag: 'profileImage',
-          },
-        }
-      : null,
-    profileImageFetcher,
-    {
-      dedupingInterval: 1000 * 60 * 10,
-      revalidateOnFocus: false,
-      shouldRetryOnError: false,
-      onError(err, key, config) {
-        router.replace('/');
-        errorMessage(err);
-      },
-      use: [serialize],
-    },
-  );
+  const { profileImage, isLoading, profileImageMutate } =
+    useUserImageSWR(nickname);
 
   const handleTooltipModify = useCallback(() => {
     setTooltipAnchorEl(null);
 
-    profileImgRef.current?.click();
+    profileImageRef.current?.click();
   }, [setTooltipAnchorEl]);
 
   const handleTooltipDelete = useCallback(async () => {
@@ -104,7 +75,7 @@ const ImageController: FC<ControllerProps> = ({}) => {
     [profileImageMutate],
   );
 
-  const handleChangeProfileImg = useCallback(
+  const handleUpdateProfileImage = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (!event.target.files) {
         return;
@@ -126,12 +97,13 @@ const ImageController: FC<ControllerProps> = ({}) => {
   }, [router]);
 
   const props: ViewProps = {
-    isProfileImageLoading,
-    profileImageData: profileImageData?.data?.profileImage,
-    nickname,
+    isRegisteredUser,
+    isLoading,
     isMyProfile: nickname === user?.nickname,
-    profileImgRef,
-    handleChangeProfileImg,
+    profileImageUrl: profileImage,
+    profileImageRef,
+    nickname,
+    handleUpdateProfileImage,
     handleTooltipOpen,
     tooltip: {
       items: [
