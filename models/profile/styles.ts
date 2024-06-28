@@ -207,6 +207,32 @@ const ViewContainer = styled.div`
     `calc(100vh - ${props.theme.layout.navHeight} - ${props.theme.layout.profileHeight} - ${props.theme.layout.swipeableViewTabHeight} )`};
 `;
 
+const LaptopViewContainer = styled.div`
+  @media (max-width: 1024px) {
+    display: none;
+  }
+`;
+
+const MobileViewContainer = styled.div`
+  @media (min-width: 1023px) {
+    display: none;
+  }
+`;
+
+const ImageSkeletonLayoutContainer = styled.div`
+  position: relative;
+  height: 15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const NicknameSkeletonLayoutContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 export {
   Container,
   ColumnLeftContainer,
@@ -223,4 +249,8 @@ export {
   MyProfileLink,
   LogoLink,
   ViewContainer,
+  LaptopViewContainer,
+  MobileViewContainer,
+  ImageSkeletonLayoutContainer,
+  NicknameSkeletonLayoutContainer,
 };

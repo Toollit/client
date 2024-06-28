@@ -44,10 +44,9 @@ const ProfileController: FC<ControllerProps> = () => {
   ]);
 
   const [nickname, setNickname] = useState('');
-
   const { isRegisteredUser } = useUserRegisteredCheckSWR(nickname);
 
-  const handleSignInOut = useCallback(async () => {
+  const handleSigninLogout = useCallback(async () => {
     const isSignedIn = user?.nickname;
 
     if (isSignedIn) {
@@ -61,7 +60,8 @@ const ProfileController: FC<ControllerProps> = () => {
 
   useEffect(() => {
     return () => {
-      clearCache();
+      // TODO 이부분 꼭 필요한지 확인하고 필요없으면 삭제하고 필요하면 북마크 오류 어떻게 해결할지 확인
+      // clearCache();
     };
   }, [clearCache, dispatch]);
 
@@ -96,10 +96,11 @@ const ProfileController: FC<ControllerProps> = () => {
   }, [router, dispatch]);
 
   const props: ViewProps = {
+    isRegisteredUser,
     isLaptop: isLaptop ? true : false,
     isMyProfile: nickname === user?.nickname,
-    handleSignInOut,
-    signInOutText: user?.nickname ? '로그아웃' : '로그인',
+    handleSigninLogout,
+    signinLogoutText: user?.nickname ? '로그아웃' : '로그인',
     myProfileLink: user?.nickname ? `/profile/${user.nickname}` : '/signin',
     noticeLink: '/notice',
     privacyLink: '/policy/privacy',

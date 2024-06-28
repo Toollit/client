@@ -12,6 +12,7 @@ import UserInfoController from './tab/userInfo/UserInfoController';
 import { ProfileTab } from './ProfileController';
 import ImageController from './image/ImageController';
 import AppLayout from '@/components/appLayout';
+import Skeleton from '@/components/skeleton';
 import {
   Container,
   ColumnLeftContainer,
@@ -28,13 +29,18 @@ import {
   LogoLink,
   MyProfileLink,
   ViewContainer,
+  LaptopViewContainer,
+  MobileViewContainer,
+  ImageSkeletonLayoutContainer,
+  NicknameSkeletonLayoutContainer,
 } from './styles';
 
 export interface ViewProps {
+  isRegisteredUser: boolean;
   isLaptop: boolean | null;
   isMyProfile: boolean;
-  signInOutText: string;
-  handleSignInOut: () => void;
+  signinLogoutText: string;
+  handleSigninLogout: () => void;
   myProfileLink: string;
   noticeLink: string;
   privacyLink: string;
@@ -50,9 +56,10 @@ export interface ViewProps {
 }
 
 const ProfileView: FC<ViewProps> = ({
+  isRegisteredUser,
   isLaptop,
   isMyProfile,
-  signInOutText,
+  signinLogoutText,
   myProfileLink,
   noticeLink,
   privacyLink,
@@ -61,7 +68,7 @@ const ProfileView: FC<ViewProps> = ({
   tabs,
   tab,
   nickname,
-  handleSignInOut,
+  handleSigninLogout,
   isViewProfileTab,
   isViewProjectsTab,
   isBookmarksTab,
@@ -79,7 +86,18 @@ const ProfileView: FC<ViewProps> = ({
           </GNBArea>
 
           <ProfileArea>
-            <ImageController />
+            {isRegisteredUser ? (
+              <ImageController />
+            ) : (
+              <>
+                <ImageSkeletonLayoutContainer>
+                  <Skeleton shape='circular' width={12} height={12} />
+                </ImageSkeletonLayoutContainer>
+                <NicknameSkeletonLayoutContainer>
+                  <Skeleton shape='text' width={10} height={3} />
+                </NicknameSkeletonLayoutContainer>
+              </>
+            )}
           </ProfileArea>
 
           <HeaderLeft>
@@ -110,8 +128,8 @@ const ProfileView: FC<ViewProps> = ({
               <ul>
                 <li>
                   {isMyProfile ? (
-                    <SignInOut onClick={handleSignInOut}>
-                      {signInOutText}
+                    <SignInOut onClick={handleSigninLogout}>
+                      {signinLogoutText}
                     </SignInOut>
                   ) : (
                     <MyProfileLink href={myProfileLink}>내프로필</MyProfileLink>
@@ -137,37 +155,45 @@ const ProfileView: FC<ViewProps> = ({
         </ColumnLeftContainer>
 
         <ColumnRightContainer>
-          {isLaptop && (
+          {isRegisteredUser ? (
             <>
-              {isViewProfileTab && <UserInfoController />}
-              {isViewProjectsTab && <ProjectController />}
-              {isBookmarksTab && <BookmarkController />}
-              {isNotificationsTab && <NotificationController />}
+              <LaptopViewContainer>
+                {isViewProfileTab && <UserInfoController />}
+                {isViewProjectsTab && <ProjectController />}
+                {isBookmarksTab && <BookmarkController />}
+                {isNotificationsTab && <NotificationController />}
+              </LaptopViewContainer>
+
+              <MobileViewContainer>
+                <SwipeableTabViews tabs={tabs}>
+                  <ViewContainer>
+                    <UserInfoController />
+                    <FooterController />
+                  </ViewContainer>
+
+                  <ViewContainer>
+                    <ProjectController />
+                    <FooterController />
+                  </ViewContainer>
+
+                  <ViewContainer>
+                    <BookmarkController />
+                    <FooterController />
+                  </ViewContainer>
+
+                  <ViewContainer>
+                    <NotificationController />
+                    <FooterController />
+                  </ViewContainer>
+                </SwipeableTabViews>
+              </MobileViewContainer>
             </>
-          )}
-
-          {!isLaptop && (
-            <SwipeableTabViews tabs={tabs}>
-              <ViewContainer>
-                <UserInfoController />
-                <FooterController />
-              </ViewContainer>
-
-              <ViewContainer>
-                <ProjectController />
-                <FooterController />
-              </ViewContainer>
-
-              <ViewContainer>
-                <BookmarkController />
-                <FooterController />
-              </ViewContainer>
-
-              <ViewContainer>
-                <NotificationController />
-                <FooterController />
-              </ViewContainer>
-            </SwipeableTabViews>
+          ) : (
+            <>
+              <Skeleton width={60} height={20} bottom={2} />
+              <Skeleton width={60} height={15} bottom={2} />
+              <Skeleton width={60} height={30} bottom={2} />
+            </>
           )}
         </ColumnRightContainer>
         <Dialog />
