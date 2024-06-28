@@ -4,7 +4,6 @@ interface WindowSizeState {
   width: number;
   height: number;
   isMobile: boolean | null;
-  isTablet: boolean | null;
   isLaptop: boolean | null;
 }
 
@@ -13,7 +12,6 @@ const useWindowSize = () => {
     width: 0,
     height: 0,
     isMobile: null,
-    isTablet: null,
     isLaptop: null,
   });
 
@@ -22,9 +20,7 @@ const useWindowSize = () => {
       setWindowSize({
         width: window.innerWidth,
         height: window.innerHeight,
-        isMobile: window.innerWidth < 425 ? true : false,
-        isTablet:
-          window.innerWidth >= 425 && window.innerWidth < 1024 ? true : false,
+        isMobile: window.innerWidth < 1024 ? true : false,
         isLaptop: window.innerWidth >= 1024 ? true : false,
       });
     };
