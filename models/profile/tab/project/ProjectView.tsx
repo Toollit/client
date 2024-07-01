@@ -30,91 +30,111 @@ export interface ProjectViewData {
 }
 
 export interface ViewProps {
+  hasRendered: boolean;
   projects?: CustomProject[];
   projectsTotalCount?: number;
-  loadMore: () => void;
+  handleLoadMore: () => void;
   showLoadMore: boolean;
 }
 
 const ProjectView: FC<ViewProps> = ({
+  hasRendered,
   projects,
   projectsTotalCount,
-  loadMore,
+  handleLoadMore,
   showLoadMore,
 }) => {
   return (
     <>
-      {projects && (
-        <BoxContainer>
-          <BoxTitle>프로젝트</BoxTitle>
-          <BoxContent>
-            {projectsTotalCount && projectsTotalCount > 0 ? (
-              <>
-                {projects.map((project, index) => {
-                  return (
-                    <Content key={`/profile/project/${project.id}`}>
-                      <ContentLink href={`/project/${project.id}`}>
-                        <RecruitmentTypeContainer>
-                          {project.memberTypes.map((type) => {
-                            return (
-                              <RecruitmentType key={type} type={type}>
-                                {type}
-                              </RecruitmentType>
-                            );
-                          })}
-                        </RecruitmentTypeContainer>
+      {hasRendered && (
+        <>
+          {projects && projectsTotalCount && (
+            <BoxContainer>
+              <BoxTitle>프로젝트</BoxTitle>
+              <BoxContent>
+                {projectsTotalCount > 0 ? (
+                  <>
+                    {projects.map((project, index) => {
+                      return (
+                        <Content key={`/profile/project/${project.id}`}>
+                          <ContentLink href={`/project/${project.id}`}>
+                            <RecruitmentTypeContainer>
+                              {project.memberTypes.map((type) => {
+                                return (
+                                  <RecruitmentType key={type} type={type}>
+                                    {type}
+                                  </RecruitmentType>
+                                );
+                              })}
+                            </RecruitmentTypeContainer>
 
-                        <Title>{project.title}</Title>
+                            <Title>{project.title}</Title>
 
-                        <HashtagContainer>
-                          {project.hashtags.map((hashtag) => {
-                            return (
-                              <Hashtag key={`${hashtag}`} tagName={hashtag} />
-                            );
-                          })}
-                        </HashtagContainer>
+                            <HashtagContainer>
+                              {project.hashtags.map((hashtag) => {
+                                return (
+                                  <Hashtag
+                                    key={`${hashtag}`}
+                                    tagName={hashtag}
+                                  />
+                                );
+                              })}
+                            </HashtagContainer>
 
-                        <SubInfo>
-                          <div>
-                            <ViewIcon width={2.5} height={2.5} />
-                            <span>{project.views}</span>
-                          </div>
-                          <div>
-                            <BookmarkIcon width={2.5} height={2.5} />
-                            <span>{project.bookmarkCount}</span>
-                          </div>
-                          <div>
-                            <PersonIcon width={2.5} height={2.5} />
-                            <span>{`${project.memberCount} / ${project.recruitCount}`}</span>
-                          </div>
-                        </SubInfo>
-                      </ContentLink>
-                    </Content>
-                  );
-                })}
+                            <SubInfo>
+                              <div>
+                                <ViewIcon width={2.5} height={2.5} />
+                                <span>{project.views}</span>
+                              </div>
+                              <div>
+                                <BookmarkIcon width={2.5} height={2.5} />
+                                <span>{project.bookmarkCount}</span>
+                              </div>
+                              <div>
+                                <PersonIcon width={2.5} height={2.5} />
+                                <span>{`${project.memberCount} / ${project.recruitCount}`}</span>
+                              </div>
+                            </SubInfo>
+                          </ContentLink>
+                        </Content>
+                      );
+                    })}
 
-                {showLoadMore && (
-                  <LoadMoreContainer>
-                    <LoadMoreButton onClick={loadMore}>더보기</LoadMoreButton>
-                  </LoadMoreContainer>
+                    {showLoadMore && (
+                      <LoadMoreContainer>
+                        <LoadMoreButton onClick={handleLoadMore}>
+                          더보기
+                        </LoadMoreButton>
+                      </LoadMoreContainer>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Notice>생성한 프로젝트가 없습니다.</Notice>
+                    <ProjectCreateLink href={'/'}>
+                      생성하러가기
+                    </ProjectCreateLink>
+                  </>
                 )}
-              </>
-            ) : (
-              <>
-                <Notice>생성한 프로젝트가 없습니다.</Notice>
-                <ProjectCreateLink href={'/'}>생성하러가기</ProjectCreateLink>
-              </>
-            )}
-          </BoxContent>
-        </BoxContainer>
+              </BoxContent>
+            </BoxContainer>
+          )}
+
+          {!projects && (
+            <>
+              <Skeleton width={'100%'} height={20} bottom={2} />
+              <Skeleton width={'100%'} height={15} bottom={2} />
+              <Skeleton width={'100%'} height={30} bottom={2} />
+            </>
+          )}
+        </>
       )}
 
-      {!projects && (
+      {!hasRendered && (
         <>
-          <Skeleton height={20} bottom={3} />
-          <Skeleton height={20} bottom={3} />
-          <Skeleton height={20} bottom={3} />
-          <Skeleton height={20} bottom={3} />
+          <Skeleton width={'100%'} height={20} bottom={2} />
+          <Skeleton width={'100%'} height={15} bottom={2} />
+          <Skeleton width={'100%'} height={30} bottom={2} />
         </>
       )}
     </>

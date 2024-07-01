@@ -3,7 +3,7 @@ import ProjectView, { ViewProps } from './ProjectView';
 import { Project } from '@/apis/profileProjectsFetcher';
 import { useRouter } from 'next/router';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 
 import useUserProjectsSWR from '@/hooks/useSWR/useUserProjectsSWR';
@@ -17,12 +17,15 @@ const ProjectController: FC<ControllerProps> = ({}) => {
   const dispatch = useAppDispatch();
   const { isLaptop } = useWindowSize();
 
-  const [nickname, setNickname] = useState('');
+  const hasRendered = useAppSelector(
+    (state) => state.profile.hasRenderedViewProjects,
+  );
+  const userNickname = useAppSelector((state) => state.profile.userNickname);
   const [postCount, setPostCount] = useState(5); // Load by 5
   const [posts, setPosts] = useState<Project[]>([]);
 
   const { projects, projectsTotalCount } = useUserProjectsSWR(
-    nickname,
+    userNickname,
     postCount,
   );
 
@@ -46,7 +49,7 @@ const ProjectController: FC<ControllerProps> = ({}) => {
     return convertedMemberTypes;
   }, []);
 
-  const handleProjectLoadMore = useCallback(() => {
+  const handlePostsLoadMore = useCallback(() => {
     setPostCount((prev) => prev + 5);
   }, []);
 
@@ -64,18 +67,11 @@ const ProjectController: FC<ControllerProps> = ({}) => {
     }
   }, [dispatch, isLaptop]);
 
-  useEffect(() => {
-    const nickname = router.query.nickname;
-
-    if (typeof nickname === 'string' && nickname) {
-      setNickname(nickname);
-    }
-  }, [router, dispatch]);
-
   const props: ViewProps = {
+    hasRendered,
     projects: handleCapitalizeMemberTypes(posts),
     projectsTotalCount,
-    loadMore: handleProjectLoadMore,
+    handleLoadMore: handlePostsLoadMore,
     showLoadMore: posts.length !== projectsTotalCount,
   };
 

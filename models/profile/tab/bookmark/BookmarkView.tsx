@@ -24,6 +24,7 @@ interface CustomBookmark extends Omit<Project, 'memberTypes'> {
 }
 
 export interface ViewProps {
+  hasRendered: boolean;
   bookmarks?: CustomBookmark[];
   bookmarksTotalCount?: number;
   loadMore: () => void;
@@ -31,6 +32,7 @@ export interface ViewProps {
 }
 
 const BookmarkView: FC<ViewProps> = ({
+  hasRendered,
   bookmarks,
   bookmarksTotalCount,
   loadMore,
@@ -38,77 +40,92 @@ const BookmarkView: FC<ViewProps> = ({
 }) => {
   return (
     <>
-      {bookmarks && (
-        <BoxContainer>
-          <BoxTitle>북마크</BoxTitle>
-          <BoxContent>
-            {bookmarksTotalCount && bookmarksTotalCount > 0 ? (
-              <>
-                {bookmarks.map((bookmark) => {
-                  return (
-                    <Content key={bookmark.id}>
-                      <ContentLink href={`/project/${bookmark.id}`}>
-                        <RecruitmentTypeContainer>
-                          {bookmark.memberTypes.map((type) => {
-                            return (
-                              <RecruitmentType key={type} type={type}>
-                                {type}
-                              </RecruitmentType>
-                            );
-                          })}
-                        </RecruitmentTypeContainer>
-
-                        <Title>{bookmark.title}</Title>
-
-                        <HashtagContainer>
-                          {bookmark.hashtags.map((hashtag) => {
-                            return <Hashtag key={hashtag} tagName={hashtag} />;
-                          })}
-                        </HashtagContainer>
-
-                        <SubInfo>
-                          <div>
-                            <ViewIcon width={2.5} height={2.5} />
-                            <span>{bookmark.views}</span>
-                          </div>
-                          <div>
-                            <BookmarkIcon
-                              width={2.5}
-                              height={2.5}
-                              fill={bookmark.bookmark}
-                            />
-                            <span>{bookmark.bookmarkCount}</span>
-                          </div>
-                          <div>
-                            <PersonIcon width={2.5} height={2.5} />
-                            <span>{`${bookmark.memberCount} / ${bookmark.recruitCount}`}</span>
-                          </div>
-                        </SubInfo>
-                      </ContentLink>
-                    </Content>
-                  );
-                })}
-
-                {showLoadMore && (
-                  <LoadMoreContainer>
-                    <LoadMoreButton onClick={loadMore}>더보기</LoadMoreButton>
-                  </LoadMoreContainer>
-                )}
-              </>
-            ) : (
-              <>
-                <Notice>북마크한 프로젝트가 없습니다.</Notice>
-              </>
-            )}
-          </BoxContent>
-        </BoxContainer>
-      )}
-      {!bookmarks && (
+      {hasRendered && (
         <>
-          <Skeleton height={20} bottom={3} />
-          <Skeleton height={20} bottom={3} />
-          <Skeleton height={20} bottom={3} />
-          <Skeleton height={20} bottom={3} />
+          {bookmarks && (
+            <BoxContainer>
+              <BoxTitle>북마크</BoxTitle>
+              <BoxContent>
+                {bookmarksTotalCount && bookmarksTotalCount > 0 ? (
+                  <>
+                    {bookmarks.map((bookmark) => {
+                      return (
+                        <Content key={bookmark.id}>
+                          <ContentLink href={`/project/${bookmark.id}`}>
+                            <RecruitmentTypeContainer>
+                              {bookmark.memberTypes.map((type) => {
+                                return (
+                                  <RecruitmentType key={type} type={type}>
+                                    {type}
+                                  </RecruitmentType>
+                                );
+                              })}
+                            </RecruitmentTypeContainer>
+
+                            <Title>{bookmark.title}</Title>
+
+                            <HashtagContainer>
+                              {bookmark.hashtags.map((hashtag) => {
+                                return (
+                                  <Hashtag key={hashtag} tagName={hashtag} />
+                                );
+                              })}
+                            </HashtagContainer>
+
+                            <SubInfo>
+                              <div>
+                                <ViewIcon width={2.5} height={2.5} />
+                                <span>{bookmark.views}</span>
+                              </div>
+                              <div>
+                                <BookmarkIcon
+                                  width={2.5}
+                                  height={2.5}
+                                  fill={bookmark.bookmark}
+                                />
+                                <span>{bookmark.bookmarkCount}</span>
+                              </div>
+                              <div>
+                                <PersonIcon width={2.5} height={2.5} />
+                                <span>{`${bookmark.memberCount} / ${bookmark.recruitCount}`}</span>
+                              </div>
+                            </SubInfo>
+                          </ContentLink>
+                        </Content>
+                      );
+                    })}
+
+                    {showLoadMore && (
+                      <LoadMoreContainer>
+                        <LoadMoreButton onClick={loadMore}>
+                          더보기
+                        </LoadMoreButton>
+                      </LoadMoreContainer>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Notice>북마크한 프로젝트가 없습니다.</Notice>
+                  </>
+                )}
+              </BoxContent>
+            </BoxContainer>
+          )}
+
+          {!bookmarks && (
+            <>
+              <Skeleton width={'100%'} height={20} bottom={2} />
+              <Skeleton width={'100%'} height={15} bottom={2} />
+              <Skeleton width={'100%'} height={30} bottom={2} />
+            </>
+          )}
+        </>
+      )}
+      {!hasRendered && (
+        <>
+          <Skeleton width={'100%'} height={20} bottom={2} />
+          <Skeleton width={'100%'} height={15} bottom={2} />
+          <Skeleton width={'100%'} height={30} bottom={2} />
         </>
       )}
     </>

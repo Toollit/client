@@ -29,6 +29,7 @@ interface CustomNotification extends Notification {
 }
 
 export interface ViewProps {
+  hasRendered: boolean;
   data?: CustomNotification[];
   each: (data: Notification) => {
     handleProjectJoinApprove: () => void;
@@ -38,131 +39,157 @@ export interface ViewProps {
   isMyProfile: boolean;
 }
 
-const NotificationView: FC<ViewProps> = ({ data, each, isMyProfile }) => {
+const NotificationView: FC<ViewProps> = ({
+  hasRendered,
+  data,
+  each,
+  isMyProfile,
+}) => {
+  console.log('data ===>', data);
   return (
     <>
-      {data ? (
-        <BoxContainer>
-          <BoxTitle>알림</BoxTitle>
-          <BoxContent>
-            {isMyProfile ? (
-              <>
-                {data.length > 0 ? (
+      {hasRendered && (
+        <>
+          {data && (
+            <BoxContainer>
+              <BoxTitle>알림</BoxTitle>
+              <BoxContent>
+                {isMyProfile ? (
                   <>
-                    {data.map((notification) => {
-                      const {
-                        handleProjectJoinApprove,
-                        handleProjectJoinReject,
-                        handleDeleteNotification,
-                      } = each(notification);
+                    {data.length > 0 ? (
+                      <>
+                        {data.map((notification) => {
+                          const {
+                            handleProjectJoinApprove,
+                            handleProjectJoinReject,
+                            handleDeleteNotification,
+                          } = each(notification);
 
-                      if (notification.type === 'projectJoinRequest') {
-                        return (
-                          <Content key={notification.id}>
-                            <Source>
-                              <NotificationIcon color='action' />
-                              <UserLink
-                                href={`/profile/${notification.notificationCreator}`}
-                              >
-                                {notification.notificationCreator}
-                              </UserLink>
-                              <Time> • {notification.createdAt}</Time>
-                            </Source>
+                          if (notification.type === 'projectJoinRequest') {
+                            return (
+                              <Content key={notification.id}>
+                                <Source>
+                                  <NotificationIcon color='action' />
+                                  <UserLink
+                                    href={`/profile/${notification.notificationCreator}`}
+                                  >
+                                    {notification.notificationCreator}
+                                  </UserLink>
+                                  <Time> • {notification.createdAt}</Time>
+                                </Source>
 
-                            <NotificationType>
-                              {notification.notificationInfo}
-                            </NotificationType>
-                            <Link href={`/project/${notification.projectId}`}>
-                              <ProjectTitle>
-                                <strong>[프로젝트]</strong>
-                                {notification.projectTitle}
-                              </ProjectTitle>
-                            </Link>
+                                <NotificationType>
+                                  {notification.notificationInfo}
+                                </NotificationType>
+                                <Link
+                                  href={`/project/${notification.projectId}`}
+                                >
+                                  <ProjectTitle>
+                                    <strong>[프로젝트]</strong>
+                                    {notification.projectTitle}
+                                  </ProjectTitle>
+                                </Link>
 
-                            <NotificationController>
-                              <Button
-                                type='submit'
-                                text='수락'
-                                onClick={handleProjectJoinApprove}
-                              />
-                              <Button
-                                type='normal'
-                                text='거절'
-                                onClick={handleProjectJoinReject}
-                              />
-                            </NotificationController>
-                          </Content>
-                        );
-                      } else {
-                        return (
-                          <Content key={notification.id}>
-                            <Source>
-                              <NotificationIcon color='action' />
+                                <NotificationController>
+                                  <Button
+                                    type='submit'
+                                    text='수락'
+                                    onClick={handleProjectJoinApprove}
+                                  />
+                                  <Button
+                                    type='normal'
+                                    text='거절'
+                                    onClick={handleProjectJoinReject}
+                                  />
+                                </NotificationController>
+                              </Content>
+                            );
+                          } else {
+                            return (
+                              <Content key={notification.id}>
+                                <Source>
+                                  <NotificationIcon color='action' />
 
-                              <UserLink
-                                href={`/profile/${notification.notificationCreator}`}
-                              >
-                                {notification.notificationCreator}
-                              </UserLink>
-                              <Time> • {notification.createdAt}</Time>
-                            </Source>
-                            <NotificationType>
-                              {notification.notificationInfo}
-                            </NotificationType>
+                                  <UserLink
+                                    href={`/profile/${notification.notificationCreator}`}
+                                  >
+                                    {notification.notificationCreator}
+                                  </UserLink>
+                                  <Time> • {notification.createdAt}</Time>
+                                </Source>
+                                <NotificationType>
+                                  {notification.notificationInfo}
+                                </NotificationType>
 
-                            <Link href={`/project/${notification.projectId}`}>
-                              <ProjectTitle>
-                                <strong>[프로젝트]</strong>
-                                {notification.projectTitle}
-                              </ProjectTitle>
-                            </Link>
+                                <Link
+                                  href={`/project/${notification.projectId}`}
+                                >
+                                  <ProjectTitle>
+                                    <strong>[프로젝트]</strong>
+                                    {notification.projectTitle}
+                                  </ProjectTitle>
+                                </Link>
 
-                            <NotificationDeleteButton>
-                              <OptionButton
-                                icon={<MoreIcon />}
-                                option={{ delete: true }}
-                                handleDelete={handleDeleteNotification}
-                              />
-                            </NotificationDeleteButton>
-                          </Content>
-                        );
-                      }
-                    })}
+                                <NotificationDeleteButton>
+                                  <OptionButton
+                                    icon={<MoreIcon />}
+                                    option={{ delete: true }}
+                                    handleDelete={handleDeleteNotification}
+                                  />
+                                </NotificationDeleteButton>
+                              </Content>
+                            );
+                          }
+                        })}
+                      </>
+                    ) : (
+                      <>
+                        <Notice>알림이 없습니다.</Notice>
+                      </>
+                    )}
                   </>
                 ) : (
-                  <>
-                    <Notice>알림이 없습니다.</Notice>
-                  </>
+                  <OnlyShowMineNoticeContainer>
+                    <FakeNoticeContainer>
+                      <FakeNotice>
+                        Lorem ipsum dolor sit amet consectetur, adipisicing
+                        elit. Nostrum odit consequatur aperiam est dolorem in et
+                        dolor. Iusto, doloribus temporibus?
+                      </FakeNotice>
+                      <FakeNotice>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Magni, dolor!
+                      </FakeNotice>
+                      <FakeNotice>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Amet placeat, ea praesentium, veritatis enim quia
+                        consequuntur aliquid harum
+                      </FakeNotice>
+                    </FakeNoticeContainer>
+                    <OnlyShowMineNotice>
+                      본인만 확인 가능합니다.
+                    </OnlyShowMineNotice>
+                  </OnlyShowMineNoticeContainer>
                 )}
-              </>
-            ) : (
-              <OnlyShowMineNoticeContainer>
-                <FakeNoticeContainer>
-                  <FakeNotice>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Nostrum odit consequatur aperiam est dolorem in et dolor.
-                    Iusto, doloribus temporibus?
-                  </FakeNotice>
-                  <FakeNotice>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Magni, dolor!
-                  </FakeNotice>
-                  <FakeNotice>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Amet placeat, ea praesentium, veritatis enim quia
-                    consequuntur aliquid harum
-                  </FakeNotice>
-                </FakeNoticeContainer>
-                <OnlyShowMineNotice>본인만 확인 가능합니다.</OnlyShowMineNotice>
-              </OnlyShowMineNoticeContainer>
-            )}
-          </BoxContent>
-        </BoxContainer>
-      ) : (
+              </BoxContent>
+            </BoxContainer>
+          )}
+
+          {!data && (
+            <>
+              <Skeleton width={'100%'} height={20} bottom={2} />
+              <Skeleton width={'100%'} height={15} bottom={2} />
+              <Skeleton width={'100%'} height={30} bottom={2} />
+            </>
+          )}
+        </>
+      )}
+
+      {!hasRendered && (
         <>
-          <Skeleton height={25} bottom={3} />
-          <Skeleton height={25} bottom={3} />
-          <Skeleton height={25} bottom={3} />
+          <Skeleton width={'100%'} height={20} bottom={2} />
+          <Skeleton width={'100%'} height={15} bottom={2} />
+          <Skeleton width={'100%'} height={30} bottom={2} />
         </>
       )}
     </>

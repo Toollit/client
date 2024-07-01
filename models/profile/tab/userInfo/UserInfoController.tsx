@@ -10,7 +10,6 @@ import { updateProfileAPI } from '@/apis/updateProfile';
 import useAuth from '@/hooks/useAuth';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
 import useWindowSize from '@/hooks/useWindowSize';
-import useUserRegisteredCheckSWR from '@/hooks/useSWR/useUserRegisteredCheckSWR';
 import useUserInfoSWR from '@/hooks/useSWR/useUserInfoSWR';
 
 interface ControllerProps {}
@@ -21,6 +20,10 @@ const UserInfoController: FC<ControllerProps> = ({}) => {
   const { user, authMutate } = useAuth();
   const { isLaptop } = useWindowSize();
 
+  const hasRendered = useAppSelector(
+    (state) => state.profile.hasRenderedViewProfile,
+  );
+  const userNickname = useAppSelector((state) => state.profile.userNickname);
   const updatePage = useAppSelector((state) => state.dialog.page);
   const updateCategory = useAppSelector(
     (state) => state.dialog.update?.category,
@@ -29,10 +32,7 @@ const UserInfoController: FC<ControllerProps> = ({}) => {
     (state) => state.dialog.update?.newValue,
   );
 
-  const [nickname, setNickname] = useState('');
-
-  const { isRegisteredUser } = useUserRegisteredCheckSWR(nickname);
-  const { userInfo, isLoading, userInfoMutate } = useUserInfoSWR(nickname);
+  const { userInfo, userInfoMutate } = useUserInfoSWR(userNickname);
 
   const handleUpdateProfile = useCallback(async () => {
     // empty string('') value can come from updateNewValue. so write null and undefined explicitly
@@ -303,17 +303,9 @@ const UserInfoController: FC<ControllerProps> = ({}) => {
     }
   }, [dispatch, isLaptop]);
 
-  useEffect(() => {
-    const nickname = router.query.nickname;
-
-    if (typeof nickname === 'string' && nickname) {
-      setNickname(nickname);
-    }
-  }, [router, dispatch]);
-
   const props: ViewProps = {
-    isLoading,
-    isMyProfile: nickname === user?.nickname,
+    hasRendered,
+    isMyProfile: userNickname === user?.nickname,
     data: handleProcessUserInfo(userInfo),
     editBtnHandler: handleProfileInfoEditBtn,
     handleDeleteAccount,

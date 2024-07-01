@@ -5,7 +5,7 @@ import { errorMessage } from '@/apis/errorMessage';
 import { Notification } from '@/apis/profileNotificationsFetcher';
 import { dateFromNow } from '@/utils/changeDateFormat';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 import { projectJoinApproveAPI } from '@/apis/projectJoinApprove';
 import { projectJoinRejectAPI } from '@/apis/projectJoinReject';
@@ -21,10 +21,14 @@ const NotificationController: FC<ControllerProps> = ({}) => {
   const { isLaptop } = useWindowSize();
   const { user } = useAuth();
 
-  const [nickname, setNickname] = useState('');
+  const hasRendered = useAppSelector(
+    (state) => state.profile.hasRenderedViewNotifications,
+  );
+  const userNickname = useAppSelector((state) => state.profile.userNickname);
+
   const { notifications, notificationsMutate } = useMyNotificationsSWR(
-    nickname === user?.nickname,
-    nickname,
+    userNickname === user?.nickname,
+    userNickname,
   );
 
   const handleDeleteNotification = useCallback(
@@ -140,18 +144,11 @@ const NotificationController: FC<ControllerProps> = ({}) => {
     }
   }, [dispatch, isLaptop]);
 
-  useEffect(() => {
-    const nickname = router.query.nickname;
-
-    if (typeof nickname === 'string' && nickname) {
-      setNickname(nickname);
-    }
-  }, [router, dispatch]);
-
   const props: ViewProps = {
+    hasRendered,
     data: handleProcessedData(notifications),
     each,
-    isMyProfile: nickname === user?.nickname,
+    isMyProfile: userNickname === user?.nickname,
   };
 
   return <NotificationView {...props} />;

@@ -6,7 +6,7 @@ import {
   Project,
 } from '@/apis/profileBookmarksFetcher';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 import useMyBookmarksSWR from '@/hooks/useSWR/useMyBookmarksSWR';
 import useUserBookmarksSWR from '@/hooks/useSWR/useUserBookmarksSWR';
@@ -25,14 +25,15 @@ const BookmarkController: FC<ControllerProps> = ({}) => {
   const dispatch = useAppDispatch();
   const { isLaptop } = useWindowSize();
 
-  const [nickname, setNickname] = useState('');
+  const hasRendered = useAppSelector(
+    (state) => state.profile.hasRenderedViewBookmarks,
+  );
+  const userNickname = useAppSelector((state) => state.profile.userNickname);
   const [postCount, setPostCount] = useState(5); // Load by 5
   const [posts, setPosts] = useState<Project[]>([]);
 
-  // const { isRegisteredUser } = useUserRegisteredCheckSWR(profileUserNickname);
-
   const { bookmarks, bookmarksTotalCount } = useUserBookmarksSWR(
-    nickname,
+    userNickname,
     postCount,
   );
 
@@ -94,15 +95,8 @@ const BookmarkController: FC<ControllerProps> = ({}) => {
     }
   }, [dispatch, isLaptop]);
 
-  useEffect(() => {
-    const nickname = router.query.nickname;
-
-    if (typeof nickname === 'string' && nickname) {
-      setNickname(nickname);
-    }
-  }, [router, dispatch]);
-
   const props: ViewProps = {
+    hasRendered,
     bookmarks: handleProcessedData({
       bookmarkProjects: posts,
       bookmarkIds: bookmarkIds,
