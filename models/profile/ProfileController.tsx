@@ -1,14 +1,13 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef } from 'react';
 import ProfileView, { ViewProps } from './ProfileView';
 import useSWR, { Cache } from 'swr';
 import { useRouter } from 'next/router';
 import type { ScopedMutator } from 'swr/_internal';
 import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
-import useWindowSize from '@/hooks/useWindowSize';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { updateProfileTab } from '@/features/profile';
+import { updateProfileTab, updateProfileNickname } from '@/features/profile';
 import useUserRegisteredCheckSWR from '@/hooks/useSWR/useUserRegisteredCheckSWR';
 
 interface CachedData<T> {
@@ -31,10 +30,10 @@ const ProfileController: FC<ControllerProps> = () => {
   const dispatch = useAppDispatch();
   const { logout } = useLogout();
   const { user } = useAuth();
-  const { isLaptop } = useWindowSize();
   const { clearCache } = useCachedKeys();
 
   const tab = useAppSelector((state) => state.profile.tab);
+  const userNickname = useAppSelector((state) => state.profile.userNickname);
 
   const tabs = useRef([
     { name: '프로필', query: 'viewProfile' },
@@ -43,8 +42,7 @@ const ProfileController: FC<ControllerProps> = () => {
     { name: '알림', query: 'viewNotifications' },
   ]);
 
-  const [nickname, setNickname] = useState('');
-  const { isRegisteredUser } = useUserRegisteredCheckSWR(nickname);
+  const { isRegisteredUser } = useUserRegisteredCheckSWR(userNickname);
 
   const handleSigninLogout = useCallback(async () => {
     const isSignedIn = user?.nickname;
@@ -71,7 +69,7 @@ const ProfileController: FC<ControllerProps> = () => {
     const currentTab = router.query.tab;
 
     if (typeof nickname === 'string' && nickname) {
-      setNickname(nickname);
+      dispatch(updateProfileNickname({ userNickname: nickname }));
 
       if (
         !(
@@ -97,8 +95,7 @@ const ProfileController: FC<ControllerProps> = () => {
 
   const props: ViewProps = {
     isRegisteredUser,
-    isLaptop: isLaptop ? true : false,
-    isMyProfile: nickname === user?.nickname,
+    isMyProfile: userNickname === user?.nickname,
     handleSigninLogout,
     signinLogoutText: user?.nickname ? '로그아웃' : '로그인',
     myProfileLink: user?.nickname ? `/profile/${user.nickname}` : '/signin',
@@ -108,7 +105,7 @@ const ProfileController: FC<ControllerProps> = () => {
     logoLink: '/',
     tabs: tabs.current,
     tab,
-    nickname,
+    nickname: userNickname,
     isViewProfileTab: tab === 'viewProfile',
     isViewProjectsTab: tab === 'viewProjects',
     isBookmarksTab: tab === 'viewBookmarks',

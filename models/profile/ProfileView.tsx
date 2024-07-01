@@ -37,7 +37,6 @@ import {
 
 export interface ViewProps {
   isRegisteredUser: boolean;
-  isLaptop: boolean | null;
   isMyProfile: boolean;
   signinLogoutText: string;
   handleSigninLogout: () => void;
@@ -57,7 +56,6 @@ export interface ViewProps {
 
 const ProfileView: FC<ViewProps> = ({
   isRegisteredUser,
-  isLaptop,
   isMyProfile,
   signinLogoutText,
   myProfileLink,
