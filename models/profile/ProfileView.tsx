@@ -33,6 +33,7 @@ import {
   MobileViewContainer,
   ImageSkeletonLayoutContainer,
   NicknameSkeletonLayoutContainer,
+  SkeletonContainer,
 } from './styles';
 
 export interface ViewProps {
@@ -187,11 +188,11 @@ const ProfileView: FC<ViewProps> = ({
               </MobileViewContainer>
             </>
           ) : (
-            <>
-              <Skeleton width={60} height={20} bottom={2} />
-              <Skeleton width={60} height={15} bottom={2} />
-              <Skeleton width={60} height={30} bottom={2} />
-            </>
+            <SkeletonContainer>
+              <Skeleton width={'100%'} height={20} bottom={2} />
+              <Skeleton width={'100%'} height={15} bottom={2} />
+              <Skeleton width={'100%'} height={30} bottom={2} />
+            </SkeletonContainer>
           )}
         </ColumnRightContainer>
         <Dialog />

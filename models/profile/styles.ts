@@ -208,13 +208,13 @@ const ViewContainer = styled.div`
 `;
 
 const LaptopViewContainer = styled.div`
-  @media (max-width: 1024px) {
+  @media (max-width: 1023px) {
     display: none;
   }
 `;
 
 const MobileViewContainer = styled.div`
-  @media (min-width: 1023px) {
+  @media (min-width: 1024px) {
     display: none;
   }
 `;
@@ -231,6 +231,12 @@ const ImageSkeletonLayoutContainer = styled.div`
 const NicknameSkeletonLayoutContainer = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const SkeletonContainer = styled.div`
+  @media (max-width: 1023px) {
+    padding: 3rem 1.5rem 0rem 1.5rem;
+  }
 `;
 
 export {
@@ -253,4 +259,5 @@ export {
   MobileViewContainer,
   ImageSkeletonLayoutContainer,
   NicknameSkeletonLayoutContainer,
+  SkeletonContainer,
 };
