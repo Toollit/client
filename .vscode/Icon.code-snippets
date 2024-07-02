@@ -1,6 +1,6 @@
 {
-  "SVG Icon Component Format": {
-    "prefix": "Icon",
+  "SVG icon component template": {
+    "prefix": "icon",
     "body": [
       "import React from 'react';",
       "import { IconProps } from './types';",
