@@ -15,6 +15,7 @@ import EditSquareIcon from './EditSquareIcon';
 import FilterIcon from './FilterIcon';
 import GithubIcon from './GithubIcon';
 import GoogleIcon from './GoogleIcon';
+import LockPersonIcon from './LockPersonIcon';
 import MailIcon from './MailIcon';
 import MenuIcon from './MenuIcon';
 import MoreIcon from './MoreIcon';
@@ -45,6 +46,7 @@ export {
   FilterIcon,
   GithubIcon,
   GoogleIcon,
+  LockPersonIcon,
   MailIcon,
   MenuIcon,
   MoreIcon,
