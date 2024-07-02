@@ -5,23 +5,23 @@ import { Button } from '@/components/button';
 import Skeleton from '@/components/skeleton';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
 import OptionButton from '@/components/drawer/option';
+import { LockPersonIcon } from '@/assets/icons';
 import {
   BoxContent,
   Content,
-  Notice,
+  EmptyNoticeText,
   NotificationIcon,
   ProjectTitle,
-  Source,
+  NotificationTitle,
   Time,
   NotificationController,
-  UserLink,
-  NotificationType,
+  UserProfileLink,
+  NotificationMessage,
   NotificationDeleteButton,
   MoreIcon,
-  OnlyShowMineNotice,
-  OnlyShowMineNoticeContainer,
-  FakeNoticeContainer,
-  FakeNotice,
+  HideNoticeText,
+  NoticeHideContainer,
+  LockPersonIconContainer,
 } from './styles';
 
 interface CustomNotification extends Notification {
@@ -45,17 +45,16 @@ const NotificationView: FC<ViewProps> = ({
   each,
   isMyProfile,
 }) => {
-  console.log('data ===>', data);
   return (
     <>
       {hasRendered && (
         <>
-          {data && (
-            <BoxContainer>
-              <BoxTitle>알림</BoxTitle>
-              <BoxContent>
-                {isMyProfile ? (
-                  <>
+          {isMyProfile ? (
+            <>
+              {data && (
+                <BoxContainer>
+                  <BoxTitle>알림</BoxTitle>
+                  <BoxContent>
                     {data.length > 0 ? (
                       <>
                         {data.map((notification) => {
@@ -68,19 +67,19 @@ const NotificationView: FC<ViewProps> = ({
                           if (notification.type === 'projectJoinRequest') {
                             return (
                               <Content key={notification.id}>
-                                <Source>
+                                <NotificationTitle>
                                   <NotificationIcon color='action' />
-                                  <UserLink
+                                  <UserProfileLink
                                     href={`/profile/${notification.notificationCreator}`}
                                   >
                                     {notification.notificationCreator}
-                                  </UserLink>
+                                  </UserProfileLink>
                                   <Time> • {notification.createdAt}</Time>
-                                </Source>
+                                </NotificationTitle>
 
-                                <NotificationType>
+                                <NotificationMessage>
                                   {notification.notificationInfo}
-                                </NotificationType>
+                                </NotificationMessage>
                                 <Link
                                   href={`/project/${notification.projectId}`}
                                 >
@@ -107,19 +106,19 @@ const NotificationView: FC<ViewProps> = ({
                           } else {
                             return (
                               <Content key={notification.id}>
-                                <Source>
+                                <NotificationTitle>
                                   <NotificationIcon color='action' />
 
-                                  <UserLink
+                                  <UserProfileLink
                                     href={`/profile/${notification.notificationCreator}`}
                                   >
                                     {notification.notificationCreator}
-                                  </UserLink>
+                                  </UserProfileLink>
                                   <Time> • {notification.createdAt}</Time>
-                                </Source>
-                                <NotificationType>
+                                </NotificationTitle>
+                                <NotificationMessage>
                                   {notification.notificationInfo}
-                                </NotificationType>
+                                </NotificationMessage>
 
                                 <Link
                                   href={`/project/${notification.projectId}`}
@@ -144,43 +143,33 @@ const NotificationView: FC<ViewProps> = ({
                       </>
                     ) : (
                       <>
-                        <Notice>알림이 없습니다.</Notice>
+                        <EmptyNoticeText>알림이 없습니다.</EmptyNoticeText>
                       </>
                     )}
-                  </>
-                ) : (
-                  <OnlyShowMineNoticeContainer>
-                    <FakeNoticeContainer>
-                      <FakeNotice>
-                        Lorem ipsum dolor sit amet consectetur, adipisicing
-                        elit. Nostrum odit consequatur aperiam est dolorem in et
-                        dolor. Iusto, doloribus temporibus?
-                      </FakeNotice>
-                      <FakeNotice>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Magni, dolor!
-                      </FakeNotice>
-                      <FakeNotice>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Amet placeat, ea praesentium, veritatis enim quia
-                        consequuntur aliquid harum
-                      </FakeNotice>
-                    </FakeNoticeContainer>
-                    <OnlyShowMineNotice>
-                      본인만 확인 가능합니다.
-                    </OnlyShowMineNotice>
-                  </OnlyShowMineNoticeContainer>
-                )}
+                  </BoxContent>
+                </BoxContainer>
+              )}
+
+              {!data && (
+                <>
+                  <Skeleton width={'100%'} height={20} bottom={2} />
+                  <Skeleton width={'100%'} height={15} bottom={2} />
+                  <Skeleton width={'100%'} height={30} bottom={2} />
+                </>
+              )}
+            </>
+          ) : (
+            <BoxContainer>
+              <BoxTitle>알림</BoxTitle>
+              <BoxContent>
+                <NoticeHideContainer>
+                  <LockPersonIconContainer>
+                    <LockPersonIcon width={20} height={20} fill={true} />
+                  </LockPersonIconContainer>
+                  <HideNoticeText>본인만 확인 가능합니다.</HideNoticeText>
+                </NoticeHideContainer>
               </BoxContent>
             </BoxContainer>
-          )}
-
-          {!data && (
-            <>
-              <Skeleton width={'100%'} height={20} bottom={2} />
-              <Skeleton width={'100%'} height={15} bottom={2} />
-              <Skeleton width={'100%'} height={30} bottom={2} />
-            </>
           )}
         </>
       )}

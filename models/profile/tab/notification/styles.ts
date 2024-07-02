@@ -29,7 +29,7 @@ const Content = styled.li`
   }
 `;
 
-const Source = styled.div`
+const NotificationTitle = styled.div`
   display: flex;
   align-items: center;
   font-size: 1.4rem;
@@ -41,7 +41,7 @@ const NotificationIcon = styled(NotificationsNone)`
   margin-right: 0.5rem;
 `;
 
-const UserLink = styled(Link)`
+const UserProfileLink = styled(Link)`
   color: #000;
   text-decoration: underline;
   margin-right: 0.5rem;
@@ -53,7 +53,7 @@ const Time = styled.div`
   color: ${(props) => props.theme.colors.gray};
 `;
 
-const NotificationType = styled.div`
+const NotificationMessage = styled.div`
   font-size: 1.4rem;
   margin-top: 0.5rem;
   font-weight: 600;
@@ -101,49 +101,43 @@ const MoreIcon = styled(MoreVert)`
   color: ${(props) => props.theme.colors.gray};
 `;
 
-const Notice = styled.p`
+const EmptyNoticeText = styled.p`
   font-size: 1.4rem;
   padding: 4rem 2rem;
 `;
 
-const OnlyShowMineNoticeContainer = styled.div`
+const NoticeHideContainer = styled.div`
   position: relative;
 `;
 
-const OnlyShowMineNotice = styled.div`
-  backdrop-filter: blur(0.6rem);
-  background-color: rgba(255, 255, 255, 0.6);
+const LockPersonIconContainer = styled.div`
+  text-align: center;
+  margin-top: 4rem;
+`;
+
+const HideNoticeText = styled.div`
+  /* backdrop-filter: blur(0.6rem); */
+  /* background-color: rgba(255, 255, 255, 0.6); */
   font-size: 1.4rem;
   text-align: center;
   margin: 4rem 1rem;
-  height: 50rem;
-`;
-
-const FakeNoticeContainer = styled.div`
-  position: absolute;
-  top: 2rem;
-`;
-
-const FakeNotice = styled.p`
-  font-size: 1.4rem;
-  padding: 4rem 2rem;
+  height: 25rem;
 `;
 
 export {
   BoxContent,
   Content,
-  Source,
+  NotificationTitle,
   NotificationIcon,
-  UserLink,
+  UserProfileLink,
   Time,
-  NotificationType,
+  NotificationMessage,
   ProjectTitle,
   NotificationController,
   NotificationDeleteButton,
   MoreIcon,
-  Notice,
-  OnlyShowMineNoticeContainer,
-  OnlyShowMineNotice,
-  FakeNoticeContainer,
-  FakeNotice,
+  EmptyNoticeText,
+  NoticeHideContainer,
+  LockPersonIconContainer,
+  HideNoticeText,
 };
