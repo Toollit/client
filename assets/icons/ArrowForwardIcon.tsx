@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconProps } from './types';
 import { SVGContainer } from '@/styles/commons';
-import ArrowForward from 'public/static/icons/arrow/arrow_forward_ios.svg';
+import ArrowForwardIOSFill0 from 'public/static/icons/arrow/arrow_forward_ios_FILL0_wght400.svg';
 
 const ArrowForwardIcon = ({
   fill = false,
@@ -9,9 +9,11 @@ const ArrowForwardIcon = ({
   height = 2.4,
   color,
 }: IconProps) => {
+  const IconComponent = fill ? <></> : ArrowForwardIOSFill0;
+
   return (
     <SVGContainer width={width} height={height}>
-      <ArrowForward width={'100%'} height={'100%'} fill={color} />
+      <IconComponent width={'100%'} height={'100%'} fill={color} />
     </SVGContainer>
   );
 };

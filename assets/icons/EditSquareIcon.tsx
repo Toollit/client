@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconProps } from './types';
 import { SVGContainer } from '@/styles/commons';
-import EditSquareFILL0 from 'public/static/icons/edit/edit_square_FILL0.svg';
+import EditSquareFill0 from 'public/static/icons/edit/edit_square_FILL0.svg';
 
 const EditSquareIcon = ({
   fill = false,
@@ -9,15 +9,13 @@ const EditSquareIcon = ({
   height = 2.4,
   color,
 }: IconProps) => {
-  if (!fill) {
-    return (
-      <SVGContainer width={width} height={height}>
-        <EditSquareFILL0 width={'100%'} height={'100%'} fill={color} />
-      </SVGContainer>
-    );
-  }
+  const IconComponent = fill ? <></> : EditSquareFill0;
 
-  return null;
+  return (
+    <SVGContainer width={width} height={height}>
+      <IconComponent width={'100%'} height={'100%'} fill={color} />
+    </SVGContainer>
+  );
 };
 
 export default EditSquareIcon;

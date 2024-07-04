@@ -1,8 +1,8 @@
 import React from 'react';
 import { IconProps } from './types';
 import { SVGContainer } from '@/styles/commons';
-import VisibilityFILL0 from 'public/static/icons/view/visibility_FILL0.svg';
-import VisibilityFILL1 from 'public/static/icons/view/visibility_FILL1.svg';
+import VisibilityFill0 from 'public/static/icons/view/visibility_FILL0.svg';
+import VisibilityFill1 from 'public/static/icons/view/visibility_FILL1.svg';
 
 const ViewIcon = ({
   fill = false,
@@ -10,23 +10,13 @@ const ViewIcon = ({
   height = 2.4,
   color,
 }: IconProps) => {
-  if (!fill) {
-    return (
-      <SVGContainer width={width} height={height}>
-        <VisibilityFILL0 width={'100%'} height={'100%'} fill={color} />
-      </SVGContainer>
-    );
-  }
+  const IconComponent = fill ? VisibilityFill1 : VisibilityFill0;
 
-  if (fill) {
-    return (
-      <SVGContainer width={width} height={height}>
-        <VisibilityFILL1 width={'100%'} height={'100%'} fill={color} />
-      </SVGContainer>
-    );
-  }
-
-  return null;
+  return (
+    <SVGContainer width={width} height={height}>
+      <IconComponent width={'100%'} height={'100%'} fill={color} />
+    </SVGContainer>
+  );
 };
 
 export default ViewIcon;

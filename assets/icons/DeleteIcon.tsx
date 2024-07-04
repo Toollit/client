@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconProps } from './types';
 import { SVGContainer } from '@/styles/commons';
-import DeleteFILL0 from 'public/static/icons/delete/delete_FILL0.svg';
+import DeleteFill0 from 'public/static/icons/delete/delete_FILL0.svg';
 
 const DeleteIcon = ({
   fill = false,
@@ -9,9 +9,11 @@ const DeleteIcon = ({
   height = 2.4,
   color,
 }: IconProps) => {
+  const IconComponent = fill ? <></> : DeleteFill0;
+
   return (
     <SVGContainer width={width} height={height}>
-      <DeleteFILL0 width={'100%'} height={'100%'} fill={color} />
+      <IconComponent width={'100%'} height={'100%'} fill={color} />
     </SVGContainer>
   );
 };

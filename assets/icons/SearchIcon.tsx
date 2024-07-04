@@ -9,13 +9,13 @@ const SearchIcon = ({
   height = 2.4,
   color,
 }: IconProps) => {
+  const IconComponent = fill ? <></> : SearchFill0;
+
   return (
     <SVGContainer width={width} height={height}>
-      <SearchFill0 width={'100%'} height={'100%'} fill={color} />
+      <IconComponent width={'100%'} height={'100%'} fill={color} />
     </SVGContainer>
   );
-
-  return null;
 };
 
 export default SearchIcon;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconProps } from './types';
 import { SVGContainer } from '@/styles/commons';
-import DensityMediumFill0 from 'public/static/icons/menu/density_medium_FILL0.svg';
+import MenuFill0 from 'public/static/icons/menu/menu_FILL0.svg';
 
 const MenuIcon = ({
   fill = false,
@@ -9,13 +9,13 @@ const MenuIcon = ({
   height = 2.4,
   color,
 }: IconProps) => {
+  const IconComponent = fill ? <></> : MenuFill0;
+
   return (
     <SVGContainer width={width} height={height}>
-      <DensityMediumFill0 width={'100%'} height={'100%'} fill={color} />
+      <IconComponent width={'100%'} height={'100%'} fill={color} />
     </SVGContainer>
   );
-
-  return null;
 };
 
 export default MenuIcon;

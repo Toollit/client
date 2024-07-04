@@ -1,7 +1,5 @@
 import AccountCircleIcon from './AccountCircleIcon';
 import ArrowBackIcon from './ArrowBackIcon';
-import ArrowDoubleLeftIcon from './ArrowDoubleLeftIcon';
-import ArrowDoubleRightIcon from './ArrowDoubleRightIcon';
 import ArrowDropDownIcon from './ArrowDropDownIcon';
 import ArrowDropUpIcon from './ArrowDropUpIcon';
 import ArrowForwardIcon from './ArrowForwardIcon';
@@ -12,7 +10,7 @@ import CloseIcon from './CloseIcon';
 import DeleteIcon from './DeleteIcon';
 import EditCircleIcon from './EditCircleIcon';
 import EditSquareIcon from './EditSquareIcon';
-import FilterIcon from './FilterIcon';
+import FilterListIcon from './FilterListIcon';
 import GithubIcon from './GithubIcon';
 import GoogleIcon from './GoogleIcon';
 import LockPersonIcon from './LockPersonIcon';
@@ -21,7 +19,7 @@ import MenuIcon from './MenuIcon';
 import MoreIcon from './MoreIcon';
 import PersonIcon from './PersonIcon';
 import PhoneIcon from './PhoneIcon';
-import PlusIcon from './PlusIcon';
+import AddIcon from './AddIcon';
 import RadioButtonCheckedIcon from './RadioButtonCheckedIcon';
 import RadioButtonUnCheckedIcon from './RadioButtonUnCheckedIcon';
 import SearchIcon from './SearchIcon';
@@ -31,8 +29,6 @@ import ViewIcon from './ViewIcon';
 export {
   AccountCircleIcon,
   ArrowBackIcon,
-  ArrowDoubleLeftIcon,
-  ArrowDoubleRightIcon,
   ArrowDropDownIcon,
   ArrowDropUpIcon,
   ArrowForwardIcon,
@@ -43,7 +39,7 @@ export {
   DeleteIcon,
   EditCircleIcon,
   EditSquareIcon,
-  FilterIcon,
+  FilterListIcon,
   GithubIcon,
   GoogleIcon,
   LockPersonIcon,
@@ -52,7 +48,7 @@ export {
   MoreIcon,
   PersonIcon,
   PhoneIcon,
-  PlusIcon,
+  AddIcon,
   RadioButtonCheckedIcon,
   RadioButtonUnCheckedIcon,
   SearchIcon,

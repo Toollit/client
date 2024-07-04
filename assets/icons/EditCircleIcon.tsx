@@ -10,23 +10,13 @@ const EditCircleIcon = ({
   height = 2.4,
   color,
 }: IconProps) => {
-  if (!fill) {
-    return (
-      <SVGContainer width={width} height={height}>
-        <EditCircleFill0 width={'100%'} height={'100%'} fill={color} />
-      </SVGContainer>
-    );
-  }
+  const IconComponent = fill ? EditCircleFill1 : EditCircleFill0;
 
-  if (fill) {
-    return (
-      <SVGContainer width={width} height={height}>
-        <EditCircleFill1 width={'100%'} height={'100%'} fill={color} />
-      </SVGContainer>
-    );
-  }
-
-  return null;
+  return (
+    <SVGContainer width={width} height={height}>
+      <IconComponent width={'100%'} height={'100%'} fill={color} />
+    </SVGContainer>
+  );
 };
 
 export default EditCircleIcon;
