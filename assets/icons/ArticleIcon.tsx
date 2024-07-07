@@ -1,16 +1,16 @@
 import React from 'react';
 import { IconProps } from './types';
 import { SVGContainer } from '@/styles/commons';
-import DeleteFill0 from 'public/static/icons/delete/delete_FILL0.svg';
-import DeleteFill1 from 'public/static/icons/delete/delete_FILL1.svg';
+import ArticleFill0 from 'public/static/icons/article/article_FILL0.svg';
+import ArticleFill1 from 'public/static/icons/article/article_FILL1.svg';
 
-const DeleteIcon = ({
+const ArticleIcon = ({
   fill = false,
   width = 2.4,
   height = 2.4,
   color,
 }: IconProps) => {
-  const IconComponent = fill ? DeleteFill1 : DeleteFill0;
+  const IconComponent = fill ? ArticleFill1 : ArticleFill0;
 
   return (
     <SVGContainer width={width} height={height}>
@@ -19,4 +19,4 @@ const DeleteIcon = ({
   );
 };
 
-export default DeleteIcon;
+export default ArticleIcon;

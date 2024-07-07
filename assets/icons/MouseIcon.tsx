@@ -1,15 +1,16 @@
 import React from 'react';
 import { IconProps } from './types';
 import { SVGContainer } from '@/styles/commons';
-import MoreHorizFill0 from 'public/static/icons/more/more_horiz_FILL0.svg';
+import MouseFill0 from 'public/static/icons/mouse/mouse_FILL0.svg';
+import MouseFill1 from 'public/static/icons/mouse/mouse_FILL1.svg';
 
-const MoreIcon = ({
+const MouseIcon = ({
   fill = false,
   width = 2.4,
   height = 2.4,
   color,
 }: IconProps) => {
-  const IconComponent = fill ? <></> : MoreHorizFill0;
+  const IconComponent = fill ? MouseFill1 : MouseFill0;
 
   return (
     <SVGContainer width={width} height={height}>
@@ -18,4 +19,4 @@ const MoreIcon = ({
   );
 };
 
-export default MoreIcon;
+export default MouseIcon;
