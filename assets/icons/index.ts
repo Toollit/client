@@ -2,11 +2,13 @@ import AccountCircleIcon from './AccountCircleIcon';
 import AddIcon from './AddIcon';
 import AdminPanelSettingsIcon from './AdminPanelSettingsIcon';
 import ArrowBackIcon from './ArrowBackIcon';
+import ArrowDownIcon from './ArrowDownIcon';
 import ArrowDropDownIcon from './ArrowDropDownIcon';
 import ArrowDropUpIcon from './ArrowDropUpIcon';
 import ArrowForwardIcon from './ArrowForwardIcon';
 import ArrowLeftAltIcon from './ArrowLeftAltIcon';
 import ArrowRightAltIcon from './ArrowRightAltIcon';
+import ArrowUpIcon from './ArrowUpIcon';
 import ArticleIcon from './ArticleIcon';
 import BookmarkIcon from './BookmarkIcon';
 import CampaignIcon from './CampaignIcon';
@@ -41,11 +43,13 @@ export {
   AddIcon,
   AdminPanelSettingsIcon,
   ArrowBackIcon,
+  ArrowDownIcon,
   ArrowDropDownIcon,
   ArrowDropUpIcon,
   ArrowForwardIcon,
   ArrowLeftAltIcon,
   ArrowRightAltIcon,
+  ArrowUpIcon,
   ArticleIcon,
   BookmarkIcon,
   CampaignIcon,
