@@ -9,7 +9,7 @@ import { ProjectDetail } from '@/apis/projectFetcher';
 import { Button } from '@/components/button';
 import Label from '@/components/label';
 import Image, { StaticImageData } from 'next/legacy/image';
-import { CloseIcon, PlusIcon } from '@/assets/icons';
+import { CloseIcon, AddIcon } from '@/assets/icons';
 import Tooltip, { TooltipProps } from '@/components/tooltip';
 import Skeleton from '@/components/skeleton';
 import { BottomButton } from '@/components/button';
@@ -161,7 +161,7 @@ const ModifyView: FC<ViewProps> = ({
             ) : (
               <>
                 <AddImageBox onClick={handleTooltipOpen}>
-                  <PlusIcon width={4} height={4} />
+                  <AddIcon width={4} height={4} />
                 </AddImageBox>
                 <Tooltip {...tooltip} />
               </>

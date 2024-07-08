@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { FilterIcon } from '@/assets/icons';
+import { FilterListIcon } from '@/assets/icons';
 import {
   Button,
   IconContainer,
@@ -69,7 +69,7 @@ const Filter = () => {
     <div>
       <Button onClick={handleOpenOrderSelector}>
         <IconContainer>
-          <FilterIcon width={2} height={2} />
+          <FilterListIcon width={2} height={2} />
         </IconContainer>
         <Text>{postOrder}</Text>
       </Button>

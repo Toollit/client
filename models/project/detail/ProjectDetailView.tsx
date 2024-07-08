@@ -18,7 +18,7 @@ import {
 import {
   ShareIcon,
   BookmarkIcon,
-  MoreIcon,
+  MoreHorizIcon,
   AccountCircleIcon,
 } from '@/assets/icons';
 import {
@@ -167,14 +167,14 @@ const ProjectDetailView: FC<ViewProps> = ({
                     </ShareButton>
                     {isMyPost ? (
                       <OptionButton
-                        icon={<MoreIcon width={4} height={3} />}
+                        icon={<MoreHorizIcon width={4} height={3} />}
                         option={{ modify: true, delete: true }}
                         handleModify={handleModify}
                         handleDelete={handleDelete}
                       />
                     ) : (
                       <OptionButton
-                        icon={<MoreIcon width={4} height={3} />}
+                        icon={<MoreHorizIcon width={4} height={3} />}
                         option={{ report: true }}
                         handleReport={handleReport}
                       />

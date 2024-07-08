@@ -14,6 +14,7 @@ const Button = styled.button`
 
 const IconContainer = styled.div`
   padding: 0 0.3rem;
+  line-height: 0;
 `;
 const Text = styled.div`
   color: #000;

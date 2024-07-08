@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import ArrowBackIcon from '@/assets/icons/ArrowBackIcon';
-import ArrowForwardIcon from '@/assets/icons/ArrowForwardIcon';
+import { ArrowBackIcon, ArrowForwardIcon } from '@/assets/icons';
 import { Container, PageControlButton, PageNumberButton } from './styles';
 
 interface PaginationProps {

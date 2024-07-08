@@ -8,7 +8,7 @@ import { Editor } from '@toast-ui/react-editor';
 import Label from '@/components/label';
 import { Button } from '@/components/button';
 import Image from 'next/legacy/image';
-import PlusIcon from '@/assets/icons/PlusIcon';
+import { AddIcon } from '@/assets/icons';
 import { CloseIcon } from '@/assets/icons';
 import Tooltip, { TooltipProps } from '@/components/tooltip';
 import { StaticImageData } from 'next/legacy/image';
@@ -150,7 +150,7 @@ const ProjectCreateView: FC<ViewProps> = ({
             ) : (
               <>
                 <AddImageBox onClick={handleTooltipOpen}>
-                  <PlusIcon width={4} height={4} />
+                  <AddIcon width={4} height={4} />
                 </AddImageBox>
                 <Tooltip {...tooltip} />
               </>
