@@ -1,9 +1,4 @@
 import styled from '@emotion/styled';
-import {
-  SearchOutlined,
-  AccountCircleOutlined,
-  Menu,
-} from '@mui/icons-material';
 import Link from 'next/link';
 
 const DefaultContainer = styled.nav<{ boundary?: boolean }>`
@@ -92,30 +87,6 @@ const Title = styled.div`
   font-weight: 500;
 `;
 
-const SearchIcon = styled(SearchOutlined)`
-  width: 3.2rem;
-  height: 3.2rem;
-  color: #000;
-  cursor: pointer;
-
-  &.MuiSvgIcon-root {
-    stroke: #fff;
-    stroke-width: 1;
-  }
-`;
-
-const AccountCircleIcon = styled(AccountCircleOutlined)`
-  width: 3.2rem;
-  height: 3.2rem;
-  color: #000;
-  cursor: pointer;
-
-  &.MuiSvgIcon-root {
-    stroke: #fff;
-    stroke-width: 1;
-  }
-`;
-
 const LayoutContainer = styled.div`
   display: flex;
   min-height: 6rem;
@@ -130,17 +101,6 @@ const ProfileLink = styled(Link)`
   height: 3.2rem;
 `;
 
-const MenuIcon = styled(Menu)`
-  width: 3.2rem;
-  height: 3.2rem;
-  color: #000;
-
-  &.MuiSvgIcon-root {
-    stroke: #fff;
-    stroke-width: 1;
-  }
-`;
-
 export {
   DefaultContainer,
   Container,
@@ -150,9 +110,6 @@ export {
   LogoLink,
   LogoTitle,
   Title,
-  SearchIcon,
-  AccountCircleIcon,
   LayoutContainer,
   ProfileLink,
-  MenuIcon,
 };

@@ -1,6 +1,5 @@
 import { mediaQueryLaptop } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
-import { Search, ExpandMore } from '@mui/icons-material';
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import Link from 'next/link';
 
@@ -64,11 +63,6 @@ const InputBox = styled.div`
   }
 `;
 
-const SearchIcon = styled(Search)`
-  font-size: 2rem;
-  color: #888888;
-`;
-
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
@@ -123,10 +117,6 @@ const MUIAccordionDetails = styled(AccordionDetails)`
   padding-bottom: 4rem;
 `;
 
-const MUIExpandMoreIcon = styled(ExpandMore)`
-  font-size: 2.5rem;
-`;
-
 const InquiryLink = styled(Link)`
   font-weight: 600;
   color: ${(props) => props.theme.colors.theme};
@@ -145,7 +135,6 @@ export {
   SubTitle,
   SearchForm,
   InputBox,
-  SearchIcon,
   Table,
   TableHeader,
   TableTitle,
@@ -154,6 +143,5 @@ export {
   MUIAccordion,
   MUIAccordionSummary,
   MUIAccordionDetails,
-  MUIExpandMoreIcon,
   InquiryLink,
 };

@@ -5,15 +5,15 @@ import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
 import {
   AccountCircleIcon,
+  AdminPanelSettingsIcon,
   ArticleIcon,
   BookmarkIcon,
-  NotificationsIcon,
   CampaignIcon,
+  LiveHelpIcon,
+  LogoutIcon,
   MouseIcon,
-  AdminPanelSettingsIcon,
-  LiveHelpOutlinedIcon,
-  LogoutOutlinedIcon,
-} from './styles';
+  NotificationsIcon,
+} from '@/assets/icons';
 
 export interface MenuItem {
   tag: string;
@@ -50,13 +50,13 @@ const MenuController: FC<ControllerProps> = ({}) => {
     setMenu([
       {
         tag: 'profile',
-        icon: <AccountCircleIcon />,
+        icon: <AccountCircleIcon width={4} height={4} />,
         text: '내 프로필',
         url: user?.nickname ? `/profile/${user?.nickname}` : '/signin',
       },
       {
         tag: 'project',
-        icon: <ArticleIcon />,
+        icon: <ArticleIcon width={4} height={4} />,
         text: '내 프로젝트',
         url: user?.nickname
           ? `/profile/${user?.nickname}?tab=viewProjects`
@@ -64,7 +64,7 @@ const MenuController: FC<ControllerProps> = ({}) => {
       },
       {
         tag: 'bookmark',
-        icon: <BookmarkIcon />,
+        icon: <BookmarkIcon width={4} height={4} />,
         text: '내 북마크',
         url: user?.nickname
           ? `/profile/${user?.nickname}?tab=viewBookmarks`
@@ -72,7 +72,7 @@ const MenuController: FC<ControllerProps> = ({}) => {
       },
       {
         tag: 'notification',
-        icon: <NotificationsIcon />,
+        icon: <NotificationsIcon width={4} height={4} />,
         text: '알림',
         url: user?.nickname
           ? `/profile/${user?.nickname}?tab=viewNotifications`
@@ -80,26 +80,31 @@ const MenuController: FC<ControllerProps> = ({}) => {
       },
       {
         tag: 'notice',
-        icon: <CampaignIcon />,
+        icon: <CampaignIcon width={4} height={4} />,
         text: '공지사항',
         url: '/notice',
       },
       {
         tag: 'terms-of-service',
-        icon: <MouseIcon />,
+        icon: <MouseIcon width={4} height={4} />,
         text: '이용약관',
         url: '/policy/terms-of-service',
       },
       {
         tag: 'privacy',
-        icon: <AdminPanelSettingsIcon />,
+        icon: <AdminPanelSettingsIcon width={4} height={4} />,
         text: '개인정보처리방침',
         url: '/policy/privacy',
       },
-      { tag: 'faq', icon: <LiveHelpOutlinedIcon />, text: 'FAQ', url: '/faq' },
+      {
+        tag: 'faq',
+        icon: <LiveHelpIcon width={4} height={4} />,
+        text: 'FAQ',
+        url: '/faq',
+      },
       {
         tag: 'auth',
-        icon: <LogoutOutlinedIcon />,
+        icon: <LogoutIcon width={4} height={4} />,
         text: user?.nickname ? '로그아웃' : '로그인',
         url: user?.nickname ? '#' : '/signin',
         handler: handleUserSession,

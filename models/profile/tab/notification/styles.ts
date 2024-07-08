@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { NotificationsNone, MoreVert } from '@mui/icons-material';
 import Link from 'next/link';
 
 const BoxContent = styled.ul`
@@ -35,10 +34,9 @@ const NotificationTitle = styled.div`
   font-size: 1.4rem;
 `;
 
-const NotificationIcon = styled(NotificationsNone)`
-  width: 2.5rem;
-  height: 2.5rem;
+const NotificationsIconContainer = styled.div`
   margin-right: 0.5rem;
+  line-height: 0;
 `;
 
 const UserProfileLink = styled(Link)`
@@ -96,11 +94,6 @@ const NotificationDeleteButton = styled.div`
   top: 1.5rem;
 `;
 
-const MoreIcon = styled(MoreVert)`
-  font-size: 2.5rem;
-  color: ${(props) => props.theme.colors.gray};
-`;
-
 const EmptyNoticeText = styled.p`
   font-size: 1.4rem;
   padding: 4rem 2rem;
@@ -128,14 +121,13 @@ export {
   BoxContent,
   Content,
   NotificationTitle,
-  NotificationIcon,
+  NotificationsIconContainer,
   UserProfileLink,
   Time,
   NotificationMessage,
   ProjectTitle,
   NotificationController,
   NotificationDeleteButton,
-  MoreIcon,
   EmptyNoticeText,
   NoticeHideContainer,
   LockPersonIconContainer,

@@ -1,11 +1,6 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { Drawer, Box } from '@mui/material';
-import {
-  DeleteForeverOutlined,
-  ModeEditOutlineOutlined,
-  ErrorOutlineOutlined,
-} from '@mui/icons-material';
 
 const MUIDrawer = styled(Drawer)`
   & .MuiDrawer-paper {
@@ -69,26 +64,9 @@ const Button = styled.button`
   border-style: none;
 `;
 
-const commonIconStyles = () => css`
-  width: 3rem;
-  height: 3rem;
-  color: #000;
-`;
-
-const DeleteIcon = styled(DeleteForeverOutlined)`
-  ${commonIconStyles}
-`;
-
-const EditIcon = styled(ModeEditOutlineOutlined)`
-  ${commonIconStyles}
-`;
-
-const ReportIcon = styled(ErrorOutlineOutlined)`
-  ${commonIconStyles}
-`;
-
 const Icon = styled.div`
   margin-right: 1rem;
+  line-height: 0;
 `;
 
 const Text = styled.div``;
@@ -117,7 +95,4 @@ export {
   Icon,
   Text,
   CancelButton,
-  DeleteIcon,
-  EditIcon,
-  ReportIcon,
 };

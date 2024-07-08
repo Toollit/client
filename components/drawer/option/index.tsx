@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { DeleteIcon, EditIcon, ErrorIcon } from '@/assets/icons';
 import {
   OpenButton,
   MUIDrawer,
@@ -8,9 +9,6 @@ import {
   Button,
   Text,
   Icon,
-  DeleteIcon,
-  EditIcon,
-  ReportIcon,
 } from './styles';
 
 interface Buttons {
@@ -41,9 +39,21 @@ const OptionButton = ({
   const [open, setOpen] = useState(false);
   const [buttons, setButtons] = useState<Buttons[]>([]);
   const [type, setType] = useState({
-    delete: { icon: <DeleteIcon />, text: '삭제하기', onClick: handleDelete },
-    modify: { icon: <EditIcon />, text: '수정하기', onClick: handleModify },
-    report: { icon: <ReportIcon />, text: '신고하기', onClick: handleReport },
+    delete: {
+      icon: <DeleteIcon width={3} height={3} />,
+      text: '삭제하기',
+      onClick: handleDelete,
+    },
+    modify: {
+      icon: <EditIcon width={3} height={3} />,
+      text: '수정하기',
+      onClick: handleModify,
+    },
+    report: {
+      icon: <ErrorIcon width={3} height={3} />,
+      text: '신고하기',
+      onClick: handleReport,
+    },
   });
 
   const handleToggleDrawer = useCallback(

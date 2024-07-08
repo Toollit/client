@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import Drawer from '@mui/material/Drawer';
-import { Search } from '@mui/icons-material';
 import Link from 'next/link';
 
 const OpenButton = styled.button`
@@ -37,17 +36,6 @@ const Form = styled.form`
 const SearchIconLayoutContainer = styled.div`
   position: absolute;
   top: 6.5rem;
-`;
-
-const SearchIcon = styled(Search)`
-  width: 3rem;
-  height: 3rem;
-  color: #e8e8ed;
-
-  &.MuiSvgIcon-root {
-    stroke: #000;
-    stroke-width: 0.1;
-  }
 `;
 
 const SearchInput = styled.input`
@@ -92,7 +80,6 @@ export {
   MUIDrawer,
   Container,
   SearchIconLayoutContainer,
-  SearchIcon,
   Form,
   SearchInput,
   Description,

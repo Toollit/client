@@ -5,12 +5,15 @@ import { Button } from '@/components/button';
 import Skeleton from '@/components/skeleton';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
 import OptionButton from '@/components/drawer/option';
-import { LockPersonIcon } from '@/assets/icons';
+import {
+  LockPersonIcon,
+  MoreVertIcon,
+  NotificationsIcon,
+} from '@/assets/icons';
 import {
   BoxContent,
   Content,
   EmptyNoticeText,
-  NotificationIcon,
   ProjectTitle,
   NotificationTitle,
   Time,
@@ -18,10 +21,10 @@ import {
   UserProfileLink,
   NotificationMessage,
   NotificationDeleteButton,
-  MoreIcon,
   HideNoticeText,
   NoticeHideContainer,
   LockPersonIconContainer,
+  NotificationsIconContainer,
 } from './styles';
 
 interface CustomNotification extends Notification {
@@ -68,7 +71,13 @@ const NotificationView: FC<ViewProps> = ({
                             return (
                               <Content key={notification.id}>
                                 <NotificationTitle>
-                                  <NotificationIcon color='action' />
+                                  <NotificationsIconContainer>
+                                    <NotificationsIcon
+                                      width={3}
+                                      height={3}
+                                      color={'#767678'}
+                                    />
+                                  </NotificationsIconContainer>
                                   <UserProfileLink
                                     href={`/profile/${notification.notificationCreator}`}
                                   >
@@ -107,8 +116,13 @@ const NotificationView: FC<ViewProps> = ({
                             return (
                               <Content key={notification.id}>
                                 <NotificationTitle>
-                                  <NotificationIcon color='action' />
-
+                                  <NotificationsIconContainer>
+                                    <NotificationsIcon
+                                      width={3}
+                                      height={3}
+                                      color={'#767678'}
+                                    />
+                                  </NotificationsIconContainer>
                                   <UserProfileLink
                                     href={`/profile/${notification.notificationCreator}`}
                                   >
@@ -131,7 +145,7 @@ const NotificationView: FC<ViewProps> = ({
 
                                 <NotificationDeleteButton>
                                   <OptionButton
-                                    icon={<MoreIcon />}
+                                    icon={<MoreVertIcon width={3} height={3} />}
                                     option={{ delete: true }}
                                     handleDelete={handleDeleteNotification}
                                   />

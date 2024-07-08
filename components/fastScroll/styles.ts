@@ -1,15 +1,18 @@
 import styled from '@emotion/styled';
 import { Theme, css } from '@emotion/react';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
 
 const commonStyles = (theme: Theme) => css`
-  font-size: 4rem;
+  width: 4rem;
+  height: 4rem;
   color: ${theme.colors.gray};
   border: 2px solid ${theme.colors.lightGray};
   border-radius: 50%;
   margin: 0.5rem 0;
   backdrop-filter: blur(4px);
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Container = styled.div`
@@ -20,12 +23,8 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const TopArrow = styled(ExpandLess)`
+const ArrowButton = styled.button`
   ${(props) => commonStyles(props.theme)}
 `;
 
-const DownArrow = styled(ExpandMore)`
-  ${(props) => commonStyles(props.theme)}
-`;
-
-export { Container, TopArrow, DownArrow };
+export { Container, ArrowButton };

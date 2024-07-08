@@ -1,10 +1,15 @@
 import React, { FC } from 'react';
+import { Notice } from './NoticeDetailController';
+import AppLayout from '@/components/appLayout';
+import { InnerContainer } from '@/styles/commons';
+import Title from '@/components/title';
+import Link from 'next/link';
+import { SearchIcon } from '@/assets/icons';
 import {
   Content,
   Header,
   InputBox,
   SearchForm,
-  SearchIcon,
   SubTitle,
   Table,
   TableBody,
@@ -12,11 +17,6 @@ import {
   TableHeader,
   TableHeaderLeft,
 } from './styles';
-import { Notice } from './NoticeDetailController';
-import AppLayout from '@/components/appLayout';
-import { InnerContainer } from '@/styles/commons';
-import Title from '@/components/title';
-import Link from 'next/link';
 
 export interface ViewProps {
   data?: Notice;
@@ -40,7 +40,7 @@ const NoticeDetailView: FC<ViewProps> = ({ data }) => {
           <InputBox>
             <input type='text' placeholder='제목, 내용' ref={() => {}} />
             <button>
-              <SearchIcon fontSize='inherit' />
+              <SearchIcon color={'#888888'} />
             </button>
           </InputBox>
         </SearchForm>

@@ -3,6 +3,7 @@ import AppLayout from '@/components/appLayout';
 import { InnerContainer } from '@/styles/commons';
 import Title from '@/components/title';
 import Link from 'next/link';
+import { ArrowDownIcon, SearchIcon } from '@/assets/icons';
 import {
   Content,
   FAQFooter,
@@ -12,9 +13,7 @@ import {
   MUIAccordion,
   MUIAccordionDetails,
   MUIAccordionSummary,
-  MUIExpandMoreIcon,
   SearchForm,
-  SearchIcon,
   SubTitle,
   Table,
   TableBody,
@@ -40,7 +39,7 @@ const FAQView: FC<ViewProps> = ({ handleSearchFAQ, SearchInputRef }) => {
           <InputBox>
             <input type='text' placeholder='제목, 내용' ref={SearchInputRef} />
             <button>
-              <SearchIcon fontSize='inherit' />
+              <SearchIcon color={'#888888'} />
             </button>
           </InputBox>
         </SearchForm>
@@ -59,7 +58,7 @@ const FAQView: FC<ViewProps> = ({ handleSearchFAQ, SearchInputRef }) => {
                 <td>
                   <MUIAccordion>
                     <MUIAccordionSummary
-                      expandIcon={<MUIExpandMoreIcon />}
+                      expandIcon={<ArrowDownIcon width={3} height={3} />}
                       aria-controls='panel1a-content'
                       id='panel1a-header'
                     >
@@ -79,7 +78,7 @@ const FAQView: FC<ViewProps> = ({ handleSearchFAQ, SearchInputRef }) => {
                 <td>
                   <MUIAccordion>
                     <MUIAccordionSummary
-                      expandIcon={<MUIExpandMoreIcon />}
+                      expandIcon={<ArrowDownIcon width={3} height={3} />}
                       aria-controls='panel2a-content'
                       id='panel2a-header'
                     >
@@ -113,7 +112,7 @@ const FAQView: FC<ViewProps> = ({ handleSearchFAQ, SearchInputRef }) => {
                 <td>
                   <MUIAccordion>
                     <MUIAccordionSummary
-                      expandIcon={<MUIExpandMoreIcon />}
+                      expandIcon={<ArrowDownIcon width={3} height={3} />}
                       aria-controls='panel3a-content'
                       id='panel3a-header'
                     >
@@ -136,7 +135,7 @@ const FAQView: FC<ViewProps> = ({ handleSearchFAQ, SearchInputRef }) => {
                 <td>
                   <MUIAccordion>
                     <MUIAccordionSummary
-                      expandIcon={<MUIExpandMoreIcon />}
+                      expandIcon={<ArrowDownIcon width={3} height={3} />}
                       aria-controls='panel4a-content'
                       id='panel4a-header'
                     >
@@ -179,7 +178,7 @@ const FAQView: FC<ViewProps> = ({ handleSearchFAQ, SearchInputRef }) => {
                 <td>
                   <MUIAccordion>
                     <MUIAccordionSummary
-                      expandIcon={<MUIExpandMoreIcon />}
+                      expandIcon={<ArrowDownIcon width={3} height={3} />}
                       aria-controls='panel5a-content'
                       id='panel5a-header'
                     >

@@ -1,16 +1,5 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import {
-  AccountCircleOutlined,
-  ArticleOutlined,
-  BookmarkBorderOutlined,
-  NotificationsNoneOutlined,
-  CampaignOutlined,
-  MouseOutlined,
-  AdminPanelSettingsOutlined,
-  LiveHelpOutlined,
-  LogoutOutlined,
-} from '@mui/icons-material';
 
 const Container = styled.div`
   max-width: 102.4rem;
@@ -21,7 +10,7 @@ const Container = styled.div`
 `;
 
 const StyledList = styled.li`
-  border-bottom: 2px solid #eee;
+  border-bottom: 1px solid #eee;
 `;
 
 const Item = styled.div`
@@ -33,64 +22,13 @@ const Item = styled.div`
 `;
 
 const Icon = styled.div`
-  font-size: 1.4rem;
-  width: 3.5rem;
-  height: 3.5rem;
+  line-height: 0;
 `;
 
 const Text = styled.div`
-  height: 8rem;
   line-height: 8rem;
   font-size: 1.4rem;
   padding-left: 1.5rem;
 `;
 
-const commonIconStyles = () => css`
-  width: 100%;
-  height: 100%;
-`;
-
-const AccountCircleIcon = styled(AccountCircleOutlined)`
-  ${commonIconStyles}
-`;
-const ArticleIcon = styled(ArticleOutlined)`
-  ${commonIconStyles}
-`;
-const BookmarkIcon = styled(BookmarkBorderOutlined)`
-  ${commonIconStyles}
-`;
-const NotificationsIcon = styled(NotificationsNoneOutlined)`
-  ${commonIconStyles}
-`;
-const CampaignIcon = styled(CampaignOutlined)`
-  ${commonIconStyles}
-`;
-const MouseIcon = styled(MouseOutlined)`
-  ${commonIconStyles}
-`;
-const AdminPanelSettingsIcon = styled(AdminPanelSettingsOutlined)`
-  ${commonIconStyles}
-`;
-const LiveHelpOutlinedIcon = styled(LiveHelpOutlined)`
-  ${commonIconStyles}
-`;
-const LogoutOutlinedIcon = styled(LogoutOutlined)`
-  ${commonIconStyles}
-`;
-
-export {
-  StyledList,
-  Container,
-  Item,
-  Icon,
-  Text,
-  AccountCircleIcon,
-  ArticleIcon,
-  BookmarkIcon,
-  NotificationsIcon,
-  CampaignIcon,
-  MouseIcon,
-  AdminPanelSettingsIcon,
-  LiveHelpOutlinedIcon,
-  LogoutOutlinedIcon,
-};
+export { StyledList, Container, Item, Icon, Text };

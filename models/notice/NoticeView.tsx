@@ -4,12 +4,12 @@ import { Notice } from './NoticeController';
 import AppLayout from '@/components/appLayout';
 import { InnerContainer } from '@/styles/commons';
 import Title from '@/components/title';
+import { SearchIcon } from '@/assets/icons';
 import {
   Content,
   Header,
   InputBox,
   SearchForm,
-  SearchIcon,
   SubTitle,
   Table,
   TableBody,
@@ -44,7 +44,7 @@ const NoticeView: FC<ViewProps> = ({
           <InputBox>
             <input type='text' placeholder='제목, 내용' ref={SearchInputRef} />
             <button>
-              <SearchIcon fontSize='inherit' />
+              <SearchIcon color={'#888888'} />
             </button>
           </InputBox>
         </SearchForm>

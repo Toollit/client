@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
-import ToollitLogo from '@/assets/images/ToollitLogo';
 import { useRouter } from 'next/router';
-import { BackButton, CloseButton } from '@/components/button';
-import useAuth from '@/hooks/useAuth';
-import { InnerContainer } from '@/styles/commons';
-import SearchDrawer from '@/components/drawer/search';
 import Link from 'next/link';
+import useAuth from '@/hooks/useAuth';
+import { BackButton, CloseButton } from '@/components/button';
+import SearchDrawer from '@/components/drawer/search';
+import { InnerContainer } from '@/styles/commons';
+import ToollitLogo from '@/assets/images/ToollitLogo';
+import { SearchIcon, AccountCircleIcon, MenuIcon } from '@/assets/icons';
 import {
   Container,
   ColumnContainer,
@@ -15,11 +16,8 @@ import {
   LogoTitle,
   Title,
   DefaultContainer,
-  SearchIcon,
-  AccountCircleIcon,
   LayoutContainer,
   ProfileLink,
-  MenuIcon,
 } from './styles';
 
 type Default = {
@@ -97,7 +95,9 @@ const Nav = <T extends Default | Close | Back | None>(props: T) => {
 
               <ColumnRightContainer>
                 <li>
-                  <SearchDrawer icon={<SearchIcon />} />
+                  <SearchDrawer
+                    icon={<SearchIcon width={3.5} height={3.5} />}
+                  />
                 </li>
                 <li>
                   <ProfileLink
@@ -106,12 +106,12 @@ const Nav = <T extends Default | Close | Back | None>(props: T) => {
                     }
                     onClick={handleAuthMutate}
                   >
-                    <AccountCircleIcon />
+                    <AccountCircleIcon width={3.5} height={3.5} />
                   </ProfileLink>
                 </li>
                 <li>
                   <Link href={'/menu'}>
-                    <MenuIcon />
+                    <MenuIcon width={3.5} height={3.5} />
                   </Link>
                 </li>
               </ColumnRightContainer>

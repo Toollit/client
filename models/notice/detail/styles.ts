@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { Search } from '@mui/icons-material';
 
 const Content = styled.div`
   padding: 1.5rem 1.5rem 20rem 1.5rem;
@@ -63,11 +62,6 @@ const InputBox = styled.div`
   }
 `;
 
-const SearchIcon = styled(Search)`
-  font-size: 2rem;
-  color: #888888;
-`;
-
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
@@ -109,7 +103,6 @@ export {
   SubTitle,
   SearchForm,
   InputBox,
-  SearchIcon,
   Table,
   TableHeader,
   TableHeaderLeft,
