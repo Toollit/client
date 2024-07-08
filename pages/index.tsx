@@ -16,7 +16,7 @@ const Home: NextPage<PageProps> = ({ fallback, pageNumber, postOrder }) => {
   return (
     <SWRConfig value={{ fallback }}>
       <Head>
-        <title>프로젝트</title>
+        <title>Toollit</title>
         <meta property='og:title' content='Toollit' key='title' />
         <meta
           property='og:description'
