@@ -18,7 +18,7 @@ export interface ProfileBookmarksAPIRes {
   success: boolean;
   message: string | null;
   data?: {
-    bookmarks: Project[] | [];
+    bookmarks: Project[];
     total: number;
   };
 }
