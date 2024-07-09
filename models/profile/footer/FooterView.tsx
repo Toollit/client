@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
-import { SignInOut, MyProfileLink, Container, LogoLink } from './styles';
+import { SigninLogout, MyProfileLink, Container, LogoLink } from './styles';
 
 export interface ViewProps {
   isMyProfile: boolean;
-  handleSignInOut: () => void;
-  signInOutText: string;
+  handleSigninLogout: () => void;
+  signinLogoutText: string;
   myProfileLink: string;
   noticeLink: string;
   privacyLink: string;
@@ -15,8 +15,8 @@ export interface ViewProps {
 
 const FooterView: FC<ViewProps> = ({
   isMyProfile,
-  handleSignInOut,
-  signInOutText,
+  handleSigninLogout,
+  signinLogoutText,
   myProfileLink,
   noticeLink,
   privacyLink,
@@ -28,7 +28,9 @@ const FooterView: FC<ViewProps> = ({
       <ul>
         <li>
           {isMyProfile ? (
-            <SignInOut onClick={handleSignInOut}>{signInOutText}</SignInOut>
+            <SigninLogout onClick={handleSigninLogout}>
+              {signinLogoutText}
+            </SigninLogout>
           ) : (
             <MyProfileLink href={myProfileLink}>내프로필</MyProfileLink>
           )}

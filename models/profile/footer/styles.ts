@@ -43,7 +43,7 @@ const Container = styled.div`
   }
 `;
 
-const SignInOut = styled.div`
+const SigninLogout = styled.div`
   font-size: 1.4rem;
   color: ${(props) => props.theme.colors.gray};
   cursor: pointer;
@@ -60,4 +60,4 @@ const LogoLink = styled(Link)`
   font-size: 2rem !important;
 `;
 
-export { SignInOut, MyProfileLink, Container, LogoLink };
+export { SigninLogout, MyProfileLink, Container, LogoLink };

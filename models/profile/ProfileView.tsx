@@ -25,7 +25,7 @@ import {
   Menu,
   FooterLink,
   DividerContainer,
-  SignInOut,
+  SigninLogout,
   LogoLink,
   MyProfileLink,
   ViewContainer,
@@ -127,9 +127,9 @@ const ProfileView: FC<ViewProps> = ({
               <ul>
                 <li>
                   {isMyProfile ? (
-                    <SignInOut onClick={handleSigninLogout}>
+                    <SigninLogout onClick={handleSigninLogout}>
                       {signinLogoutText}
-                    </SignInOut>
+                    </SigninLogout>
                   ) : (
                     <MyProfileLink href={myProfileLink}>내프로필</MyProfileLink>
                   )}

@@ -183,7 +183,7 @@ const FooterLink = styled.div`
   }
 `;
 
-const SignInOut = styled.a`
+const SigninLogout = styled.a`
   font-size: 1.4rem;
   color: ${(props) => props.theme.colors.gray};
   cursor: pointer;
@@ -251,7 +251,7 @@ export {
   Menu,
   FooterLink,
   DividerContainer,
-  SignInOut,
+  SigninLogout,
   MyProfileLink,
   LogoLink,
   ViewContainer,
