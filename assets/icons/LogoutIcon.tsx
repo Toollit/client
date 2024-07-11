@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import LogoutFill0 from 'public/static/icons/logout/logout_FILL0.svg';
 

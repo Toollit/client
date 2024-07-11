@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import PhoneFill0 from 'public/static/icons/phone/phone_FILL0.svg';
 

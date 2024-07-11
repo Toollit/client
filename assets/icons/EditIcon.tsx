@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import EditFill0 from 'public/static/icons/edit/edit_FILL0.svg';
 import EditFill1 from 'public/static/icons/edit/edit_FILL1.svg';

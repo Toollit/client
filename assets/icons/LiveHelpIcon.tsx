@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import LiveHelpFill0 from 'public/static/icons/liveHelp/live_help_FILL0.svg';
 import LiveHelpFill1 from 'public/static/icons/liveHelp/live_help_FILL1.svg';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import AdminPanelSettingsFill0 from 'public/static/icons/adminPanelSettings/admin_panel_settings_FILL0.svg';
 import AdminPanelSettingsFill1 from 'public/static/icons/adminPanelSettings/admin_panel_settings_FILL1.svg';

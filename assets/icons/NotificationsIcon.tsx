@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import NotificationsFill0 from 'public/static/icons/notifications/notifications_FILL0.svg';
 import NotificationsFill1 from 'public/static/icons/notifications/notifications_FILL1.svg';

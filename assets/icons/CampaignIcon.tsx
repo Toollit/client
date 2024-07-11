@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import CampaignFill0 from 'public/static/icons/campaign/campaign_FILL0.svg';
 import CampaignFill1 from 'public/static/icons/campaign/campaign_FILL1.svg';

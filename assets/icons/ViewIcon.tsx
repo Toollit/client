@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import VisibilityFill0 from 'public/static/icons/view/visibility_FILL0.svg';
 import VisibilityFill1 from 'public/static/icons/view/visibility_FILL1.svg';

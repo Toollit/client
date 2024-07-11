@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import AccountCircleFill0 from 'public/static/icons/accountCircle/account_circle_FILL0.svg';
 import AccountCircleFill1 from 'public/static/icons/accountCircle/account_circle_FILL1.svg';

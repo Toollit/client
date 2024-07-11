@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import BookmarkFill0 from 'public/static/icons/bookmark/bookmark_FILL0.svg';
 import BookmarkFill1 from 'public/static/icons/bookmark/bookmark_FILL1.svg';

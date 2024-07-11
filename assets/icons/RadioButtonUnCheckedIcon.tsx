@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import RadioButtonUnCheckedFill0 from 'public/static/icons/radio/radio_button_unchecked_FILL0.svg';
 

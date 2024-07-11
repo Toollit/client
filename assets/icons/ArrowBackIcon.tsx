@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import ArrowBackIOSFill0 from 'public/static/icons/arrow/arrow_back_ios_new_FILL0_wght400.svg';
 

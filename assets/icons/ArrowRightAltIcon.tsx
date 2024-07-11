@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import ArrowRightAltFill0 from 'public/static/icons/arrow/arrow_right_alt_FILL0.svg';
 

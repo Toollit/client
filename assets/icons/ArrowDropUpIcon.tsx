@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import ArrowDropUpFill0 from 'public/static/icons/arrow/arrow_drop_up_FILL0.svg';
 

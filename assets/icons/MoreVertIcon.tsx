@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from './types';
+import { IconProps } from '@/typings/icon';
 import { SVGContainer } from '@/styles/commons';
 import MoreVertFill0 from 'public/static/icons/more/more_vert_FILL0.svg';
 
