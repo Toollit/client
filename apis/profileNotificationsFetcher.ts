@@ -1,5 +1,5 @@
 import { serverInstance } from 'apis/axios';
-import { FetcherParams } from './types';
+import { FetcherParams } from '@/typings/axios';
 
 export interface Notification {
   type:
