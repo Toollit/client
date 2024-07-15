@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AxiosErrorData } from '@/apis/types';
+import { AxiosErrorData } from '@/typings/axios';
 import { KeyedMutator } from 'swr';
 
 export const errorMessage = <T>(error: unknown, mutate?: KeyedMutator<T>) => {
