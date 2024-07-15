@@ -1,26 +1,17 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import BookmarkView, { ViewProps } from './BookmarkView';
+import BookmarkView, { ViewProps } from './BookmarksView';
 import { useRouter } from 'next/router';
-import {
-  ProfileBookmarksAPIRes,
-  Project,
-} from '@/apis/profileBookmarksFetcher';
+import { BookmarksAPIRes } from '@/apis/bookmarksFetcher';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
 import { useAppDispatch, useAppSelector } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 import useMyBookmarksSWR from '@/hooks/useSWR/useMyBookmarksSWR';
 import useUserBookmarksSWR from '@/hooks/useSWR/useUserBookmarksSWR';
-
-type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
-
-interface BookmarkData {
-  isLoaded: boolean;
-  data: ProfileBookmarksAPIRes['data'] | null;
-}
+import { Project, CapitalizedMemberTypes } from '@/typings';
 
 interface ControllerProps {}
 
-const BookmarkController: FC<ControllerProps> = ({}) => {
+const BookmarksController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { isLaptop } = useWindowSize();
@@ -58,7 +49,7 @@ const BookmarkController: FC<ControllerProps> = ({}) => {
             return type === 'pm'
               ? type.toUpperCase()
               : type.charAt(0).toUpperCase() + type.slice(1);
-          }) as CustomMemberTypes,
+          }) as CapitalizedMemberTypes[],
         };
       });
 
@@ -109,4 +100,4 @@ const BookmarkController: FC<ControllerProps> = ({}) => {
   return <BookmarkView {...props} />;
 };
 
-export default BookmarkController;
+export default BookmarksController;

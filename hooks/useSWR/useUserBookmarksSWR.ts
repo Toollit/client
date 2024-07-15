@@ -2,11 +2,9 @@ import React from 'react';
 import useSWR from 'swr';
 import { serialize } from '@/middleware/swr/serialize';
 import { errorMessage } from '@/apis/errorMessage';
-import {
-  Project,
-  profileBookmarksFetcher,
-} from '@/apis/profileBookmarksFetcher';
+import { bookmarksFetcher } from '@/apis/bookmarksFetcher';
 import { useRouter } from 'next/router';
+import { Project } from '@/typings';
 
 type SWR = (
   nickname: string,
@@ -29,7 +27,7 @@ const useUserBookmarksSWR: SWR = (nickname, count, page, tag) => {
           args: { page, tag },
         }
       : null,
-    profileBookmarksFetcher,
+    bookmarksFetcher,
     {
       dedupingInterval: 60 * 10 * 1000,
       revalidateOnFocus: false,

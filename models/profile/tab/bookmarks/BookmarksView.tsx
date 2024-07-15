@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { Project } from '@/apis/profileBookmarksFetcher';
 import Hashtag from '@/components/hashtag';
 import { BookmarkIcon, PersonIcon, ViewIcon } from '@/assets/icons';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
 import Skeleton from '@/components/skeleton';
+import { Project, CapitalizedMemberTypes } from '@/typings';
 import {
   BoxContent,
   Content,
@@ -18,14 +18,14 @@ import {
   Notice,
 } from './styles';
 
-interface CustomBookmark extends Omit<Project, 'memberTypes'> {
-  memberTypes: ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
+interface CustomBookmarksViewData extends Omit<Project, 'memberTypes'> {
+  memberTypes: CapitalizedMemberTypes[];
   bookmark: boolean;
 }
 
 export interface ViewProps {
   hasRendered: boolean;
-  bookmarks?: CustomBookmark[];
+  bookmarks?: CustomBookmarksViewData[];
   bookmarksTotalCount?: number;
   loadMore: () => void;
   showLoadMore: boolean;
