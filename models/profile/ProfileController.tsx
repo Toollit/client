@@ -15,8 +15,6 @@ interface CachedData<T> {
   mutate: ScopedMutator;
 }
 
-type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
-
 export type ProfileTab =
   | 'viewProfile'
   | 'viewProjects'

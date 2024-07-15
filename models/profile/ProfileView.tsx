@@ -7,7 +7,7 @@ import SwipeableTabViews from '@/components/swipeableViews/swipeableTabViews';
 import ProjectController from './tab/project/ProjectController';
 import NotificationController from './tab/notification/NotificationController';
 import FooterController from './footer/FooterController';
-import BookmarkController from './tab/bookmark/BookmarkController';
+import BookmarksController from './tab/bookmarks/BookmarksController';
 import UserInfoController from './tab/userInfo/UserInfoController';
 import { ProfileTab } from './ProfileController';
 import ImageController from './image/ImageController';
@@ -159,7 +159,7 @@ const ProfileView: FC<ViewProps> = ({
               <LaptopViewContainer>
                 {isViewProfileTab && <UserInfoController />}
                 {isViewProjectsTab && <ProjectController />}
-                {isBookmarksTab && <BookmarkController />}
+                {isBookmarksTab && <BookmarksController />}
                 {isNotificationsTab && <NotificationController />}
               </LaptopViewContainer>
 
@@ -176,7 +176,7 @@ const ProfileView: FC<ViewProps> = ({
                   </ViewContainer>
 
                   <ViewContainer>
-                    <BookmarkController />
+                    <BookmarksController />
                     <FooterController />
                   </ViewContainer>
 
