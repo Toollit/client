@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { serialize } from '@/middleware/swr/serialize';
 import { errorMessage } from '@/apis/errorMessage';
-import { Project } from '@/apis/profileProjectsFetcher';
 import { searchFetcher } from '@/apis/searchFetcher';
+import { Project } from '@/typings';
 
 type SWR = (
   searchText: string,
@@ -40,8 +40,9 @@ const useSearchProjectsSWR: SWR = (searchText, page, tag) => {
 
   return {
     projects: data?.data?.projects,
-    isLoading,
     isError: error,
+    isLoading,
+    searchProjectsMutate: mutate,
   };
 };
 
