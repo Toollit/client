@@ -1,9 +1,9 @@
 import { serverInstance } from './axios';
 import { FetcherParams } from '@/typings/axios';
 
-export interface BookmarksStatusAPIReq {}
+export interface BookmarkIdsAPIReq {}
 
-export interface BookmarksStatusAPIRes {
+export interface BookmarkIdsAPIRes {
   success: boolean;
   message: string | null;
   data: {
@@ -11,9 +11,9 @@ export interface BookmarksStatusAPIRes {
   };
 }
 
-export const bookmarksStatusFetcher = async ({
+export const bookmarkIdsFetcher = async ({
   url,
-}: FetcherParams): Promise<BookmarksStatusAPIRes | undefined> => {
+}: FetcherParams): Promise<BookmarkIdsAPIRes | undefined> => {
   const response = await serverInstance.get(url);
   return response.data;
 };
