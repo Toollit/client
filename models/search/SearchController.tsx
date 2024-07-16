@@ -1,93 +1,63 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import SearchView, { ViewProps } from './SearchView';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
-import { SearchAPIRes, searchFetcher } from '@/apis/searchFetcher';
-import { serialize } from '@/middleware/swr/serialize';
-import { bookmarksStatusKey, searchKey } from '@/apis/keys';
+import { CapitalizedMemberTypes, Project } from '@/typings';
 import projectDefaultImage from 'public/static/images/project.jpg';
-import {
-  BookmarksStatusAPIRes,
-  bookmarksStatusFetcher,
-} from '@/apis/bookmarksStatusFetcher';
-import { errorMessage } from '@/apis/errorMessage';
+import useMyBookmarkIdsSWR from '@/hooks/useSWR/useMyBookmarkIdsSWR';
+import useSearchProjectsSWR from '@/hooks/useSWR/useSearchProjectsSWR';
 
-type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
+interface BookmarkStatusCheckProjects extends Project {
+  bookmark: boolean;
+}
+
+interface CapitalizedMemberTypesProjects
+  extends Omit<BookmarkStatusCheckProjects, 'memberTypes'> {
+  memberTypes: CapitalizedMemberTypes[];
+}
 
 export interface ControllerProps {}
 
 const SearchController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
-  const [searchText, setSearchText] = useState<string | undefined>('');
+  const [searchText, setSearchText] = useState<string>('');
   const { q } = router.query;
 
-  const { data: projects } = useSWR(
-    searchText
-      ? {
-          url: searchKey(searchText),
-          args: { page: `/search`, tag: `search` },
-        }
-      : null,
-    searchFetcher,
-    {
-      // dedupingInterval: 60 * 10 * 1000,
-      errorRetryCount: 0,
-      onError(err, key, config) {
-        errorMessage(err);
-      },
-      use: [serialize],
-    },
-  );
+  const { projects } = useSearchProjectsSWR(searchText);
+  const { bookmarkIds } = useMyBookmarkIdsSWR();
 
-  const { data: bookmarks } = useSWR(
-    {
-      url: bookmarksStatusKey(),
-      args: { page: '/search', tag: 'bookmarksStatus' },
-    },
-    bookmarksStatusFetcher,
-    {
-      dedupingInterval: 60 * 10 * 1000,
-      errorRetryCount: 0,
-      onError(err, key, config) {
-        errorMessage(err);
-      },
-      use: [serialize],
-    },
-  );
-
-  const handleProcessData = useCallback(
-    ({
-      projectsData,
-      bookmarksData,
-    }: {
-      projectsData?: SearchAPIRes['data'];
-      bookmarksData?: BookmarksStatusAPIRes['data'];
-    }) => {
-      if (!projectsData || !bookmarksData) {
-        return;
-      }
-      const projects = projectsData?.projects;
-      const bookmarks = bookmarksData?.bookmarks;
-
-      const bookmarksStatusCheck = projects?.map((project) => {
-        return bookmarks?.includes(project.id)
+  const handleBookmarkStatusCheck = useCallback(
+    (projects: Project[], bookmarkIds: number[]) => {
+      return projects.map((project) => {
+        return bookmarkIds.includes(project.id)
           ? { ...project, bookmark: true }
           : { ...project, bookmark: false };
       });
+    },
+    [],
+  );
 
+  const handleCapitalizedMemberTypes = useCallback(
+    (projects: BookmarkStatusCheckProjects[]) => {
       // member type convert. developer -> Developer, designer -> Designer, pm -> PM, anyone -> Anyone
-      const convertedMemberTypes = bookmarksStatusCheck?.map((project) => {
+      const capitalizedMemberTypes = projects.map((project) => {
         return {
           ...project,
           memberTypes: project.memberTypes?.map((type) => {
             return type === 'pm'
               ? type.toUpperCase()
               : type.charAt(0).toUpperCase() + type.slice(1);
-          }) as CustomMemberTypes,
+          }) as CapitalizedMemberTypes[],
         };
       });
 
-      const imageFiltering = convertedMemberTypes?.map((project) => {
+      return capitalizedMemberTypes;
+    },
+    [],
+  );
+
+  const handleImageFilter = useCallback(
+    (projects: CapitalizedMemberTypesProjects[]) => {
+      const filteredImage = projects.map((project) => {
         return {
           ...project,
           representativeImage:
@@ -97,9 +67,40 @@ const SearchController: FC<ControllerProps> = ({}) => {
         };
       });
 
-      return imageFiltering;
+      return filteredImage;
     },
     [],
+  );
+
+  const handleProcessData = useCallback(
+    ({
+      projects,
+      bookmarkIds,
+    }: {
+      projects?: Project[];
+      bookmarkIds?: number[];
+    }) => {
+      if (!projects || !bookmarkIds) {
+        return;
+      }
+
+      const bookmarkStatusCheckResult = handleBookmarkStatusCheck(
+        projects,
+        bookmarkIds,
+      );
+      const capitalizedMemberTypesResult = handleCapitalizedMemberTypes(
+        bookmarkStatusCheckResult,
+      );
+
+      const imageFilterResult = handleImageFilter(capitalizedMemberTypesResult);
+
+      return imageFilterResult;
+    },
+    [
+      handleBookmarkStatusCheck,
+      handleCapitalizedMemberTypes,
+      handleImageFilter,
+    ],
   );
 
   useEffect(() => {
@@ -113,8 +114,8 @@ const SearchController: FC<ControllerProps> = ({}) => {
   const props: ViewProps = {
     searchText,
     data: handleProcessData({
-      projectsData: projects?.data,
-      bookmarksData: bookmarks?.data,
+      projects,
+      bookmarkIds,
     }),
   };
 
