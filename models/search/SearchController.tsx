@@ -1,12 +1,12 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import SearchView, { ViewProps } from './SearchView';
 import { useRouter } from 'next/router';
-import { CapitalizedMemberTypes, Project } from '@/typings';
+import { CapitalizedMemberTypes, ProjectOverview } from '@/typings';
 import projectDefaultImage from 'public/static/images/project.jpg';
 import useMyBookmarkIdsSWR from '@/hooks/useSWR/useMyBookmarkIdsSWR';
 import useSearchProjectsSWR from '@/hooks/useSWR/useSearchProjectsSWR';
 
-interface BookmarkStatusCheckProjects extends Project {
+interface BookmarkStatusCheckProjects extends ProjectOverview {
   bookmark: boolean;
 }
 
@@ -26,7 +26,7 @@ const SearchController: FC<ControllerProps> = ({}) => {
   const { bookmarkIds } = useMyBookmarkIdsSWR();
 
   const handleBookmarkStatusCheck = useCallback(
-    (projects: Project[], bookmarkIds: number[]) => {
+    (projects: ProjectOverview[], bookmarkIds: number[]) => {
       return projects.map((project) => {
         return bookmarkIds.includes(project.id)
           ? { ...project, bookmark: true }
@@ -73,13 +73,7 @@ const SearchController: FC<ControllerProps> = ({}) => {
   );
 
   const handleProcessData = useCallback(
-    ({
-      projects,
-      bookmarkIds,
-    }: {
-      projects?: Project[];
-      bookmarkIds?: number[];
-    }) => {
+    (projects?: ProjectOverview[], bookmarkIds?: number[]) => {
       if (!projects || !bookmarkIds) {
         return;
       }
@@ -113,10 +107,7 @@ const SearchController: FC<ControllerProps> = ({}) => {
 
   const props: ViewProps = {
     searchText,
-    data: handleProcessData({
-      projects,
-      bookmarkIds,
-    }),
+    projects: handleProcessData(projects, bookmarkIds),
   };
 
   return <SearchView {...props} />;

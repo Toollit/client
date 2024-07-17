@@ -2,9 +2,10 @@ import React, { FC } from 'react';
 import AppLayout from '@/components/appLayout';
 import { InnerContainer } from '@/styles/commons';
 import Title from '@/components/title';
-import BlockPost, { BlockProject } from '@/components/post/block';
+import BlockPost from '@/components/post/block';
 import Grid from '@mui/material/Grid';
 import Skeleton from '@/components/skeleton';
+import { ProjectBlockPost } from '@/typings';
 import {
   ContentContainer,
   Header,
@@ -15,10 +16,10 @@ import {
 
 export interface ViewProps {
   searchText?: string;
-  data?: BlockProject[];
+  projects?: ProjectBlockPost[];
 }
 
-const SearchView: FC<ViewProps> = ({ searchText, data }) => {
+const SearchView: FC<ViewProps> = ({ searchText, projects }) => {
   return (
     <AppLayout type='default'>
       <InnerContainer>
@@ -30,9 +31,9 @@ const SearchView: FC<ViewProps> = ({ searchText, data }) => {
         </Header>
 
         <ContentContainer>
-          {data ? (
+          {projects ? (
             <Grid container spacing={1}>
-              {data?.map((project) => {
+              {projects.map((project) => {
                 return (
                   <Grid
                     key={project.id}
