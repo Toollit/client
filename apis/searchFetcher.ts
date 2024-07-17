@@ -1,17 +1,6 @@
 import { serverInstance } from './axios';
 import { FetcherParams } from '@/typings/axios';
-
-export interface Project {
-  id: number;
-  title: string;
-  views: number;
-  bookmarkCount: number;
-  hashtags: string[];
-  memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
-  memberCount: number;
-  recruitCount: number;
-  representativeImage: string;
-}
+import { ProjectOverview } from '@/typings';
 
 export interface SearchAPIReq {}
 
@@ -19,7 +8,7 @@ export interface SearchAPIRes {
   success: boolean;
   message: string | null;
   data: {
-    projects: Project[];
+    projects: ProjectOverview[];
   };
 }
 

@@ -1,6 +1,6 @@
 import { serverInstance } from 'apis/axios';
 import { FetcherParams } from '@/typings/axios';
-import { Project } from '@/typings';
+import { ProjectOverview } from '@/typings';
 
 export interface BookmarksAPIReq {}
 
@@ -8,7 +8,7 @@ export interface BookmarksAPIRes {
   success: boolean;
   message: string | null;
   data: {
-    bookmarks: Project[];
+    bookmarks: ProjectOverview[];
     total: number;
   };
 }

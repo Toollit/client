@@ -1,24 +1,14 @@
 import { serverInstance } from 'apis/axios';
 import { FetcherParams } from '@/typings/axios';
-
-export interface Project {
-  id: number;
-  title: string;
-  views: number;
-  bookmarkCount: number;
-  hashtags: string[];
-  memberTypes: ('developer' | 'designer' | 'pm' | 'anyone')[];
-  memberCount: number;
-  recruitCount: number;
-}
+import { ProjectOverview } from '@/typings';
 
 export interface ProfileProjectsAPIReq {}
 
 export interface ProfileProjectsAPIRes {
   success: boolean;
   message: string | null;
-  data?: {
-    projects: Project[] | [];
+  data: {
+    projects: ProjectOverview[];
     total: number;
   };
 }
