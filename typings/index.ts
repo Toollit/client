@@ -4,7 +4,7 @@ export type MemberTypes = 'developer' | 'designer' | 'pm' | 'anyone';
 export type CapitalizedMemberTypes = 'Developer' | 'Designer' | 'PM' | 'Anyone';
 export type representativeImageTypes = string | StaticImageData;
 
-export interface Project {
+export interface ProjectOverview {
   id: number;
   title: string;
   views: number;
@@ -16,7 +16,8 @@ export interface Project {
   representativeImage: string;
 }
 
-export interface ProjectUpdatePayload {
+export interface ProjectDetail {
+  id: number;
   title: string;
   contentHTML: string;
   contentMarkdown: string;
