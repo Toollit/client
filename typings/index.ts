@@ -29,3 +29,10 @@ export interface ProjectDetail {
   recruitCount: number;
   representativeImage: string | null;
 }
+
+export interface ProjectBlockPost
+  extends Omit<ProjectOverview, 'representativeImage' | 'memberTypes'> {
+  bookmark: boolean;
+  representativeImage: string | StaticImageData;
+  memberTypes: CapitalizedMemberTypes[];
+}
