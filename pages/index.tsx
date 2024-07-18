@@ -1,12 +1,13 @@
 import type { NextPage, GetServerSideProps } from 'next';
-import { SWRConfig } from 'swr';
-import { projectsFetcher, Project } from '@/apis/projectsFetcher';
-import MainController from 'models/main/MainController';
-import { projectsKey } from '@/apis/keys';
 import Head from 'next/head';
+import { SWRConfig } from 'swr';
+import { projectOverviewsFetcher } from '@/apis/projectOverviewsFetcher';
+import { projectOverviewsKey } from '@/apis/keys';
+import { ProjectOverview } from '@/typings';
+import MainController from 'models/main/MainController';
 interface PageProps {
   fallback: {
-    [key: string]: Project[];
+    [key: string]: ProjectOverview[];
   };
   pageNumber: number;
   postOrder: 'new' | 'popularity';
@@ -38,12 +39,12 @@ const Home: NextPage<PageProps> = ({ fallback, pageNumber, postOrder }) => {
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // If no queries exist. Basic request when entering the homepage
   if (Object.keys(query).length === 0) {
-    const apiEndpoint = projectsKey(1, 'new');
+    const apiEndpoint = projectOverviewsKey(1, 'new');
     const key = JSON.stringify({
       url: apiEndpoint,
-      args: { page: '/', tag: 'projects' },
+      args: { page: '/', tag: 'projectOverviews' },
     });
-    const projects = await projectsFetcher({ url: apiEndpoint });
+    const projects = await projectOverviewsFetcher({ url: apiEndpoint });
 
     return {
       props: {
@@ -91,12 +92,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
   }
 
-  const apiEndpoint = projectsKey(pageNumber, postOrder);
+  const apiEndpoint = projectOverviewsKey(pageNumber, postOrder);
   const key = JSON.stringify({
     url: apiEndpoint,
-    args: { page: '/', tag: 'projects' },
+    args: { page: '/', tag: 'projectOverviews' },
   });
-  const projects = await projectsFetcher({ url: apiEndpoint });
+  const projects = await projectOverviewsFetcher({ url: apiEndpoint });
 
   return {
     props: {

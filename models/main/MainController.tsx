@@ -1,19 +1,21 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
 import MainView, { ViewProps } from './MainView';
-import { ProjectsAPIRes, projectsFetcher } from '@/apis/projectsFetcher';
-import { bookmarksStatusKey, projectsKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/errorMessage';
 import useAuth from '@/hooks/useAuth';
-import {
-  BookmarksStatusAPIRes,
-  bookmarksStatusFetcher,
-} from '@/apis/bookmarksStatusFetcher';
-import { serialize } from '@/middleware/swr/serialize';
 import projectDefaultImage from 'public/static/images/project.jpg';
+import useMyBookmarkIdsSWR from '@/hooks/useSWR/useMyBookmarkIdsSWR';
+import useProjectOverviewsSWR from '@/hooks/useSWR/useProjectOverviewsSWR';
+import { CapitalizedMemberTypes, ProjectOverview } from '@/typings';
 
-type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
+interface BookmarkStatusCheckProjects extends ProjectOverview {
+  bookmark: boolean;
+}
+
+interface CapitalizedMemberTypesProjects
+  extends Omit<BookmarkStatusCheckProjects, 'memberTypes'> {
+  memberTypes: CapitalizedMemberTypes[];
+}
 
 interface ControllerProps {
   pageNumber: number;
@@ -30,38 +32,13 @@ const MainController: FC<ControllerProps> = ({
   const [page, setPage] = useState(pageNumber);
   const [order, setOrder] = useState<'new' | 'popularity'>(postOrder);
 
-  const { data: projects } = useSWR(
-    {
-      url: projectsKey(page, order),
-      args: { page: '/', tag: 'projects' },
-    },
-    projectsFetcher,
-    {
-      dedupingInterval: 60 * 10 * 1000,
-      revalidateOnMount: false,
-      errorRetryCount: 0,
-      onError(err, key, config) {
-        errorMessage(err);
-      },
-      use: [serialize],
-    },
+  const { projectOverviews, totalPage } = useProjectOverviewsSWR(
+    page,
+    order,
+    '/',
+    'projectOverviews',
   );
-
-  const { data: bookmarks } = useSWR(
-    {
-      url: bookmarksStatusKey(),
-      args: { page: '/', tag: 'bookmarksStatus' },
-    },
-    bookmarksStatusFetcher,
-    {
-      dedupingInterval: 60 * 10 * 1000,
-      errorRetryCount: 0,
-      onError(err, key, config) {
-        errorMessage(err);
-      },
-      use: [serialize],
-    },
-  );
+  const { bookmarkIds } = useMyBookmarkIdsSWR();
 
   const handleCreateProject = useCallback(async () => {
     try {
@@ -79,36 +56,39 @@ const MainController: FC<ControllerProps> = ({
     }
   }, [router, authMutate]);
 
-  const handleProcessData = useCallback(
-    ({
-      projectsData,
-      bookmarksData,
-    }: {
-      projectsData?: ProjectsAPIRes['data'];
-      bookmarksData?: BookmarksStatusAPIRes['data'];
-    }) => {
-      const projects = projectsData?.projects;
-      const bookmarks = bookmarksData?.bookmarks;
-
-      const bookmarksStatusCheck = projects?.map((project) => {
-        return bookmarks?.includes(project.id)
+  const handleBookmarkStatusCheck = useCallback(
+    (projectOverviews: ProjectOverview[], bookmarkIds: number[]) => {
+      return projectOverviews.map((project) => {
+        return bookmarkIds.includes(project.id)
           ? { ...project, bookmark: true }
           : { ...project, bookmark: false };
       });
+    },
+    [],
+  );
 
+  const handleCapitalizedMemberTypes = useCallback(
+    (projectOverviews: BookmarkStatusCheckProjects[]) => {
       // member type convert. developer -> Developer, designer -> Designer, pm -> PM, anyone -> Anyone
-      const convertedMemberTypes = bookmarksStatusCheck?.map((project) => {
+      const capitalizedMemberTypes = projectOverviews.map((project) => {
         return {
           ...project,
           memberTypes: project.memberTypes?.map((type) => {
             return type === 'pm'
               ? type.toUpperCase()
               : type.charAt(0).toUpperCase() + type.slice(1);
-          }) as CustomMemberTypes,
+          }) as CapitalizedMemberTypes[],
         };
       });
 
-      const imageFiltering = convertedMemberTypes?.map((project) => {
+      return capitalizedMemberTypes;
+    },
+    [],
+  );
+
+  const handleImageFilter = useCallback(
+    (projectOverviews: CapitalizedMemberTypesProjects[]) => {
+      const filteredImage = projectOverviews.map((project) => {
         return {
           ...project,
           representativeImage:
@@ -118,9 +98,34 @@ const MainController: FC<ControllerProps> = ({
         };
       });
 
-      return imageFiltering;
+      return filteredImage;
     },
     [],
+  );
+
+  const handleProcessData = useCallback(
+    (projectOverviews?: ProjectOverview[], bookmarkIds?: number[]) => {
+      if (!projectOverviews || !bookmarkIds) {
+        return;
+      }
+
+      const bookmarkStatusCheckResult = handleBookmarkStatusCheck(
+        projectOverviews,
+        bookmarkIds,
+      );
+      const capitalizedMemberTypesResult = handleCapitalizedMemberTypes(
+        bookmarkStatusCheckResult,
+      );
+
+      const imageFilterResult = handleImageFilter(capitalizedMemberTypesResult);
+
+      return imageFilterResult;
+    },
+    [
+      handleBookmarkStatusCheck,
+      handleCapitalizedMemberTypes,
+      handleImageFilter,
+    ],
   );
 
   // Set up page and order to request data to the server
@@ -160,13 +165,10 @@ const MainController: FC<ControllerProps> = ({
   }, [router, page, order]);
 
   const props: ViewProps = {
-    projects: handleProcessData({
-      projectsData: projects?.data,
-      bookmarksData: bookmarks?.data,
-    }),
+    projectOverviews: handleProcessData(projectOverviews, bookmarkIds),
     handleCreateProject,
     pagination: {
-      totalPage: projects?.data?.totalPage ? projects?.data.totalPage : 1,
+      totalPage: totalPage ?? 1,
     },
   };
 

@@ -5,7 +5,7 @@ import BannerBackground from '@/assets/images/BannerBackground';
 import Bug from '@/assets/images/Bug';
 import NetworkLottieJson from 'public/static/lotties/network.json';
 import LottieAnimation from '@/components/lottie';
-import BlockPost, { BlockProject } from '@/components/post/block';
+import BlockPost from '@/components/post/block';
 import Grid from '@mui/material/Grid';
 import Filter from '@/components/filter';
 import Pagination from '@/components/pagination';
@@ -13,6 +13,7 @@ import { Button } from '@/components/button';
 import { InnerContainer } from '@/styles/commons';
 import Swiper from '@/components/swiper/webComponent/container';
 import SwiperSlide from '@/components/swiper/webComponent/slide';
+import { ProjectBlockPost } from '@/typings';
 import {
   Banner,
   FirstSlideText,
@@ -32,7 +33,7 @@ import {
 } from './styles';
 
 export interface ViewProps {
-  projects?: BlockProject[];
+  projectOverviews?: ProjectBlockPost[];
   handleCreateProject: () => void;
   pagination: {
     totalPage: number;
@@ -40,7 +41,7 @@ export interface ViewProps {
 }
 
 const MainView: FC<ViewProps> = ({
-  projects,
+  projectOverviews,
   handleCreateProject,
   pagination,
 }) => {
@@ -113,7 +114,7 @@ const MainView: FC<ViewProps> = ({
 
         <ContentContainer>
           <Grid container spacing={1}>
-            {projects?.map((project) => {
+            {projectOverviews?.map((project) => {
               return (
                 <Grid
                   key={project.id}
