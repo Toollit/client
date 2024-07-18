@@ -2,20 +2,20 @@ import { serverInstance } from './axios';
 import { FetcherParams } from '@/typings/axios';
 import { ProjectOverview } from '@/typings';
 
-export interface ProjectsAPIReq {}
+export interface ProjectOverviewsAPIReq {}
 
-export interface ProjectsAPIRes {
+export interface ProjectOverviewsAPIRes {
   success: boolean;
   message: string | null;
   data: {
-    projects: ProjectOverview[];
+    projectOverviews: ProjectOverview[];
     totalPage: number;
   };
 }
 
-export const projectsFetcher = async ({
+export const projectOverviewsFetcher = async ({
   url,
-}: FetcherParams): Promise<ProjectsAPIRes | undefined> => {
+}: FetcherParams): Promise<ProjectOverviewsAPIRes | undefined> => {
   const response = await serverInstance.get(url);
   return response.data;
 };
