@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import ResetPasswordView, { ViewProps } from './ResetPasswordView';
 import { resetPasswordAPI } from '@/apis/resetPassword';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import useAuth from '@/hooks/useAuth';
 import PrivateRoute from '@/components/PrivateRoute';
 import useLogout from '@/hooks/useLogout';

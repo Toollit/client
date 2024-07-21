@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import AppLayout from 'components/appLayout';
+import AppLayout from '@/components/appLayout';
 import { Button } from '@/components/button';
 import Title from '@/components/title';
 import Input from '@/components/input';

@@ -7,7 +7,9 @@ export const ENDPOINTS = {
     },
   },
   CREATE: {},
-  UPDATE: {},
+  UPDATE: {
+    RESET_PASSWORD: `/api/user/resetPassword`,
+  },
   DELETE: {},
 };
 
