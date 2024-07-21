@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 import { FetcherParams } from '@/typings/axios';
 
 export interface AuthAPIReq {}
@@ -15,6 +15,6 @@ export interface AuthAPIRes {
 export const authFetcher = async ({
   url,
 }: FetcherParams): Promise<AuthAPIRes | undefined> => {
-  const response = await serverInstance.get(url);
+  const response = await apiClient.get(url);
   return response.data;
 };

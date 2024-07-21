@@ -1,4 +1,4 @@
-import { serverInstance } from './axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface DuplicateCheckNicknameAPIReq {
   nickname: string;
@@ -14,11 +14,8 @@ export const DuplicateCheckNicknameAPI = async ({
 }: DuplicateCheckNicknameAPIReq): Promise<
   DuplicateCheckNicknameAPIRes | undefined
 > => {
-  const response = await serverInstance.post(
-    '/api/user/duplicateCheckNickname',
-    {
-      nickname,
-    },
-  );
+  const response = await apiClient.post('/api/user/duplicateCheckNickname', {
+    nickname,
+  });
   return response.data;
 };

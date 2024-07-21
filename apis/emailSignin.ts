@@ -1,4 +1,4 @@
-import { serverInstance } from './axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface EmailSigninAPIReq {
   email: string;
@@ -18,7 +18,7 @@ export const emailSigninAPI = async ({
   email,
   password,
 }: EmailSigninAPIReq): Promise<EmailSigninAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/user/signin/email', {
+  const response = await apiClient.post('/api/user/signin/email', {
     email,
     password,
   });

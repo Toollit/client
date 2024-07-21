@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface UpdateProfileAPIReq {
   category: string;
@@ -24,7 +24,7 @@ export const updateProfileAPI = async (
   const requestData = data.data instanceof FormData ? data.data : data;
 
   if (data.option) {
-    const response = await serverInstance.post(
+    const response = await apiClient.post(
       `/api/user/profile/${data.category}`,
       requestData,
       { ...data.option },
@@ -32,7 +32,7 @@ export const updateProfileAPI = async (
 
     return response.data;
   } else {
-    const response = await serverInstance.post(
+    const response = await apiClient.post(
       `/api/user/profile/${data.category}`,
       requestData,
     );

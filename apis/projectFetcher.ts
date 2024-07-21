@@ -1,6 +1,6 @@
-import { ProjectDetail } from '@/typings';
-import { serverInstance } from './axios';
+import { apiClient } from '@/apis/config/axios';
 import { FetcherParams } from '@/typings/axios';
+import { ProjectDetail } from '@/typings';
 
 export interface ProjectWriter {
   nickname: string;
@@ -33,6 +33,6 @@ export const projectFetcher = async ({
   url,
   config,
 }: FetcherParams): Promise<ProjectAPIRes | undefined> => {
-  const response = await serverInstance.get(url, config ? { ...config } : {});
+  const response = await apiClient.get(url, config ? { ...config } : {});
   return response.data;
 };

@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface ReportAPIReq {
   postId: number;
@@ -15,6 +15,6 @@ export interface ReportAPIRes {
 export const reportAPI = async (
   data: ReportAPIReq,
 ): Promise<ReportAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/post/report', data);
+  const response = await apiClient.post('/api/post/report', data);
   return response.data;
 };

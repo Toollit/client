@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface UpdateProjectData {
   postId: string;
@@ -23,7 +23,7 @@ export interface UpdateProjectAPIRes {
 export const updateProjectAPI = async (
   data: UpdateProjectAPIReq,
 ): Promise<UpdateProjectAPIRes | undefined> => {
-  const response = await serverInstance.post(`/api/post/project/update`, data, {
+  const response = await apiClient.post(`/api/post/project/update`, data, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

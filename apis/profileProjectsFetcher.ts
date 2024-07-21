@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 import { FetcherParams } from '@/typings/axios';
 import { ProjectOverview } from '@/typings';
 
@@ -16,7 +16,7 @@ export interface ProfileProjectsAPIRes {
 export const profileProjectsFetcher = async ({
   url,
 }: FetcherParams): Promise<ProfileProjectsAPIRes | undefined> => {
-  const response = await serverInstance.get(url);
+  const response = await apiClient.get(url);
 
   return response.data;
 };

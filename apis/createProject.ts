@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface CreateProjectData {
   title: string;
@@ -23,7 +23,7 @@ export interface CreateProjectAPIRes {
 export const createProjectAPI = async (
   data: CreateProjectAPIReq,
 ): Promise<CreateProjectAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/post/project/create', data, {
+  const response = await apiClient.post('/api/post/project/create', data, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface ProjectJoinRejectAPIReq {
   notificationId: number;
@@ -12,9 +12,6 @@ export interface ProjectJoinRejectAPIRes {
 export const projectJoinRejectAPI = async (
   data: ProjectJoinRejectAPIReq,
 ): Promise<ProjectJoinRejectAPIRes | undefined> => {
-  const response = await serverInstance.post(
-    '/api/post/project/join/reject',
-    data,
-  );
+  const response = await apiClient.post('/api/post/project/join/reject', data);
   return response.data;
 };

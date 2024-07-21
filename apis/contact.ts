@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface ContactAPIReq {
   title: string;
@@ -14,6 +14,6 @@ export interface ContactAPIRes {
 export const contactAPI = async (
   data: ContactAPIReq,
 ): Promise<ContactAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/user/contact', data);
+  const response = await apiClient.post('/api/user/contact', data);
   return response.data;
 };

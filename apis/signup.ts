@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface SignupAPIReq {
   email: string;
@@ -14,6 +14,6 @@ export interface SignupAPIRes {
 export const signupAPI = async (
   data: SignupAPIReq,
 ): Promise<SignupAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/user/signup', data);
+  const response = await apiClient.post('/api/user/signup', data);
   return response.data;
 };

@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface DeleteAccountAPIReq {}
 
@@ -10,6 +10,6 @@ export interface DeleteAccountAPIRes {
 export const deleteAccountAPI = async (
   data: DeleteAccountAPIReq,
 ): Promise<DeleteAccountAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/user/deleteAccount', data);
+  const response = await apiClient.post('/api/user/deleteAccount', data);
   return response.data;
 };

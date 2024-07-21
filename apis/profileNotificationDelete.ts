@@ -1,4 +1,4 @@
-import { serverInstance } from './axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface ProfileNotificationDeleteAPIReq {
   notificationId: number;
@@ -14,7 +14,7 @@ export const profileNotificationDeleteAPI = async ({
 }: ProfileNotificationDeleteAPIReq): Promise<
   ProfileNotificationDeleteAPIRes | undefined
 > => {
-  const response = await serverInstance.post(
+  const response = await apiClient.post(
     '/api/user/profile/notification/delete',
     {
       notificationId,

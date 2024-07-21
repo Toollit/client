@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface DeleteAccountConfirmAPIReq {
   email: string;
@@ -15,7 +15,7 @@ export interface DeleteAccountConfirmAPIRes {
 export const deleteAccountConfirmAPI = async (
   data: DeleteAccountConfirmAPIReq,
 ): Promise<DeleteAccountConfirmAPIRes | undefined> => {
-  const response = await serverInstance.post(
+  const response = await apiClient.post(
     '/api/user/deleteAccount/confirm',
     data,
   );

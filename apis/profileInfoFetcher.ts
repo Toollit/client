@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 import { FetcherParams } from '@/typings/axios';
 
 export interface MyProfile {
@@ -34,12 +34,12 @@ export interface ProfileInfoAPIReq {}
 export interface ProfileInfoAPIRes {
   success: boolean;
   message: string | null;
-  data?: MyProfile | UserProfile;
+  data: MyProfile | UserProfile;
 }
 
 export const profileInfoFetcher = async ({
   url,
 }: FetcherParams): Promise<ProfileInfoAPIRes | undefined> => {
-  const response = await serverInstance.get(url);
+  const response = await apiClient.get(url);
   return response.data;
 };

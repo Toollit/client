@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface BookmarkAPIReq {
   postId: string;
@@ -15,6 +15,6 @@ export interface BookmarkAPIRes {
 export const bookmarkAPI = async (
   data: BookmarkAPIReq,
 ): Promise<BookmarkAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/post/bookmark/toggle', data);
+  const response = await apiClient.post('/api/post/bookmark/toggle', data);
   return response.data;
 };

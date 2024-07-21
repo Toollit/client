@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface EmailIssueAuthCodeAPIReq {
   email: string;
@@ -12,9 +12,6 @@ export interface EmailIssueAuthCodeAPIRes {
 export const emailIssueAuthCodeAPI = async (
   data: EmailIssueAuthCodeAPIReq,
 ): Promise<EmailIssueAuthCodeAPIRes | undefined> => {
-  const response = await serverInstance.post(
-    '/api/auth/email/issueAuthCode',
-    data,
-  );
+  const response = await apiClient.post('/api/auth/email/issueAuthCode', data);
   return response.data;
 };

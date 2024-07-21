@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface PwInquiryAPIReq {
   email: string;
@@ -12,6 +12,6 @@ export interface PwInquiryAPIRes {
 export const pwInquiryAPI = async (
   data: PwInquiryAPIReq,
 ): Promise<PwInquiryAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/user/pwInquiry', data);
+  const response = await apiClient.post('/api/user/pwInquiry', data);
   return response.data;
 };

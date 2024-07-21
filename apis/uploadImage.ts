@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export type UploadImageAPIReq = FormData;
 
@@ -12,7 +12,7 @@ export const uploadImageAPI = async (
   endpoint: string,
   data: UploadImageAPIReq,
 ): Promise<UploadImageAPIRes | undefined> => {
-  const response = await serverInstance.post(endpoint, data, {
+  const response = await apiClient.post(endpoint, data, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

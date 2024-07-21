@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { API_BASE_URL } from '@/apis/endpoints';
 
-const serverInstance = axios.create({
+const apiClient = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
 });
 
-if (serverInstance) {
-  serverInstance.interceptors.request.use(
+if (apiClient) {
+  apiClient.interceptors.request.use(
     (config) => {
       if (config.method === 'get') {
         config.timeout = 12000;
@@ -28,4 +28,4 @@ if (serverInstance) {
   );
 }
 
-export { serverInstance };
+export { apiClient };

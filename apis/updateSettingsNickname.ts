@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface UpdateSettingsNicknameAPIReq {
   nickname: string;
@@ -12,7 +12,7 @@ export interface UpdateSettingsNicknameAPIRes {
 export const updateSettingsNicknameAPI = async (
   data: UpdateSettingsNicknameAPIReq,
 ): Promise<UpdateSettingsNicknameAPIRes | undefined> => {
-  const response = await serverInstance.post(
+  const response = await apiClient.post(
     '/api/user/signup/settings/update/nickname',
     data,
   );

@@ -1,4 +1,4 @@
-import { serverInstance } from './axios';
+import { apiClient } from '@/apis/config/axios';
 import { FetcherParams } from '@/typings/axios';
 
 export interface BookmarkStatusAPIReq {}
@@ -14,6 +14,6 @@ export interface BookmarkStatusAPIRes {
 export const bookmarkStatusFetcher = async ({
   url,
 }: FetcherParams): Promise<BookmarkStatusAPIRes | undefined> => {
-  const response = await serverInstance.get(url);
+  const response = await apiClient.get(url);
   return response.data;
 };

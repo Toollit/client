@@ -1,4 +1,4 @@
-import { serverInstance } from './axios';
+import { apiClient } from '@/apis/config/axios';
 import { FetcherParams } from '@/typings/axios';
 import { ProjectOverview } from '@/typings';
 
@@ -15,6 +15,6 @@ export interface SearchAPIRes {
 export const searchFetcher = async ({
   url,
 }: FetcherParams): Promise<SearchAPIRes | undefined> => {
-  const response = await serverInstance.get(url);
+  const response = await apiClient.get(url);
   return response.data;
 };

@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface ResetPasswordAPIReq {
   password: string;
@@ -12,6 +12,6 @@ export interface ResetPasswordAPIRes {
 export const resetPasswordAPI = async (
   data: ResetPasswordAPIReq,
 ): Promise<ResetPasswordAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/user/resetPassword', data);
+  const response = await apiClient.post('/api/user/resetPassword', data);
   return response.data;
 };

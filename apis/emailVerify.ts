@@ -1,4 +1,4 @@
-import { serverInstance } from './axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface EmailVerifyAPIReq {
   email: string;
@@ -14,7 +14,7 @@ export const emailVerifyAPI = async ({
   email,
   authCode,
 }: EmailVerifyAPIReq): Promise<EmailVerifyAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/auth/email/verify', {
+  const response = await apiClient.post('/api/auth/email/verify', {
     email,
     authCode,
   });

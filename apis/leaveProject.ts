@@ -1,4 +1,4 @@
-import { serverInstance } from 'apis/axios';
+import { apiClient } from '@/apis/config/axios';
 
 export interface LeaveProjectAPIReq {
   postId: string;
@@ -12,6 +12,6 @@ export interface LeaveProjectAPIRes {
 export const leaveProjectAPI = async (
   data: LeaveProjectAPIReq,
 ): Promise<LeaveProjectAPIRes | undefined> => {
-  const response = await serverInstance.post('/api/post/project/leave', data);
+  const response = await apiClient.post('/api/post/project/leave', data);
   return response.data;
 };
