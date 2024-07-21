@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { API_BASE_URL } from '@/apis/endpoints';
 
 const serverInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_SERVER_API_HOST,
+  baseURL: API_BASE_URL,
   withCredentials: true,
 });
 
