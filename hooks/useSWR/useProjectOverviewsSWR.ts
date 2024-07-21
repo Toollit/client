@@ -1,13 +1,13 @@
 import React from 'react';
 import useSWR, { KeyedMutator } from 'swr';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import { serialize } from '@/middleware/swr/serialize';
 import {
   ProjectOverviewsAPIRes,
   projectOverviewsFetcher,
 } from '@/apis/projectOverviewsFetcher';
 import { ProjectOverview } from '@/typings';
-import { projectOverviewsKey } from '@/apis/keys';
+import { ENDPOINTS } from '@/apis/endpoints';
 
 type SWR = (
   pageNumber: number,
@@ -25,7 +25,7 @@ type SWR = (
 const useProjectOverviewsSWR: SWR = (pageNumber, postOrder, page, tag) => {
   const { data, error, isLoading, mutate } = useSWR(
     {
-      url: projectOverviewsKey(pageNumber, postOrder),
+      url: ENDPOINTS.GET.PROJECT_OVERVIEWS(pageNumber, postOrder),
       args: { page, tag },
     },
     projectOverviewsFetcher,

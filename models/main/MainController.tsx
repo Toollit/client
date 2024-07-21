@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import MainView, { ViewProps } from './MainView';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import useAuth from '@/hooks/useAuth';
 import projectDefaultImage from 'public/static/images/project.jpg';
 import useMyBookmarkIdsSWR from '@/hooks/useSWR/useMyBookmarkIdsSWR';

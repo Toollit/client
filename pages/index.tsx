@@ -2,9 +2,10 @@ import type { NextPage, GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { SWRConfig } from 'swr';
 import { projectOverviewsFetcher } from '@/apis/projectOverviewsFetcher';
-import { projectOverviewsKey } from '@/apis/keys';
 import { ProjectOverview } from '@/typings';
-import MainController from 'models/main/MainController';
+import MainController from '@/models/main/MainController';
+import { ENDPOINTS } from '@/apis/endpoints';
+
 interface PageProps {
   fallback: {
     [key: string]: ProjectOverview[];
@@ -39,7 +40,7 @@ const Home: NextPage<PageProps> = ({ fallback, pageNumber, postOrder }) => {
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // If no queries exist. Basic request when entering the homepage
   if (Object.keys(query).length === 0) {
-    const apiEndpoint = projectOverviewsKey(1, 'new');
+    const apiEndpoint = ENDPOINTS.GET.PROJECT_OVERVIEWS(1, 'new');
     const key = JSON.stringify({
       url: apiEndpoint,
       args: { page: '/', tag: 'projectOverviews' },
@@ -92,7 +93,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
   }
 
-  const apiEndpoint = projectOverviewsKey(pageNumber, postOrder);
+  const apiEndpoint = ENDPOINTS.GET.PROJECT_OVERVIEWS(pageNumber, postOrder);
   const key = JSON.stringify({
     url: apiEndpoint,
     args: { page: '/', tag: 'projectOverviews' },
