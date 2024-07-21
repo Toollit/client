@@ -2,7 +2,7 @@ import React, { useCallback, useState, useRef, useEffect, FC } from 'react';
 import { useRouter } from 'next/router';
 import SigninView, { ViewProps } from './SigninView';
 import { emailSigninAPI } from '@/apis/emailSignin';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import PrivateRoute from '@/components/PrivateRoute';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { loading } from '@/features/loading';

@@ -10,3 +10,7 @@ export const ENDPOINTS = {
   UPDATE: {},
   DELETE: {},
 };
+
+export const AUTH_ENDPOINTS = {
+  SIGNIN: `/api/user/signin/email`,
+};

@@ -1,4 +1,5 @@
 import { apiClient } from '@/apis/config/axios';
+import { AUTH_ENDPOINTS } from './endpoints';
 
 export interface EmailSigninAPIReq {
   email: string;
@@ -14,13 +15,9 @@ export interface EmailSigninAPIRes {
   };
 }
 
-export const emailSigninAPI = async ({
-  email,
-  password,
-}: EmailSigninAPIReq): Promise<EmailSigninAPIRes | undefined> => {
-  const response = await apiClient.post('/api/user/signin/email', {
-    email,
-    password,
-  });
+export const emailSigninAPI = async <T extends EmailSigninAPIReq>(
+  data: T,
+): Promise<EmailSigninAPIRes | undefined> => {
+  const response = await apiClient.post(AUTH_ENDPOINTS.SIGNIN, data);
   return response.data;
 };
