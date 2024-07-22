@@ -20,7 +20,7 @@ const AppLayout = (props: AppLayoutProps) => {
     <Container type={props.type}>
       <Nav {...props} />
 
-      <Content>{children}</Content>
+      <Content hasFooter={footer}>{children}</Content>
 
       {footer && <Footer />}
 

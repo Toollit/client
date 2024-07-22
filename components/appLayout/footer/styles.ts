@@ -1,4 +1,3 @@
-import { mediaQueryLaptop } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
 
 const Container = styled.div`
@@ -6,6 +5,7 @@ const Container = styled.div`
   min-height: 30rem;
   width: 100%;
   margin-top: auto;
+  padding-bottom: env(safe-area-inset-bottom);
 `;
 
 const NoticeArea = styled.div`

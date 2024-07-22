@@ -10,7 +10,7 @@ const Container = styled.div<Container>`
   display: flex;
   flex-direction: column;
 
-  ${(props) => {
+  /* ${(props) => {
     if (props.type === 'none') {
       return css`
         padding: env(safe-area-inset-top) env(safe-area-inset-right)
@@ -25,22 +25,51 @@ const Container = styled.div<Container>`
           env(safe-area-inset-left);
       `;
     }
+  }} */
+
+  ${(props) => {
+    if (props.type === 'none') {
+      return css`
+        padding-top: env(safe-area-inset-top);
+        padding-right: env(safe-area-inset-right);
+        padding-bottom: 0;
+        padding-left: env(safe-area-inset-left);
+      `;
+    } else {
+      return css`
+        padding-top: calc(
+          ${props.theme.layout.navHeight} + env(safe-area-inset-top)
+        );
+        padding-right: env(safe-area-inset-right);
+        padding-bottom: 0
+        padding-left: env(safe-area-inset-left);
+      `;
+    }
   }}
 `;
 
-/* 
-  padding: calc(
-      ${(props) => props.theme.layout.navHeight} + env(safe-area-inset-top)
-    )
-    env(safe-area-inset-right) env(safe-area-inset-bottom)
-    env(safe-area-inset-left); */
-
-const Content = styled.div`
+const Content = styled.div<{ hasFooter?: boolean }>`
   position: relative;
   flex: 1 1 auto; // For full size content
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  ${(props) => {
+    const hasFooter = props.hasFooter;
+
+    if (hasFooter) {
+      return css`
+        padding-bottom: 0;
+      `;
+    }
+
+    if (!hasFooter) {
+      return css`
+        padding-bottom: env(safe-area-inset-bottom);
+      `;
+    }
+  }}
 `;
 
 export { Container, Content };
