@@ -3,7 +3,7 @@ import { pwInquiryAPI } from '@/apis/pwInquiry';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { useRouter } from 'next/router';
 import PwInquiryView, { ViewProps } from './PwInquiryView';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import { loading } from '@/features/loading';
 import { useAppDispatch, useAppSelector } from '@/store';
 import PrivateRoute from '@/components/PrivateRoute';

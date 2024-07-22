@@ -6,7 +6,9 @@ export const ENDPOINTS = {
       return `/api/post/projectOverviews?page=${page}&order=${order ?? 'new'}`;
     },
   },
-  CREATE: {},
+  CREATE: {
+    PW_INQUIRY: `/api/user/pwInquiry`,
+  },
   UPDATE: {
     RESET_PASSWORD: `/api/user/resetPassword`,
   },
