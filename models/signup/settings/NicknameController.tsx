@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { loading } from '@/features/loading';
 import { errorMessage } from '@/apis/config/errorMessage';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { TduplicateNicknameCheckAPI } from '@/apis/duplicateNicknameCheck';
+import { duplicateNicknameCheckAPI } from '@/apis/duplicateNicknameCheck';
 import { updateSettingsNicknameAPI } from '@/apis/updateSettingsNickname';
 import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
@@ -74,7 +74,7 @@ const NicknameController: FC<ControllerProps> = ({}) => {
 
         dispatch(loading({ status: true }));
 
-        await TduplicateNicknameCheckAPI({ nickname });
+        await duplicateNicknameCheckAPI({ nickname });
 
         await updateSettingsNicknameAPI({ nickname });
         // revalidate user info for update nickname

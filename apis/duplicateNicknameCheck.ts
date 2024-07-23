@@ -10,7 +10,7 @@ export interface DuplicateNicknameCheckAPIRes {
   message: string | null;
 }
 
-export const TduplicateNicknameCheckAPI = async <
+export const duplicateNicknameCheckAPI = async <
   T extends DuplicateNicknameCheckAPIReq,
 >(
   data: T,
