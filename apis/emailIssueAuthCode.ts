@@ -1,4 +1,5 @@
 import { apiClient } from '@/apis/config/axios';
+import { ENDPOINTS } from './endpoints';
 
 export interface EmailIssueAuthCodeAPIReq {
   email: string;
@@ -9,9 +10,9 @@ export interface EmailIssueAuthCodeAPIRes {
   message: string | null;
 }
 
-export const emailIssueAuthCodeAPI = async (
-  data: EmailIssueAuthCodeAPIReq,
+export const emailIssueAuthCodeAPI = async <T extends EmailIssueAuthCodeAPIReq>(
+  data: T,
 ): Promise<EmailIssueAuthCodeAPIRes | undefined> => {
-  const response = await apiClient.post('/api/auth/email/issueAuthCode', data);
+  const response = await apiClient.post(ENDPOINTS.CREATE.ISSUE_AUTH_CODE, data);
   return response.data;
 };

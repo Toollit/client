@@ -8,6 +8,7 @@ export const ENDPOINTS = {
   },
   CREATE: {
     PW_INQUIRY: `/api/user/pwInquiry`,
+    ISSUE_AUTH_CODE: `/api/auth/email/issueAuthCode`,
   },
   UPDATE: {
     RESET_PASSWORD: `/api/user/resetPassword`,

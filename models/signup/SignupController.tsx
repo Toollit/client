@@ -4,7 +4,7 @@ import SignupView, { ViewProps } from './SignupView';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { emailAuth } from '@/features/signup';
 import { emailIssueAuthCodeAPI } from '@/apis/emailIssueAuthCode';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { loading } from '@/features/loading';
 
