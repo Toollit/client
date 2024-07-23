@@ -160,7 +160,7 @@ const SigninController: FC<ControllerProps> = () => {
     }
 
     if (firstTime === 'true') {
-      router.replace(`signup/settings/nickname`);
+      router.replace(`/signup/nickname/initialize`);
     }
   }, [router]);
 

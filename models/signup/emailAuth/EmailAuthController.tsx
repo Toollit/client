@@ -5,7 +5,7 @@ import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import EmailAuthView, { ViewProps } from './EmailAuthView';
 import { emailAuth } from '@/features/signup';
 import useTimer from '@/hooks/useTimer';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import { emailVerifyAPI } from '@/apis/emailVerify';
 import { loading } from '@/features/loading';
 import { SignupAPIReq, signupAPI } from '@/apis/signup';
@@ -75,7 +75,7 @@ const EmailAuthController: FC<ControllerProps> = () => {
 
         alert('인증에 성공했습니다.');
 
-        router.replace('/signup/settings/nickname');
+        router.replace('/signup/nickname/initialize');
 
         router.events.on('routeChangeComplete', () => {
           dispatch(loading({ status: false }));
