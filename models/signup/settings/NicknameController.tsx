@@ -2,9 +2,9 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import NicknameView, { ViewProps } from './NicknameView';
 import { useRouter } from 'next/router';
 import { loading } from '@/features/loading';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { DuplicateCheckNicknameAPI } from '@/apis/duplicateCheckNickname';
+import { TduplicateNicknameCheckAPI } from '@/apis/duplicateNicknameCheck';
 import { updateSettingsNicknameAPI } from '@/apis/updateSettingsNickname';
 import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
@@ -74,7 +74,7 @@ const NicknameController: FC<ControllerProps> = ({}) => {
 
         dispatch(loading({ status: true }));
 
-        await DuplicateCheckNicknameAPI({ nickname });
+        await TduplicateNicknameCheckAPI({ nickname });
 
         await updateSettingsNicknameAPI({ nickname });
         // revalidate user info for update nickname

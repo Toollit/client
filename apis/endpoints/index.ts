@@ -5,6 +5,9 @@ export const ENDPOINTS = {
     PROJECT_OVERVIEWS: (page: number, order: 'new' | 'popularity') => {
       return `/api/post/projectOverviews?page=${page}&order=${order ?? 'new'}`;
     },
+    DUPLICATE_NICKNAME_CHECK: (nickname: string) => {
+      return `/api/user/duplicateNicknameCheck`;
+    },
   },
   CREATE: {
     PW_INQUIRY: `/api/user/pwInquiry`,
