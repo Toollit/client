@@ -14,7 +14,7 @@ export const ENDPOINTS = {
     ISSUE_AUTH_CODE: `/api/auth/email/issueAuthCode`,
   },
   UPDATE: {
-    RESET_PASSWORD: `/api/user/resetPassword`,
+    RESET_PASSWORD: `/api/user/reset-password`,
     NICKNAME_INITIALIZE: `/api/user/signup/nickname-initialize`,
   },
   DELETE: {},
