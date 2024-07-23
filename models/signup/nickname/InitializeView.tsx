@@ -19,7 +19,7 @@ export interface ViewProps {
   nicknameInputRef: React.ForwardedRef<HTMLInputElement>;
 }
 
-const NicknameView: FC<ViewProps> = ({
+const InitializeView: FC<ViewProps> = ({
   handleClose,
   handleSubmit,
   nickname,
@@ -63,4 +63,4 @@ const NicknameView: FC<ViewProps> = ({
   );
 };
 
-export default NicknameView;
+export default InitializeView;

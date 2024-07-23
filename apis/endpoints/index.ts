@@ -15,6 +15,7 @@ export const ENDPOINTS = {
   },
   UPDATE: {
     RESET_PASSWORD: `/api/user/resetPassword`,
+    NICKNAME_INITIALIZE: `/api/user/signup/nickname-initialize`,
   },
   DELETE: {},
 };

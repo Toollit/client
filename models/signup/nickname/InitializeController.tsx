@@ -1,17 +1,17 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import NicknameView, { ViewProps } from './NicknameView';
+import NicknameView, { ViewProps } from './InitializeView';
 import { useRouter } from 'next/router';
 import { loading } from '@/features/loading';
 import { errorMessage } from '@/apis/config/errorMessage';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { duplicateNicknameCheckAPI } from '@/apis/duplicateNicknameCheck';
-import { updateSettingsNicknameAPI } from '@/apis/updateSettingsNickname';
+import { nicknameInitializeAPI } from '@/apis/nicknameInitialize';
 import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
 
 export interface ControllerProps {}
 
-const NicknameController: FC<ControllerProps> = ({}) => {
+const InitializeController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { isAuthenticated, authMutate } = useAuth();
@@ -76,7 +76,7 @@ const NicknameController: FC<ControllerProps> = ({}) => {
 
         await duplicateNicknameCheckAPI({ nickname });
 
-        await updateSettingsNicknameAPI({ nickname });
+        await nicknameInitializeAPI({ nickname });
         // revalidate user info for update nickname
         await authMutate();
 
@@ -125,4 +125,4 @@ const NicknameController: FC<ControllerProps> = ({}) => {
   return <NicknameView {...props} />;
 };
 
-export default NicknameController;
+export default InitializeController;
