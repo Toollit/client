@@ -5,8 +5,6 @@ const Container = styled.div`
   max-width: 102.4rem;
   width: 100%;
   margin: 0 auto;
-  min-height: ${(props) => `calc(100vh - ${props.theme.layout.navHeight} )`};
-  padding-bottom: env(safe-area-inset-bottom);
 `;
 
 const StyledList = styled.li`

@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import AppLayout from '@/components/appLayout';
 import Link from 'next/link';
-import { Container, Icon, Item, Text, StyledList } from './styles';
 import { MenuItem } from './MenuController';
+import { Container, Icon, Item, Text, StyledList } from './styles';
 
 export interface ViewProps {
   handleClose: () => void;
