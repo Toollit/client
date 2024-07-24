@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import SignupView, { ViewProps } from './SignupView';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { emailAuth } from '@/features/signup';
-import { emailIssueAuthCodeAPI } from '@/apis/emailIssueAuthCode';
+import { emailAuthCodeAPI } from '@/apis/emailAuthCode';
 import { errorMessage } from '@/apis/config/errorMessage';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { loading } from '@/features/loading';
@@ -105,7 +105,7 @@ const SignupController: FC<ControllerProps> = () => {
 
         dispatch(loading({ status: true }));
 
-        await emailIssueAuthCodeAPI({ email });
+        await emailAuthCodeAPI({ email });
 
         router.push('/signup/emailAuth');
 
