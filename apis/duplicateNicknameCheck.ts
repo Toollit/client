@@ -19,9 +19,6 @@ export const duplicateNicknameCheckAPI = async <
 
   const response = await apiClient.get(
     ENDPOINTS.GET.DUPLICATE_NICKNAME_CHECK(nickname),
-    {
-      params: { nickname },
-    },
   );
   return response.data;
 };
