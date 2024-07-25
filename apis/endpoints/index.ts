@@ -11,7 +11,6 @@ export const ENDPOINTS = {
   },
   CREATE: {
     PW_INQUIRY: `/api/user/pw-inquiry`,
-    EMAIL_AUTH_CODE: `/api/auth/email/auth-code`,
   },
   UPDATE: {
     RESET_PASSWORD: `/api/user/reset-password`,
@@ -22,4 +21,6 @@ export const ENDPOINTS = {
 
 export const AUTH_ENDPOINTS = {
   SIGNIN: `/api/user/signin/email`,
+  EMAIL_AUTH_CODE: `/api/auth/email/auth-code`,
+  EMAIL_VERIFY: `/api/auth/email/verify`,
 };
