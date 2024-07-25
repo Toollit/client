@@ -107,7 +107,7 @@ const SignupController: FC<ControllerProps> = () => {
 
         await emailAuthCodeAPI({ email });
 
-        router.push('/signup/emailAuth');
+        router.push('/signup/email/auth');
 
         router.events.on('routeChangeComplete', () => {
           dispatch(loading({ status: false }));

@@ -22,7 +22,7 @@ export interface ViewProps {
   authCodeInputRef: React.ForwardedRef<HTMLInputElement>;
 }
 
-const EmailAuthView: FC<ViewProps> = ({
+const AuthView: FC<ViewProps> = ({
   handleClose,
   authCode,
   handleChangeAuthCode,
@@ -70,4 +70,4 @@ const EmailAuthView: FC<ViewProps> = ({
   );
 };
 
-export default EmailAuthView;
+export default AuthView;

@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from 'store';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
-import EmailAuthView, { ViewProps } from './EmailAuthView';
+import EmailAuthView, { ViewProps } from './AuthView';
 import { emailAuth } from '@/features/signup';
 import useTimer from '@/hooks/useTimer';
 import { errorMessage } from '@/apis/config/errorMessage';
@@ -13,7 +13,7 @@ import useAuth from '@/hooks/useAuth';
 
 export interface ControllerProps {}
 
-const EmailAuthController: FC<ControllerProps> = () => {
+const AuthController: FC<ControllerProps> = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { authMutate } = useAuth();
@@ -144,4 +144,4 @@ const EmailAuthController: FC<ControllerProps> = () => {
   return <EmailAuthView {...props} />;
 };
 
-export default EmailAuthController;
+export default AuthController;
