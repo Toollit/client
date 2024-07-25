@@ -11,6 +11,7 @@ export const ENDPOINTS = {
   },
   CREATE: {
     PW_INQUIRY: `/api/user/pw-inquiry`,
+    PROJECT: `/api/post/project/create`,
   },
   UPDATE: {
     RESET_PASSWORD: `/api/user/reset-password`,

@@ -1,14 +1,14 @@
 import React, { FC, useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import ProjectCreateView, { ViewProps } from './ProjectCreateView';
-import { CreateProjectData, createProjectAPI } from '@/apis/createProject';
+import { ProjectRequiredData, createProjectAPI } from '@/apis/createProject';
 import useEditorContent from '@/hooks/useEditorContent';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import PrivateRoute from '@/components/PrivateRoute';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { loading } from '@/features/loading';
 import useTooltip from '@/hooks/useTooltip';
-import projectDefaultImage from 'public/static/images/project.jpg';
+import projectDefaultImage from '@/public/static/images/project.jpg';
 import { StaticImageData } from 'next/legacy/image';
 import { useAppDispatch, useAppSelector } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
@@ -82,7 +82,7 @@ const ProjectCreateController: FC<ControllerProps> = () => {
         return;
       }
 
-      const projectData: CreateProjectData = {
+      const projectRequiredData: ProjectRequiredData = {
         title: data?.title,
         contentHTML: data?.contentHTML,
         contentMarkdown: data?.contentMarkdown,
@@ -92,7 +92,7 @@ const ProjectCreateController: FC<ControllerProps> = () => {
         recruitCount: recruitCount,
       };
 
-      const stringifyJsonData = JSON.stringify(projectData);
+      const stringifyJsonData = JSON.stringify(projectRequiredData);
 
       const formData = new FormData();
 

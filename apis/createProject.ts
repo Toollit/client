@@ -1,6 +1,7 @@
 import { apiClient } from '@/apis/config/axios';
+import { ENDPOINTS } from './endpoints';
 
-export interface CreateProjectData {
+export interface ProjectRequiredData {
   title: string;
   contentHTML: string;
   contentMarkdown: string;
@@ -20,10 +21,10 @@ export interface CreateProjectAPIRes {
   };
 }
 
-export const createProjectAPI = async (
-  data: CreateProjectAPIReq,
+export const createProjectAPI = async <T extends CreateProjectAPIReq>(
+  data: T,
 ): Promise<CreateProjectAPIRes | undefined> => {
-  const response = await apiClient.post('/api/post/project/create', data, {
+  const response = await apiClient.post(ENDPOINTS.CREATE.PROJECT, data, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
