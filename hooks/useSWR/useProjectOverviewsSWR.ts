@@ -12,8 +12,10 @@ import { ENDPOINTS } from '@/apis/endpoints';
 type SWR = (
   pageNumber: number,
   postOrder: 'new' | 'popularity',
-  page?: string,
-  tag?: string,
+  args: {
+    page?: string;
+    tag?: string;
+  },
 ) => {
   projectOverviews?: ProjectOverview[];
   totalPage?: number;
@@ -22,11 +24,11 @@ type SWR = (
   projectOverviewsMutate: KeyedMutator<ProjectOverviewsAPIRes | undefined>;
 };
 
-const useProjectOverviewsSWR: SWR = (pageNumber, postOrder, page, tag) => {
+const useProjectOverviewsSWR: SWR = (pageNumber, postOrder, args) => {
   const { data, error, isLoading, mutate } = useSWR(
     {
       url: ENDPOINTS.GET.PROJECT_OVERVIEWS(pageNumber, postOrder),
-      args: { page, tag },
+      args,
     },
     projectOverviewsFetcher,
     {

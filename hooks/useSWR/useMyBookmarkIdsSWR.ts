@@ -2,22 +2,20 @@ import React from 'react';
 import useSWR from 'swr';
 import { serialize } from '@/middleware/swr/serialize';
 import { bookmarkIdsFetcher } from '@/apis/bookmarkIdsFetcher';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
+import { ENDPOINTS } from '@/apis/endpoints';
 
-type SWR = (
-  page?: string,
-  tag?: string,
-) => {
+type SWR = (args: { page?: string; tag?: string }) => {
   bookmarkIds?: number[];
   isLoading: boolean;
   isError: any;
 };
 
-const useMyBookmarkIdsSWR: SWR = (page, tag) => {
-  const { data, error, isLoading } = useSWR(
+const useMyBookmarkIdsSWR: SWR = (args) => {
+  const { data, error, isLoading, mutate } = useSWR(
     {
-      url: `/api/post/bookmark/bookmarksStatus`,
-      args: { page, tag },
+      url: ENDPOINTS.GET.MY_BOOKMARK_IDS,
+      args,
     },
     bookmarkIdsFetcher,
     {
@@ -30,7 +28,12 @@ const useMyBookmarkIdsSWR: SWR = (page, tag) => {
     },
   );
 
-  return { bookmarkIds: data?.data.bookmarkIds, isLoading, isError: error };
+  return {
+    bookmarkIds: data?.data.bookmarkIds,
+    isError: error,
+    isLoading,
+    bookmarkIdsMutate: mutate,
+  };
 };
 
 export default useMyBookmarkIdsSWR;

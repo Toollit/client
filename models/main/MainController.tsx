@@ -29,16 +29,22 @@ const MainController: FC<ControllerProps> = ({
   const router = useRouter();
   const { authMutate } = useAuth();
 
-  const [page, setPage] = useState(pageNumber);
+  const [pageNum, setPageNum] = useState(pageNumber);
   const [order, setOrder] = useState<'new' | 'popularity'>(postOrder);
 
   const { projectOverviews, totalPage } = useProjectOverviewsSWR(
-    page,
+    pageNum,
     order,
-    '/',
-    'projectOverviews',
+    {
+      page: '/',
+      tag: 'projectOverviews',
+    },
   );
-  const { bookmarkIds } = useMyBookmarkIdsSWR();
+
+  const { bookmarkIds } = useMyBookmarkIdsSWR({
+    page: '/',
+    tag: 'bookmarkIds',
+  });
 
   const handleCreateProject = useCallback(async () => {
     try {
@@ -135,7 +141,7 @@ const MainController: FC<ControllerProps> = ({
 
     // Preventing Infinite Requests
     if (router.asPath === '/') {
-      if (page === 1 && order === 'new') {
+      if (pageNum === 1 && order === 'new') {
         return;
       }
     }
@@ -150,7 +156,7 @@ const MainController: FC<ControllerProps> = ({
       pageQuery === '' ||
       orderQuery === ''
     ) {
-      setPage(1);
+      setPageNum(1);
       setOrder('new');
       router.replace('/', undefined, { shallow: true });
       return;
@@ -160,9 +166,9 @@ const MainController: FC<ControllerProps> = ({
       return;
     }
 
-    setPage(Number(pageQuery));
+    setPageNum(Number(pageQuery));
     setOrder(orderQuery);
-  }, [router, page, order]);
+  }, [router, pageNum, order]);
 
   const props: ViewProps = {
     projectOverviews: handleProcessData(projectOverviews, bookmarkIds),

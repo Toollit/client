@@ -14,6 +14,7 @@ export const ENDPOINTS = {
     BOOKMARK_STATUS: (postId: string) => {
       return `/api/post/bookmark/status/${postId}`;
     },
+    MY_BOOKMARK_IDS: `/api/post/bookmark/bookmarkIds`,
   },
   CREATE: {
     PW_INQUIRY: `/api/user/pw-inquiry`,
