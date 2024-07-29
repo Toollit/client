@@ -82,7 +82,7 @@ export interface ViewProps {
   writer?: ProjectWriter;
   content?: CustomProjectDetailViewData;
   member?: ProjectMember;
-  bookmark?: boolean;
+  bookmarkStatus?: boolean;
   handleBookmark: () => void;
   handleShare: () => void;
   handleModify: () => void;
@@ -100,7 +100,7 @@ const ProjectDetailView: FC<ViewProps> = ({
   writer,
   content,
   member,
-  bookmark,
+  bookmarkStatus,
   handleBookmark,
   handleShare,
   handleModify,
@@ -156,7 +156,7 @@ const ProjectDetailView: FC<ViewProps> = ({
                   </HashtagsContainer>
                   <ButtonContainer>
                     <BookmarkButton onClick={handleBookmark}>
-                      <BookmarkIcon fill={bookmark} />
+                      <BookmarkIcon fill={bookmarkStatus} />
                       <span>북마크</span>
                     </BookmarkButton>
                     <ShareButton onClick={handleShare}>

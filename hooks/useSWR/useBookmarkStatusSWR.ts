@@ -10,8 +10,10 @@ import { ENDPOINTS } from '@/apis/endpoints';
 
 type SWR = (
   postId: string,
-  page?: string,
-  tag?: string,
+  args: {
+    page?: string;
+    tag?: string;
+  },
 ) => {
   bookmarkStatus?: boolean;
   postId?: number[];
@@ -20,12 +22,12 @@ type SWR = (
   bookmarkStatusMutate: KeyedMutator<BookmarkStatusAPIRes | undefined>;
 };
 
-const useBookmarkStatusSWR: SWR = (postId, page, tag) => {
+const useBookmarkStatusSWR: SWR = (postId, args) => {
   const { data, error, isLoading, mutate } = useSWR(
     postId
       ? {
           url: ENDPOINTS.GET.BOOKMARK_STATUS(postId),
-          args: { page, tag },
+          args,
         }
       : null,
     bookmarkStatusFetcher,

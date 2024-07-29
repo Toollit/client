@@ -47,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
     const key = JSON.stringify({
       url: apiEndpoint,
-      args: { page: `/project/${postId}`, tag: `/project/${postId}` },
+      args: { page: `/project/${postId}`, tag: `project${postId}` },
     });
 
     const projectDetail = await projectFetcher({ url: apiEndpoint });

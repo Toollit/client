@@ -22,6 +22,7 @@ export const ENDPOINTS = {
   UPDATE: {
     RESET_PASSWORD: `/api/user/reset-password`,
     NICKNAME_INITIALIZE: `/api/user/signup/nickname-initialize`,
+    BOOKMARK_TOGGLE: `/api/post/bookmark/toggle`,
   },
   DELETE: {},
 };

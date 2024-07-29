@@ -2,15 +2,11 @@ import React, { useEffect, useState, useCallback, FC } from 'react';
 import ProjectDetailView, { ViewProps } from './ProjectDetailView';
 import { changeDateFormat, dateFromNow } from '@/utils/changeDateFormat';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
 import { ProjectAPIRes } from '@/apis/projectFetcher';
-import { bookmarkStatusKey } from '@/apis/keys';
 import { errorMessage } from '@/apis/config/errorMessage';
 import useAuth from '@/hooks/useAuth';
 import { showAlert, hideAlert } from '@/features/alert';
 import { bookmarkAPI } from '@/apis/bookmark';
-import { bookmarkStatusFetcher } from '@/apis/bookmarkStatusFetcher';
-import { serialize } from '@/middleware/swr/serialize';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { deleteProjectAPI } from '@/apis/deleteProject';
 import { openReport } from '@/features/report';
@@ -20,6 +16,7 @@ import { leaveProjectAPI } from '@/apis/leaveProject';
 import { useAppDispatch } from '@/store';
 import { CapitalizedMemberTypes } from '@/typings';
 import useProjectDetailSWR from '@/hooks/useSWR/useProjectDetailSWR';
+import useBookmarkStatusSWR from '@/hooks/useSWR/useBookmarkStatusSWR';
 
 export interface ControllerProps {}
 
@@ -37,31 +34,14 @@ const ProjectDetailController: FC<ControllerProps> = () => {
   const [shareAlertTimeoutId, setShareAlertTimeoutId] =
     useState<NodeJS.Timeout>();
 
-  const { projectDetail, projectDetailMutate } = useProjectDetailSWR(
-    postId,
-    `/project/${postId}`,
-    `/project/${postId}`,
-  );
+  const { projectDetail, projectDetailMutate } = useProjectDetailSWR(postId, {
+    page: `/project/${postId}`,
+    tag: `project${postId}`,
+  });
 
-  const { data: bookmark, mutate: bookmarkMutate } = useSWR(
-    postId
-      ? {
-          url: bookmarkStatusKey(postId),
-          args: {
-            page: `/project/${postId}`,
-            tag: 'projectDetailBookmarkStatus',
-          },
-        }
-      : null,
-    bookmarkStatusFetcher,
-    {
-      dedupingInterval: 60 * 10 * 1000,
-      errorRetryCount: 0,
-      onError(err, key, config) {
-        errorMessage(err);
-      },
-      use: [serialize],
-    },
+  const { bookmarkStatus, bookmarkStatusMutate } = useBookmarkStatusSWR(
+    postId,
+    { page: `/project/${postId}`, tag: `project${postId}BookmarkStatus` },
   );
 
   const handleConvertMemberTypes = useCallback(
@@ -96,8 +76,8 @@ const ProjectDetailController: FC<ControllerProps> = () => {
         const response = await bookmarkAPI({ postId });
         const status = response?.data.status;
 
-        bookmarkMutate();
-        mutateTag({ tag: 'bookmarksStatus' });
+        bookmarkStatusMutate();
+        mutateTag({ tag: 'bookmarkIds' });
         mutateTag({ tag: 'projectOverviews' });
 
         clearTimeout(bookmarkAlertTimeoutId);
@@ -133,7 +113,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
     postId,
     router,
     authMutate,
-    bookmarkMutate,
+    bookmarkStatusMutate,
     mutateTag,
     bookmarkAlertTimeoutId,
   ]);
@@ -378,7 +358,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
         }
       : projectDetail,
     member: projectDetail?.member,
-    bookmark: bookmark?.data.bookmark,
+    bookmarkStatus,
     handleBookmark,
     handleShare,
     handleModify,

@@ -2,7 +2,6 @@ import React from 'react';
 import useSWR, { KeyedMutator } from 'swr';
 import { errorMessage } from '@/apis/config/errorMessage';
 import { serialize } from '@/middleware/swr/serialize';
-import { useRouter } from 'next/router';
 import {
   ProjectAPIRes,
   ProjectContent,
@@ -12,8 +11,10 @@ import { ENDPOINTS } from '@/apis/endpoints';
 
 type SWR = (
   postId: string,
-  page?: string,
-  tag?: string,
+  args: {
+    page?: string;
+    tag?: string;
+  },
 ) => {
   projectDetail?: ProjectContent;
   isLoading: boolean;
@@ -21,13 +22,12 @@ type SWR = (
   projectDetailMutate: KeyedMutator<ProjectAPIRes | undefined>;
 };
 
-const useProjectDetailSWR: SWR = (postId, page, tag) => {
-  const router = useRouter();
+const useProjectDetailSWR: SWR = (postId, args) => {
   const { data, error, isLoading, mutate } = useSWR(
     postId
       ? {
           url: ENDPOINTS.GET.PROJECT_DETAIL(postId),
-          args: { page, tag },
+          args,
         }
       : null,
     projectFetcher,
