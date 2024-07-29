@@ -2,13 +2,13 @@ import React from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { SWRConfig } from 'swr';
 import Head from 'next/head';
-import { projectFetcher, ProjectDetail } from '@/apis/projectFetcher';
+import { projectFetcher, ProjectContent } from '@/apis/projectFetcher';
 import ProjectDetailController from '@/models/project/detail/ProjectDetailController';
-import { projectDetailKey } from '@/apis/keys';
+import { ENDPOINTS } from '@/apis/endpoints';
 
 interface PageProps {
   fallback: {
-    [key: string]: ProjectDetail;
+    [key: string]: ProjectContent;
   };
   id: number;
   title: string;
@@ -43,10 +43,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const postId = params?.id;
 
   if (!Array.isArray(postId) && postId !== undefined) {
-    const apiEndpoint = projectDetailKey(postId);
+    const apiEndpoint = ENDPOINTS.GET.PROJECT_DETAIL(postId);
+
     const key = JSON.stringify({
       url: apiEndpoint,
-      args: { page: `/project/${postId}`, tag: `project/${postId}` },
+      args: { page: `/project/${postId}`, tag: `/project/${postId}` },
     });
 
     const projectDetail = await projectFetcher({ url: apiEndpoint });

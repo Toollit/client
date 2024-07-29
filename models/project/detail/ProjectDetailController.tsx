@@ -3,9 +3,9 @@ import ProjectDetailView, { ViewProps } from './ProjectDetailView';
 import { changeDateFormat, dateFromNow } from '@/utils/changeDateFormat';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { ProjectAPIRes, projectFetcher } from '@/apis/projectFetcher';
-import { bookmarkStatusKey, projectDetailKey } from '@/apis/keys';
-import { errorMessage } from '@/apis/errorMessage';
+import { ProjectAPIRes } from '@/apis/projectFetcher';
+import { bookmarkStatusKey } from '@/apis/keys';
+import { errorMessage } from '@/apis/config/errorMessage';
 import useAuth from '@/hooks/useAuth';
 import { showAlert, hideAlert } from '@/features/alert';
 import { bookmarkAPI } from '@/apis/bookmark';
@@ -18,8 +18,8 @@ import { loading } from '@/features/loading';
 import { joinProjectAPI } from '@/apis/joinProject';
 import { leaveProjectAPI } from '@/apis/leaveProject';
 import { useAppDispatch } from '@/store';
-
-type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
+import { CapitalizedMemberTypes } from '@/typings';
+import useProjectDetailSWR from '@/hooks/useSWR/useProjectDetailSWR';
 
 export interface ControllerProps {}
 
@@ -37,24 +37,10 @@ const ProjectDetailController: FC<ControllerProps> = () => {
   const [shareAlertTimeoutId, setShareAlertTimeoutId] =
     useState<NodeJS.Timeout>();
 
-  const { data: projectDetail, mutate: projectDetailMutate } = useSWR(
-    postId
-      ? {
-          url: projectDetailKey(postId),
-          args: { page: `/project/${postId}`, tag: `project/${postId}` },
-        }
-      : null,
-    projectFetcher,
-    {
-      dedupingInterval: 60 * 10 * 1000,
-      revalidateOnMount: false,
-      revalidateOnFocus: false,
-      errorRetryCount: 0,
-      onError(err, key, config) {
-        errorMessage(err);
-      },
-      use: [serialize],
-    },
+  const { projectDetail, projectDetailMutate } = useProjectDetailSWR(
+    postId,
+    `/project/${postId}`,
+    `/project/${postId}`,
   );
 
   const { data: bookmark, mutate: bookmarkMutate } = useSWR(
@@ -84,7 +70,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
         return type === 'pm'
           ? type.toUpperCase()
           : type.charAt(0).toUpperCase() + type.slice(1);
-      }) as CustomMemberTypes;
+      }) as CapitalizedMemberTypes[];
 
       return convertedMemberTypes;
     },
@@ -101,7 +87,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
 
       if (auth?.success) {
         const isMyProject =
-          projectDetail?.data.writer.nickname === auth.data.nickname;
+          projectDetail?.writer.nickname === auth.data.nickname;
 
         if (isMyProject) {
           return alert('내가 작성한 게시글 입니다.');
@@ -112,7 +98,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
 
         bookmarkMutate();
         mutateTag({ tag: 'bookmarksStatus' });
-        mutateTag({ tag: 'projects' });
+        mutateTag({ tag: 'projectOverviews' });
 
         clearTimeout(bookmarkAlertTimeoutId);
 
@@ -233,8 +219,8 @@ const ProjectDetailController: FC<ControllerProps> = () => {
           openReport({
             postType: 'project',
             postId: Number(postId),
-            writer: projectDetail?.data.writer.nickname ?? '',
-            title: projectDetail?.data.content.title ?? '',
+            writer: projectDetail?.writer.nickname ?? '',
+            title: projectDetail?.content.title ?? '',
           }),
         );
       }
@@ -355,42 +341,43 @@ const ProjectDetailController: FC<ControllerProps> = () => {
   }, [bookmarkAlertTimeoutId, shareAlertTimeoutId]);
 
   const props: ViewProps = {
-    isMyPost: projectDetail?.data.writer.nickname === user?.nickname,
-    isRecruitCompleted: handleCheckRecruitComplete(projectDetail?.data),
-    isMember: handleCheckMember(projectDetail?.data),
+    isMyPost: projectDetail?.writer.nickname === user?.nickname,
+    isRecruitCompleted: handleCheckRecruitComplete(projectDetail),
+    isMember: handleCheckMember(projectDetail),
     isClientRendering,
     writer: projectDetail
       ? {
-          nickname: projectDetail.data.writer.nickname,
+          nickname: projectDetail.writer.nickname,
           lastSigninAt: dateFromNow({
-            date: projectDetail.data.writer.lastSigninAt,
+            date: projectDetail.writer.lastSigninAt,
           }),
-          profileImage: projectDetail.data.writer.profileImage,
+          profileImage: projectDetail.writer.profileImage,
         }
       : projectDetail,
     content: projectDetail
       ? {
-          title: projectDetail.data.content.title,
-          contentHTML: projectDetail.data.content.contentHTML,
-          contentMarkdown: projectDetail.data.content.contentMarkdown,
-          views: projectDetail.data.content.views,
+          id: projectDetail.content.id,
+          title: projectDetail.content.title,
+          contentHTML: projectDetail.content.contentHTML,
+          contentMarkdown: projectDetail.content.contentMarkdown,
+          views: projectDetail.content.views,
           createdAt: changeDateFormat({
-            date: projectDetail.data.content.createdAt,
+            date: projectDetail.content.createdAt,
             format: 'YYMMDD_hhmm',
           }),
           updatedAt: changeDateFormat({
-            date: projectDetail.data.content.updatedAt,
+            date: projectDetail.content.updatedAt,
             format: 'YYMMDD_hhmm',
           }),
-          hashtags: projectDetail.data.content.hashtags,
+          hashtags: projectDetail.content.hashtags,
           memberTypes: handleConvertMemberTypes(
-            projectDetail.data.content.memberTypes,
+            projectDetail.content.memberTypes,
           ),
-          recruitCount: projectDetail.data.content.recruitCount,
-          representativeImage: projectDetail.data.content.representativeImage,
+          recruitCount: projectDetail.content.recruitCount,
+          representativeImage: projectDetail.content.representativeImage,
         }
       : projectDetail,
-    member: projectDetail?.data.member,
+    member: projectDetail?.member,
     bookmark: bookmark?.data.bookmark,
     handleBookmark,
     handleShare,

@@ -10,11 +10,8 @@ import { Button } from '@/components/button';
 import { InnerContainer, ImageWrapper } from '@/styles/commons';
 import BasicTooltip from '@/components/tooltip/basic';
 import OptionButton from '@/components/drawer/option';
-import {
-  ProjectContent,
-  ProjectMember,
-  ProjectWriter,
-} from '@/apis/projectFetcher';
+import { ProjectMember, ProjectWriter } from '@/apis/projectFetcher';
+import { CapitalizedMemberTypes, ProjectDetail } from '@/typings';
 import {
   ShareIcon,
   BookmarkIcon,
@@ -72,8 +69,9 @@ const DynamicTuiViewer = dynamic(
   },
 );
 
-interface Content extends Omit<ProjectContent, 'memberTypes'> {
-  memberTypes: ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
+interface CustomProjectDetailViewData
+  extends Omit<ProjectDetail, 'memberTypes'> {
+  memberTypes: CapitalizedMemberTypes[];
 }
 
 export interface ViewProps {
@@ -82,7 +80,7 @@ export interface ViewProps {
   isMember: boolean;
   isClientRendering: boolean;
   writer?: ProjectWriter;
-  content?: Content;
+  content?: CustomProjectDetailViewData;
   member?: ProjectMember;
   bookmark?: boolean;
   handleBookmark: () => void;
