@@ -11,6 +11,9 @@ export const ENDPOINTS = {
     DUPLICATE_NICKNAME_CHECK: (nickname: string) => {
       return `/api/user/duplicate-nickname-check?nickname=${nickname}`;
     },
+    BOOKMARK_STATUS: (postId: string) => {
+      return `/api/post/bookmark/status/${postId}`;
+    },
   },
   CREATE: {
     PW_INQUIRY: `/api/user/pw-inquiry`,
