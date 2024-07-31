@@ -1,4 +1,5 @@
 import { apiClient } from '@/apis/config/axios';
+import { ENDPOINTS } from './endpoints';
 
 export interface UpdateProfileAPIReq {
   category: string;
@@ -18,14 +19,14 @@ export interface UpdateProfileAPIRes {
   };
 }
 
-export const updateProfileAPI = async (
-  data: UpdateProfileAPIReq,
+export const updateProfileAPI = async <T extends UpdateProfileAPIReq>(
+  data: T,
 ): Promise<UpdateProfileAPIRes | undefined> => {
   const requestData = data.data instanceof FormData ? data.data : data;
 
   if (data.option) {
     const response = await apiClient.post(
-      `/api/user/profile/${data.category}`,
+      ENDPOINTS.UPDATE.PROFILE(data.category),
       requestData,
       { ...data.option },
     );
@@ -33,7 +34,7 @@ export const updateProfileAPI = async (
     return response.data;
   } else {
     const response = await apiClient.post(
-      `/api/user/profile/${data.category}`,
+      ENDPOINTS.UPDATE.PROFILE(data.category),
       requestData,
     );
 

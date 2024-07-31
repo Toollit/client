@@ -19,17 +19,34 @@ export const ENDPOINTS = {
   CREATE: {
     PW_INQUIRY: `/api/user/pw-inquiry`,
     PROJECT: `/api/post/project/create`,
+    REPORT: `/api/post/report`,
+    CONTACT: `/api/user/contact`,
+    JOIN_PROJECT_REQUEST: `/api/post/project/join`,
+    JOIN_REJECT_PROJECT_REQUEST: `/api/post/project/join/reject`,
   },
   UPDATE: {
     RESET_PASSWORD: `/api/user/reset-password`,
     NICKNAME_INITIALIZE: `/api/user/signup/nickname-initialize`,
     BOOKMARK_TOGGLE: `/api/post/bookmark/toggle`,
+    PROJECT: `/api/post/project/update`,
+    PROFILE: (category: string) => {
+      return `/api/user/profile/${category}`;
+    },
+    LEAVE_PROJECT: `/api/post/project/leave`,
+    JOIN_APPROVE_PROJECT: `/api/post/project/join/approve`,
   },
-  DELETE: {},
+  DELETE: {
+    ACCOUNT: `/api/user/deleteAccount`,
+    ACCOUNT_CONFIRM: `/api/user/deleteAccount/confirm`,
+    PROJECT: `/api/post/project/delete`,
+    NOTIFICATION: `/api/user/profile/notification/delete`,
+  },
 };
 
 export const AUTH_ENDPOINTS = {
+  SIGNUP: `/api/user/signup`,
   SIGNIN: `/api/user/signin/email`,
+  LOGOUT: `/api/user/logout`,
   EMAIL_AUTH_CODE: `/api/auth/email/auth-code`,
   EMAIL_VERIFY: `/api/auth/email/verify`,
 };

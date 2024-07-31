@@ -1,4 +1,5 @@
 import { apiClient } from '@/apis/config/axios';
+import { ENDPOINTS } from './endpoints';
 
 export interface UpdateProjectData {
   postId: string;
@@ -20,10 +21,10 @@ export interface UpdateProjectAPIRes {
   };
 }
 
-export const updateProjectAPI = async (
-  data: UpdateProjectAPIReq,
+export const updateProjectAPI = async <T extends UpdateProjectAPIReq>(
+  data: T,
 ): Promise<UpdateProjectAPIRes | undefined> => {
-  const response = await apiClient.post(`/api/post/project/update`, data, {
+  const response = await apiClient.post(ENDPOINTS.UPDATE.PROJECT, data, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

@@ -1,4 +1,5 @@
 import { apiClient } from '@/apis/config/axios';
+import { ENDPOINTS } from './endpoints';
 
 export interface ContactAPIReq {
   title: string;
@@ -11,9 +12,9 @@ export interface ContactAPIRes {
   message: string | null;
 }
 
-export const contactAPI = async (
-  data: ContactAPIReq,
+export const contactAPI = async <T extends ContactAPIReq>(
+  data: T,
 ): Promise<ContactAPIRes | undefined> => {
-  const response = await apiClient.post('/api/user/contact', data);
+  const response = await apiClient.post(ENDPOINTS.CREATE.CONTACT, data);
   return response.data;
 };

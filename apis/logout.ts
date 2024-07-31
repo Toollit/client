@@ -1,4 +1,5 @@
 import { apiClient } from '@/apis/config/axios';
+import { AUTH_ENDPOINTS } from './endpoints';
 
 export interface LogoutAPIReq {}
 
@@ -8,6 +9,6 @@ export interface LogoutAPIRes {
 }
 
 export const logoutAPI = async (): Promise<LogoutAPIRes | undefined> => {
-  const response = await apiClient.post('/api/user/logout');
+  const response = await apiClient.post(AUTH_ENDPOINTS.LOGOUT);
   return response.data;
 };
