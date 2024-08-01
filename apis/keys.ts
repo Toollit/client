@@ -2,12 +2,12 @@
 export const authUserKey = '/api/auth/user';
 
 // main page
-export const projectOverviewsKey = (
-  page: number,
-  order: 'new' | 'popularity',
-) => {
-  return `/api/post/projectOverviews?page=${page}&order=${order ?? 'new'}`;
-};
+// export const projectOverviewsKey = (
+//   page: number,
+//   order: 'new' | 'popularity',
+// ) => {
+//   return `/api/post/projectOverviews?page=${page}&order=${order ?? 'new'}`;
+// };
 
 // get bookmark ids
 // export const bookmarksStatusKey = () => {

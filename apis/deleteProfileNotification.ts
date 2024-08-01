@@ -1,20 +1,20 @@
 import { apiClient } from '@/apis/config/axios';
 import { ENDPOINTS } from './endpoints';
 
-export interface ProfileNotificationDeleteAPIReq {
+export interface DeleteProfileNotificationAPIReq {
   notificationId: number;
 }
 
-export interface ProfileNotificationDeleteAPIRes {
+export interface DeleteProfileNotificationAPIRes {
   success: boolean;
   message: string | null;
 }
 
-export const profileNotificationDeleteAPI = async <
-  T extends ProfileNotificationDeleteAPIReq,
+export const deleteProfileNotificationAPI = async <
+  T extends DeleteProfileNotificationAPIReq,
 >(
   data: T,
-): Promise<ProfileNotificationDeleteAPIRes | undefined> => {
+): Promise<DeleteProfileNotificationAPIRes | undefined> => {
   const response = await apiClient.post(ENDPOINTS.DELETE.NOTIFICATION, {
     notificationId: data.notificationId,
   });

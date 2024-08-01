@@ -1,5 +1,5 @@
 import { apiClient } from '@/apis/config/axios';
-import { ENDPOINTS } from './endpoints';
+import { ENDPOINTS } from '../endpoints';
 
 export interface DuplicateNicknameCheckAPIReq {
   nickname: string;
@@ -10,7 +10,7 @@ export interface DuplicateNicknameCheckAPIRes {
   message: string | null;
 }
 
-export const duplicateNicknameCheckAPI = async <
+export const duplicateNicknameCheckFetcher = async <
   T extends DuplicateNicknameCheckAPIReq,
 >(
   data: T,

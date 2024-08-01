@@ -1,21 +1,21 @@
 import { apiClient } from '@/apis/config/axios';
 import { ENDPOINTS } from './endpoints';
 
-export interface ReportAPIReq {
+export interface CreateReportAPIReq {
   postId: number;
   postType: string;
   reason: string;
   url: string;
 }
 
-export interface ReportAPIRes {
+export interface CreateReportAPIRes {
   success: boolean;
   message: string | null;
 }
 
-export const reportAPI = async <T extends ReportAPIReq>(
+export const createReportAPI = async <T extends CreateReportAPIReq>(
   data: T,
-): Promise<ReportAPIRes | undefined> => {
+): Promise<CreateReportAPIRes | undefined> => {
   const response = await apiClient.post(ENDPOINTS.CREATE.REPORT, data);
   return response.data;
 };

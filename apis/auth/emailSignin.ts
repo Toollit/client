@@ -1,5 +1,5 @@
 import { apiClient } from '@/apis/config/axios';
-import { AUTH_ENDPOINTS } from './endpoints';
+import { AUTH_ENDPOINTS } from '../endpoints';
 
 export interface EmailSigninAPIReq {
   email: string;

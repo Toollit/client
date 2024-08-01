@@ -1,11 +1,11 @@
 import { apiClient } from '@/apis/config/axios';
 import { ENDPOINTS } from './endpoints';
 
-export interface BookmarkAPIReq {
+export interface UpdateBookmarkAPIReq {
   postId: string;
 }
 
-export interface BookmarkAPIRes {
+export interface UpdateBookmarkAPIRes {
   success: boolean;
   message: string | null;
   data: {
@@ -13,9 +13,9 @@ export interface BookmarkAPIRes {
   };
 }
 
-export const bookmarkAPI = async <T extends BookmarkAPIReq>(
+export const updateBookmarkAPI = async <T extends UpdateBookmarkAPIReq>(
   data: T,
-): Promise<BookmarkAPIRes | undefined> => {
+): Promise<UpdateBookmarkAPIRes | undefined> => {
   const response = await apiClient.post(ENDPOINTS.UPDATE.BOOKMARK_TOGGLE, data);
   return response.data;
 };
