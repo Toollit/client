@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { pwInquiryAPI } from '@/apis/pwInquiry';
+import { createTemporaryPasswordAPI } from '@/apis/createTemporaryPassword';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { useRouter } from 'next/router';
 import PwInquiryView, { ViewProps } from './PwInquiryView';
@@ -58,7 +58,7 @@ const PwInquiryController: FC<ControllerProps> = () => {
 
         dispatch(loading({ status: true }));
 
-        await pwInquiryAPI({ email });
+        await createTemporaryPasswordAPI({ email });
 
         alert('해당 이메일로 임시 비밀번호를 발급했습니다.');
 

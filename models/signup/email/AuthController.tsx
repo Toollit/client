@@ -6,9 +6,9 @@ import EmailAuthView, { ViewProps } from './AuthView';
 import { emailAuth } from '@/features/signup';
 import useTimer from '@/hooks/useTimer';
 import { errorMessage } from '@/apis/config/errorMessage';
-import { emailVerifyAPI } from '@/apis/emailVerify';
+import { emailVerifyAPI } from '@/apis/auth/emailVerify';
 import { loading } from '@/features/loading';
-import { SignupAPIReq, signupAPI } from '@/apis/signup';
+import { SignupAPIReq, signupAPI } from '@/apis/auth/signup';
 import useAuth from '@/hooks/useAuth';
 
 export interface ControllerProps {}

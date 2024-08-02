@@ -2,17 +2,17 @@ import React, { useEffect, useState, useCallback, FC } from 'react';
 import ProjectDetailView, { ViewProps } from './ProjectDetailView';
 import { changeDateFormat, dateFromNow } from '@/utils/changeDateFormat';
 import { useRouter } from 'next/router';
-import { ProjectAPIRes } from '@/apis/projectFetcher';
+import { ProjectAPIRes } from '@/apis/fetcher/projectFetcher';
 import { errorMessage } from '@/apis/config/errorMessage';
 import useAuth from '@/hooks/useAuth';
 import { showAlert, hideAlert } from '@/features/alert';
-import { bookmarkAPI } from '@/apis/bookmark';
+import { updateBookmarkAPI } from '@/apis/updateBookmark';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { deleteProjectAPI } from '@/apis/deleteProject';
 import { openReport } from '@/features/report';
 import { loading } from '@/features/loading';
-import { joinProjectAPI } from '@/apis/joinProject';
-import { leaveProjectAPI } from '@/apis/leaveProject';
+import { createProjectJoinRequestAPI } from '@/apis/createProjectJoinRequest';
+import { deleteProjectMemberAPI } from '@/apis/deleteProjectMember';
 import { useAppDispatch } from '@/store';
 import { CapitalizedMemberTypes } from '@/typings';
 import useProjectDetailSWR from '@/hooks/useSWR/useProjectDetailSWR';
@@ -73,7 +73,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
           return alert('내가 작성한 게시글 입니다.');
         }
 
-        const response = await bookmarkAPI({ postId });
+        const response = await updateBookmarkAPI({ postId });
         const status = response?.data.status;
 
         bookmarkStatusMutate();
@@ -226,7 +226,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       }
 
       if (auth?.success) {
-        await joinProjectAPI({ postId });
+        await createProjectJoinRequestAPI({ postId });
         alert(
           '참가 신청을 했습니다. 프로젝트 장이 승인 후 프로젝트 멤버가 됩니다.',
         );
@@ -254,7 +254,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       const auth = await authMutate();
 
       if (auth?.success) {
-        await leaveProjectAPI({ postId });
+        await deleteProjectMemberAPI({ postId });
 
         projectDetailMutate();
 

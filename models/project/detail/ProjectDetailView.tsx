@@ -10,7 +10,7 @@ import { Button } from '@/components/button';
 import { InnerContainer, ImageWrapper } from '@/styles/commons';
 import BasicTooltip from '@/components/tooltip/basic';
 import OptionButton from '@/components/drawer/option';
-import { ProjectMember, ProjectWriter } from '@/apis/projectFetcher';
+import { ProjectMember, ProjectWriter } from '@/apis/fetcher/projectFetcher';
 import { CapitalizedMemberTypes, ProjectDetail } from '@/typings';
 import {
   ShareIcon,

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, useRef, FC } from 'react';
 import { useRouter } from 'next/router';
 import ResetPasswordView, { ViewProps } from './ResetPasswordView';
-import { resetPasswordAPI } from '@/apis/resetPassword';
+import { updatePasswordAPI } from '@/apis/updatePassword';
 import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { errorMessage } from '@/apis/config/errorMessage';
 import useAuth from '@/hooks/useAuth';
@@ -77,7 +77,7 @@ const ResetPasswordController: FC<ControllerProps> = () => {
 
         dispatch(loading({ status: true }));
 
-        await resetPasswordAPI({ password: newPassword });
+        await updatePasswordAPI({ password: newPassword });
 
         alert(
           '비밀번호 변경이 완료되었습니다. 새로운 비밀번호로 다시 로그인해주세요.',

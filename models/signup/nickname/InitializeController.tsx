@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import { loading } from '@/features/loading';
 import { errorMessage } from '@/apis/config/errorMessage';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { duplicateNicknameCheckAPI } from '@/apis/duplicateNicknameCheck';
-import { nicknameInitializeAPI } from '@/apis/nicknameInitialize';
+import { duplicateNicknameCheckFetcher } from '@/apis/fetcher/duplicateNicknameCheckFetcher';
+import { createNicknameAPI } from '@/apis/createNickname';
 import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
 
@@ -74,9 +74,9 @@ const InitializeController: FC<ControllerProps> = ({}) => {
 
         dispatch(loading({ status: true }));
 
-        await duplicateNicknameCheckAPI({ nickname });
+        await duplicateNicknameCheckFetcher({ nickname });
 
-        await nicknameInitializeAPI({ nickname });
+        await createNicknameAPI({ nickname });
         // revalidate user info for update nickname
         await authMutate();
 

@@ -2,7 +2,7 @@ import React from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { SWRConfig } from 'swr';
 import Head from 'next/head';
-import { projectFetcher, ProjectContent } from '@/apis/projectFetcher';
+import { projectFetcher, ProjectContent } from '@/apis/fetcher/projectFetcher';
 import ProjectDetailController from '@/models/project/detail/ProjectDetailController';
 import { ENDPOINTS } from '@/apis/endpoints';
 

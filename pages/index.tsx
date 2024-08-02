@@ -1,7 +1,7 @@
 import type { NextPage, GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { SWRConfig } from 'swr';
-import { projectOverviewsFetcher } from '@/apis/projectOverviewsFetcher';
+import { projectOverviewsFetcher } from '@/apis/fetcher/projectOverviewsFetcher';
 import { ProjectOverview } from '@/typings';
 import MainController from '@/models/main/MainController';
 import { ENDPOINTS } from '@/apis/endpoints';
