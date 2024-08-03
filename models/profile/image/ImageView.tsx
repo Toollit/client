@@ -14,7 +14,6 @@ import {
 } from './styles';
 
 export interface ViewProps {
-  isRegisteredUser: boolean;
   isLoading: boolean;
   isMyProfile: boolean;
   profileImageUrl?: string | null;
@@ -28,7 +27,6 @@ export interface ViewProps {
 }
 
 const ImageView: FC<ViewProps> = ({
-  isRegisteredUser,
   isLoading,
   isMyProfile,
   profileImageUrl,
@@ -40,33 +38,15 @@ const ImageView: FC<ViewProps> = ({
 }) => {
   return (
     <>
-      {!isRegisteredUser && (
+      {/* Loading profile image */}
+      {isLoading ? (
+        <ImageSkeletonLayoutContainer>
+          <Skeleton shape='circular' width={12} height={12} />
+        </ImageSkeletonLayoutContainer>
+      ) : (
         <>
-          <ImageSkeletonLayoutContainer>
-            <Skeleton shape='circular' width={12} height={12} />
-          </ImageSkeletonLayoutContainer>
-          <NicknameSkeletonLayoutContainer>
-            <Skeleton shape='text' width={10} height={3} />
-          </NicknameSkeletonLayoutContainer>
-        </>
-      )}
-
-      {isRegisteredUser && (
-        <>
-          {/* Loading profile image */}
-          {isLoading && (
-            <>
-              <ImageSkeletonLayoutContainer>
-                <Skeleton shape='circular' width={12} height={12} />
-              </ImageSkeletonLayoutContainer>
-              <NicknameSkeletonLayoutContainer>
-                <Skeleton shape='text' width={10} height={3} />
-              </NicknameSkeletonLayoutContainer>
-            </>
-          )}
-
           {/* Default profile image */}
-          {!isLoading && !profileImageUrl && (
+          {!profileImageUrl && (
             <BlankImage>
               <AccountCircleIcon
                 fill={true}
@@ -78,7 +58,7 @@ const ImageView: FC<ViewProps> = ({
           )}
 
           {/* User settings profile image */}
-          {!isLoading && profileImageUrl && (
+          {profileImageUrl && (
             <ProfileImageContainer>
               <ImageWrapper width={12} height={12}>
                 <StyledProfileImage
@@ -114,10 +94,18 @@ const ImageView: FC<ViewProps> = ({
               <Tooltip {...tooltip} />
             </>
           )}
-
-          <UserNickname>{nickname}</UserNickname>
         </>
       )}
+
+      <UserNickname>
+        {nickname ? (
+          nickname
+        ) : (
+          <NicknameSkeletonLayoutContainer>
+            <Skeleton shape='text' width={10} height={3} />
+          </NicknameSkeletonLayoutContainer>
+        )}
+      </UserNickname>
     </>
   );
 };

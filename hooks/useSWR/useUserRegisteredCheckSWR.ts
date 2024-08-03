@@ -1,27 +1,30 @@
 import React from 'react';
 import useSWR from 'swr';
 import { serialize } from '@/middleware/swr/serialize';
-import { userRegisteredCheckFetcher } from '@/apis/userRegisteredCheckFetcher';
+import { userRegisteredCheckFetcher } from '@/apis/fetcher/userRegisteredCheckFetcher';
 import { useRouter } from 'next/router';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 
 type SWR = (
+  isValid: boolean,
   nickname: string,
-  page?: string,
-  tag?: string,
+  args: {
+    page?: string;
+    tag?: string;
+  },
 ) => {
   isRegisteredUser: boolean;
   isLoading: boolean;
   isError: any;
 };
 
-const useUserRegisteredCheckSWR: SWR = (nickname, page, tag) => {
+const useUserRegisteredCheckSWR: SWR = (isValid, nickname, args) => {
   const router = useRouter();
   const { data, error, isLoading } = useSWR(
-    nickname
+    isValid && nickname
       ? {
           url: `/api/user/profile/${nickname}/registeredCheck`,
-          args: { page, tag },
+          args,
         }
       : null,
     userRegisteredCheckFetcher,

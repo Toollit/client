@@ -4,9 +4,10 @@ import { useRouter } from 'next/router';
 import useAuth from '@/hooks/useAuth';
 import useUserRegisteredCheckSWR from '@/hooks/useSWR/useUserRegisteredCheckSWR';
 import useUserImageSWR from '@/hooks/useSWR/useUserImageSWR';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import useTooltip from '@/hooks/useTooltip';
 import { updateProfileAPI } from '@/apis/updateProfile';
+import { useAppSelector } from '@/store';
 
 export interface ControllerProps {}
 
@@ -23,12 +24,18 @@ const ImageController: FC<ControllerProps> = ({}) => {
 
   const profileImageRef = useRef<HTMLInputElement>(null);
 
-  const [nickname, setNickname] = useState('');
+  const userNickname = useAppSelector((state) => state.profile.userNickname);
+  const { isRegisteredUser } = useUserRegisteredCheckSWR(
+    true,
+    userNickname,
+    {},
+  );
 
-  const { isRegisteredUser } = useUserRegisteredCheckSWR(nickname);
-
-  const { profileImage, isLoading, profileImageMutate } =
-    useUserImageSWR(nickname);
+  const { profileImage, isLoading, profileImageMutate } = useUserImageSWR(
+    isRegisteredUser,
+    userNickname,
+    {},
+  );
 
   const handleTooltipModify = useCallback(() => {
     setTooltipAnchorEl(null);
@@ -88,21 +95,12 @@ const ImageController: FC<ControllerProps> = ({}) => {
     [uploadProfileImage],
   );
 
-  useEffect(() => {
-    const nickname = router.query.nickname;
-
-    if (typeof nickname === 'string' && nickname) {
-      setNickname(nickname);
-    }
-  }, [router]);
-
   const props: ViewProps = {
-    isRegisteredUser,
     isLoading,
-    isMyProfile: nickname === user?.nickname,
+    isMyProfile: userNickname === user?.nickname,
     profileImageUrl: profileImage,
     profileImageRef,
-    nickname,
+    nickname: userNickname,
     handleUpdateProfileImage,
     handleTooltipOpen,
     tooltip: {

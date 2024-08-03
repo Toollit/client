@@ -5,14 +5,17 @@ import {
   ProfileImage,
   ProfileImageAPIRes,
   profileImageFetcher,
-} from '@/apis/profileImageFetcher';
+} from '@/apis/fetcher/profileImageFetcher';
 import { useRouter } from 'next/router';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 
 type SWR = (
+  isValid: boolean,
   nickname: string,
-  page?: string,
-  tag?: string,
+  args: {
+    page?: string;
+    tag?: string;
+  },
 ) => {
   profileImage?: ProfileImage['profileImage'];
   isLoading: boolean;
@@ -20,16 +23,13 @@ type SWR = (
   profileImageMutate: KeyedMutator<ProfileImageAPIRes | undefined>;
 };
 
-const useUserImageSWR: SWR = (nickname, page, tag) => {
+const useUserImageSWR: SWR = (isValid, nickname, args) => {
   const router = useRouter();
   const { data, error, isLoading, mutate } = useSWR(
-    nickname
+    isValid && nickname
       ? {
           url: `/api/user/profile/${nickname}/profileImage`,
-          args: {
-            page,
-            tag,
-          },
+          args,
         }
       : null,
     profileImageFetcher,
