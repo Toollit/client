@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Hashtag from '@/components/hashtag';
 import { BookmarkIcon, PersonIcon, ViewIcon } from '@/assets/icons';
-import { Project } from '@/apis/profileProjectsFetcher';
+import { CapitalizedMemberTypes, ProjectOverview } from '@/typings';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
 import Skeleton from '@/components/skeleton';
 import {
@@ -19,19 +19,13 @@ import {
   SubInfo,
 } from './styles';
 
-interface CustomProject extends Omit<Project, 'memberTypes'> {
-  memberTypes: ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
-}
-
-export interface ProjectViewData {
-  projects: CustomProject[] | null;
-  total: number;
-  showLoadMore: boolean;
+interface CustomProjectViewData extends Omit<ProjectOverview, 'memberTypes'> {
+  memberTypes: CapitalizedMemberTypes[];
 }
 
 export interface ViewProps {
   hasRendered: boolean;
-  projects?: CustomProject[];
+  projects?: CustomProjectViewData[];
   projectsTotalCount?: number;
   handleLoadMore: () => void;
   showLoadMore: boolean;
@@ -51,7 +45,7 @@ const ProjectView: FC<ViewProps> = ({
           {projects && projectsTotalCount && (
             <BoxContainer>
               <BoxTitle>프로젝트</BoxTitle>
-              <BoxContent>
+              <BoxContent isLastContent={showLoadMore}>
                 {projectsTotalCount > 0 ? (
                   <>
                     {projects.map((project, index) => {
@@ -120,7 +114,7 @@ const ProjectView: FC<ViewProps> = ({
             </BoxContainer>
           )}
 
-          {!projects && (
+          {(!projects || !projectsTotalCount) && (
             <>
               <Skeleton width={'100%'} height={20} bottom={2} />
               <Skeleton width={'100%'} height={15} bottom={2} />

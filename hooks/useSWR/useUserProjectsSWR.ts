@@ -2,28 +2,32 @@ import React from 'react';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { serialize } from '@/middleware/swr/serialize';
-import { errorMessage } from '@/apis/errorMessage';
-import { Project, profileProjectsFetcher } from '@/apis/profileProjectsFetcher';
+import { errorMessage } from '@/apis/config/errorMessage';
+import { profileProjectsFetcher } from '@/apis/fetcher/profileProjectsFetcher';
+import { ProjectOverview } from '@/typings';
 
 type SWR = (
+  isValid: boolean,
   nickname: string,
   count: number,
-  page?: string,
-  tag?: string,
+  args: {
+    page?: string;
+    tag?: string;
+  },
 ) => {
-  projects?: Project[];
+  projects?: ProjectOverview[];
   projectsTotalCount?: number;
   isLoading: boolean;
   isError: any;
 };
 
-const useUserProjectsSWR: SWR = (nickname, count, page, tag) => {
+const useUserProjectsSWR: SWR = (isValid, nickname, count, args) => {
   const router = useRouter();
   const { data, error, isLoading } = useSWR(
-    nickname
+    isValid && nickname
       ? {
           url: `/api/user/profile/${nickname}?tab=viewProjects&count=${count}`,
-          args: { page, tag },
+          args,
         }
       : null,
     profileProjectsFetcher,

@@ -1,14 +1,12 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import ProjectView, { ViewProps } from './ProjectView';
-import { Project } from '@/apis/profileProjectsFetcher';
+import { CapitalizedMemberTypes, ProjectOverview } from '@/typings';
 import { useRouter } from 'next/router';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
 import { useAppDispatch, useAppSelector } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 
 import useUserProjectsSWR from '@/hooks/useSWR/useUserProjectsSWR';
-
-type CustomMemberTypes = ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
 
 interface ControllerProps {}
 
@@ -22,36 +20,42 @@ const ProjectController: FC<ControllerProps> = ({}) => {
   );
   const userNickname = useAppSelector((state) => state.profile.userNickname);
   const [postCount, setPostCount] = useState(5); // Load by 5
-  const [posts, setPosts] = useState<Project[]>([]);
+  const [posts, setPosts] = useState<ProjectOverview[]>([]);
 
   const { projects, projectsTotalCount } = useUserProjectsSWR(
+    hasRendered,
     userNickname,
     postCount,
+    { page: '/profile', tag: 'userProjects' },
   );
 
-  const handleCapitalizeMemberTypes = useCallback((data?: Project[]) => {
-    if (!data) {
-      return;
-    }
+  const handleCapitalizeMemberTypes = useCallback(
+    (data?: ProjectOverview[]) => {
+      if (!data) {
+        return;
+      }
 
-    // member type convert. developer -> Developer, designer -> Designer, pm -> PM, anyone -> Anyone
-    const convertedMemberTypes = data.map((project) => {
-      return {
-        ...project,
-        memberTypes: project.memberTypes.map((type) => {
-          return type === 'pm'
-            ? type.toUpperCase()
-            : type.charAt(0).toUpperCase() + type.slice(1);
-        }) as CustomMemberTypes,
-      };
-    });
+      // member type convert. developer -> Developer, designer -> Designer, pm -> PM, anyone -> Anyone
+      const convertedMemberTypes = data.map((project) => {
+        return {
+          ...project,
+          memberTypes: project.memberTypes.map((type) => {
+            return type === 'pm'
+              ? type.toUpperCase()
+              : type.charAt(0).toUpperCase() + type.slice(1);
+          }) as CapitalizedMemberTypes[],
+        };
+      });
 
-    return convertedMemberTypes;
-  }, []);
+      return convertedMemberTypes;
+    },
+    [],
+  );
 
   const handlePostsLoadMore = useCallback(() => {
     setPostCount((prev) => prev + 5);
-  }, []);
+    dispatch(updateSwipeableViewHeight(true));
+  }, [dispatch]);
 
   useEffect(() => {
     if (projects) {
