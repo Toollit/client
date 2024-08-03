@@ -1,16 +1,23 @@
 import { mediaQueryLaptop, mediaQueryTablet } from '@/styles/mediaQuery';
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import Link from 'next/link';
 
-const BoxContent = styled.ul`
+const BoxContent = styled.ul<{ isLastContent: boolean }>`
   li {
     &:nth-last-of-type(1) {
       &::after {
         border-bottom: none;
       }
 
-      border-bottom-left-radius: ${(props) => props.theme.borderRadius.base};
-      border-bottom-right-radius: ${(props) => props.theme.borderRadius.base};
+      ${(props) => {
+        if (!props.isLastContent) {
+          return css`
+            border-bottom-left-radius: ${props.theme.borderRadius.base};
+            border-bottom-right-radius: ${props.theme.borderRadius.base};
+          `;
+        }
+      }}
     }
   }
 `;
