@@ -1,13 +1,21 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import BookmarkView, { ViewProps } from './BookmarksView';
 import { useRouter } from 'next/router';
-import { BookmarksAPIRes } from '@/apis/bookmarksFetcher';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
 import { useAppDispatch, useAppSelector } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
-import useMyBookmarksSWR from '@/hooks/useSWR/useMyBookmarksSWR';
+import useMyBookmarkIdsSWR from '@/hooks/useSWR/useMyBookmarkIdsSWR';
 import useUserBookmarksSWR from '@/hooks/useSWR/useUserBookmarksSWR';
-import { Project, CapitalizedMemberTypes } from '@/typings';
+import { ProjectOverview, CapitalizedMemberTypes } from '@/typings';
+
+interface BookmarkStatusCheckProjects extends ProjectOverview {
+  bookmark: boolean;
+}
+
+interface CapitalizedMemberTypesProjects
+  extends Omit<BookmarkStatusCheckProjects, 'memberTypes'> {
+  memberTypes: CapitalizedMemberTypes[];
+}
 
 interface ControllerProps {}
 
@@ -21,31 +29,38 @@ const BookmarksController: FC<ControllerProps> = ({}) => {
   );
   const userNickname = useAppSelector((state) => state.profile.userNickname);
   const [postCount, setPostCount] = useState(5); // Load by 5
-  const [posts, setPosts] = useState<Project[]>([]);
+  const [posts, setPosts] = useState<ProjectOverview[]>([]);
 
   const { bookmarks, bookmarksTotalCount } = useUserBookmarksSWR(
+    hasRendered,
     userNickname,
     postCount,
+    { page: '/profile', tag: 'bookmarks' },
   );
 
-  const { bookmarkIds, isLoading } = useMyBookmarksSWR();
+  const { bookmarkIds } = useMyBookmarkIdsSWR(hasRendered, {
+    page: '/profile',
+    tag: 'bookmarkIds',
+  });
 
-  const handleProcessedData = useCallback(
-    ({
-      bookmarkProjects,
-      bookmarkIds,
-    }: {
-      bookmarkProjects?: Project[];
-      bookmarkIds?: number[];
-    }) => {
-      if (!bookmarkProjects || !bookmarkIds) {
-        return;
-      }
+  const handleBookmarkStatusCheck = useCallback(
+    (projectOverviews: ProjectOverview[], bookmarkIds: number[]) => {
+      return projectOverviews.map((project) => {
+        return bookmarkIds.includes(project.id)
+          ? { ...project, bookmark: true }
+          : { ...project, bookmark: false };
+      });
+    },
+    [],
+  );
+
+  const handleCapitalizedMemberTypes = useCallback(
+    (projectOverviews: BookmarkStatusCheckProjects[]) => {
       // member type convert. developer -> Developer, designer -> Designer, pm -> PM, anyone -> Anyone
-      const convertedMemberTypes = bookmarkProjects.map((project) => {
+      const capitalizedMemberTypes = projectOverviews.map((project) => {
         return {
           ...project,
-          memberTypes: project.memberTypes.map((type) => {
+          memberTypes: project.memberTypes?.map((type) => {
             return type === 'pm'
               ? type.toUpperCase()
               : type.charAt(0).toUpperCase() + type.slice(1);
@@ -53,24 +68,42 @@ const BookmarksController: FC<ControllerProps> = ({}) => {
         };
       });
 
-      // const bookmarks = bookmarkIds;
-
-      const bookmarksStatusCheck = convertedMemberTypes?.map((project) => {
-        return bookmarkIds?.includes(project.id)
-          ? { ...project, bookmark: true }
-          : { ...project, bookmark: false };
-      });
-
-      const projects = bookmarksStatusCheck;
-
-      return projects;
+      return capitalizedMemberTypes;
     },
     [],
   );
 
+  const handleProcessedData = useCallback(
+    ({
+      bookmarkProjects,
+      bookmarkIds,
+    }: {
+      bookmarkProjects?: ProjectOverview[];
+      bookmarkIds?: number[];
+    }) => {
+      if (!bookmarkProjects || !bookmarkIds) {
+        return;
+      }
+
+      const bookmarkStatusCheckResult = handleBookmarkStatusCheck(
+        bookmarkProjects,
+        bookmarkIds,
+      );
+      const capitalizedMemberTypesResult = handleCapitalizedMemberTypes(
+        bookmarkStatusCheckResult,
+      );
+
+      const result = capitalizedMemberTypesResult;
+
+      return result;
+    },
+    [handleBookmarkStatusCheck, handleCapitalizedMemberTypes],
+  );
+
   const handleBookmarkLoadMore = useCallback(() => {
     setPostCount((prev) => prev + 5);
-  }, []);
+    dispatch(updateSwipeableViewHeight(true));
+  }, [dispatch]);
 
   useEffect(() => {
     if (bookmarks) {

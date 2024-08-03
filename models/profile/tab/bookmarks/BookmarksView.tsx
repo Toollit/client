@@ -3,7 +3,7 @@ import Hashtag from '@/components/hashtag';
 import { BookmarkIcon, PersonIcon, ViewIcon } from '@/assets/icons';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
 import Skeleton from '@/components/skeleton';
-import { Project, CapitalizedMemberTypes } from '@/typings';
+import { ProjectOverview, CapitalizedMemberTypes } from '@/typings';
 import {
   BoxContent,
   Content,
@@ -18,7 +18,7 @@ import {
   Notice,
 } from './styles';
 
-interface CustomBookmarksViewData extends Omit<Project, 'memberTypes'> {
+interface CustomBookmarksViewData extends Omit<ProjectOverview, 'memberTypes'> {
   memberTypes: CapitalizedMemberTypes[];
   bookmark: boolean;
 }
@@ -45,7 +45,7 @@ const BookmarkView: FC<ViewProps> = ({
           {bookmarks && (
             <BoxContainer>
               <BoxTitle>북마크</BoxTitle>
-              <BoxContent>
+              <BoxContent isLastContent={showLoadMore}>
                 {bookmarksTotalCount && bookmarksTotalCount > 0 ? (
                   <>
                     {bookmarks.map((bookmark) => {
