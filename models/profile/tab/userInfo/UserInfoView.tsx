@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { PersonIcon, MailIcon } from '@/assets/icons';
 import Hashtag from '@/components/hashtag';
 import { EditButton } from '@/components/button';
-import { MyProfile, UserProfile } from '@/apis/profileInfoFetcher';
+import { MyProfile, UserProfile } from '@/apis/fetcher/profileInfoFetcher';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
 import Skeleton from '@/components/skeleton';
 import {
@@ -30,9 +30,9 @@ export type ProfileInfoData = CustomMyProfile | CustomUserProfile;
 export interface ViewProps {
   hasRendered: boolean;
   isMyProfile: boolean;
-  data?: ProfileInfoData | null;
+  data?: ProfileInfoData;
   editBtnHandler: (category: string) => void;
-  handleDeleteAccount: () => void; //TODO 함수명 일치시키기 editBtnHandler 다르잖아!!!
+  handleDeleteAccount: () => void;
 }
 
 const UserInfoView: FC<ViewProps> = ({

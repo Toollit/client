@@ -1,8 +1,8 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import ProfileInfoView, { ViewProps } from './UserInfoView';
-import { ProfileInfoAPIRes } from '@/apis/profileInfoFetcher';
+import { ProfileInfoAPIRes } from '@/apis/fetcher/profileInfoFetcher';
 import { useRouter } from 'next/router';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import { changeDateFormat } from '@/utils/changeDateFormat';
 import { open as openDialog, close as closeDialog } from '@/features/dialog';
 import { useAppDispatch, useAppSelector } from '@/store';
@@ -32,7 +32,11 @@ const UserInfoController: FC<ControllerProps> = ({}) => {
     (state) => state.dialog.update?.newValue,
   );
 
-  const { userInfo, userInfoMutate } = useUserInfoSWR(userNickname);
+  const { userInfo, userInfoMutate } = useUserInfoSWR(
+    hasRendered,
+    userNickname,
+    { page: '/profile', tag: 'userInfo' },
+  );
 
   const handleUpdateProfile = useCallback(async () => {
     // empty string('') value can come from updateNewValue. so write null and undefined explicitly
@@ -92,34 +96,18 @@ const UserInfoController: FC<ControllerProps> = ({}) => {
     userInfoMutate,
   ]);
 
-  const handleProcessUserInfo = useCallback(
-    (data: ProfileInfoAPIRes['data']) => {
-      if (!data) {
-        return;
-      }
+  const handleDateFormat = useCallback((data?: ProfileInfoAPIRes['data']) => {
+    if (!data) {
+      return;
+    }
 
-      // signin user data
-      if ('email' in data) {
-        return {
-          ...data,
-          createdAt: changeDateFormat({
-            date: data.createdAt,
-            format: 'YYMMDD_hhmmss',
-          }),
-          lastSigninAt: changeDateFormat({
-            date: data.lastSigninAt,
-            format: 'YYMMDD_hhmmss',
-          }),
-          skills: data.skills ? [...data.skills.split(',')] : [],
-        };
-      }
-
-      // not signin user data
+    // signin user data
+    if ('email' in data) {
       return {
         ...data,
         createdAt: changeDateFormat({
           date: data.createdAt,
-          format: 'YYMMDD',
+          format: 'YYMMDD_hhmmss',
         }),
         lastSigninAt: changeDateFormat({
           date: data.lastSigninAt,
@@ -127,9 +115,22 @@ const UserInfoController: FC<ControllerProps> = ({}) => {
         }),
         skills: data.skills ? [...data.skills.split(',')] : [],
       };
-    },
-    [],
-  );
+    }
+
+    // not signin user data
+    return {
+      ...data,
+      createdAt: changeDateFormat({
+        date: data.createdAt,
+        format: 'YYMMDD',
+      }),
+      lastSigninAt: changeDateFormat({
+        date: data.lastSigninAt,
+        format: 'YYMMDD_hhmmss',
+      }),
+      skills: data.skills ? [...data.skills.split(',')] : [],
+    };
+  }, []);
 
   const handleProfileInfoEditBtn = useCallback(
     (category: string) => {
@@ -306,7 +307,7 @@ const UserInfoController: FC<ControllerProps> = ({}) => {
   const props: ViewProps = {
     hasRendered,
     isMyProfile: userNickname === user?.nickname,
-    data: handleProcessUserInfo(userInfo),
+    data: handleDateFormat(userInfo),
     editBtnHandler: handleProfileInfoEditBtn,
     handleDeleteAccount,
   };

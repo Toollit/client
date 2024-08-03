@@ -2,30 +2,33 @@ import React from 'react';
 import useSWR, { KeyedMutator } from 'swr';
 import { serialize } from '@/middleware/swr/serialize';
 import { useRouter } from 'next/router';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import {
   ProfileInfoAPIRes,
   profileInfoFetcher,
-} from '@/apis/profileInfoFetcher';
+} from '@/apis/fetcher/profileInfoFetcher';
 
 type SWR = (
+  isValid: boolean,
   nickname: string,
-  page?: string,
-  tag?: string,
+  args: {
+    page?: string;
+    tag?: string;
+  },
 ) => {
-  userInfo: ProfileInfoAPIRes['data'];
+  userInfo?: ProfileInfoAPIRes['data'];
   isLoading: boolean;
   isError: any;
   userInfoMutate: KeyedMutator<ProfileInfoAPIRes | undefined>;
 };
 
-const useUserInfoSWR: SWR = (nickname, page, tag) => {
+const useUserInfoSWR: SWR = (isValid, nickname, args) => {
   const router = useRouter();
   const { data, error, isLoading, mutate } = useSWR(
-    nickname
+    isValid && nickname
       ? {
           url: `/api/user/profile/${nickname}?tab=viewProfile`,
-          args: { page, tag },
+          args,
         }
       : null,
     profileInfoFetcher,
