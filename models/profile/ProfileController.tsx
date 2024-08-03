@@ -33,7 +33,11 @@ const ProfileController: FC<ControllerProps> = () => {
     { name: '알림', query: 'viewNotifications' },
   ]);
 
-  const { isRegisteredUser } = useUserRegisteredCheckSWR(userNickname);
+  const { isRegisteredUser } = useUserRegisteredCheckSWR(
+    true,
+    userNickname,
+    {},
+  );
 
   const handleSigninLogout = useCallback(async () => {
     const isSignedIn = user?.nickname;
