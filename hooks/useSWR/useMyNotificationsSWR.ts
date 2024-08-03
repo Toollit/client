@@ -1,19 +1,21 @@
-import { errorMessage } from '@/apis/errorMessage';
+import React from 'react';
+import useSWR, { KeyedMutator } from 'swr';
+import { errorMessage } from '@/apis/config/errorMessage';
 import {
   Notification,
   ProfileNotificationsAPIRes,
   profileNotificationsFetcher,
-} from '@/apis/profileNotificationsFetcher';
+} from '@/apis/fetcher/profileNotificationsFetcher';
 import { serialize } from '@/middleware/swr/serialize';
 import { useRouter } from 'next/router';
-import React from 'react';
-import useSWR, { KeyedMutator } from 'swr';
 
 type SWR = (
   isValid: boolean,
   nickname: string,
-  page?: string,
-  tag?: string,
+  args: {
+    page?: string;
+    tag?: string;
+  },
 ) => {
   notifications?: Notification[];
   isLoading: boolean;
@@ -21,16 +23,13 @@ type SWR = (
   notificationsMutate: KeyedMutator<ProfileNotificationsAPIRes | undefined>;
 };
 
-const useMyNotificationsSWR: SWR = (isValid, nickname, page, tag) => {
+const useMyNotificationsSWR: SWR = (isValid, nickname, args) => {
   const router = useRouter();
   const { data, error, isLoading, mutate } = useSWR(
     isValid && nickname
       ? {
           url: `/api/user/profile/${nickname}?tab=viewNotifications`,
-          args: {
-            page,
-            tag,
-          },
+          args,
         }
       : null,
     profileNotificationsFetcher,

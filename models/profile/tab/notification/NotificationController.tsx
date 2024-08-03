@@ -1,15 +1,14 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import NotificationView, { ViewProps } from './NotificationView';
 import { useRouter } from 'next/router';
-import { errorMessage } from '@/apis/errorMessage';
-import { Notification } from '@/apis/profileNotificationsFetcher';
+import { errorMessage } from '@/apis/config/errorMessage';
+import { Notification } from '@/apis/fetcher/profileNotificationsFetcher';
 import { dateFromNow } from '@/utils/changeDateFormat';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
 import { useAppDispatch, useAppSelector } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
-import { projectJoinApproveAPI } from '@/apis/projectJoinApprove';
-import { projectJoinRejectAPI } from '@/apis/projectJoinReject';
-import { profileNotificationDeleteAPI } from '@/apis/profileNotificationDelete';
+import { updateProjectJoinRequestAPI } from '@/apis/updateProjectJoinRequest';
+import { deleteProfileNotificationAPI } from '@/apis/deleteProfileNotification';
 import useAuth from '@/hooks/useAuth';
 import useMyNotificationsSWR from '@/hooks/useSWR/useMyNotificationsSWR';
 
@@ -27,8 +26,9 @@ const NotificationController: FC<ControllerProps> = ({}) => {
   const userNickname = useAppSelector((state) => state.profile.userNickname);
 
   const { notifications, notificationsMutate } = useMyNotificationsSWR(
-    userNickname === user?.nickname,
+    hasRendered && userNickname === user?.nickname,
     userNickname,
+    {},
   );
 
   const handleDeleteNotification = useCallback(
@@ -39,7 +39,7 @@ const NotificationController: FC<ControllerProps> = ({}) => {
 
       if (result) {
         try {
-          await profileNotificationDeleteAPI({ notificationId });
+          await deleteProfileNotificationAPI({ notificationId });
 
           notificationsMutate();
         } catch (error) {
@@ -90,7 +90,10 @@ const NotificationController: FC<ControllerProps> = ({}) => {
       }
 
       try {
-        await projectJoinApproveAPI({ notificationId });
+        await updateProjectJoinRequestAPI({
+          notificationId,
+          approvalStatus: 'approve',
+        });
 
         alert('프로젝트 멤버로 추가되었습니다.');
 
@@ -111,7 +114,10 @@ const NotificationController: FC<ControllerProps> = ({}) => {
       }
 
       try {
-        await projectJoinRejectAPI({ notificationId });
+        await updateProjectJoinRequestAPI({
+          notificationId,
+          approvalStatus: 'reject',
+        });
 
         alert('프로젝트 참여 요청을 거절했습니다.');
 

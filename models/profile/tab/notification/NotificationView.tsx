@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
-import { Notification } from '@/apis/profileNotificationsFetcher';
+import { Notification } from '@/apis/fetcher/profileNotificationsFetcher';
 import { Button } from '@/components/button';
 import Skeleton from '@/components/skeleton';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
@@ -178,7 +178,12 @@ const NotificationView: FC<ViewProps> = ({
               <BoxContent>
                 <NoticeHideContainer>
                   <LockPersonIconContainer>
-                    <LockPersonIcon width={20} height={20} fill={true} />
+                    <LockPersonIcon
+                      width={20}
+                      height={20}
+                      fill={true}
+                      color='#767678'
+                    />
                   </LockPersonIconContainer>
                   <HideNoticeText>본인만 확인 가능합니다.</HideNoticeText>
                 </NoticeHideContainer>
