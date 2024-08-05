@@ -3,9 +3,9 @@ import { ENDPOINTS } from './endpoints';
 
 export interface DeleteAccountConfirmAPIReq {
   email: string;
-  a1: string;
-  a2: string;
-  a3: string;
+  authCode1: string;
+  authCode2: string;
+  authCode3: string;
 }
 
 export interface DeleteAccountConfirmAPIRes {

@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import DeleteAccountView, { ViewProps } from './DeleteAccountView';
 import { deleteAccountAPI } from '@/apis/deleteAccount';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import { useRouter } from 'next/router';
 import { useAppDispatch } from '@/store';
 import { loading } from '@/features/loading';

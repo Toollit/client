@@ -4,7 +4,7 @@ import DeleteAccountConfirmView, {
 } from './DeleteAccountConfirmView';
 import { deleteAccountConfirmAPI } from '@/apis/deleteAccountConfirm';
 import { useRouter } from 'next/router';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 
 export interface ControllerProps {}
 
@@ -16,15 +16,14 @@ const DeleteAccountConfirmController: FC<ControllerProps> = ({}) => {
       return;
     }
 
-    const { email, a1, a2, a3 } = router.query as {
+    const { email, authCode1, authCode2, authCode3 } = router.query as {
       email: string | undefined;
-      a1: string | undefined;
-      a2: string | undefined;
-      a3: string | undefined;
+      authCode1: string | undefined;
+      authCode2: string | undefined;
+      authCode3: string | undefined;
     };
 
-    // a1, a2, a3 are proof of delete account auth code
-    if (!email || !a1 || !a2 || !a3) {
+    if (!email || !authCode1 || !authCode2 || !authCode3) {
       alert('비정상적인 접근입니다.');
       router.replace('/');
       return;
@@ -32,7 +31,12 @@ const DeleteAccountConfirmController: FC<ControllerProps> = ({}) => {
 
     (async () => {
       try {
-        await deleteAccountConfirmAPI({ email, a1, a2, a3 });
+        await deleteAccountConfirmAPI({
+          email,
+          authCode1,
+          authCode2,
+          authCode3,
+        });
 
         alert('회원 탈퇴가 완료되었습니다.');
 
