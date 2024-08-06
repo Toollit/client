@@ -4,11 +4,12 @@ import { serialize } from '@/middleware/swr/serialize';
 import {
   BookmarkStatusAPIRes,
   bookmarkStatusFetcher,
-} from '@/apis/bookmarkStatusFetcher';
+} from '@/apis/fetcher/bookmarkStatusFetcher';
 import { errorMessage } from '@/apis/config/errorMessage';
 import { ENDPOINTS } from '@/apis/endpoints';
 
 type SWR = (
+  isValid: boolean,
   postId: string,
   args: {
     page?: string;
@@ -22,9 +23,9 @@ type SWR = (
   bookmarkStatusMutate: KeyedMutator<BookmarkStatusAPIRes | undefined>;
 };
 
-const useBookmarkStatusSWR: SWR = (postId, args) => {
+const useBookmarkStatusSWR: SWR = (isValid, postId, args) => {
   const { data, error, isLoading, mutate } = useSWR(
-    postId
+    isValid && postId
       ? {
           url: ENDPOINTS.GET.BOOKMARK_STATUS(postId),
           args,
