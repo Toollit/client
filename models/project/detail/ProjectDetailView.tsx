@@ -10,7 +10,8 @@ import { Button } from '@/components/button';
 import { InnerContainer, ImageWrapper } from '@/styles/commons';
 import BasicTooltip from '@/components/tooltip/basic';
 import OptionButton from '@/components/drawer/option';
-import { ProjectMember, ProjectWriter } from '@/apis/fetcher/projectFetcher';
+import { ProjectWriter } from '@/apis/fetcher/projectWriterFetcher';
+import { ProjectMember } from '@/apis/fetcher/projectMembersFetcher';
 import { CapitalizedMemberTypes, ProjectDetail } from '@/typings';
 import {
   ShareIcon,
@@ -81,7 +82,7 @@ export interface ViewProps {
   isClientRendering: boolean;
   writer?: ProjectWriter;
   content?: CustomProjectDetailViewData;
-  member?: ProjectMember;
+  members?: ProjectMember[];
   bookmarkStatus?: boolean;
   handleBookmark: () => void;
   handleShare: () => void;
@@ -99,7 +100,7 @@ const ProjectDetailView: FC<ViewProps> = ({
   isClientRendering,
   writer,
   content,
-  member,
+  members,
   bookmarkStatus,
   handleBookmark,
   handleShare,
@@ -255,10 +256,10 @@ const ProjectDetailView: FC<ViewProps> = ({
 
               <ProjectMembersContainer>
                 <h2>프로젝트 멤버</h2>
-                {member ? (
+                {members ? (
                   <MembersContainer>
                     <Members>
-                      {member?.profiles.map((user) => {
+                      {members.map((user) => {
                         return (
                           <Avatar key={user.nickname}>
                             <Link href={`/profile/${user.nickname}`}>

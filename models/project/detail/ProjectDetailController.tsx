@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, FC } from 'react';
 import ProjectDetailView, { ViewProps } from './ProjectDetailView';
 import { changeDateFormat, dateFromNow } from '@/utils/changeDateFormat';
 import { useRouter } from 'next/router';
-import { ProjectAPIRes } from '@/apis/fetcher/projectFetcher';
+import { ProjectDetailAPIRes } from '@/apis/fetcher/projectDetailFetcher';
 import { errorMessage } from '@/apis/config/errorMessage';
 import useAuth from '@/hooks/useAuth';
 import { showAlert, hideAlert } from '@/features/alert';
@@ -14,9 +14,13 @@ import { loading } from '@/features/loading';
 import { createProjectJoinRequestAPI } from '@/apis/createProjectJoinRequest';
 import { deleteProjectMemberAPI } from '@/apis/deleteProjectMember';
 import { useAppDispatch } from '@/store';
-import { CapitalizedMemberTypes } from '@/typings';
+import { CapitalizedMemberTypes, ProjectDetail } from '@/typings';
 import useProjectDetailSWR from '@/hooks/useSWR/useProjectDetailSWR';
 import useBookmarkStatusSWR from '@/hooks/useSWR/useBookmarkStatusSWR';
+import useProjectWriterSWR from '@/hooks/useSWR/useProjectWriterSWR';
+import useProjectMembersSWR from '@/hooks/useSWR/useProjectMembersSWR';
+import { ProjectWriter } from '@/apis/fetcher/projectWriterFetcher';
+import { ProjectMember } from '@/apis/fetcher/projectMembersFetcher';
 
 export interface ControllerProps {}
 
@@ -34,18 +38,33 @@ const ProjectDetailController: FC<ControllerProps> = () => {
   const [shareAlertTimeoutId, setShareAlertTimeoutId] =
     useState<NodeJS.Timeout>();
 
-  const { projectDetail, projectDetailMutate } = useProjectDetailSWR(postId, {
+  const { projectDetail, projectDetailMutate } = useProjectDetailSWR(
+    true,
+    postId,
+    {
+      page: `/project/${postId}`,
+      tag: `project${postId}`,
+    },
+  );
+
+  const { projectWriter } = useProjectWriterSWR(true, postId, {
     page: `/project/${postId}`,
-    tag: `project${postId}`,
+    tag: `project${postId}Writer`,
+  });
+
+  const { projectMembers } = useProjectMembersSWR(true, postId, {
+    page: `/project/${postId}`,
+    tag: `project${postId}Members`,
   });
 
   const { bookmarkStatus, bookmarkStatusMutate } = useBookmarkStatusSWR(
+    true,
     postId,
     { page: `/project/${postId}`, tag: `project${postId}BookmarkStatus` },
   );
 
   const handleConvertMemberTypes = useCallback(
-    (memberTypes: ProjectAPIRes['data']['content']['memberTypes']) => {
+    (memberTypes: ProjectDetailAPIRes['data']['memberTypes']) => {
       const convertedMemberTypes = memberTypes.map((type) => {
         return type === 'pm'
           ? type.toUpperCase()
@@ -66,8 +85,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       }
 
       if (auth?.success) {
-        const isMyProject =
-          projectDetail?.writer.nickname === auth.data.nickname;
+        const isMyProject = projectWriter?.nickname === auth.data.nickname;
 
         if (isMyProject) {
           return alert('내가 작성한 게시글 입니다.');
@@ -108,7 +126,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
       errorMessage(error);
     }
   }, [
-    projectDetail,
+    projectWriter,
     dispatch,
     postId,
     router,
@@ -199,15 +217,15 @@ const ProjectDetailController: FC<ControllerProps> = () => {
           openReport({
             postType: 'project',
             postId: Number(postId),
-            writer: projectDetail?.writer.nickname ?? '',
-            title: projectDetail?.content.title ?? '',
+            writer: projectWriter?.nickname ?? '',
+            title: projectDetail?.title ?? '',
           }),
         );
       }
     } catch (error) {
       errorMessage(error);
     }
-  }, [dispatch, router, authMutate, postId, projectDetail]);
+  }, [dispatch, router, authMutate, postId, projectWriter, projectDetail]);
 
   const handleJoinProject = useCallback(async () => {
     const result = confirm('프로젝트에 참가하시겠습니까?');
@@ -273,12 +291,12 @@ const ProjectDetailController: FC<ControllerProps> = () => {
   }, [dispatch, authMutate, projectDetailMutate, postId, router]);
 
   const handleCheckMember = useCallback(
-    (data?: ProjectAPIRes['data']) => {
-      const founded = data?.member.profiles.find(
+    (projectWriter?: ProjectWriter, projectMembers?: ProjectMember[]) => {
+      const founded = projectMembers?.find(
         (profile) => profile.nickname === user?.nickname,
       );
 
-      const isMyPost = data?.writer.nickname === user?.nickname;
+      const isMyPost = projectWriter?.nickname === user?.nickname;
 
       if (isMyPost) {
         // project owner. show join text
@@ -297,17 +315,13 @@ const ProjectDetailController: FC<ControllerProps> = () => {
   );
 
   const handleCheckRecruitComplete = useCallback(
-    (data?: ProjectAPIRes['data']) => {
-      if (!data) {
-        return false;
-      }
-
-      const members = data.member.profiles.length;
+    (projectDetail?: ProjectDetail, projectMembers?: ProjectMember[]) => {
+      const members = projectMembers?.length;
       if (typeof members !== 'number') {
         return false;
       }
 
-      return data.content.recruitCount === members - 1;
+      return projectDetail?.recruitCount === members - 1;
     },
     [],
   );
@@ -321,43 +335,44 @@ const ProjectDetailController: FC<ControllerProps> = () => {
   }, [bookmarkAlertTimeoutId, shareAlertTimeoutId]);
 
   const props: ViewProps = {
-    isMyPost: projectDetail?.writer.nickname === user?.nickname,
-    isRecruitCompleted: handleCheckRecruitComplete(projectDetail),
-    isMember: handleCheckMember(projectDetail),
+    isMyPost: projectWriter?.nickname === user?.nickname,
+    isRecruitCompleted: handleCheckRecruitComplete(
+      projectDetail,
+      projectMembers,
+    ),
+    isMember: handleCheckMember(projectWriter, projectMembers),
     isClientRendering,
-    writer: projectDetail
+    writer: projectWriter
       ? {
-          nickname: projectDetail.writer.nickname,
+          nickname: projectWriter.nickname,
           lastSigninAt: dateFromNow({
-            date: projectDetail.writer.lastSigninAt,
+            date: projectWriter.lastSigninAt,
           }),
-          profileImage: projectDetail.writer.profileImage,
+          profileImage: projectWriter.profileImage,
         }
-      : projectDetail,
+      : projectWriter,
     content: projectDetail
       ? {
-          id: projectDetail.content.id,
-          title: projectDetail.content.title,
-          contentHTML: projectDetail.content.contentHTML,
-          contentMarkdown: projectDetail.content.contentMarkdown,
-          views: projectDetail.content.views,
+          id: projectDetail.id,
+          title: projectDetail.title,
+          contentHTML: projectDetail.contentHTML,
+          contentMarkdown: projectDetail.contentMarkdown,
+          views: projectDetail.views,
           createdAt: changeDateFormat({
-            date: projectDetail.content.createdAt,
+            date: projectDetail.createdAt,
             format: 'YYMMDD_hhmm',
           }),
           updatedAt: changeDateFormat({
-            date: projectDetail.content.updatedAt,
+            date: projectDetail.updatedAt,
             format: 'YYMMDD_hhmm',
           }),
-          hashtags: projectDetail.content.hashtags,
-          memberTypes: handleConvertMemberTypes(
-            projectDetail.content.memberTypes,
-          ),
-          recruitCount: projectDetail.content.recruitCount,
-          representativeImage: projectDetail.content.representativeImage,
+          hashtags: projectDetail.hashtags,
+          memberTypes: handleConvertMemberTypes(projectDetail.memberTypes),
+          recruitCount: projectDetail.recruitCount,
+          representativeImage: projectDetail.representativeImage,
         }
       : projectDetail,
-    member: projectDetail?.member,
+    members: projectMembers,
     bookmarkStatus,
     handleBookmark,
     handleShare,
