@@ -11,6 +11,12 @@ export const ENDPOINTS = {
     PROJECT_DETAIL: (postId: string) => {
       return `/api/post/project/${postId}`;
     },
+    PROJECT_WRITER: (postId: string) => {
+      return `/api/post/project/${postId}/writer`;
+    },
+    PROJECT_MEMBERS: (postId: string) => {
+      return `/api/post/project/${postId}/members`;
+    },
     DUPLICATE_NICKNAME_CHECK: (nickname: string) => {
       return `/api/user/duplicate-nickname-check?nickname=${nickname}`;
     },
