@@ -3,34 +3,35 @@ import useSWR, { KeyedMutator } from 'swr';
 import { errorMessage } from '@/apis/config/errorMessage';
 import { serialize } from '@/middleware/swr/serialize';
 import {
-  ProjectAPIRes,
-  ProjectContent,
-  projectFetcher,
-} from '@/apis/projectFetcher';
+  ProjectDetailAPIRes,
+  projectDetailFetcher,
+} from '@/apis/fetcher/projectDetailFetcher';
 import { ENDPOINTS } from '@/apis/endpoints';
+import { ProjectDetail } from '@/typings';
 
 type SWR = (
+  isValid: boolean,
   postId: string,
   args: {
     page?: string;
     tag?: string;
   },
 ) => {
-  projectDetail?: ProjectContent;
+  projectDetail?: ProjectDetail;
   isLoading: boolean;
   isError: any;
-  projectDetailMutate: KeyedMutator<ProjectAPIRes | undefined>;
+  projectDetailMutate: KeyedMutator<ProjectDetailAPIRes | undefined>;
 };
 
-const useProjectDetailSWR: SWR = (postId, args) => {
+const useProjectDetailSWR: SWR = (isValid, postId, args) => {
   const { data, error, isLoading, mutate } = useSWR(
-    postId
+    isValid && postId
       ? {
           url: ENDPOINTS.GET.PROJECT_DETAIL(postId),
           args,
         }
       : null,
-    projectFetcher,
+    projectDetailFetcher,
     {
       dedupingInterval: 60 * 10 * 1000,
       revalidateOnMount: false,
