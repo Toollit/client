@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useSWRImmutable from 'swr/immutable';
 import { authUserKey } from '@/apis/keys';
-import { authFetcher } from '@/apis/authFetcher';
+import { authFetcher } from '@/apis/fetcher/authFetcher';
 import { serialize } from '@/middleware/swr/serialize';
 
 /**

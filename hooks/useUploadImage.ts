@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import { uploadImageAPI } from '@/apis/uploadImage';
 
 interface Props {

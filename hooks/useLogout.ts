@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
-import { logoutAPI } from '@/apis/logout';
+import { logoutAPI } from '@/apis/auth/logout';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { useRouter } from 'next/router';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import { useAppDispatch } from '@/store';
 import { loading } from '@/features/loading';
 
