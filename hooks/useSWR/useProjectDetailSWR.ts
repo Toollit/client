@@ -16,6 +16,7 @@ type SWR = (
     page?: string;
     tag?: string;
   },
+  isUpdate?: boolean,
 ) => {
   projectDetail?: ProjectDetail;
   isLoading: boolean;
@@ -23,13 +24,29 @@ type SWR = (
   projectDetailMutate: KeyedMutator<ProjectDetailAPIRes | undefined>;
 };
 
-const useProjectDetailSWR: SWR = (isValid, postId, args) => {
+/**
+ * @param {boolean} isValid - controlling data requests based on conditions
+ * @param {string} postId - unique value required for data requests
+ * @param {Object} args - page and tag for identifying data
+ * @param {boolean} isUpdate - check whether it is requested for modification
+ */
+const useProjectDetailSWR: SWR = (isValid, postId, args, isUpdate = false) => {
   const { data, error, isLoading, mutate } = useSWR(
     isValid && postId
-      ? {
-          url: ENDPOINTS.GET.PROJECT_DETAIL(postId),
-          args,
-        }
+      ? !isUpdate
+        ? {
+            url: ENDPOINTS.GET.PROJECT_DETAIL(postId),
+            args,
+          }
+        : {
+            url: ENDPOINTS.GET.PROJECT_DETAIL(postId),
+            args,
+            config: {
+              headers: {
+                modify: true,
+              },
+            },
+          }
       : null,
     projectDetailFetcher,
     {
