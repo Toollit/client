@@ -5,7 +5,6 @@ import Title from '@/components/title';
 import HashtagInput from '@/components/hashtagInput';
 import MemberTypeSelector from '@/components/memberTypeSelector';
 import { Editor } from '@toast-ui/react-editor';
-import { ProjectDetail } from '@/apis/projectFetcher';
 import { Button } from '@/components/button';
 import Label from '@/components/label';
 import Image, { StaticImageData } from 'next/legacy/image';
@@ -14,7 +13,7 @@ import Tooltip, { TooltipProps } from '@/components/tooltip';
 import Skeleton from '@/components/skeleton';
 import { BottomButton } from '@/components/button';
 import { InnerContainer } from '@/styles/commons';
-
+import { ProjectDetail } from '@/typings';
 import {
   AddImageBox,
   SubmitContainer,

@@ -1,14 +1,10 @@
-import React, { FC, useCallback, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import ModifyView, { ViewProps } from './ModifyView';
-import useSWR from 'swr';
 import { useRouter } from 'next/router';
-import { errorMessage } from '@/apis/errorMessage';
-import { projectDetailKey } from '@/apis/keys';
-import { projectFetcher } from '@/apis/projectFetcher';
+import { errorMessage } from '@/apis/config/errorMessage';
 import useEditorContent from '@/hooks/useEditorContent';
 import { UpdateProjectData, updateProjectAPI } from '@/apis/updateProject';
 import PrivateRoute from '@/components/PrivateRoute';
-import { serialize } from '@/middleware/swr/serialize';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { loading } from '@/features/loading';
 import useTooltip from '@/hooks/useTooltip';
@@ -16,12 +12,12 @@ import { StaticImageData } from 'next/legacy/image';
 import projectDefaultImage from 'public/static/images/project.jpg';
 import useWindowSize from '@/hooks/useWindowSize';
 import useCachedKeys from '@/hooks/useCachedKeys';
+import useProjectDetailSWR from '@/hooks/useSWR/useProjectDetailSWR';
+import useProjectMembersSWR from '@/hooks/useSWR/useProjectMembersSWR';
 
-interface ControllerProps {
-  postId: string;
-}
+interface ControllerProps {}
 
-const ModifyController: FC<ControllerProps> = ({ postId }) => {
+const ModifyController: FC<ControllerProps> = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { titleRef, editorRef, handleData } = useEditorContent();
@@ -36,7 +32,7 @@ const ModifyController: FC<ControllerProps> = ({ postId }) => {
   const { mutatePage } = useCachedKeys();
 
   const isLoading = useAppSelector((state) => state.isLoading.status);
-
+  const [postId, setPostId] = useState('');
   const [representativePreviewImage, setRepresentativePreviewImage] = useState<
     StaticImageData | string | null
   >(null);
@@ -51,42 +47,19 @@ const ModifyController: FC<ControllerProps> = ({ postId }) => {
   const recruitCountRef = useRef<HTMLInputElement>(null);
   const representativeImageRef = useRef<HTMLInputElement>(null);
 
-  // 상세페이지와 수정시 사용하는 api가 동일하여 수정시에는 조회수 증가를 제한하기위해 config 옵션으로 수정하기 위해서 호출했는지 여부를 서버로 전달한다.
-  const { data: projectDetail, mutate: projectDetailMutate } = useSWR(
-    postId
-      ? {
-          url: projectDetailKey(postId),
-          args: { page: `/project/${postId}`, tag: `project/${postId}` },
-          config: {
-            headers: {
-              modify: true,
-            },
-          },
-        }
-      : null,
-    projectFetcher,
+  const { projectDetail, projectDetailMutate } = useProjectDetailSWR(
+    true,
+    postId,
     {
-      revalidateOnFocus: false,
-      errorRetryCount: 0,
-      onError(err, key, config) {
-        errorMessage(err);
-      },
-      onSuccess(data, key, config) {
-        const imageData = data?.data.content.representativeImage;
-
-        if (imageData === 'defaultImage') {
-          setRepresentativePreviewImage(projectDefaultImage);
-          setRepresentativeImageFile('defaultImage');
-        }
-
-        if (imageData !== undefined && imageData !== 'defaultImage') {
-          setRepresentativePreviewImage(imageData);
-          setRepresentativeImageFile(imageData);
-        }
-      },
-      use: [serialize],
+      page: `/project/${postId}`,
+      tag: `project${postId}`,
     },
+    true,
   );
+  const { projectMembers } = useProjectMembersSWR(true, postId, {
+    page: `/project/${postId}`,
+    tag: `project${postId}Members`,
+  });
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -112,7 +85,7 @@ const ModifyController: FC<ControllerProps> = ({ postId }) => {
       }
 
       const recruitCount = Number(recruitCountRef.current?.value);
-      const members = projectDetail?.data.member.profiles.length;
+      const members = projectMembers?.length;
 
       if (typeof members === 'undefined') {
         return;
@@ -141,10 +114,10 @@ const ModifyController: FC<ControllerProps> = ({ postId }) => {
 
       const projectData: UpdateProjectData = {
         postId,
-        title: data?.title,
-        contentHTML: data?.contentHTML,
-        contentMarkdown: data?.contentMarkdown,
-        imageUrls: data?.imageUrls,
+        title: data.title,
+        contentHTML: data.contentHTML,
+        contentMarkdown: data.contentMarkdown,
+        imageUrls: data.imageUrls,
         hashtags: hashtagRef.current,
         memberTypes: memberTypeRef.current,
         recruitCount: recruitCount,
@@ -195,7 +168,7 @@ const ModifyController: FC<ControllerProps> = ({ postId }) => {
       dispatch,
       representativeImageFile,
       postId,
-      projectDetail,
+      projectMembers,
     ],
   );
 
@@ -250,6 +223,28 @@ const ModifyController: FC<ControllerProps> = ({ postId }) => {
     setRepresentativeImageFile(null);
   }, []);
 
+  useEffect(() => {
+    const imageData = projectDetail?.representativeImage;
+
+    if (imageData === 'defaultImage') {
+      setRepresentativePreviewImage(projectDefaultImage);
+      setRepresentativeImageFile('defaultImage');
+    }
+
+    if (imageData !== undefined && imageData !== 'defaultImage') {
+      setRepresentativePreviewImage(imageData);
+      setRepresentativeImageFile(imageData);
+    }
+  }, [projectDetail?.representativeImage]);
+
+  useEffect(() => {
+    const postId = router.query.id;
+
+    if (typeof postId === 'string') {
+      setPostId(postId);
+    }
+  }, [router]);
+
   const props: ViewProps = {
     isFooterVisible: isLaptop ? true : false,
     handleSubmit,
@@ -258,7 +253,7 @@ const ModifyController: FC<ControllerProps> = ({ postId }) => {
       editorRef,
       name: 'projectContentImage',
       contentImageUploadUrl: '/api/post/project/content/uploadImage',
-      content: projectDetail?.data,
+      content: projectDetail,
     },
     hashtagRef,
     memberTypeRef,
@@ -286,9 +281,9 @@ const ModifyController: FC<ControllerProps> = ({ postId }) => {
       open: tooltipOpen,
       onClose: handleTooltipClose,
     },
-    hashtags: projectDetail?.data.content.hashtags,
-    memberTypes: projectDetail?.data.content.memberTypes,
-    recruitCount: projectDetail?.data.content.recruitCount,
+    hashtags: projectDetail?.hashtags,
+    memberTypes: projectDetail?.memberTypes,
+    recruitCount: projectDetail?.recruitCount,
   };
 
   return (
