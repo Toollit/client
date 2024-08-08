@@ -7,8 +7,8 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import { closeReport } from '@/features/report';
 import { BottomButton } from '@/components/button';
 import AppLayout from '@/components/appLayout';
-import { reportAPI } from '@/apis/report';
-import { errorMessage } from '@/apis/errorMessage';
+import { createReportAPI } from '@/apis/createReport';
+import { errorMessage } from '@/apis/config/errorMessage';
 import { loading } from '@/features/loading';
 import { InnerContainer } from '@/styles/commons';
 import {
@@ -134,7 +134,7 @@ const Report = () => {
       try {
         dispatch(loading({ status: true }));
 
-        await reportAPI(data);
+        await createReportAPI(data);
 
         dispatch(loading({ status: false }));
 

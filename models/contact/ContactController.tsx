@@ -2,9 +2,9 @@ import React, { FC, useCallback, useRef, useState } from 'react';
 import ContactView, { ViewProps } from './ContactView';
 import useAuth from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
-import { errorMessage } from '@/apis/errorMessage';
+import { errorMessage } from '@/apis/config/errorMessage';
 import { SelectChangeEvent } from '@mui/material';
-import { contactAPI } from '@/apis/contact';
+import { createContactAPI } from '@/apis/createContact';
 import { useAppDispatch } from '@/store';
 import { loading } from '@/features/loading';
 
@@ -61,7 +61,7 @@ const ContactController: FC<ControllerProps> = ({}) => {
         }
 
         if (auth?.success) {
-          await contactAPI({ type, title, content });
+          await createContactAPI({ type, title, content });
 
           alert(
             '최대한 빠른 시간 내에 검토 후 이메일로 답변드리도록 하겠습니다.',
