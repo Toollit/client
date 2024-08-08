@@ -33,6 +33,7 @@ const MainController: FC<ControllerProps> = ({
   const [order, setOrder] = useState<'new' | 'popularity'>(postOrder);
 
   const { projectOverviews, totalPage } = useProjectOverviewsSWR(
+    true,
     pageNum,
     order,
     {
@@ -41,7 +42,7 @@ const MainController: FC<ControllerProps> = ({
     },
   );
 
-  const { bookmarkIds } = useMyBookmarkIdsSWR({
+  const { bookmarkIds } = useMyBookmarkIdsSWR(true, {
     page: '/',
     tag: 'bookmarkIds',
   });

@@ -22,8 +22,8 @@ const SearchController: FC<ControllerProps> = ({}) => {
   const [searchText, setSearchText] = useState<string>('');
   const { q } = router.query;
 
-  const { projects } = useSearchProjectsSWR(searchText);
-  const { bookmarkIds } = useMyBookmarkIdsSWR();
+  const { projects } = useSearchProjectsSWR(true, searchText, {});
+  const { bookmarkIds } = useMyBookmarkIdsSWR(true, {});
 
   const handleBookmarkStatusCheck = useCallback(
     (projects: ProjectOverview[], bookmarkIds: number[]) => {
