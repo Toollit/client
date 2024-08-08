@@ -1,8 +1,7 @@
 import React from 'react';
 import { BookmarkIcon, ViewIcon } from '@/assets/icons';
-import { Project } from '@/apis/projectsFetcher';
+import { ProjectBlockPost } from '@/typings';
 import Hashtag from '@/components/hashtag';
-import type { StaticImageData } from 'next/legacy/image';
 import {
   Container,
   ImageContainer,
@@ -22,15 +21,8 @@ import {
   ViewIconText,
 } from './styles';
 
-export interface BlockProject
-  extends Omit<Project, 'representativeImage' | 'memberTypes'> {
-  bookmark: boolean;
-  representativeImage: string | StaticImageData;
-  memberTypes: ('Developer' | 'Designer' | 'PM' | 'Anyone')[];
-}
-
 interface BlockPostProps {
-  content: BlockProject;
+  content: ProjectBlockPost;
 }
 
 const BlockPost = ({ content }: BlockPostProps) => {
