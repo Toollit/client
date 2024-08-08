@@ -2,27 +2,35 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { serialize } from '@/middleware/swr/serialize';
-import { errorMessage } from '@/apis/errorMessage';
-import { searchFetcher } from '@/apis/searchFetcher';
-import { Project } from '@/typings';
+import { errorMessage } from '@/apis/config/errorMessage';
+import { searchFetcher } from '@/apis/fetcher/searchFetcher';
+import { ProjectOverview } from '@/typings';
 
 type SWR = (
+  isValid: boolean,
   searchText: string,
-  page?: string,
-  tag?: string,
+  args: {
+    page?: string;
+    tag?: string;
+  },
 ) => {
-  projects?: Project[];
+  projects?: ProjectOverview[];
   isLoading: boolean;
   isError: any;
 };
 
-const useSearchProjectsSWR: SWR = (searchText, page, tag) => {
+/**
+ * @param {boolean} isValid - controlling data requests based on conditions
+ * @param {string} searchText - unique value required for data requests
+ * @param {Object} args - page and tag for identifying data
+ */
+const useSearchProjectsSWR: SWR = (isValid, searchText, args) => {
   const router = useRouter();
   const { data, error, isLoading, mutate } = useSWR(
-    searchText
+    isValid && searchText
       ? {
           url: `/api/search?q=${encodeURIComponent(searchText)}`,
-          args: { page, tag },
+          args,
         }
       : null,
     searchFetcher,

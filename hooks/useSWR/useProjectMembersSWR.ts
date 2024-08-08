@@ -23,6 +23,11 @@ type SWR = (
   projectMembersMutate: KeyedMutator<ProjectMembersAPIRes | undefined>;
 };
 
+/**
+ * @param {boolean} isValid - controlling data requests based on conditions
+ * @param {string} postId - unique value required for data requests
+ * @param {Object} args - page and tag for identifying data
+ */
 const useProjectMembersSWR: SWR = (isValid, postId, args) => {
   const { data, error, isLoading, mutate } = useSWR(
     isValid && postId
@@ -45,7 +50,7 @@ const useProjectMembersSWR: SWR = (isValid, postId, args) => {
   );
 
   return {
-    projectMembers: data?.data.members,
+    projectMembers: data?.data?.members,
     isError: error,
     isLoading,
     projectMembersMutate: mutate,

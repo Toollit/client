@@ -5,11 +5,12 @@ import { serialize } from '@/middleware/swr/serialize';
 import {
   ProjectOverviewsAPIRes,
   projectOverviewsFetcher,
-} from '@/apis/projectOverviewsFetcher';
+} from '@/apis/fetcher/projectOverviewsFetcher';
 import { ProjectOverview } from '@/typings';
 import { ENDPOINTS } from '@/apis/endpoints';
 
 type SWR = (
+  isValid: boolean,
   pageNumber: number,
   postOrder: 'new' | 'popularity',
   args: {
@@ -24,12 +25,20 @@ type SWR = (
   projectOverviewsMutate: KeyedMutator<ProjectOverviewsAPIRes | undefined>;
 };
 
-const useProjectOverviewsSWR: SWR = (pageNumber, postOrder, args) => {
+/**
+ * @param {boolean} isValid - controlling data requests based on conditions
+ * @param {number} pageNumber - unique value required for data requests
+ * @param {string} postOrder - unique value required for data requests (possible values: "new" or "popularity")
+ * @param {Object} args - page and tag for identifying data
+ */
+const useProjectOverviewsSWR: SWR = (isValid, pageNumber, postOrder, args) => {
   const { data, error, isLoading, mutate } = useSWR(
-    {
-      url: ENDPOINTS.GET.PROJECT_OVERVIEWS(pageNumber, postOrder),
-      args,
-    },
+    isValid && pageNumber && postOrder
+      ? {
+          url: ENDPOINTS.GET.PROJECT_OVERVIEWS(pageNumber, postOrder),
+          args,
+        }
+      : null,
     projectOverviewsFetcher,
     {
       dedupingInterval: 60 * 10 * 1000,

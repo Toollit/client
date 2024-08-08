@@ -23,6 +23,11 @@ type SWR = (
   projectWriterMutate: KeyedMutator<ProjectWriterAPIRes | undefined>;
 };
 
+/**
+ * @param {boolean} isValid - controlling data requests based on conditions
+ * @param {string} postId - unique value required for data requests
+ * @param {Object} args - page and tag for identifying data
+ */
 const useProjectWriterSWR: SWR = (isValid, postId, args) => {
   const { data, error, isLoading, mutate } = useSWR(
     isValid && postId

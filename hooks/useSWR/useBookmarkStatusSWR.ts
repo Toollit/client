@@ -23,6 +23,11 @@ type SWR = (
   bookmarkStatusMutate: KeyedMutator<BookmarkStatusAPIRes | undefined>;
 };
 
+/**
+ * @param {boolean} isValid - controlling data requests based on conditions
+ * @param {string} postId - unique value required for data requests
+ * @param {Object} args - page and tag for identifying data
+ */
 const useBookmarkStatusSWR: SWR = (isValid, postId, args) => {
   const { data, error, isLoading, mutate } = useSWR(
     isValid && postId

@@ -18,6 +18,11 @@ type SWR = (
   isError: any;
 };
 
+/**
+ * @param {boolean} isValid - controlling data requests based on conditions
+ * @param {string} nickname - unique value required for data requests
+ * @param {Object} args - page and tag for identifying data
+ */
 const useUserRegisteredCheckSWR: SWR = (isValid, nickname, args) => {
   const router = useRouter();
   const { data, error, isLoading } = useSWR(

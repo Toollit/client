@@ -21,10 +21,16 @@ type SWR = (
   isError: any;
 };
 
+/**
+ * @param {boolean} isValid - controlling data requests based on conditions
+ * @param {string} nickname - unique value required for data requests
+ * @param {number} count - unique value required for data requests
+ * @param {Object} args - page and tag for identifying data
+ */
 const useUserProjectsSWR: SWR = (isValid, nickname, count, args) => {
   const router = useRouter();
   const { data, error, isLoading } = useSWR(
-    isValid && nickname
+    isValid && nickname && count
       ? {
           url: `/api/user/profile/${nickname}?tab=viewProjects&count=${count}`,
           args,

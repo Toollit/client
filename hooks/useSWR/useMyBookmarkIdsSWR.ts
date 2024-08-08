@@ -14,6 +14,10 @@ type SWR = (
   isError: any;
 };
 
+/**
+ * @param {boolean} isValid - controlling data requests based on conditions
+ * @param {Object} args - page and tag for identifying data
+ */
 const useMyBookmarkIdsSWR: SWR = (isValid, args) => {
   const { data, error, isLoading, mutate } = useSWR(
     isValid
