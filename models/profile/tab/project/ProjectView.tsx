@@ -42,11 +42,11 @@ const ProjectView: FC<ViewProps> = ({
     <>
       {hasRendered && (
         <>
-          {projects && projectsTotalCount && (
+          {projects && (
             <BoxContainer>
               <BoxTitle>프로젝트</BoxTitle>
               <BoxContent isLastContent={showLoadMore}>
-                {projectsTotalCount > 0 ? (
+                {projectsTotalCount && projectsTotalCount > 0 ? (
                   <>
                     {projects.map((project, index) => {
                       return (
@@ -114,7 +114,7 @@ const ProjectView: FC<ViewProps> = ({
             </BoxContainer>
           )}
 
-          {(!projects || !projectsTotalCount) && (
+          {!projects && (
             <>
               <Skeleton width={'100%'} height={20} bottom={2} />
               <Skeleton width={'100%'} height={15} bottom={2} />
