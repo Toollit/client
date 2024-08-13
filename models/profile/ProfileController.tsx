@@ -75,8 +75,8 @@ const ProfileController: FC<ControllerProps> = () => {
       ) {
         (async () => {
           router.replace({
-            pathname: `/profile/${nickname}`,
-            query: { tab: 'viewProfile' },
+            pathname: '/profile',
+            query: { nickname, tab: 'viewProfile' },
           });
 
           dispatch(updateProfileTab({ tab: 'viewProfile' }));
