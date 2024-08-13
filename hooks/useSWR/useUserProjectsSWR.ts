@@ -5,6 +5,7 @@ import { serialize } from '@/middleware/swr/serialize';
 import { errorMessage } from '@/apis/config/errorMessage';
 import { profileProjectsFetcher } from '@/apis/fetcher/profileProjectsFetcher';
 import { ProjectOverview } from '@/typings';
+import { ENDPOINTS } from '@/apis/endpoints';
 
 type SWR = (
   isValid: boolean,
@@ -32,7 +33,7 @@ const useUserProjectsSWR: SWR = (isValid, nickname, count, args) => {
   const { data, error, isLoading } = useSWR(
     isValid && nickname && count
       ? {
-          url: `/api/user/profile/${nickname}?tab=viewProjects&count=${count}`,
+          url: ENDPOINTS.GET.USER_PROJECTS(nickname, count),
           args,
         }
       : null,

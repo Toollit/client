@@ -28,6 +28,9 @@ export const ENDPOINTS = {
     USER_BOOKMARKS: (nickname: string, count: number) => {
       return `/api/user/profile/bookmarks?nickname=${nickname}&count=${count}`;
     },
+    USER_PROJECTS: (nickname: string, count: number) => {
+      return `/api/user/profile/projects?nickname=${nickname}&count=${count}`;
+    },
   },
   CREATE: {
     TEMPORARY_PASSWORD: `/api/user/temporary-password`,
