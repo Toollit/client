@@ -62,6 +62,15 @@ const ProfileController: FC<ControllerProps> = () => {
     const nickname = router.query.nickname;
     const currentTab = router.query.tab;
 
+    if (!router.isReady) {
+      return;
+    }
+
+    if (typeof nickname === 'undefined') {
+      alert('존재하지 않는 사용자입니다.');
+      return router.back();
+    }
+
     if (typeof nickname === 'string' && nickname) {
       dispatch(updateProfileNickname({ userNickname: nickname }));
 
