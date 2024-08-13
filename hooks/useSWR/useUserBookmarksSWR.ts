@@ -5,6 +5,7 @@ import { errorMessage } from '@/apis/config/errorMessage';
 import { bookmarksFetcher } from '@/apis/fetcher/bookmarksFetcher';
 import { useRouter } from 'next/router';
 import { ProjectOverview } from '@/typings';
+import { ENDPOINTS } from '@/apis/endpoints';
 
 type SWR = (
   isValid: boolean,
@@ -32,7 +33,7 @@ const useUserBookmarksSWR: SWR = (isValid, nickname, count, args) => {
   const { data, error, isLoading } = useSWR(
     isValid && nickname && count
       ? {
-          url: `/api/user/profile/${nickname}?tab=viewBookmarks&count=${count}`,
+          url: ENDPOINTS.GET.USER_BOOKMARKS(nickname, count),
           args,
         }
       : null,
