@@ -29,8 +29,6 @@ const useLogout = () => {
 
         await logoutAPI();
 
-        clearCache();
-
         if (push) {
           router.push(push);
         }
@@ -40,6 +38,7 @@ const useLogout = () => {
         }
 
         return router.events.on('routeChangeComplete', () => {
+          clearCache();
           dispatch(loading({ status: false }));
         });
       } catch (error) {
