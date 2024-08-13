@@ -106,8 +106,9 @@ const ProfileView: FC<ViewProps> = ({
                   <li key={tab.name}>
                     <Link
                       href={{
-                        pathname: `/profile/${nickname}`,
+                        pathname: `/profile`,
                         query: {
+                          nickname,
                           tab: tab.query,
                         },
                       }}

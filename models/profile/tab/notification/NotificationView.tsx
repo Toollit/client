@@ -79,7 +79,7 @@ const NotificationView: FC<ViewProps> = ({
                                     />
                                   </NotificationsIconContainer>
                                   <UserProfileLink
-                                    href={`/profile/${notification.notificationCreator}`}
+                                    href={`/profile?nickname=${notification.notificationCreator}`}
                                   >
                                     {notification.notificationCreator}
                                   </UserProfileLink>
@@ -124,7 +124,7 @@ const NotificationView: FC<ViewProps> = ({
                                     />
                                   </NotificationsIconContainer>
                                   <UserProfileLink
-                                    href={`/profile/${notification.notificationCreator}`}
+                                    href={`/profile?nickname=${notification.notificationCreator}`}
                                   >
                                     {notification.notificationCreator}
                                   </UserProfileLink>

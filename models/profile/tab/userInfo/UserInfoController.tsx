@@ -54,7 +54,7 @@ const UserInfoController: FC<ControllerProps> = ({}) => {
         const nickname = response?.data.nickname;
 
         if (nickname) {
-          router.replace(`/profile/${nickname}?tab=viewProfile`);
+          router.replace(`/profile?nickname=${nickname}&tab=viewProfile`);
         }
 
         // If revalidate immediately. It will make an api request with the previous nickname value, resulting in an error. It should be handled asynchronously.

@@ -52,14 +52,14 @@ const MenuController: FC<ControllerProps> = ({}) => {
         tag: 'profile',
         icon: <AccountCircleIcon width={4} height={4} />,
         text: '내 프로필',
-        url: user?.nickname ? `/profile/${user?.nickname}` : '/signin',
+        url: user?.nickname ? `/profile?nickname=${user?.nickname}` : '/signin',
       },
       {
         tag: 'project',
         icon: <ArticleIcon width={4} height={4} />,
         text: '내 프로젝트',
         url: user?.nickname
-          ? `/profile/${user?.nickname}?tab=viewProjects`
+          ? `/profile?nickname=${user?.nickname}&tab=viewProjects`
           : '/signin',
       },
       {
@@ -67,7 +67,7 @@ const MenuController: FC<ControllerProps> = ({}) => {
         icon: <BookmarkIcon width={4} height={4} />,
         text: '내 북마크',
         url: user?.nickname
-          ? `/profile/${user?.nickname}?tab=viewBookmarks`
+          ? `/profile?nickname=${user?.nickname}&tab=viewBookmarks`
           : '/signin',
       },
       {
@@ -75,7 +75,7 @@ const MenuController: FC<ControllerProps> = ({}) => {
         icon: <NotificationsIcon width={4} height={4} />,
         text: '알림',
         url: user?.nickname
-          ? `/profile/${user?.nickname}?tab=viewNotifications`
+          ? `/profile?nickname=${user?.nickname}&tab=viewNotifications`
           : '/signin',
       },
       {

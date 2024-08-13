@@ -189,7 +189,7 @@ const ProjectDetailView: FC<ViewProps> = ({
           <ColumnRightContainer>
             <StickyContainer>
               {writer ? (
-                <Link href={`/profile/${writer.nickname}`}>
+                <Link href={`/profile?nickname=${writer.nickname}`}>
                   <WriterInfoContainer>
                     {writer.profileImage ? (
                       <WriterProfileImage>
@@ -262,7 +262,7 @@ const ProjectDetailView: FC<ViewProps> = ({
                       {members.map((user) => {
                         return (
                           <Avatar key={user.nickname}>
-                            <Link href={`/profile/${user.nickname}`}>
+                            <Link href={`/profile?nickname=${user.nickname}`}>
                               <BasicTooltip text={user.nickname}>
                                 {user.profileImage ? (
                                   <ImageWrapper width={3.5} height={3.5}>

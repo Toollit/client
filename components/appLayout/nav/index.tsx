@@ -102,7 +102,9 @@ const Nav = <T extends Default | Close | Back | None>(props: T) => {
                 <li>
                   <ProfileLink
                     href={
-                      user?.nickname ? `/profile/${user?.nickname}` : '/signin'
+                      user?.nickname
+                        ? `/profile?nickname=${user?.nickname}`
+                        : '/signin'
                     }
                     onClick={handleAuthMutate}
                   >

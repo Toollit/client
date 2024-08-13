@@ -92,7 +92,9 @@ const ProfileController: FC<ControllerProps> = () => {
     isMyProfile: userNickname === user?.nickname,
     handleSigninLogout,
     signinLogoutText: user?.nickname ? '로그아웃' : '로그인',
-    myProfileLink: user?.nickname ? `/profile/${user.nickname}` : '/signin',
+    myProfileLink: user?.nickname
+      ? `/profile?nickname=${user.nickname}`
+      : '/signin',
     noticeLink: '/notice',
     privacyLink: '/policy/privacy',
     termsOfServiceLink: '/policy/terms-of-service',
