@@ -8,10 +8,10 @@ import {
 } from '@/apis/fetcher/profileNotificationsFetcher';
 import { serialize } from '@/middleware/swr/serialize';
 import { useRouter } from 'next/router';
+import { ENDPOINTS } from '@/apis/endpoints';
 
 type SWR = (
   isValid: boolean,
-  nickname: string,
   args: {
     page?: string;
     tag?: string;
@@ -25,15 +25,14 @@ type SWR = (
 
 /**
  * @param {boolean} isValid - controlling data requests based on conditions
- * @param {string} nickname - unique value required for data requests
  * @param {Object} args - page and tag for identifying data
  */
-const useMyNotificationsSWR: SWR = (isValid, nickname, args) => {
+const useMyNotificationsSWR: SWR = (isValid, args) => {
   const router = useRouter();
   const { data, error, isLoading, mutate } = useSWR(
-    isValid && nickname
+    isValid
       ? {
-          url: `/api/user/profile/${nickname}?tab=viewNotifications`,
+          url: ENDPOINTS.GET.MY_NOTIFICATIONS,
           args,
         }
       : null,

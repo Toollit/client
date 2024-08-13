@@ -24,6 +24,7 @@ export const ENDPOINTS = {
       return `/api/post/bookmark/status/${postId}`;
     },
     MY_BOOKMARK_IDS: `/api/post/bookmark/bookmarkIds`,
+    MY_NOTIFICATIONS: `/api/user/profile/notifications`,
   },
   CREATE: {
     TEMPORARY_PASSWORD: `/api/user/temporary-password`,

@@ -27,7 +27,6 @@ const NotificationController: FC<ControllerProps> = ({}) => {
 
   const { notifications, notificationsMutate } = useMyNotificationsSWR(
     hasRendered && userNickname === user?.nickname,
-    userNickname,
     {},
   );
 
