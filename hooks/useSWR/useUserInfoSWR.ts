@@ -7,6 +7,7 @@ import {
   ProfileInfoAPIRes,
   profileInfoFetcher,
 } from '@/apis/fetcher/profileInfoFetcher';
+import { ENDPOINTS } from '@/apis/endpoints';
 
 type SWR = (
   isValid: boolean,
@@ -32,7 +33,7 @@ const useUserInfoSWR: SWR = (isValid, nickname, args) => {
   const { data, error, isLoading, mutate } = useSWR(
     isValid && nickname
       ? {
-          url: `/api/user/profile/${nickname}?tab=viewProfile`,
+          url: ENDPOINTS.GET.USER_INFO(nickname),
           args,
         }
       : null,
