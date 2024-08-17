@@ -3,9 +3,9 @@ import useSWR, { KeyedMutator } from 'swr';
 import { serialize } from '@/middleware/swr/serialize';
 import {
   ProfileImage,
-  ProfileImageAPIRes,
-  profileImageFetcher,
-} from '@/apis/fetcher/profileImageFetcher';
+  UserImageAPIRes,
+  userImageFetcher,
+} from '@/apis/fetcher/userImageFetcher';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/config/errorMessage';
 
@@ -20,7 +20,7 @@ type SWR = (
   profileImage?: ProfileImage['profileImage'];
   isLoading: boolean;
   isError: any;
-  profileImageMutate: KeyedMutator<ProfileImageAPIRes | undefined>;
+  profileImageMutate: KeyedMutator<UserImageAPIRes | undefined>;
 };
 
 /**
@@ -37,7 +37,7 @@ const useUserImageSWR: SWR = (isValid, nickname, args) => {
           args,
         }
       : null,
-    profileImageFetcher,
+    userImageFetcher,
     {
       dedupingInterval: 1000 * 60 * 10,
       revalidateOnFocus: false,

@@ -5,17 +5,17 @@ export interface ProfileImage {
   profileImage: string | null;
 }
 
-export interface ProfileImageAPIReq {}
+export interface UserImageAPIReq {}
 
-export interface ProfileImageAPIRes {
+export interface UserImageAPIRes {
   success: boolean;
   message: string | null;
   data: ProfileImage;
 }
 
-export const profileImageFetcher = async ({
+export const userImageFetcher = async ({
   url,
-}: FetcherParams): Promise<ProfileImageAPIRes | undefined> => {
+}: FetcherParams): Promise<UserImageAPIRes | undefined> => {
   const response = await apiClient.get(url);
   return response.data;
 };
