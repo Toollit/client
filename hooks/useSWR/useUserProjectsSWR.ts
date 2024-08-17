@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import { serialize } from '@/middleware/swr/serialize';
 import { errorMessage } from '@/apis/config/errorMessage';
-import { profileProjectsFetcher } from '@/apis/fetcher/profileProjectsFetcher';
+import { userProjectsFetcher } from '@/apis/fetcher/userProjectsFetcher';
 import { ProjectOverview } from '@/typings';
 import { ENDPOINTS } from '@/apis/endpoints';
 
@@ -37,7 +37,7 @@ const useUserProjectsSWR: SWR = (isValid, nickname, count, args) => {
           args,
         }
       : null,
-    profileProjectsFetcher,
+    userProjectsFetcher,
     {
       dedupingInterval: 1000 * 60 * 10,
       revalidateOnFocus: false,
