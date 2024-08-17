@@ -14,9 +14,9 @@ export interface Notification {
   notificationCreator: string;
 }
 
-export interface ProfileNotificationsAPIReq {}
+export interface UserNotificationsAPIReq {}
 
-export interface ProfileNotificationsAPIRes {
+export interface UserNotificationsAPIRes {
   success: boolean;
   message: string | null;
   data: {
@@ -25,9 +25,9 @@ export interface ProfileNotificationsAPIRes {
   };
 }
 
-export const profileNotificationsFetcher = async ({
+export const userNotificationsFetcher = async ({
   url,
-}: FetcherParams): Promise<ProfileNotificationsAPIRes | undefined> => {
+}: FetcherParams): Promise<UserNotificationsAPIRes | undefined> => {
   const response = await apiClient.get(url);
   return response.data;
 };

@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import NotificationView, { ViewProps } from './NotificationView';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/config/errorMessage';
-import { Notification } from '@/apis/fetcher/profileNotificationsFetcher';
+import { Notification } from '@/apis/fetcher/userNotificationsFetcher';
 import { dateFromNow } from '@/utils/changeDateFormat';
 import { updateSwipeableViewHeight } from '@/features/swipeableView';
 import { useAppDispatch, useAppSelector } from '@/store';

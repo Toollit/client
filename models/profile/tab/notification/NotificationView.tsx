@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
-import { Notification } from '@/apis/fetcher/profileNotificationsFetcher';
+import { Notification } from '@/apis/fetcher/userNotificationsFetcher';
 import { Button } from '@/components/button';
 import Skeleton from '@/components/skeleton';
 import { BoxContainer, BoxTitle } from '@/styles/commons';

@@ -3,9 +3,9 @@ import useSWR, { KeyedMutator } from 'swr';
 import { errorMessage } from '@/apis/config/errorMessage';
 import {
   Notification,
-  ProfileNotificationsAPIRes,
-  profileNotificationsFetcher,
-} from '@/apis/fetcher/profileNotificationsFetcher';
+  UserNotificationsAPIRes,
+  userNotificationsFetcher,
+} from '@/apis/fetcher/userNotificationsFetcher';
 import { serialize } from '@/middleware/swr/serialize';
 import { useRouter } from 'next/router';
 import { ENDPOINTS } from '@/apis/endpoints';
@@ -20,7 +20,7 @@ type SWR = (
   notifications?: Notification[];
   isLoading: boolean;
   isError: any;
-  notificationsMutate: KeyedMutator<ProfileNotificationsAPIRes | undefined>;
+  notificationsMutate: KeyedMutator<UserNotificationsAPIRes | undefined>;
 };
 
 /**
@@ -36,7 +36,7 @@ const useMyNotificationsSWR: SWR = (isValid, args) => {
           args,
         }
       : null,
-    profileNotificationsFetcher,
+    userNotificationsFetcher,
     {
       dedupingInterval: 1000 * 60 * 10,
       revalidateOnFocus: false,
