@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { PersonIcon, MailIcon } from '@/assets/icons';
 import Hashtag from '@/components/hashtag';
 import { EditButton } from '@/components/button';
-import { MyProfile, UserProfile } from '@/apis/fetcher/profileInfoFetcher';
+import { MyProfile, UserProfile } from '@/apis/fetcher/userInfoFetcher';
 import { BoxContainer, BoxTitle } from '@/styles/commons';
 import Skeleton from '@/components/skeleton';
 import {

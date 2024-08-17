@@ -4,9 +4,9 @@ import { serialize } from '@/middleware/swr/serialize';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/config/errorMessage';
 import {
-  ProfileInfoAPIRes,
-  profileInfoFetcher,
-} from '@/apis/fetcher/profileInfoFetcher';
+  UserInfoAPIRes,
+  userInfoFetcher,
+} from '@/apis/fetcher/userInfoFetcher';
 import { ENDPOINTS } from '@/apis/endpoints';
 
 type SWR = (
@@ -17,10 +17,10 @@ type SWR = (
     tag?: string;
   },
 ) => {
-  userInfo?: ProfileInfoAPIRes['data'];
+  userInfo?: UserInfoAPIRes['data'];
   isLoading: boolean;
   isError: any;
-  userInfoMutate: KeyedMutator<ProfileInfoAPIRes | undefined>;
+  userInfoMutate: KeyedMutator<UserInfoAPIRes | undefined>;
 };
 
 /**
@@ -37,7 +37,7 @@ const useUserInfoSWR: SWR = (isValid, nickname, args) => {
           args,
         }
       : null,
-    profileInfoFetcher,
+    userInfoFetcher,
     {
       onError(err, key, config) {
         router.replace('/');

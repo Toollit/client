@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import ProfileInfoView, { ViewProps } from './UserInfoView';
-import { ProfileInfoAPIRes } from '@/apis/fetcher/profileInfoFetcher';
+import { UserInfoAPIRes } from '@/apis/fetcher/userInfoFetcher';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/config/errorMessage';
 import { changeDateFormat } from '@/utils/changeDateFormat';
@@ -96,7 +96,7 @@ const UserInfoController: FC<ControllerProps> = ({}) => {
     userInfoMutate,
   ]);
 
-  const handleDateFormat = useCallback((data?: ProfileInfoAPIRes['data']) => {
+  const handleDateFormat = useCallback((data?: UserInfoAPIRes['data']) => {
     if (!data) {
       return;
     }

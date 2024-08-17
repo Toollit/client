@@ -29,17 +29,17 @@ export interface UserProfile {
   skills: string | null;
 }
 
-export interface ProfileInfoAPIReq {}
+export interface UserInfoAPIReq {}
 
-export interface ProfileInfoAPIRes {
+export interface UserInfoAPIRes {
   success: boolean;
   message: string | null;
   data: MyProfile | UserProfile;
 }
 
-export const profileInfoFetcher = async ({
+export const userInfoFetcher = async ({
   url,
-}: FetcherParams): Promise<ProfileInfoAPIRes | undefined> => {
+}: FetcherParams): Promise<UserInfoAPIRes | undefined> => {
   const response = await apiClient.get(url);
   return response.data;
 };
