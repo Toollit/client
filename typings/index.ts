@@ -30,7 +30,7 @@ export interface ProjectDetail {
   representativeImage: string | null;
 }
 
-export interface ProjectBlockPost
+export interface ProjectMainPost
   extends Omit<ProjectOverview, 'representativeImage' | 'memberTypes'> {
   bookmark: boolean;
   representativeImage: string | StaticImageData;

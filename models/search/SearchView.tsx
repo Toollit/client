@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import AppLayout from '@/components/appLayout';
 import { InnerContainer } from '@/styles/commons';
 import Title from '@/components/title';
-import BlockPost from '@/components/post/block';
+import MainPost from '@/components/post/main';
 import Grid from '@mui/material/Grid';
 import Skeleton from '@/components/skeleton';
-import { ProjectBlockPost } from '@/typings';
+import { ProjectMainPost } from '@/typings';
 import {
   ContentContainer,
   Header,
@@ -16,7 +16,7 @@ import {
 
 export interface ViewProps {
   searchText?: string;
-  projects?: ProjectBlockPost[];
+  projects?: ProjectMainPost[];
 }
 
 const SearchView: FC<ViewProps> = ({ searchText, projects }) => {
@@ -44,7 +44,7 @@ const SearchView: FC<ViewProps> = ({ searchText, projects }) => {
                     laptop={4}
                   >
                     <ProjectDetailLink href={`/project/${project.id}`}>
-                      <BlockPost content={project} />
+                      <MainPost content={project} />
                     </ProjectDetailLink>
                   </Grid>
                 );

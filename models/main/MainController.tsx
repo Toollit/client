@@ -172,7 +172,7 @@ const MainController: FC<ControllerProps> = ({
   }, [router, pageNum, order]);
 
   const props: ViewProps = {
-    projectOverviews: handleProcessData(projectOverviews, bookmarkIds),
+    projects: handleProcessData(projectOverviews, bookmarkIds),
     handleCreateProject,
     pagination: {
       totalPage: totalPage ?? 1,

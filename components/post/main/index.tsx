@@ -1,6 +1,6 @@
 import React from 'react';
 import { BookmarkIcon, ViewIcon } from '@/assets/icons';
-import { ProjectBlockPost } from '@/typings';
+import { ProjectMainPost } from '@/typings';
 import Hashtag from '@/components/hashtag';
 import {
   Container,
@@ -21,11 +21,11 @@ import {
   ViewIconText,
 } from './styles';
 
-interface BlockPostProps {
-  content: ProjectBlockPost;
+interface MainPostProps {
+  content: ProjectMainPost;
 }
 
-const BlockPost = ({ content }: BlockPostProps) => {
+const MainPost = ({ content }: MainPostProps) => {
   return (
     <Container>
       <ImageContainer>
@@ -79,4 +79,4 @@ const BlockPost = ({ content }: BlockPostProps) => {
   );
 };
 
-export default BlockPost;
+export default MainPost;
