@@ -11,6 +11,7 @@ import { updateProjectJoinRequestAPI } from '@/apis/updateProjectJoinRequest';
 import { deleteProfileNotificationAPI } from '@/apis/deleteProfileNotification';
 import useAuth from '@/hooks/useAuth';
 import useMyNotificationsSWR from '@/hooks/useSWR/useMyNotificationsSWR';
+import useCachedKeys from '@/hooks/useCachedKeys';
 
 interface ControllerProps {}
 
@@ -19,6 +20,7 @@ const NotificationController: FC<ControllerProps> = ({}) => {
   const dispatch = useAppDispatch();
   const { isLaptop } = useWindowSize();
   const { user } = useAuth();
+  const { mutateTag } = useCachedKeys();
 
   const hasRendered = useAppSelector(
     (state) => state.profile.hasRenderedViewNotifications,
@@ -97,11 +99,12 @@ const NotificationController: FC<ControllerProps> = ({}) => {
         alert('프로젝트 멤버로 추가되었습니다.');
 
         notificationsMutate();
+        mutateTag({ tag: 'userProjects' });
       } catch (error) {
         errorMessage(error, notificationsMutate);
       }
     },
-    [notificationsMutate],
+    [notificationsMutate, mutateTag],
   );
 
   const handleProjectJoinReject = useCallback(
