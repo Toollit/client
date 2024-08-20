@@ -154,6 +154,7 @@ const SwipeableTabViews = ({ tabs, children }: SwipeableTabViewProps) => {
               ref={(ref) =>
                 ref !== null ? (tabRefs.current[index] = ref) : null
               }
+              disableRipple={true}
             />
           );
         })}
