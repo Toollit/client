@@ -18,7 +18,7 @@ export interface ControllerProps {}
 const ProjectCreateController: FC<ControllerProps> = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { mutateTag, mutatePage } = useCachedKeys();
+  const { mutatePage } = useCachedKeys();
   const { titleRef, editorRef, handleData } = useEditorContent();
   const {
     tooltipAnchorEl,
@@ -112,7 +112,6 @@ const ProjectCreateController: FC<ControllerProps> = () => {
         // Lambda image resizing time delay
         setTimeout(() => {
           mutatePage({ page: '/' });
-          mutatePage({ page: '/profile' });
 
           const postId = response?.data.postId;
           // Use replace instead of push because decided to back out so can't access that page again
