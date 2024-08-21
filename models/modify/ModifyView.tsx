@@ -146,33 +146,36 @@ const ModifyView: FC<ViewProps> = ({
 
           <RepresentativeImageContainer>
             <Label text='대표 이미지' />
-            {representativePreviewImage ? (
-              <ImageContainer>
-                <Image
-                  src={representativePreviewImage}
-                  alt={'project representative image'}
-                  layout='fill'
-                />
-                <ImageDeleteIcon onClick={handleDeleteRepresentativePreviewImg}>
-                  <CloseIcon />
-                </ImageDeleteIcon>
-              </ImageContainer>
-            ) : (
-              <>
-                <AddImageBox onClick={handleTooltipOpen}>
-                  <AddIcon width={4} height={4} />
-                </AddImageBox>
-                <Tooltip {...tooltip} />
-              </>
-            )}
-
-            <input
-              hidden
-              type='file'
-              accept='image/jpg, image/jpeg, image/png'
-              ref={representativeImageRef}
-              onChange={handleChangeRepresentativeImg}
-            />
+            <ImageContainer>
+              {representativePreviewImage ? (
+                <>
+                  <Image
+                    src={representativePreviewImage}
+                    alt={'project representative image'}
+                    layout='fill'
+                  />
+                  <ImageDeleteIcon
+                    onClick={handleDeleteRepresentativePreviewImg}
+                  >
+                    <CloseIcon />
+                  </ImageDeleteIcon>
+                </>
+              ) : (
+                <>
+                  <AddImageBox onClick={handleTooltipOpen}>
+                    <AddIcon width={4} height={4} />
+                  </AddImageBox>
+                  <Tooltip {...tooltip} />
+                  <input
+                    hidden
+                    type='file'
+                    accept='image/jpg, image/jpeg, image/png'
+                    ref={representativeImageRef}
+                    onChange={handleChangeRepresentativeImg}
+                  />
+                </>
+              )}
+            </ImageContainer>
           </RepresentativeImageContainer>
 
           <SubmitContainer>
