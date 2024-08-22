@@ -183,6 +183,7 @@ const MainController: FC<ControllerProps> = ({
     pagination: {
       totalPage: totalPage ?? 1,
     },
+    loadingPlaceholders: Array(12).fill(null),
   };
 
   return <MainView {...props} />;

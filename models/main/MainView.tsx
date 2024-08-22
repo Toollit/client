@@ -14,6 +14,7 @@ import { InnerContainer } from '@/styles/commons';
 import Swiper from '@/components/swiper/webComponent/container';
 import SwiperSlide from '@/components/swiper/webComponent/slide';
 import { ProjectMainPost } from '@/typings';
+import Skeleton from '@/components/skeleton';
 import {
   Banner,
   FirstSlideText,
@@ -38,12 +39,14 @@ export interface ViewProps {
   pagination: {
     totalPage: number;
   };
+  loadingPlaceholders: null[];
 }
 
 const MainView: FC<ViewProps> = ({
   projects,
   handleCreateProject,
   pagination,
+  loadingPlaceholders,
 }) => {
   return (
     <AppLayout type='default'>
@@ -114,22 +117,43 @@ const MainView: FC<ViewProps> = ({
 
         <ContentContainer>
           <Grid container spacing={1}>
-            {projects?.map((project) => {
-              return (
-                <Grid
-                  key={project.id}
-                  item
-                  xsMobile={6}
-                  mobile={6}
-                  tablet={4}
-                  laptop={4}
-                >
-                  <ProjectDetailLink href={`/project/${project.id}`}>
-                    <MainPost content={project} />
-                  </ProjectDetailLink>
-                </Grid>
-              );
-            })}
+            {projects ? (
+              <>
+                {projects.map((project) => {
+                  return (
+                    <Grid
+                      key={project.id}
+                      item
+                      xsMobile={6}
+                      mobile={6}
+                      tablet={4}
+                      laptop={4}
+                    >
+                      <ProjectDetailLink href={`/project/${project.id}`}>
+                        <MainPost content={project} />
+                      </ProjectDetailLink>
+                    </Grid>
+                  );
+                })}
+              </>
+            ) : (
+              <>
+                {loadingPlaceholders.map((_, i) => {
+                  return (
+                    <Grid
+                      key={i}
+                      item
+                      xsMobile={6}
+                      mobile={6}
+                      tablet={4}
+                      laptop={4}
+                    >
+                      <Skeleton width={'100%'} height={31.8} />
+                    </Grid>
+                  );
+                })}
+              </>
+            )}
           </Grid>
         </ContentContainer>
 
