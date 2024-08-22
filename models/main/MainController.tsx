@@ -64,7 +64,13 @@ const MainController: FC<ControllerProps> = ({
   }, [router, authMutate]);
 
   const handleBookmarkStatusCheck = useCallback(
-    (projectOverviews: ProjectOverview[], bookmarkIds: number[]) => {
+    (projectOverviews: ProjectOverview[], bookmarkIds?: number[]) => {
+      if (!bookmarkIds) {
+        return projectOverviews.map((project) => {
+          return { ...project, bookmark: false };
+        });
+      }
+
       return projectOverviews.map((project) => {
         return bookmarkIds.includes(project.id)
           ? { ...project, bookmark: true }
@@ -112,7 +118,7 @@ const MainController: FC<ControllerProps> = ({
 
   const handleProcessData = useCallback(
     (projectOverviews?: ProjectOverview[], bookmarkIds?: number[]) => {
-      if (!projectOverviews || !bookmarkIds) {
+      if (!projectOverviews) {
         return;
       }
 
