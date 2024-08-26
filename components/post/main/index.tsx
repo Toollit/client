@@ -34,6 +34,7 @@ const MainPost = ({ content }: MainPostProps) => {
           alt='default project image'
           layout='fill'
           priority
+          sizes='324px'
         />
       </ImageContainer>
 
