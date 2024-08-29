@@ -134,35 +134,36 @@ const ProjectCreateView: FC<ViewProps> = ({
 
           <RepresentativeImageContainer>
             <Label text='대표 이미지' />
-            {representativePreviewImage ? (
-              <ImageContainer>
-                <Image
-                  src={representativePreviewImage}
-                  alt={'project representative image'}
-                  layout='fill'
-                />
-                <ImageDeleteIcon
-                  onClick={handleDeleteRepresentativePreviewImage}
-                >
-                  <CloseIcon />
-                </ImageDeleteIcon>
-              </ImageContainer>
-            ) : (
-              <>
-                <AddImageBox onClick={handleTooltipOpen}>
-                  <AddIcon width={4} height={4} />
-                </AddImageBox>
-                <Tooltip {...tooltip} />
-              </>
-            )}
-
-            <input
-              hidden
-              type='file'
-              accept='image/jpg, image/jpeg, image/png'
-              ref={representativeImageRef}
-              onChange={handleChangeRepresentativeImage}
-            />
+            <ImageContainer>
+              {representativePreviewImage ? (
+                <>
+                  <Image
+                    src={representativePreviewImage}
+                    alt={'project representative image'}
+                    layout='fill'
+                  />
+                  <ImageDeleteIcon
+                    onClick={handleDeleteRepresentativePreviewImage}
+                  >
+                    <CloseIcon />
+                  </ImageDeleteIcon>
+                </>
+              ) : (
+                <>
+                  <AddImageBox onClick={handleTooltipOpen}>
+                    <AddIcon width={4} height={4} />
+                  </AddImageBox>
+                  <Tooltip {...tooltip} />
+                  <input
+                    hidden
+                    type='file'
+                    accept='image/jpg, image/jpeg, image/png'
+                    ref={representativeImageRef}
+                    onChange={handleChangeRepresentativeImage}
+                  />
+                </>
+              )}
+            </ImageContainer>
           </RepresentativeImageContainer>
 
           <SubmitContainer>
