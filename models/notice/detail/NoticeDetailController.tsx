@@ -19,8 +19,11 @@ const NoticeDetailController: FC<ControllerProps> = ({}) => {
   const [notice, setNotice] = useState<Notice>();
 
   useEffect(() => {
-    const postId = router.query.id as string;
+    const postId = router.query.id;
 
+    if (typeof postId !== 'string') {
+      return;
+    }
     for (const key in noticeData) {
       const notice = noticeData[key as Keys];
 
