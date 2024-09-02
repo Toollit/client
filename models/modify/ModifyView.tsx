@@ -62,12 +62,12 @@ export interface ViewProps {
   >;
   recruitCountRef: React.RefObject<HTMLInputElement>;
   representativeImageRef: React.RefObject<HTMLInputElement>;
-  handleChangeRepresentativeImg: (
+  handleChangeRepresentativeImage: (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => void;
   representativePreviewImage: StaticImageData | string | null;
   handleKeydownSubmit: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-  handleDeleteRepresentativePreviewImg: () => void;
+  handleDeleteRepresentativePreviewImage: () => void;
   handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
   tooltip: TooltipProps;
   hashtags?: string[];
@@ -83,10 +83,10 @@ const ModifyView: FC<ViewProps> = ({
   memberTypeRef,
   recruitCountRef,
   representativeImageRef,
-  handleChangeRepresentativeImg,
+  handleChangeRepresentativeImage,
   representativePreviewImage,
   handleKeydownSubmit,
-  handleDeleteRepresentativePreviewImg,
+  handleDeleteRepresentativePreviewImage,
   handleTooltipOpen,
   hashtags,
   memberTypes,
@@ -155,7 +155,7 @@ const ModifyView: FC<ViewProps> = ({
                     layout='fill'
                   />
                   <ImageDeleteIcon
-                    onClick={handleDeleteRepresentativePreviewImg}
+                    onClick={handleDeleteRepresentativePreviewImage}
                   >
                     <CloseIcon />
                   </ImageDeleteIcon>
@@ -169,9 +169,9 @@ const ModifyView: FC<ViewProps> = ({
                   <input
                     hidden
                     type='file'
-                    accept='image/jpg, image/jpeg, image/png'
+                    accept='image/jpg, image/jpeg, image/png, image/webp'
                     ref={representativeImageRef}
-                    onChange={handleChangeRepresentativeImg}
+                    onChange={handleChangeRepresentativeImage}
                   />
                 </>
               )}

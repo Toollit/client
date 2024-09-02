@@ -182,7 +182,7 @@ const ModifyController: FC<ControllerProps> = () => {
     [],
   );
 
-  const handleChangeRepresentativeImg = useCallback(
+  const handleChangeRepresentativeImage = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       if (!event.target.files) {
         return;
@@ -218,7 +218,7 @@ const ModifyController: FC<ControllerProps> = () => {
     setRepresentativePreviewImage(projectDefaultImage);
   }, [setTooltipAnchorEl]);
 
-  const handleDeleteRepresentativePreviewImg = useCallback(() => {
+  const handleDeleteRepresentativePreviewImage = useCallback(() => {
     setRepresentativePreviewImage('');
     setRepresentativeImageFile(null);
   }, []);
@@ -259,12 +259,12 @@ const ModifyController: FC<ControllerProps> = () => {
     memberTypeRef,
     recruitCountRef,
     representativeImageRef,
-    handleChangeRepresentativeImg,
+    handleChangeRepresentativeImage,
     representativePreviewImage: representativePreviewImage
       ? representativePreviewImage
       : null,
     handleKeydownSubmit,
-    handleDeleteRepresentativePreviewImg,
+    handleDeleteRepresentativePreviewImage,
     handleTooltipOpen,
     tooltip: {
       items: [

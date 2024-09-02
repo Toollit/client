@@ -157,7 +157,7 @@ const ProjectCreateView: FC<ViewProps> = ({
                   <input
                     hidden
                     type='file'
-                    accept='image/jpg, image/jpeg, image/png'
+                    accept='image/jpg, image/jpeg, image/png, image/webp'
                     ref={representativeImageRef}
                     onChange={handleChangeRepresentativeImage}
                   />
