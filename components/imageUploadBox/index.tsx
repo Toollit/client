@@ -5,7 +5,7 @@ import { AddImageBox, Container, DeleteIcon } from './styles';
 
 interface ImageUploadBoxProps {
   imageUrl?: string | null;
-  onChange: (file: File) => void;
+  onChange: (file: File | null) => void;
 }
 
 const ImageUploadBox: FC<ImageUploadBoxProps> = ({ imageUrl, onChange }) => {
@@ -43,7 +43,8 @@ const ImageUploadBox: FC<ImageUploadBoxProps> = ({ imageUrl, onChange }) => {
   const handleDeleteImage = useCallback(() => {
     setImage(null);
     setFile(null);
-  }, []);
+    onChange(null);
+  }, [onChange]);
 
   const handleAddImage = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
