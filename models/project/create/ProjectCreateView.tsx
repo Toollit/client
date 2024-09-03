@@ -7,15 +7,10 @@ import MemberTypeSelector from '@/components/memberTypeSelector';
 import { Editor } from '@toast-ui/react-editor';
 import Label from '@/components/label';
 import { Button } from '@/components/button';
-import Image from 'next/legacy/image';
-import { AddIcon } from '@/assets/icons';
-import { CloseIcon } from '@/assets/icons';
-import Tooltip, { TooltipProps } from '@/components/tooltip';
-import { StaticImageData } from 'next/legacy/image';
 import Skeleton from '@/components/skeleton';
 import { InnerContainer } from '@/styles/commons';
 import { BottomButton } from '@/components/button';
-
+import ImageUploadBox from '@/components/imageUploadBox';
 import {
   Form,
   TitleContainer,
@@ -28,9 +23,6 @@ import {
   SubmitContainer,
   DesktopSubmitContainer,
   MobileSubmitContainer,
-  AddImageBox,
-  ImageContainer,
-  ImageDeleteIcon,
 } from './styles';
 
 const DynamicTuiEditor = dynamic(
@@ -62,15 +54,8 @@ export interface ViewProps {
     ('developer' | 'designer' | 'pm' | 'anyone')[]
   >;
   recruitCountRef: React.RefObject<HTMLInputElement>;
-  representativeImageRef: React.RefObject<HTMLInputElement>;
-  handleChangeRepresentativeImage: (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => void;
-  representativePreviewImage: StaticImageData | string | null;
+  handleRepresentativeImage: (file: File) => void;
   handleKeydownSubmit: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-  handleDeleteRepresentativePreviewImage: () => void;
-  handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  tooltip: TooltipProps;
 }
 
 const ProjectCreateView: FC<ViewProps> = ({
@@ -80,13 +65,8 @@ const ProjectCreateView: FC<ViewProps> = ({
   hashtagRef,
   memberTypeRef,
   recruitCountRef,
-  representativeImageRef,
-  handleChangeRepresentativeImage,
-  representativePreviewImage,
+  handleRepresentativeImage,
   handleKeydownSubmit,
-  handleDeleteRepresentativePreviewImage,
-  handleTooltipOpen,
-  tooltip,
 }) => {
   return (
     <AppLayout type='default' footer={isFooterVisible}>
@@ -134,36 +114,7 @@ const ProjectCreateView: FC<ViewProps> = ({
 
           <RepresentativeImageContainer>
             <Label text='대표 이미지' />
-            <ImageContainer>
-              {representativePreviewImage ? (
-                <>
-                  <Image
-                    src={representativePreviewImage}
-                    alt={'project representative image'}
-                    layout='fill'
-                  />
-                  <ImageDeleteIcon
-                    onClick={handleDeleteRepresentativePreviewImage}
-                  >
-                    <CloseIcon />
-                  </ImageDeleteIcon>
-                </>
-              ) : (
-                <>
-                  <AddImageBox onClick={handleTooltipOpen}>
-                    <AddIcon width={4} height={4} />
-                  </AddImageBox>
-                  <Tooltip {...tooltip} />
-                  <input
-                    hidden
-                    type='file'
-                    accept='image/jpg, image/jpeg, image/png, image/webp'
-                    ref={representativeImageRef}
-                    onChange={handleChangeRepresentativeImage}
-                  />
-                </>
-              )}
-            </ImageContainer>
+            <ImageUploadBox onChange={handleRepresentativeImage} />
           </RepresentativeImageContainer>
 
           <SubmitContainer>

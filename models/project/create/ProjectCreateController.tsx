@@ -7,9 +7,6 @@ import { errorMessage } from '@/apis/config/errorMessage';
 import PrivateRoute from '@/components/PrivateRoute';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { loading } from '@/features/loading';
-import useTooltip from '@/hooks/useTooltip';
-import projectDefaultImage from '@/public/static/images/project.jpg';
-import { StaticImageData } from 'next/legacy/image';
 import { useAppDispatch, useAppSelector } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 
@@ -20,13 +17,6 @@ const ProjectCreateController: FC<ControllerProps> = () => {
   const dispatch = useAppDispatch();
   const { mutatePage } = useCachedKeys();
   const { titleRef, editorRef, handleData } = useEditorContent();
-  const {
-    tooltipAnchorEl,
-    setTooltipAnchorEl,
-    tooltipOpen,
-    handleTooltipOpen,
-    handleTooltipClose,
-  } = useTooltip();
   const { isLaptop } = useWindowSize();
 
   const isLoading = useAppSelector((state) => state.isLoading.status);
@@ -36,14 +26,9 @@ const ProjectCreateController: FC<ControllerProps> = () => {
     [],
   );
   const recruitCountRef = useRef<HTMLInputElement>(null);
-  const representativeImageRef = useRef<HTMLInputElement>(null);
 
-  const [representativePreviewImage, setRepresentativePreviewImage] = useState<
-    StaticImageData | string | null
-  >(null);
-  const [representativeImageFile, setRepresentativeImageFile] = useState<
-    File | 'defaultImage' | null
-  >(null);
+  const [representativeImageFile, setRepresentativeImageFile] =
+    useState<File | null>(null);
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -97,12 +82,7 @@ const ProjectCreateController: FC<ControllerProps> = () => {
       const formData = new FormData();
 
       formData.append('data', stringifyJsonData);
-      formData.append(
-        'projectRepresentativeImage',
-        representativeImageFile === 'defaultImage'
-          ? 'defaultImage'
-          : representativeImageFile,
-      );
+      formData.append('image', representativeImageFile);
 
       try {
         dispatch(loading({ status: true }));
@@ -149,45 +129,8 @@ const ProjectCreateController: FC<ControllerProps> = () => {
     [],
   );
 
-  const handleChangeRepresentativeImage = useCallback(
-    async (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (!event.target.files) {
-        return;
-      }
-
-      const file = event.target.files[0];
-
-      if (!file) {
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.readAsDataURL(file);
-      reader.onload = (evt) => {
-        if (typeof evt.target?.result === 'string') {
-          setRepresentativePreviewImage(evt.target?.result);
-          setRepresentativeImageFile(file);
-        }
-      };
-    },
-    [],
-  );
-
-  const handleAddRepresentativeImage = useCallback(() => {
-    setTooltipAnchorEl(null);
-    representativeImageRef.current?.click();
-  }, [setTooltipAnchorEl]);
-
-  const handleAddDefaultRepresentativeImage = useCallback(() => {
-    setTooltipAnchorEl(null);
-    setRepresentativeImageFile('defaultImage');
-    setRepresentativePreviewImage(projectDefaultImage);
-  }, [setTooltipAnchorEl]);
-
-  const handleDeleteRepresentativePreviewImage = useCallback(() => {
-    setRepresentativePreviewImage('');
-    setRepresentativeImageFile(null);
+  const handleRepresentativeImage = useCallback((file: File) => {
+    setRepresentativeImageFile(file);
   }, []);
 
   const props: ViewProps = {
@@ -202,29 +145,8 @@ const ProjectCreateController: FC<ControllerProps> = () => {
     hashtagRef,
     memberTypeRef,
     recruitCountRef,
-    representativeImageRef,
-    handleChangeRepresentativeImage,
-    representativePreviewImage: representativePreviewImage
-      ? representativePreviewImage
-      : null,
+    handleRepresentativeImage,
     handleKeydownSubmit,
-    handleDeleteRepresentativePreviewImage,
-    handleTooltipOpen,
-    tooltip: {
-      items: [
-        {
-          text: '앨범에서 선택',
-          handler: handleAddRepresentativeImage,
-        },
-        {
-          text: '기본 이미지',
-          handler: handleAddDefaultRepresentativeImage,
-        },
-      ],
-      anchorEl: tooltipAnchorEl,
-      open: tooltipOpen,
-      onClose: handleTooltipClose,
-    },
   };
 
   return (
