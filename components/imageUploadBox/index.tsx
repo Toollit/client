@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { AddIcon, CloseIcon } from '@/assets/icons';
 import { AddImageBox, Container, DeleteIcon } from './styles';
 
