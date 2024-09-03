@@ -7,9 +7,6 @@ import { UpdateProjectData, updateProjectAPI } from '@/apis/updateProject';
 import PrivateRoute from '@/components/PrivateRoute';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { loading } from '@/features/loading';
-import useTooltip from '@/hooks/useTooltip';
-import { StaticImageData } from 'next/legacy/image';
-import projectDefaultImage from 'public/static/images/project.jpg';
 import useWindowSize from '@/hooks/useWindowSize';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import useProjectDetailSWR from '@/hooks/useSWR/useProjectDetailSWR';
@@ -21,31 +18,23 @@ const ModifyController: FC<ControllerProps> = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { titleRef, editorRef, handleData } = useEditorContent();
-  const {
-    tooltipAnchorEl,
-    setTooltipAnchorEl,
-    tooltipOpen,
-    handleTooltipOpen,
-    handleTooltipClose,
-  } = useTooltip();
   const { isLaptop } = useWindowSize();
   const { mutatePage } = useCachedKeys();
 
   const isLoading = useAppSelector((state) => state.isLoading.status);
   const [postId, setPostId] = useState('');
-  const [representativePreviewImage, setRepresentativePreviewImage] = useState<
-    StaticImageData | string | null
+
+  const [representativeImageURL, setRepresentativeImageUrl] = useState<
+    string | null
   >(null);
-  const [representativeImageFile, setRepresentativeImageFile] = useState<
-    File | string | 'defaultImage' | null
-  >(null);
+  const [representativeImageFile, setRepresentativeImageFile] =
+    useState<File | null>(null);
 
   const hashtagRef = useRef<string[]>([]);
   const memberTypeRef = useRef<('developer' | 'designer' | 'pm' | 'anyone')[]>(
     [],
   );
   const recruitCountRef = useRef<HTMLInputElement>(null);
-  const representativeImageRef = useRef<HTMLInputElement>(null);
 
   const { projectDetail, projectDetailMutate } = useProjectDetailSWR(
     true,
@@ -104,8 +93,10 @@ const ModifyController: FC<ControllerProps> = () => {
         return alert('모집 인원은 숫자 1~100까지 가능합니다.');
       }
 
-      if (!representativeImageFile) {
-        return alert('대표 이미지를 설정해 주세요.');
+      if (!representativeImageURL) {
+        if (!representativeImageFile) {
+          return alert('대표 이미지를 설정해 주세요.');
+        }
       }
 
       if (isLoading) {
@@ -128,12 +119,14 @@ const ModifyController: FC<ControllerProps> = () => {
       const formData = new FormData();
 
       formData.append('data', stringifyJsonData);
-      formData.append(
-        'projectRepresentativeImage',
-        representativeImageFile === 'defaultImage'
-          ? 'defaultImage'
-          : representativeImageFile,
-      );
+
+      if (representativeImageURL) {
+        formData.append('image', 'noChange');
+      }
+
+      if (representativeImageFile) {
+        formData.append('image', representativeImageFile);
+      }
 
       try {
         dispatch(loading({ status: true }));
@@ -169,6 +162,7 @@ const ModifyController: FC<ControllerProps> = () => {
       representativeImageFile,
       postId,
       projectMembers,
+      representativeImageURL,
     ],
   );
 
@@ -182,58 +176,16 @@ const ModifyController: FC<ControllerProps> = () => {
     [],
   );
 
-  const handleChangeRepresentativeImage = useCallback(
-    async (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (!event.target.files) {
-        return;
-      }
-
-      const file = event.target.files[0];
-
-      if (!file) {
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.readAsDataURL(file);
-      reader.onload = (evt) => {
-        if (typeof evt.target?.result === 'string') {
-          setRepresentativePreviewImage(evt.target?.result);
-          setRepresentativeImageFile(file);
-        }
-      };
-    },
-    [],
-  );
-
-  const handleAddRepresentativeImg = useCallback(() => {
-    setTooltipAnchorEl(null);
-    representativeImageRef.current?.click();
-  }, [setTooltipAnchorEl]);
-
-  const handleAddDefaultRepresentativeImg = useCallback(() => {
-    setTooltipAnchorEl(null);
-    setRepresentativeImageFile('defaultImage');
-    setRepresentativePreviewImage(projectDefaultImage);
-  }, [setTooltipAnchorEl]);
-
-  const handleDeleteRepresentativePreviewImage = useCallback(() => {
-    setRepresentativePreviewImage('');
-    setRepresentativeImageFile(null);
+  const handleRepresentativeImage = useCallback((file: File | null) => {
+    setRepresentativeImageFile(file);
+    setRepresentativeImageUrl(null);
   }, []);
 
   useEffect(() => {
-    const imageData = projectDetail?.representativeImage;
+    const imageUrl = projectDetail?.representativeImage;
 
-    if (imageData === 'defaultImage') {
-      setRepresentativePreviewImage(projectDefaultImage);
-      setRepresentativeImageFile('defaultImage');
-    }
-
-    if (imageData !== undefined && imageData !== 'defaultImage') {
-      setRepresentativePreviewImage(imageData);
-      setRepresentativeImageFile(imageData);
+    if (imageUrl !== undefined) {
+      setRepresentativeImageUrl(imageUrl);
     }
   }, [projectDetail?.representativeImage]);
 
@@ -258,32 +210,12 @@ const ModifyController: FC<ControllerProps> = () => {
     hashtagRef,
     memberTypeRef,
     recruitCountRef,
-    representativeImageRef,
-    handleChangeRepresentativeImage,
-    representativePreviewImage: representativePreviewImage
-      ? representativePreviewImage
-      : null,
+    handleRepresentativeImage,
     handleKeydownSubmit,
-    handleDeleteRepresentativePreviewImage,
-    handleTooltipOpen,
-    tooltip: {
-      items: [
-        {
-          text: '앨범에서 선택',
-          handler: handleAddRepresentativeImg,
-        },
-        {
-          text: '기본 이미지',
-          handler: handleAddDefaultRepresentativeImg,
-        },
-      ],
-      anchorEl: tooltipAnchorEl,
-      open: tooltipOpen,
-      onClose: handleTooltipClose,
-    },
     hashtags: projectDetail?.hashtags,
     memberTypes: projectDetail?.memberTypes,
     recruitCount: projectDetail?.recruitCount,
+    representativeImageURL,
   };
 
   return (

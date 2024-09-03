@@ -7,20 +7,15 @@ import MemberTypeSelector from '@/components/memberTypeSelector';
 import { Editor } from '@toast-ui/react-editor';
 import { Button } from '@/components/button';
 import Label from '@/components/label';
-import Image, { StaticImageData } from 'next/legacy/image';
-import { CloseIcon, AddIcon } from '@/assets/icons';
-import Tooltip, { TooltipProps } from '@/components/tooltip';
 import Skeleton from '@/components/skeleton';
 import { BottomButton } from '@/components/button';
 import { InnerContainer } from '@/styles/commons';
 import { ProjectDetail } from '@/typings';
+import ImageUploadBox from '@/components/imageUploadBox';
 import {
-  AddImageBox,
   SubmitContainer,
   EditorContainer,
   HashtagContainer,
-  ImageContainer,
-  ImageDeleteIcon,
   MemberTypeContainer,
   RecruitContainer,
   RecruitCountInput,
@@ -61,18 +56,12 @@ export interface ViewProps {
     ('developer' | 'designer' | 'pm' | 'anyone')[]
   >;
   recruitCountRef: React.RefObject<HTMLInputElement>;
-  representativeImageRef: React.RefObject<HTMLInputElement>;
-  handleChangeRepresentativeImage: (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => void;
-  representativePreviewImage: StaticImageData | string | null;
+  handleRepresentativeImage: (file: File | null) => void;
   handleKeydownSubmit: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-  handleDeleteRepresentativePreviewImage: () => void;
-  handleTooltipOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  tooltip: TooltipProps;
   hashtags?: string[];
   memberTypes?: ('developer' | 'designer' | 'pm' | 'anyone')[];
   recruitCount?: number;
+  representativeImageURL: string | null;
 }
 
 const ModifyView: FC<ViewProps> = ({
@@ -82,16 +71,12 @@ const ModifyView: FC<ViewProps> = ({
   hashtagRef,
   memberTypeRef,
   recruitCountRef,
-  representativeImageRef,
-  handleChangeRepresentativeImage,
-  representativePreviewImage,
+  handleRepresentativeImage,
   handleKeydownSubmit,
-  handleDeleteRepresentativePreviewImage,
-  handleTooltipOpen,
   hashtags,
   memberTypes,
   recruitCount,
-  tooltip,
+  representativeImageURL,
 }) => {
   return (
     <AppLayout type='default' footer={isFooterVisible}>
@@ -146,36 +131,10 @@ const ModifyView: FC<ViewProps> = ({
 
           <RepresentativeImageContainer>
             <Label text='대표 이미지' />
-            <ImageContainer>
-              {representativePreviewImage ? (
-                <>
-                  <Image
-                    src={representativePreviewImage}
-                    alt={'project representative image'}
-                    layout='fill'
-                  />
-                  <ImageDeleteIcon
-                    onClick={handleDeleteRepresentativePreviewImage}
-                  >
-                    <CloseIcon />
-                  </ImageDeleteIcon>
-                </>
-              ) : (
-                <>
-                  <AddImageBox onClick={handleTooltipOpen}>
-                    <AddIcon width={4} height={4} />
-                  </AddImageBox>
-                  <Tooltip {...tooltip} />
-                  <input
-                    hidden
-                    type='file'
-                    accept='image/jpg, image/jpeg, image/png, image/webp'
-                    ref={representativeImageRef}
-                    onChange={handleChangeRepresentativeImage}
-                  />
-                </>
-              )}
-            </ImageContainer>
+            <ImageUploadBox
+              imageUrl={representativeImageURL}
+              onChange={handleRepresentativeImage}
+            />
           </RepresentativeImageContainer>
 
           <SubmitContainer>
