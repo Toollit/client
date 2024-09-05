@@ -129,7 +129,7 @@ const ProjectCreateController: FC<ControllerProps> = () => {
     [],
   );
 
-  const handleRepresentativeImage = useCallback((file: File) => {
+  const handleRepresentativeImage = useCallback((file: File | null) => {
     setRepresentativeImageFile(file);
   }, []);
 

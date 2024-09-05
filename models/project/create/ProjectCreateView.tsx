@@ -54,7 +54,7 @@ export interface ViewProps {
     ('developer' | 'designer' | 'pm' | 'anyone')[]
   >;
   recruitCountRef: React.RefObject<HTMLInputElement>;
-  handleRepresentativeImage: (file: File) => void;
+  handleRepresentativeImage: (file: File | null) => void;
   handleKeydownSubmit: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
