@@ -7,12 +7,14 @@ import useUserImageSWR from '@/hooks/useSWR/useUserImageSWR';
 import { errorMessage } from '@/apis/config/errorMessage';
 import useTooltip from '@/hooks/useTooltip';
 import { updateProfileAPI } from '@/apis/updateProfile';
-import { useAppSelector } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { loading } from '@/features/loading';
 
 export interface ControllerProps {}
 
 const ImageController: FC<ControllerProps> = ({}) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const {
     tooltipAnchorEl,
     setTooltipAnchorEl,
@@ -83,16 +85,25 @@ const ImageController: FC<ControllerProps> = ({}) => {
   );
 
   const handleUpdateProfileImage = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
       if (!event.target.files) {
         return;
       }
 
       const file = event.target.files[0];
 
-      uploadProfileImage(file);
+      dispatch(loading({ status: true }));
+
+      try {
+        await uploadProfileImage(file);
+
+        dispatch(loading({ status: false }));
+      } catch (err) {
+        dispatch(loading({ status: false }));
+        errorMessage(err);
+      }
     },
-    [uploadProfileImage],
+    [uploadProfileImage, dispatch],
   );
 
   const props: ViewProps = {
