@@ -8,7 +8,7 @@ import { errorMessage } from '@/apis/config/errorMessage';
 import useTooltip from '@/hooks/useTooltip';
 import { updateProfileAPI } from '@/apis/updateProfile';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { loading } from '@/features/loading';
+import { fieldLoading } from '@/features/loading';
 
 export interface ControllerProps {}
 
@@ -26,6 +26,9 @@ const ImageController: FC<ControllerProps> = ({}) => {
 
   const profileImageRef = useRef<HTMLInputElement>(null);
 
+  const isProfileImageUpdateLoading = useAppSelector(
+    (state) => state.loading.isFieldLoading,
+  );
   const userNickname = useAppSelector((state) => state.profile.userNickname);
   const { isRegisteredUser } = useUserRegisteredCheckSWR(
     true,
@@ -92,14 +95,14 @@ const ImageController: FC<ControllerProps> = ({}) => {
 
       const file = event.target.files[0];
 
-      dispatch(loading({ status: true }));
+      dispatch(fieldLoading(true));
 
       try {
         await uploadProfileImage(file);
 
-        dispatch(loading({ status: false }));
+        dispatch(fieldLoading(false));
       } catch (err) {
-        dispatch(loading({ status: false }));
+        dispatch(fieldLoading(false));
         errorMessage(err);
       }
     },
@@ -107,7 +110,7 @@ const ImageController: FC<ControllerProps> = ({}) => {
   );
 
   const props: ViewProps = {
-    isLoading,
+    isLoading: isLoading || isProfileImageUpdateLoading,
     isMyProfile: userNickname === user?.nickname,
     profileImageUrl: profileImage,
     profileImageRef,
