@@ -2,26 +2,33 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface InitialState {
-  status: boolean;
+  isFullScreenLoading: boolean;
+  isFieldLoading: boolean;
 }
 
 const initialState: InitialState = {
-  status: false,
+  isFullScreenLoading: false,
+  isFieldLoading: false,
 };
 
 const loadingSlice = createSlice({
   name: 'loading',
   initialState,
   reducers: {
-    loading: (state, action: PayloadAction<InitialState>) => {
-      const { status } = action.payload;
+    fullScreenLoading: (state, action: PayloadAction<boolean>) => {
+      const isLoading = action.payload;
 
-      state.status = status;
+      state.isFullScreenLoading = isLoading;
+    },
+    fieldLoading: (state, action: PayloadAction<boolean>) => {
+      const isLoading = action.payload;
+
+      state.isFieldLoading = isLoading;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { loading } = loadingSlice.actions;
+export const { fullScreenLoading, fieldLoading } = loadingSlice.actions;
 
 export default loadingSlice.reducer;

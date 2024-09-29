@@ -7,7 +7,7 @@ import swipeableViewSlice from '@/features/swipeableView';
 import dialogSlice from '@/features/dialog';
 import paginationSlice from '@/features/pagination';
 import postOrderSlice from '@/features/order';
-import isLoadingSlice from '@/features/loading';
+import loadingSlice from '@/features/loading';
 import alertSlice from '@/features/alert';
 import reportSlice from '@/features/report';
 import profileSlice from '@/features/profile';
@@ -23,7 +23,7 @@ const makeStore = () => {
       dialog: dialogSlice,
       pagination: paginationSlice,
       postOrder: postOrderSlice,
-      isLoading: isLoadingSlice,
+      loading: loadingSlice,
       alert: alertSlice,
       report: reportSlice,
       profile: profileSlice,
