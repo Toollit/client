@@ -7,7 +7,7 @@ import { emailAuth } from '@/features/signup';
 import useTimer from '@/hooks/useTimer';
 import { errorMessage } from '@/apis/config/errorMessage';
 import { emailVerifyAPI } from '@/apis/auth/emailVerify';
-import { loading } from '@/features/loading';
+import { fullScreenLoading } from '@/features/loading';
 import { SignupAPIReq, signupAPI } from '@/apis/auth/signup';
 import useAuth from '@/hooks/useAuth';
 
@@ -18,7 +18,9 @@ const AuthController: FC<ControllerProps> = () => {
   const dispatch = useAppDispatch();
   const { authMutate } = useAuth();
 
-  const isLoading = useAppSelector((state) => state.isLoading.status);
+  const isLoading = useAppSelector(
+    (state) => state.loading.isFullScreenLoading,
+  );
   const email = useAppSelector((state) => state.signup.email);
   const password = useAppSelector((state) => state.signup.password);
 
@@ -60,7 +62,7 @@ const AuthController: FC<ControllerProps> = () => {
       try {
         authCodeInputRef.current?.blur();
 
-        dispatch(loading({ status: true }));
+        dispatch(fullScreenLoading(true));
 
         await emailVerifyAPI({ email, authCode });
 
@@ -78,10 +80,10 @@ const AuthController: FC<ControllerProps> = () => {
         router.replace('/signup/nickname/initialize');
 
         router.events.on('routeChangeComplete', () => {
-          dispatch(loading({ status: false }));
+          dispatch(fullScreenLoading(false));
         });
       } catch (error) {
-        dispatch(loading({ status: false }));
+        dispatch(fullScreenLoading(false));
         errorMessage(error);
         authCodeInputRef.current?.focus();
       }

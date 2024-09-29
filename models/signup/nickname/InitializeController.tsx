@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import NicknameView, { ViewProps } from './InitializeView';
 import { useRouter } from 'next/router';
-import { loading } from '@/features/loading';
+import { fullScreenLoading } from '@/features/loading';
 import { errorMessage } from '@/apis/config/errorMessage';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { duplicateNicknameCheckFetcher } from '@/apis/fetcher/duplicateNicknameCheckFetcher';
@@ -17,7 +17,9 @@ const InitializeController: FC<ControllerProps> = ({}) => {
   const { isAuthenticated, authMutate } = useAuth();
   const { logout } = useLogout();
 
-  const isLoading = useAppSelector((state) => state.isLoading.status);
+  const isLoading = useAppSelector(
+    (state) => state.loading.isFullScreenLoading,
+  );
 
   const [nickname, setNickname] = useState('');
 
@@ -72,7 +74,7 @@ const InitializeController: FC<ControllerProps> = ({}) => {
       try {
         nicknameInputRef.current?.blur();
 
-        dispatch(loading({ status: true }));
+        dispatch(fullScreenLoading(true));
 
         await duplicateNicknameCheckFetcher({ nickname });
 
@@ -85,10 +87,10 @@ const InitializeController: FC<ControllerProps> = ({}) => {
         router.replace('/');
 
         router.events.on('routeChangeComplete', () => {
-          dispatch(loading({ status: false }));
+          dispatch(fullScreenLoading(false));
         });
       } catch (error) {
-        dispatch(loading({ status: false }));
+        dispatch(fullScreenLoading(false));
         errorMessage(error);
         nicknameInputRef.current?.focus();
       }

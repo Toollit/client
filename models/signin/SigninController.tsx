@@ -5,7 +5,7 @@ import { emailSigninAPI } from '@/apis/auth/emailSignin';
 import { errorMessage } from '@/apis/config/errorMessage';
 import PrivateRoute from '@/components/PrivateRoute';
 import useCachedKeys from '@/hooks/useCachedKeys';
-import { loading } from '@/features/loading';
+import { fullScreenLoading } from '@/features/loading';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { emailAuth } from '@/features/signup';
 
@@ -16,7 +16,9 @@ const SigninController: FC<ControllerProps> = () => {
   const dispatch = useAppDispatch();
   const { clearCache } = useCachedKeys();
 
-  const isLoading = useAppSelector((state) => state.isLoading.status);
+  const isLoading = useAppSelector(
+    (state) => state.loading.isFullScreenLoading,
+  );
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -59,7 +61,7 @@ const SigninController: FC<ControllerProps> = () => {
       try {
         passwordInputRef.current?.blur();
 
-        dispatch(loading({ status: true }));
+        dispatch(fullScreenLoading(true));
 
         const data = { email, password };
 
@@ -75,10 +77,10 @@ const SigninController: FC<ControllerProps> = () => {
         }
 
         router.events.on('routeChangeComplete', () => {
-          dispatch(loading({ status: false }));
+          dispatch(fullScreenLoading(false));
         });
       } catch (error) {
-        dispatch(loading({ status: false }));
+        dispatch(fullScreenLoading(false));
         errorMessage(error);
         passwordInputRef.current?.focus();
       }

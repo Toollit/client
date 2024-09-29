@@ -4,7 +4,7 @@ import useCachedKeys from '@/hooks/useCachedKeys';
 import { useRouter } from 'next/router';
 import { errorMessage } from '@/apis/config/errorMessage';
 import { useAppDispatch } from '@/store';
-import { loading } from '@/features/loading';
+import { fullScreenLoading } from '@/features/loading';
 
 interface LogOut {
   push?: string;
@@ -25,7 +25,7 @@ const useLogout = () => {
   const logout = useCallback(
     async ({ push, replace }: LogOut) => {
       try {
-        dispatch(loading({ status: true }));
+        dispatch(fullScreenLoading(true));
 
         await logoutAPI();
 
@@ -39,10 +39,10 @@ const useLogout = () => {
 
         return router.events.on('routeChangeComplete', () => {
           clearCache();
-          dispatch(loading({ status: false }));
+          dispatch(fullScreenLoading(false));
         });
       } catch (error) {
-        dispatch(loading({ status: false }));
+        dispatch(fullScreenLoading(false));
         errorMessage(error);
       }
     },

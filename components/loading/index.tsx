@@ -7,7 +7,9 @@ import CircularProgress, {
 import { useAppSelector } from '@/store';
 
 export default function LoadingCircularProgress(props: CircularProgressProps) {
-  const isLoading = useAppSelector((state) => state.isLoading.status);
+  const isLoading = useAppSelector(
+    (state) => state.loading.isFullScreenLoading,
+  );
 
   if (isLoading) {
     return (

@@ -10,7 +10,7 @@ import { updateBookmarkAPI } from '@/apis/updateBookmark';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import { deleteProjectAPI } from '@/apis/deleteProject';
 import { openReport } from '@/features/report';
-import { loading } from '@/features/loading';
+import { fullScreenLoading } from '@/features/loading';
 import { createProjectJoinRequestAPI } from '@/apis/createProjectJoinRequest';
 import { deleteProjectMemberAPI } from '@/apis/deleteProjectMember';
 import { useAppDispatch } from '@/store';
@@ -181,7 +181,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
 
         if (isDeletedOk) {
           try {
-            dispatch(loading({ status: true }));
+            dispatch(fullScreenLoading(true));
 
             await deleteProjectAPI({ postId });
 
@@ -190,10 +190,10 @@ const ProjectDetailController: FC<ControllerProps> = () => {
             router.replace('/');
 
             router.events.on('routeChangeComplete', () => {
-              dispatch(loading({ status: false }));
+              dispatch(fullScreenLoading(false));
             });
           } catch (error) {
-            dispatch(loading({ status: false }));
+            dispatch(fullScreenLoading(false));
             errorMessage(error);
           }
         }
@@ -235,7 +235,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
     }
 
     try {
-      dispatch(loading({ status: true }));
+      dispatch(fullScreenLoading(true));
 
       const auth = await authMutate();
 
@@ -250,9 +250,9 @@ const ProjectDetailController: FC<ControllerProps> = () => {
         );
       }
 
-      dispatch(loading({ status: false }));
+      dispatch(fullScreenLoading(false));
     } catch (error) {
-      dispatch(loading({ status: false }));
+      dispatch(fullScreenLoading(false));
       errorMessage(error);
     }
   }, [dispatch, authMutate, router, postId]);
@@ -267,7 +267,7 @@ const ProjectDetailController: FC<ControllerProps> = () => {
     }
 
     try {
-      dispatch(loading({ status: true }));
+      dispatch(fullScreenLoading(true));
 
       const auth = await authMutate();
 
@@ -283,9 +283,9 @@ const ProjectDetailController: FC<ControllerProps> = () => {
         router.push('/signin');
       }
 
-      dispatch(loading({ status: false }));
+      dispatch(fullScreenLoading(false));
     } catch (error) {
-      dispatch(loading({ status: false }));
+      dispatch(fullScreenLoading(false));
       errorMessage(error);
     }
   }, [dispatch, authMutate, projectDetailMutate, postId, router]);

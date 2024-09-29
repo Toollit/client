@@ -9,7 +9,7 @@ import { BottomButton } from '@/components/button';
 import AppLayout from '@/components/appLayout';
 import { createReportAPI } from '@/apis/createReport';
 import { errorMessage } from '@/apis/config/errorMessage';
-import { loading } from '@/features/loading';
+import { fullScreenLoading } from '@/features/loading';
 import { InnerContainer } from '@/styles/commons';
 import {
   ReportReason,
@@ -37,7 +37,9 @@ const Report = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const isLoading = useAppSelector((state) => state.isLoading.status);
+  const isLoading = useAppSelector(
+    (state) => state.loading.isFullScreenLoading,
+  );
   const open = useAppSelector((state) => state.report.open);
   const postType = useAppSelector((state) => state.report.postType);
   const postId = useAppSelector((state) => state.report.postId);
@@ -132,11 +134,11 @@ const Report = () => {
       };
 
       try {
-        dispatch(loading({ status: true }));
+        dispatch(fullScreenLoading(true));
 
         await createReportAPI(data);
 
-        dispatch(loading({ status: false }));
+        dispatch(fullScreenLoading(false));
 
         alert(
           '신고해 주셔서 감사합니다. 최대한 빠른 시간 내에 검토 후 조치하도록 하겠습니다.',
@@ -144,7 +146,7 @@ const Report = () => {
 
         return handleClose();
       } catch (error) {
-        dispatch(loading({ status: false }));
+        dispatch(fullScreenLoading(false));
         errorMessage(error);
       }
     },

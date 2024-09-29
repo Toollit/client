@@ -6,7 +6,7 @@ import useEditorContent from '@/hooks/useEditorContent';
 import { errorMessage } from '@/apis/config/errorMessage';
 import PrivateRoute from '@/components/PrivateRoute';
 import useCachedKeys from '@/hooks/useCachedKeys';
-import { loading } from '@/features/loading';
+import { fullScreenLoading } from '@/features/loading';
 import { useAppDispatch, useAppSelector } from '@/store';
 import useWindowSize from '@/hooks/useWindowSize';
 
@@ -19,7 +19,9 @@ const ProjectCreateController: FC<ControllerProps> = () => {
   const { titleRef, editorRef, handleData } = useEditorContent();
   const { isLaptop } = useWindowSize();
 
-  const isLoading = useAppSelector((state) => state.isLoading.status);
+  const isLoading = useAppSelector(
+    (state) => state.loading.isFullScreenLoading,
+  );
 
   const hashtagRef = useRef<string[]>([]);
   const memberTypeRef = useRef<('developer' | 'designer' | 'pm' | 'anyone')[]>(
@@ -85,7 +87,7 @@ const ProjectCreateController: FC<ControllerProps> = () => {
       formData.append('image', representativeImageFile);
 
       try {
-        dispatch(loading({ status: true }));
+        dispatch(fullScreenLoading(true));
 
         const response = await createProjectAPI(formData);
 
@@ -98,11 +100,11 @@ const ProjectCreateController: FC<ControllerProps> = () => {
           router.replace(`/project/${postId}`);
 
           router.events.on('routeChangeComplete', () => {
-            dispatch(loading({ status: false }));
+            dispatch(fullScreenLoading(false));
           });
         }, 2000);
       } catch (error) {
-        dispatch(loading({ status: false }));
+        dispatch(fullScreenLoading(false));
         errorMessage(error);
       }
     },

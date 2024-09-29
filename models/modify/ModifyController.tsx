@@ -6,7 +6,7 @@ import useEditorContent from '@/hooks/useEditorContent';
 import { UpdateProjectData, updateProjectAPI } from '@/apis/updateProject';
 import PrivateRoute from '@/components/PrivateRoute';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { loading } from '@/features/loading';
+import { fullScreenLoading } from '@/features/loading';
 import useWindowSize from '@/hooks/useWindowSize';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import useProjectDetailSWR from '@/hooks/useSWR/useProjectDetailSWR';
@@ -21,7 +21,9 @@ const ModifyController: FC<ControllerProps> = () => {
   const { isLaptop } = useWindowSize();
   const { mutatePage } = useCachedKeys();
 
-  const isLoading = useAppSelector((state) => state.isLoading.status);
+  const isLoading = useAppSelector(
+    (state) => state.loading.isFullScreenLoading,
+  );
   const [postId, setPostId] = useState('');
 
   const [representativeImageURL, setRepresentativeImageUrl] = useState<
@@ -129,7 +131,7 @@ const ModifyController: FC<ControllerProps> = () => {
       }
 
       try {
-        dispatch(loading({ status: true }));
+        dispatch(fullScreenLoading(true));
 
         const response = await updateProjectAPI(formData);
 
@@ -142,10 +144,10 @@ const ModifyController: FC<ControllerProps> = () => {
         router.replace(`/project/${postId}`);
 
         router.events.on('routeChangeComplete', () => {
-          dispatch(loading({ status: false }));
+          dispatch(fullScreenLoading(false));
         });
       } catch (error) {
-        dispatch(loading({ status: false }));
+        dispatch(fullScreenLoading(false));
         errorMessage(error);
       }
     },

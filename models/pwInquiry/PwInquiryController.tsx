@@ -4,7 +4,7 @@ import useNoSpaceInput from '@/hooks/useNoSpaceInput';
 import { useRouter } from 'next/router';
 import PwInquiryView, { ViewProps } from './PwInquiryView';
 import { errorMessage } from '@/apis/config/errorMessage';
-import { loading } from '@/features/loading';
+import { fullScreenLoading } from '@/features/loading';
 import { useAppDispatch, useAppSelector } from '@/store';
 import PrivateRoute from '@/components/PrivateRoute';
 
@@ -14,7 +14,9 @@ const PwInquiryController: FC<ControllerProps> = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const isLoading = useAppSelector((state) => state.isLoading.status);
+  const isLoading = useAppSelector(
+    (state) => state.loading.isFullScreenLoading,
+  );
 
   const [email, onChangeEmail] = useNoSpaceInput('');
   const [emailInvalidError, setEmailInvalidError] = useState(false);
@@ -56,7 +58,7 @@ const PwInquiryController: FC<ControllerProps> = () => {
       try {
         inputRef.current?.blur();
 
-        dispatch(loading({ status: true }));
+        dispatch(fullScreenLoading(true));
 
         await createTemporaryPasswordAPI({ email });
 
@@ -65,10 +67,10 @@ const PwInquiryController: FC<ControllerProps> = () => {
         router.push('/signin');
 
         router.events.on('routeChangeComplete', () => {
-          dispatch(loading({ status: false }));
+          dispatch(fullScreenLoading(false));
         });
       } catch (error) {
-        dispatch(loading({ status: false }));
+        dispatch(fullScreenLoading(false));
         errorMessage(error);
         inputRef.current?.focus();
       }

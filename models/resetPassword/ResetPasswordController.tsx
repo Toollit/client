@@ -8,7 +8,7 @@ import useAuth from '@/hooks/useAuth';
 import PrivateRoute from '@/components/PrivateRoute';
 import useLogout from '@/hooks/useLogout';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { loading } from '@/features/loading';
+import { fullScreenLoading } from '@/features/loading';
 
 export interface ControllerProps {}
 
@@ -18,7 +18,9 @@ const ResetPasswordController: FC<ControllerProps> = () => {
   const { user } = useAuth();
   const { logout } = useLogout();
 
-  const isLoading = useAppSelector((state) => state.isLoading.status);
+  const isLoading = useAppSelector(
+    (state) => state.loading.isFullScreenLoading,
+  );
 
   const [newPassword, onChangeNewPassword] = useNoSpaceInput('');
   const [newPasswordInvalidError, setNewPasswordInvalidError] = useState(false);
@@ -75,7 +77,7 @@ const ResetPasswordController: FC<ControllerProps> = () => {
         passwordRef.current?.blur();
         doubleCheckPasswordRef.current?.blur();
 
-        dispatch(loading({ status: true }));
+        dispatch(fullScreenLoading(true));
 
         await updatePasswordAPI({ password: newPassword });
 
@@ -86,10 +88,10 @@ const ResetPasswordController: FC<ControllerProps> = () => {
         await logout({ replace: '/signin' });
 
         router.events.on('routeChangeComplete', () => {
-          dispatch(loading({ status: false }));
+          dispatch(fullScreenLoading(false));
         });
       } catch (error) {
-        dispatch(loading({ status: false }));
+        dispatch(fullScreenLoading(false));
         errorMessage(error);
       }
     },

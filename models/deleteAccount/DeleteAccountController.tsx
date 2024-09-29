@@ -4,7 +4,7 @@ import { deleteAccountAPI } from '@/apis/deleteAccount';
 import { errorMessage } from '@/apis/config/errorMessage';
 import { useRouter } from 'next/router';
 import { useAppDispatch } from '@/store';
-import { loading } from '@/features/loading';
+import { fullScreenLoading } from '@/features/loading';
 import useCachedKeys from '@/hooks/useCachedKeys';
 import PrivateRoute from '@/components/PrivateRoute';
 
@@ -27,7 +27,7 @@ const DeleteAccountController: FC<ControllerProps> = ({}) => {
       }
 
       try {
-        dispatch(loading({ status: true }));
+        dispatch(fullScreenLoading(true));
 
         await deleteAccountAPI({});
 
@@ -38,10 +38,10 @@ const DeleteAccountController: FC<ControllerProps> = ({}) => {
         router.replace('/');
 
         return router.events.on('routeChangeComplete', () => {
-          dispatch(loading({ status: false }));
+          dispatch(fullScreenLoading(false));
         });
       } catch (error) {
-        dispatch(loading({ status: false }));
+        dispatch(fullScreenLoading(false));
         errorMessage(error);
       }
     },

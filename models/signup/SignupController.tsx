@@ -6,7 +6,7 @@ import { emailAuth } from '@/features/signup';
 import { createEmailAuthCodeAPI } from '@/apis/createEmailAuthCode';
 import { errorMessage } from '@/apis/config/errorMessage';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { loading } from '@/features/loading';
+import { fullScreenLoading } from '@/features/loading';
 
 export interface ControllerProps {}
 
@@ -14,7 +14,9 @@ const SignupController: FC<ControllerProps> = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const isLoading = useAppSelector((state) => state.isLoading.status);
+  const isLoading = useAppSelector(
+    (state) => state.loading.isFullScreenLoading,
+  );
 
   const [email, onChangeEmail] = useNoSpaceInput('');
   const [emailInvalidError, setEmailInvalidError] = useState(false);
@@ -103,17 +105,17 @@ const SignupController: FC<ControllerProps> = () => {
         passwordInputRef.current?.blur();
         passwordCheckInputRef.current?.blur();
 
-        dispatch(loading({ status: true }));
+        dispatch(fullScreenLoading(true));
 
         await createEmailAuthCodeAPI({ email });
 
         router.push('/signup/email/auth');
 
         router.events.on('routeChangeComplete', () => {
-          dispatch(loading({ status: false }));
+          dispatch(fullScreenLoading(false));
         });
       } catch (error) {
-        dispatch(loading({ status: false }));
+        dispatch(fullScreenLoading(false));
         errorMessage(error);
       }
     },

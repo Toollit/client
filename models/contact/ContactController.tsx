@@ -6,7 +6,7 @@ import { errorMessage } from '@/apis/config/errorMessage';
 import { SelectChangeEvent } from '@mui/material';
 import { createContactAPI } from '@/apis/createContact';
 import { useAppDispatch } from '@/store';
-import { loading } from '@/features/loading';
+import { fullScreenLoading } from '@/features/loading';
 
 export interface ControllerProps {}
 
@@ -46,12 +46,12 @@ const ContactController: FC<ControllerProps> = ({}) => {
       }
 
       try {
-        dispatch(loading({ status: true }));
+        dispatch(fullScreenLoading(true));
 
         const auth = await authMutate();
 
         if (!auth?.success) {
-          dispatch(loading({ status: false }));
+          dispatch(fullScreenLoading(false));
 
           const wantsToSignin = confirm('로그인 후 이용 가능합니다.');
 
@@ -70,11 +70,11 @@ const ContactController: FC<ControllerProps> = ({}) => {
           router.push('/');
 
           return router.events.on('routeChangeComplete', () => {
-            dispatch(loading({ status: false }));
+            dispatch(fullScreenLoading(false));
           });
         }
       } catch (error) {
-        dispatch(loading({ status: false }));
+        dispatch(fullScreenLoading(false));
         errorMessage(error);
       }
     },
